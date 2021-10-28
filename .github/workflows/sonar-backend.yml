@@ -1,4 +1,4 @@
-name: Build
+name: sonar-backend
 on:
   push:
   pull_request:
