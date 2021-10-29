@@ -1,9 +1,9 @@
 package capstone.backend.repository;
 
-import capstone.backend.models.db.Supplier;
+import capstone.backend.models.db.OrderToSupplier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SupplierRepo  extends JpaRepository  <Supplier,Long>{
+public interface OrderToSupplierRepo extends JpaRepository <OrderToSupplier,Long>{
 }

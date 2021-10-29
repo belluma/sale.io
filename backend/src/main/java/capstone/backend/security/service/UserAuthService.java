@@ -17,7 +17,7 @@ import java.util.HashMap;
 
 
 @Service
-public class UserAuthService implements UserDetailsService {
+public class UserAuthService implements UserDetailsService  {
 
     private final EmployeeRepository repository;
     private final JWTUtilService jwtService;
@@ -33,9 +33,11 @@ public class UserAuthService implements UserDetailsService {
         this.mapper = mapper;
         this.utils = utils;
     }
-
-    @Override
-    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+//TODO  make this right - do I even need this method? can i somehow not implement UserDetailsService
+    public UserDetails loadUserByUsername(String username){
+        return User.withUsername("a").password("b").authorities("c").build();
+    }
+    public UserDetails loadUserId(Long id) throws UsernameNotFoundException {
         return repository.findById(id)
                 .map(employee -> User
                         .withUsername(employee.getName())
@@ -47,7 +49,7 @@ public class UserAuthService implements UserDetailsService {
 
     public String signup(EmployeeDTO employee) throws AuthenticationException {
         validateUserData(employee);
-        if (repository.findById(employee.getName()).isEmpty()) {
+        if (repository.findById(employee.getId()).isEmpty()) {
             employee.setPassword(passwordEncoder.encode(employee.getPassword()));
             repository.save(mapper.mapEmployee(employee));
             return jwtService.createToken(new HashMap<>(), employee.getName());

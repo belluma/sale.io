@@ -19,8 +19,6 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JWTUtilService jwtService;
     private final UserAuthService userAuthService;
-    @Value("${github.client.id}")
-    private String clientId;
 
     @Autowired
     public AuthController(AuthenticationManager authenticationManager, JWTUtilService jwtService, UserAuthService userAuthService){
