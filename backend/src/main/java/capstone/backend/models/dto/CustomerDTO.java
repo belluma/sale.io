@@ -1,5 +1,6 @@
 package capstone.backend.models.dto;
 
+import capstone.backend.crud.DataTransferObject;
 import capstone.backend.models.db.OrderFromCustomer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerDTO extends ContactDTO {
+public class CustomerDTO extends DataTransferObject {
 
     private List<OrderFromCustomer> orders;
 }

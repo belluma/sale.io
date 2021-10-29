@@ -1,5 +1,6 @@
 package capstone.backend.models.db;
 
+import capstone.backend.crud.DatabaseObject;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -16,7 +17,7 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @Entity
-public class Customer extends Contact{
+public class Customer extends DatabaseObject {
 
 
     @OneToMany
