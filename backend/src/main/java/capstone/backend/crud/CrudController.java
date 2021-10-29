@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/forbidden")
 public class CrudController<DTO extends DataTransferObject, DBO extends DatabaseObject> {
 
     CrudService<DTO, DBO> service;
@@ -15,7 +15,7 @@ public class CrudController<DTO extends DataTransferObject, DBO extends Database
     public CrudController(CrudService<DTO, DBO> service){
         this.service = service;
     }
-    @GetMapping("")
+    @GetMapping()
     public List<DTO> getAll(){
         return service.getAll();
     }
