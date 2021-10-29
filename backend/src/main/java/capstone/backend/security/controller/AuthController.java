@@ -27,11 +27,11 @@ public class AuthController {
         this.userAuthService = userAuthService;
     }
 
-//    @PostMapping("/login")
-//    public String login(@RequestBody EmployeeDTO employee){
-//        this.authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(employee.getName(), employee.getPassword()));
-//        return jwtService.createToken(new HashMap<>(), employee.getName());
-//    }
+    @PostMapping("/login")
+    public String login(@RequestBody EmployeeDTO employee){
+        this.authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(employee.getName(), employee.getPassword()));
+        return jwtService.createToken(new HashMap<>(), employee.getName());
+    }
 
     @PostMapping("/signup")
     public String signup(@RequestBody EmployeeDTO employee)throws IllegalArgumentException, AuthenticationException {

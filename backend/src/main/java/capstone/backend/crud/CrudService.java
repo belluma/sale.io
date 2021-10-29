@@ -17,6 +17,7 @@ public class CrudService<DTO extends DataTransferObject, DBO extends DatabaseObj
     private JpaRepository<DatabaseObject, Long> repository;
     private CrudMapper<DTO, DBO> mapper;
 
+    public
 
     public List<DTO> getAll() {
         return repository

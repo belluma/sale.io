@@ -44,7 +44,7 @@ public class UserAuthService implements UserDetailsService  {
                         .password(employee.getPassword())
                         .authorities("user")
                         .build())
-                .orElseThrow(() -> new UsernameNotFoundException("Couldn't find a user wiht id " + id));
+                .orElseThrow(() -> new UsernameNotFoundException("Couldn't find a user with id " + id));
     }
 
     public String signup(EmployeeDTO employee) throws AuthenticationException {

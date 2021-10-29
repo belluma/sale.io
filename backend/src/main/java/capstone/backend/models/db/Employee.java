@@ -18,6 +18,7 @@ import java.util.Objects;
 @Entity
 public class Employee extends Contact {
 
+
     private String password;
     @ElementCollection
     private List<UserRoles> roles;

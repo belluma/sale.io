@@ -3,9 +3,7 @@ package capstone.backend.models.db;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Getter
@@ -15,7 +13,7 @@ import java.util.Objects;
 @Entity
 public abstract class Contact {
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
     private String name;
