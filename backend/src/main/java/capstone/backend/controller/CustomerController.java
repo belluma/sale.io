@@ -17,7 +17,7 @@ public class CustomerController extends CrudController<CustomerDTO, Customer> {
     private final CrudMapper<CustomerDTO, Customer> mapper = new CustomerMapper();
 
     @Autowired
-    public CustomerController(CrudService<CustomerDTO, Customer> service) {
+    public CustomerController(CrudService<CustomerDTO, Customer> service, CrudMapper<CustomerDTO,Customer> mapper) {
         super(service, mapper);
     }
 }

@@ -12,11 +12,14 @@ import java.util.NoSuchElementException;
 public class CrudService<DTO extends DataTransferObject, DBO extends DatabaseObject> {
 
     private final JpaRepository<DatabaseObject, Long> repository;
-    private final CrudMapper<DTO, DBO> mapper;
+    private CrudMapper<DTO, DBO> mapper;
 
     @Autowired
     public CrudService(JpaRepository<DatabaseObject, Long> repository, CrudMapper<DTO, DBO> mapper) {
         this.repository = repository;
+    }
+
+    public void setMapper(CrudMapper<DTO, DBO> mapper){
         this.mapper = mapper;
     }
 

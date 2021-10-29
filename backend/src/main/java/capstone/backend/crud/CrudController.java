@@ -13,12 +13,11 @@ public class CrudController<DTO extends DataTransferObject, DBO extends Database
 
 
     private final CrudService<DTO, DBO> service;
-    private final CrudMapper<DTO, DBO> mapper;
 
     @Autowired
-    public CrudController(CrudService<DTO, DBO> service, CrudMapper<DTO, DBO> mapper){
+    public CrudController(CrudService<DTO, DBO> service, CrudMapper<DTO, DBO> mapper ){
         this.service = service;
-        this.mapper = mapper;
+        this.service.setMapper(mapper);
     }
     @GetMapping()
     public List<DTO> getAll(){
