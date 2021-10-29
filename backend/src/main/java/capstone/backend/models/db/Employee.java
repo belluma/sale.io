@@ -1,18 +1,18 @@
 package capstone.backend.models.db;
 
 import capstone.backend.models.UserRoles;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import java.util.List;
+import java.util.Objects;
 
-@EqualsAndHashCode(callSuper = true)
-@Data
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -21,4 +21,17 @@ public class Employee extends Contact {
     private String password;
     @ElementCollection
     private List<UserRoles> roles;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Employee employee = (Employee) o;
+        return getId() != null && Objects.equals(getId(), employee.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
 }
