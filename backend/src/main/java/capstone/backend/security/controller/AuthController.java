@@ -23,17 +23,17 @@ public class AuthController {
     private String clientId;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, JWTUtilService jwtService, UserAuthService userAuthService{
+    public AuthController(AuthenticationManager authenticationManager, JWTUtilService jwtService, UserAuthService userAuthService){
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.userAuthService = userAuthService;
     }
 
-    @PostMapping("/login")
-    public String login(@RequestBody EmployeeDTO employee){
-        this.authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(employee.getName(), employee.getPassword()));
-        return jwtService.createToken(new HashMap<>(), employee.getName());
-    }
+//    @PostMapping("/login")
+//    public String login(@RequestBody EmployeeDTO employee){
+//        this.authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(employee.getName(), employee.getPassword()));
+//        return jwtService.createToken(new HashMap<>(), employee.getName());
+//    }
 
     @PostMapping("/signup")
     public String signup(@RequestBody EmployeeDTO employee)throws IllegalArgumentException, AuthenticationException {
