@@ -42,16 +42,18 @@ interface IResponseData {
     statusText:string
 }
 
-export const LoginSlice = createSlice({
+//TODO change token name after deciding app name
+
+export const Authentication = createSlice({
     name:'login',
     initialState,
     reducers:{
         logout:(state) => {
-            localStorage.removeItem("codificantesToken");
+            localStorage.removeItem("appNameToken");
             state.loggedIn = false;
         },
         loginFromStorage:(state) =>{
-            const token = localStorage.getItem("codificantesToken");
+            const token = localStorage.getItem("appNameToken");
             if(token && validateToken(token)){
                 state.loggedIn = true;
                 state.token = token;
@@ -70,7 +72,7 @@ export const LoginSlice = createSlice({
                 }
                 state.loggedIn = true;
                 state.token = action.payload.data
-                localStorage.setItem('codificantesToken', action.payload.data);
+                localStorage.setItem('appNameToken', action.payload.data);
             })
             .addCase(loginWithGithub.fulfilled, (state, action:PayloadAction<any>) => {
                 if (action.payload.status !== 200){
@@ -78,12 +80,12 @@ export const LoginSlice = createSlice({
                 }
                 state.loggedIn = true;
                 state.token = action.payload.data
-                localStorage.setItem('codificantesToken', action.payload.data);
+                localStorage.setItem('appNameToken', action.payload.data);
             })
     }})
 
-export const {logout, loginFromStorage} = LoginSlice.actions;
+export const {logout, loginFromStorage} = Authentication.actions;
 
 export const selectLoggedIn = (state: RootState) => state.login.loggedIn;
 export const selectToken = (state: RootState) => state.login.token;
-export default LoginSlice.reducer;
+export default Authentication.reducer;
