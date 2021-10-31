@@ -6,10 +6,10 @@ import React from 'react'
 
 type Props = {};
 
-function ProtectedRoute(props: Props){
+function DrawerItem(props: Props){
     return(
-       <div>ProtectedRoute</div>
+       <div>DrawerItem</div>
     )
 }
 
-export default ProtectedRoute;
+export default DrawerItem;

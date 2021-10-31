@@ -6,10 +6,10 @@ import React from 'react'
 
 type Props = {};
 
-function SideDrawer(props: Props){
+function Footer(props: Props){
     return(
-       <div>SideDrawer</div>
+       <div>Footer</div>
     )
 }
 
-export default SideDrawer;
+export default Footer;

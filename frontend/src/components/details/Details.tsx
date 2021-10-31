@@ -6,10 +6,10 @@ import React from 'react'
 
 type Props = {};
 
-function Error(props: Props){
+function Details(props: Props){
     return(
-       <div>Error</div>
+       <div>Details</div>
     )
 }
 
-export default Error;
+export default Details;
