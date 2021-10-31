@@ -1,10 +1,9 @@
 package capstone.backend.security.controller;
 
-import capstone.backend.models.dto.EmployeeDTO;
+import capstone.backend.models.dto.contact.EmployeeDTO;
 import capstone.backend.security.service.JWTUtilService;
 import capstone.backend.security.service.UserAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;

@@ -1,5 +1,7 @@
 package capstone.backend.models.db;
 
+import capstone.backend.crud.DatabaseObject;
+import capstone.backend.models.db.contact.Supplier;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,12 +12,9 @@ import java.util.List;
 @ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
-//@NoArgsConstructor
 @Entity
-public class Product {
-    @Id
-    @Column(name = "id", nullable = false)
-    private Long id;
+@Table(name = "products")
+public class Product extends DatabaseObject {
 
     @ManyToMany
     @ToString.Exclude
@@ -29,4 +28,14 @@ public class Product {
     private int maxAmount;
     private int unitSize;
 
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

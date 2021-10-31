@@ -1,12 +1,10 @@
 package capstone.backend.models.db;
 
 
+import capstone.backend.crud.DatabaseObject;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Getter
@@ -14,12 +12,13 @@ import java.util.List;
 @ToString
 @RequiredArgsConstructor
 @Entity
-public class Category {
-    @Id
-    @Column(name = "id", nullable = false)
-    private Long id;
+@Table(name = "categories")
+public class Category extends DatabaseObject {
+
 
     @OneToMany
     @ToString.Exclude
     private List<Product> products;
+
+
 }

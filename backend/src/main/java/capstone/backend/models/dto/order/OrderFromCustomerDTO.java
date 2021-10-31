@@ -1,6 +1,6 @@
-package capstone.backend.models.dto;
+package capstone.backend.models.dto.order;
 
-import capstone.backend.models.db.Customer;
+import capstone.backend.models.db.contact.Customer;
 import capstone.backend.models.db.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;

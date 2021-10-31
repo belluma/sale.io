@@ -1,7 +1,7 @@
 package capstone.backend.security.service;
 
-import capstone.backend.models.db.Employee;
-import capstone.backend.models.dto.EmployeeDTO;
+import capstone.backend.models.db.contact.Employee;
+import capstone.backend.models.dto.contact.EmployeeDTO;
 import org.springframework.stereotype.Component;
 
 @Component

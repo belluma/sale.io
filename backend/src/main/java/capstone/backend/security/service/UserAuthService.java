@@ -1,6 +1,6 @@
 package capstone.backend.security.service;
 
-import capstone.backend.models.dto.EmployeeDTO;
+import capstone.backend.models.dto.contact.EmployeeDTO;
 import capstone.backend.models.exception.UserAlreadyExistsException;
 import capstone.backend.security.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;

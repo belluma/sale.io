@@ -1,13 +1,12 @@
-package capstone.backend.models.db;
+package capstone.backend.models.db.contact;
 
 import capstone.backend.models.UserRoles;
 import lombok.*;
-import org.hibernate.Hibernate;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter
@@ -16,8 +15,8 @@ import java.util.Objects;
 @AllArgsConstructor
 //@NoArgsConstructor
 @Entity
+@Table(name = "employees")
 public class Employee extends Contact {
-
 
     private String password;
     @ElementCollection
@@ -25,14 +24,11 @@ public class Employee extends Contact {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Employee employee = (Employee) o;
-        return getId() != null && Objects.equals(getId(), employee.getId());
+        return super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return 0;
+        return super.hashCode();
     }
 }

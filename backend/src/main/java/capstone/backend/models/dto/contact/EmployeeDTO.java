@@ -1,4 +1,4 @@
-package capstone.backend.models.dto;
+package capstone.backend.models.dto.contact;
 
 import capstone.backend.models.UserRoles;
 import lombok.AllArgsConstructor;

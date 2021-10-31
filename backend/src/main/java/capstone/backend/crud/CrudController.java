@@ -1,8 +1,5 @@
 package capstone.backend.crud;
 
-import capstone.backend.models.db.OrderFromCustomer;
-import capstone.backend.models.dto.CustomerDTO;
-import capstone.backend.models.dto.OrderFromCustomerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,6 +1,6 @@
 package capstone.backend.repository;
 
-import capstone.backend.models.db.Supplier;
+import capstone.backend.models.db.contact.Supplier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

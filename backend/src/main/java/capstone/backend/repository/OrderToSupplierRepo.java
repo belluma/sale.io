@@ -1,6 +1,6 @@
 package capstone.backend.repository;
 
-import capstone.backend.models.db.OrderToSupplier;
+import capstone.backend.models.db.order.OrderToSupplier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

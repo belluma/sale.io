@@ -1,4 +1,4 @@
-package capstone.backend.models.dto;
+package capstone.backend.models.dto.order;
 
 public class OrderToSupplierDTO {
 

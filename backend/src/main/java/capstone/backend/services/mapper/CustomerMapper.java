@@ -3,8 +3,8 @@ package capstone.backend.services.mapper;
 import capstone.backend.crud.CrudMapper;
 import capstone.backend.crud.DataTransferObject;
 import capstone.backend.crud.DatabaseObject;
-import capstone.backend.models.db.Customer;
-import capstone.backend.models.dto.CustomerDTO;
+import capstone.backend.models.db.contact.Customer;
+import capstone.backend.models.dto.contact.CustomerDTO;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -19,6 +19,6 @@ public class CustomerMapper implements CrudMapper<CustomerDTO, Customer> {
         return new Customer();
     }
     public Customer mapToDbo(CustomerDTO customer) {
-        return new Customer(customer, 1L);
+        return new Customer();
     }
 }

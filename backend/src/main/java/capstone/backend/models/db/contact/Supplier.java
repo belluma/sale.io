@@ -1,22 +1,23 @@
-package capstone.backend.models.db;
+package capstone.backend.models.db.contact;
 
 import capstone.backend.models.Weekdays;
+import capstone.backend.models.db.order.OrderToSupplier;
+import capstone.backend.models.db.Product;
 import lombok.*;
-import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.List;
-import java.util.Objects;
 
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
-//@NoArgsConstructor
 @Entity
+@Table(name = "suppliers")
 public class Supplier extends Contact {
 
     @ManyToMany
@@ -29,14 +30,11 @@ public class Supplier extends Contact {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Supplier supplier = (Supplier) o;
-        return getId() != null && Objects.equals(getId(), supplier.getId());
+        return super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return 0;
+        return super.hashCode();
     }
 }

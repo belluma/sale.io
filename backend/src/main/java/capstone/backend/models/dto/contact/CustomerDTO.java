@@ -1,13 +1,10 @@
-package capstone.backend.models.dto;
+package capstone.backend.models.dto.contact;
 
 import capstone.backend.crud.DataTransferObject;
-import capstone.backend.models.db.OrderFromCustomer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
