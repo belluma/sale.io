@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ICredentials} from "../interfaces/IEmployee";
 import {RootState} from "../app/store";
-import {getErrorMessage} from "./ErrorSlice";
+import {getErrorMessage} from "./errorSlice";
 import {sendLoginDataToGithub, sendLoginData, validateToken} from "../services/authService";
 import history from '../services/history'
 
