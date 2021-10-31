@@ -1,5 +1,6 @@
 import axios from "axios";
-import { ICredentials } from "../interfaces/IEmployee";
+import {ICredentials} from "../interfaces/IEmployee";
+import {parseError} from './errorService';
 
 
 const parseJwt = (token: string) => {
@@ -25,30 +26,22 @@ export const sendLoginData = (credentials: ICredentials) => {
     }).then(response => {
         return response
     })
-        .catch(err => {
-            return {data: "", status: err.response.status, statusText: err.response.data.message}
-        })
-}
-
-export const getGithubClientId = () => {
-    return axios({
-        method: 'get',
-        url: `/auth/github/client_id`
-    }).then(response => response)
         .catch(err => parseError(err))
 }
 
-export const sendLoginDataToGithub = (code: string) => {
+export const registerAdmin = (credentials: ICredentials) => {
     return axios({
-        method: 'get',
-        url: `/auth/github/${code}`,
-
+        method: 'post',
+        url: `/auth/signup`,
+        data: credentials,
+        headers: {}
+    }).then(response => {
+        return response
     })
-        .then(response => response)
         .catch(err => parseError(err))
 }
 
 
-function parseError(err: any) {
-    return {data: "", status: err.response.status, statusText: err.response.data.message}
-}
+
+
+
