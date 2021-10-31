@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useAppDispatch } from '../../app/hooks';
-import { registerAdmin } from '../../slicer/authSlice';
+import { useAppDispatch } from '../../../app/hooks';
+import { registerAdmin } from '../../../slicer/authSlice';
 
 
 
@@ -10,7 +10,7 @@ import {Button, Divider, FormGroup, TextField} from '@mui/material';
 import {Card, CardHeader} from '@mui/material';
 
 //interface imports
-import { ICredentials } from '../../interfaces/IEmployee';
+import { ICredentials } from '../../../interfaces/IEmployee';
 
 type Props = {};
 
