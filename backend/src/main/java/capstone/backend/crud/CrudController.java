@@ -1,9 +1,10 @@
 package capstone.backend.crud;
 
+import capstone.backend.models.db.OrderFromCustomer;
+import capstone.backend.models.dto.CustomerDTO;
+import capstone.backend.models.dto.OrderFromCustomerDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +23,10 @@ public class CrudController<DTO extends DataTransferObject, DBO extends Database
     @GetMapping()
     public List<DTO> getAll(){
         return service.getAll();
+    }
+
+    @PostMapping()
+    public DTO create(@RequestBody DTO dtoToSave){
+        return service.save(dtoToSave);
     }
 }

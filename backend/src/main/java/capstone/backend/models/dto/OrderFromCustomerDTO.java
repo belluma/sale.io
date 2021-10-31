@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 @Data
 @AllArgsConstructor
-//@NoArgsConstructor
+@NoArgsConstructor
 public class OrderFromCustomerDTO {
 
     private Long id;

@@ -18,4 +18,7 @@ public class CustomerMapper implements CrudMapper<CustomerDTO, Customer> {
     public Customer mapToDbo(DataTransferObject databaseObject) {
         return new Customer();
     }
+    public Customer mapToDbo(CustomerDTO customer) {
+        return new Customer(customer, 1L);
+    }
 }

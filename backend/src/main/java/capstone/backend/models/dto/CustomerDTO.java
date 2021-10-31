@@ -15,5 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class CustomerDTO extends DataTransferObject {
 
-    private List<OrderFromCustomer> orders;
+    private String test;
+
+//    private List<OrderFromCustomer> orders;
 }
