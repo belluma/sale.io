@@ -1,6 +1,6 @@
 package capstone.backend.security.controller;
 
-import capstone.backend.models.dto.contact.EmployeeDTO;
+import capstone.backend.security.model.UserDTO;
 import capstone.backend.security.service.JWTUtilService;
 import capstone.backend.security.service.UserAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +27,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody EmployeeDTO employee){
-        this.authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(employee.getName(), employee.getPassword()));
-        return jwtService.createToken(new HashMap<>(), employee.getName());
+    public String login(@RequestBody UserDTO user){
+        this.authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+        return jwtService.createToken(new HashMap<>(), user.getUsername());
     }
 
     @PostMapping("/signup")
-    public String signup(@RequestBody EmployeeDTO employee)throws IllegalArgumentException, AuthenticationException {
-        return userAuthService.signup(employee);
+    public String signup(@RequestBody UserDTO user)throws IllegalArgumentException, AuthenticationException {
+        return userAuthService.signup(user);
     }
 }

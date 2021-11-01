@@ -1,8 +1,8 @@
 package capstone.backend.security.service;
 
-import capstone.backend.models.dto.contact.EmployeeDTO;
 import capstone.backend.models.exception.UserAlreadyExistsException;
-import capstone.backend.security.repository.EmployeeRepository;
+import capstone.backend.security.model.UserDTO;
+import capstone.backend.security.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,49 +17,46 @@ import java.util.HashMap;
 
 
 @Service
-public class UserAuthService implements UserDetailsService  {
+public class UserAuthService implements UserDetailsService {
 
-    private final EmployeeRepository repository;
+    private final UserRepository repository;
     private final JWTUtilService jwtService;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    private final EmployeeMapper mapper;
-    private final EmployeeAuthUtils utils;
+    private final UserMapper mapper = new UserMapper();
+    private final UserAuthUtils utils;
 
 
     @Autowired
-    public UserAuthService(EmployeeRepository repository, JWTUtilService jwtService, EmployeeMapper mapper, EmployeeAuthUtils utils) {
+    public UserAuthService(UserRepository repository, JWTUtilService jwtService, UserAuthUtils utils) {
         this.repository = repository;
         this.jwtService = jwtService;
-        this.mapper = mapper;
         this.utils = utils;
     }
-//TODO  make this right - do I even need this method? can i somehow not implement UserDetailsService
-    public UserDetails loadUserByUsername(String username){
-        return User.withUsername("a").password("b").authorities("c").build();
-    }
-    public UserDetails loadUserId(Long id) throws UsernameNotFoundException {
-        return repository.findById(id)
-                .map(employee -> User
-                        .withUsername(employee.getName())
-                        .password(employee.getPassword())
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return repository.findById(username)
+                .map(appUser -> User
+                        .withUsername(username)
+                        .password(appUser.getPassword())
                         .authorities("user")
                         .build())
-                .orElseThrow(() -> new UsernameNotFoundException("Couldn't find a user with id " + id));
+                .orElseThrow(() -> new UsernameNotFoundException("Username does not exist: " + username));
     }
 
-    public String signup(EmployeeDTO employee) throws AuthenticationException {
-        validateUserData(employee);
-        if (repository.findById(employee.getId()).isEmpty()) {
-            employee.setPassword(passwordEncoder.encode(employee.getPassword()));
-            repository.save(mapper.mapEmployee(employee));
-            return jwtService.createToken(new HashMap<>(), employee.getName());
+    public String signup(UserDTO user) throws AuthenticationException, IllegalArgumentException {
+        validateUserData(user);
+        if (repository.findById(user.getUsername()).isEmpty()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            repository.save(mapper.mapUser(user));
+            return jwtService.createToken(new HashMap<>(), user.getUsername());
         }
-        throw new UserAlreadyExistsException(String.format("User with username %s already exists", employee.getName()));
+        throw new UserAlreadyExistsException(String.format("User with username %s already exists", user.getUsername()));
     }
 
-    private void validateUserData(EmployeeDTO employee) throws IllegalArgumentException {
-        utils.validatePassword(employee.getPassword());
-        utils.validateName(employee.getName());
+    private void validateUserData(UserDTO user) throws IllegalArgumentException {
+        utils.validatePassword(user.getPassword());
+        utils.validateUsername(user.getUsername());
     }
 
 }
