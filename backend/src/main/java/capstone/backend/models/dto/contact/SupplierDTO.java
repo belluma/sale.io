@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 //@AllArgsConstructor
 @NoArgsConstructor
-public class SupplierDTO {
+public class SupplierDTO extends ContactDTO{
 
     private List<Product> products;
     private List<OrderToSupplier> orders;

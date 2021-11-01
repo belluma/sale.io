@@ -10,6 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-public class CustomerController  {
+@RestController
+@RequestMapping("customer")
+public class CustomerController extends CrudController<CustomerDTO, Customer>  {
 
+
+
+    public CustomerController(CrudService<CustomerDTO, Customer> service) {
+        super(service, new CustomerMapper());
+    }
 }

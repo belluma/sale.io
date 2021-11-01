@@ -7,7 +7,6 @@ import capstone.backend.models.db.contact.Customer;
 import capstone.backend.models.dto.contact.CustomerDTO;
 import org.springframework.stereotype.Component;
 
-@Component
 public class CustomerMapper implements CrudMapper<CustomerDTO, Customer> {
     @Override
     public CustomerDTO mapToDto(DatabaseObject databaseObject) {

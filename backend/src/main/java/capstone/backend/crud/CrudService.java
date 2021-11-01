@@ -15,7 +15,7 @@ public class CrudService<DTO extends DataTransferObject, DBO extends DatabaseObj
     private CrudMapper<DTO, DBO> mapper;
 
     @Autowired
-    public CrudService(CrudRepository<DatabaseObject, Long> repository, CrudMapper<DTO, DBO> mapper) {
+    public CrudService(CrudRepository<DatabaseObject, Long> repository) {
         this.repository = repository;
     }
 

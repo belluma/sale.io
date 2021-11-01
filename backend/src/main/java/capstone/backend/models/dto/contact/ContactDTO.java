@@ -1,10 +1,13 @@
 package capstone.backend.models.dto.contact;
 
 
+import capstone.backend.crud.DataTransferObject;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public abstract class ContactDTO {
+public abstract class ContactDTO extends DataTransferObject {
 
     private Long id;
 

@@ -1,5 +1,6 @@
 package capstone.backend.models.dto;
 
+import capstone.backend.crud.DataTransferObject;
 import capstone.backend.models.db.Category;
 import capstone.backend.models.db.contact.Supplier;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDTO {
+public class ProductDTO extends DataTransferObject {
 
     private Long id;
 
