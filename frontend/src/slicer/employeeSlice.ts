@@ -1,10 +1,8 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
-import {ICredentials, IEmployee} from '../interfaces/IEmployee'
-import {sendLoginData} from "../services/authService";
 import {getErrorMessage} from "./errorSlice";
 import {getAllEmployees} from "../services/employeeService";
-import {IResponseData, IResponseGetAllEmployees} from "../interfaces/IApiResponse";
+import { IResponseGetAllEmployees} from "../interfaces/IApiResponse";
 import { IEmployeeState } from '../interfaces/IStates';
 
 
@@ -39,5 +37,9 @@ export const employeeSlice = createSlice({
     })
 })
 
+
+
+export const selectEmployees = (state: RootState) => state.employee.employees;
+export const selectCurrentEmployee = (state: RootState) => state.employee.currentEmployee;
 
 export default employeeSlice.reducer;
