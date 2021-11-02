@@ -1,10 +1,13 @@
 package capstone.backend.security.model;
 
+import capstone.backend.model.db.contact.Employee;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.Objects;
 
 @Getter
@@ -18,7 +21,16 @@ public class AppUser {
 
     @Id
     private String username;
+
     private String password;
+
+    @OneToOne
+    private Employee employee;
+
+    public AppUser(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     @Override
     public boolean equals(Object o) {

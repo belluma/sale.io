@@ -1,11 +1,9 @@
 package capstone.backend.model.dto.contact;
 
 import capstone.backend.model.UserRoles;
-import lombok.AllArgsConstructor;
+import capstone.backend.security.model.UserDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
@@ -15,4 +13,5 @@ public class EmployeeDTO extends ContactDTO{
 
     private String password;
     private List<UserRoles> roles;
+    private UserDTO user;
 }
