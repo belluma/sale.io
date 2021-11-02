@@ -35,7 +35,7 @@ export const registerAdmin = createAsyncThunk(
 )
 
 
-//TODO change token name after deciding app name
+
 
 export const Authentication = createSlice({
     name: 'login',
