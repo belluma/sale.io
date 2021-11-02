@@ -2,9 +2,12 @@ import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ICredentials} from "../interfaces/IEmployee";
 import {RootState} from "../app/store";
 import {getErrorMessage} from "./errorSlice";
-import {registerAdmin as registerAsAdmin, sendLoginData, validateToken} from "../services/authService";
+import {registerAdmin as registerAsAdmin, sendLoginData} from "../services/authService";
+import {validateToken} from "../services/jwtService";
+import {IResponseData} from "../interfaces/IApiResponse";
+import { IAuthState } from "../interfaces/IStates";
 
-const initialState = {
+const initialState :IAuthState = {
     loggedIn: false,
     token: ""
 }
@@ -13,29 +16,24 @@ const initialState = {
 export const login = createAsyncThunk(
     'login',
     async (credentials: ICredentials, thunkAPI) => {
-        const {data, status, statusText} = await sendLoginData(credentials)
+        const {data, status, statusText} = await sendLoginData(credentials);
         if (status !== 200) {
-            thunkAPI.dispatch(getErrorMessage({status, statusText}))
+            thunkAPI.dispatch(getErrorMessage({status, statusText}));
         }
-        return {data, status, statusText}
+        return {data, status, statusText};
     }
 )
 export const registerAdmin = createAsyncThunk(
     'signup',
     async (credentials: ICredentials, thunkAPI) => {
-        const {data, status, statusText} = await registerAsAdmin(credentials)
+        const {data, status, statusText} = await registerAsAdmin(credentials);
         if (status !== 200) {
-            thunkAPI.dispatch(getErrorMessage({status, statusText}))
+            thunkAPI.dispatch(getErrorMessage({status, statusText}));
         }
-        return {data, status, statusText}
+        return {data, status, statusText};
     }
 )
 
-interface IResponseData {
-    data: string;
-    status: number,
-    statusText: string
-}
 
 //TODO change token name after deciding app name
 
