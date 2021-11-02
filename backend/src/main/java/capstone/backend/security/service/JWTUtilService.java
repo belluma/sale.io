@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class JWTUtilService {
@@ -27,7 +27,7 @@ public class JWTUtilService {
     }
 
 
-    public String createToken(HashMap<String, Object> claims, String subject){
+    public String createToken(Map<String, Object> claims, String subject){
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
