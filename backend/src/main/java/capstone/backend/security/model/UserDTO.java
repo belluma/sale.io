@@ -1,7 +1,6 @@
 package capstone.backend.security.model;
 
-import capstone.backend.models.db.contact.Employee;
-import capstone.backend.models.dto.contact.EmployeeDTO;
+//import capstone.backend.models.dto.contact.EmployeeDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,5 +14,5 @@ public class UserDTO {
 
     private String username;
     private String password;
-    private EmployeeDTO employee;
+//    private EmployeeDTO employee;
 }

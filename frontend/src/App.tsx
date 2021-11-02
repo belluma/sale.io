@@ -14,8 +14,6 @@ function App() {
   return (
       <React.Fragment>
       <CssBaseline/>
-  <Header />
-  <Toolbar/>
   <MainView />
 
 </React.Fragment>

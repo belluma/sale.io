@@ -1,6 +1,6 @@
 package capstone.backend.security.model;
 
-import capstone.backend.models.db.contact.Employee;
+//import capstone.backend.models.db.contact.Employee;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -21,8 +21,8 @@ public class AppUser {
     @Id
     private String username;
     private String password;
-    @OneToOne
-    private Employee employee;
+//    @OneToOne
+//    private Employee employee;
 
     @Override
     public boolean equals(Object o) {
