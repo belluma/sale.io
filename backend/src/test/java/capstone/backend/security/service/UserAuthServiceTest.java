@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.HashMap;
 import java.util.Optional;
 
+import static capstone.backend.security.service.UserMapper.mapUser;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,7 +23,6 @@ class UserAuthServiceTest {
 
     UserRepository repository = mock(UserRepository.class);
     private final JWTUtilService jwtService = mock(JWTUtilService.class);
-    private final UserMapper mapper = new UserMapper();
     private final UserAuthUtils utils = mock(UserAuthUtils.class);
 
     private final UserAuthService service = new UserAuthService(repository, jwtService, utils);
@@ -62,7 +62,7 @@ class UserAuthServiceTest {
     @Test
     void signupFailsWhenUsernameAlreadyRegistered() {
         UserDTO user = new UserDTO("username", "1234");
-        when(repository.findById("username")).thenReturn(Optional.of(mapper.mapUser(user)));
+        when(repository.findById("username")).thenReturn(Optional.of(mapUser(user)));
         Exception ex = assertThrows(UserAlreadyExistsException.class, () -> service.signup(user));
         assertThat(ex.getMessage(), is("User with username username already exists"));
     }

@@ -41,7 +41,6 @@ class AuthControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
-    private final RestTemplate restTemplateMock = mock(RestTemplate.class);
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired

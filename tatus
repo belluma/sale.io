@@ -1,0 +1,187 @@
+[33mcommit 2676b30a3fe4273eb098afe64f312b7ab64329a9[m[33m ([m[1;36mHEAD -> [m[1;32mfrontend[m[33m, [m[1;31morigin/frontend[m[33m)[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Tue Nov 2 11:58:38 2021 +0100
+
+    refactor component structure
+
+[33mcommit 63ed6751ab0d4d1efadeca60e114595fa9e2a44e[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Tue Nov 2 11:47:44 2021 +0100
+
+    remove unused imports
+
+[33mcommit dfabf46b2aaa72e5e444133e9ff559b0b8e59abc[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Tue Nov 2 11:45:09 2021 +0100
+
+    strip backend to minimum
+
+[33mcommit 2c8069a7423fb984a7fe003d795a2bbb2c8f0d60[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Tue Nov 2 11:39:56 2021 +0100
+
+    fix tests
+
+[33mcommit e6bd8449018d16590de1e6a15977ba39d573b653[m[33m ([m[1;31morigin/generic_controller2[m[33m, [m[1;32mgeneric_controller2[m[33m)[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Mon Nov 1 20:43:44 2021 +0100
+
+    fixed login
+
+[33mcommit 9897c44099a76bb5f10ab7d5af7f11402571bc79[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Mon Nov 1 20:33:11 2021 +0100
+
+    update security package
+
+[33mcommit 915d700946c05a6704a946d9fa4add3830eb8a94[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Mon Nov 1 20:29:15 2021 +0100
+
+    delete security package
+
+[33mcommit 88f30269fd8bf0d6430bd12e9ddb428101919ddc[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Mon Nov 1 19:51:47 2021 +0100
+
+    fix crudcontroller
+
+[33mcommit 4b1c557091b01ef855e132653aa0162a37edd6d8[m
+Merge: 1876f04 dda54a8
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 19:27:19 2021 +0100
+
+    Merge remote-tracking branch 'origin/generic_controller2' into generic_controller2
+
+[33mcommit 1876f04c53143884f2d43d8d1f5efa415d3ff676[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 19:00:52 2021 +0100
+
+    adjust models
+
+[33mcommit dda54a8612b468bcc33053459693ab8079fc7944[m
+Author: Benedikt Maciejczyk <59142628+macben888@users.noreply.github.com>
+Date:   Sun Oct 31 17:52:56 2021 +0100
+
+    Update README.md
+
+[33mcommit 41edd8f53c5a2a9695bf78fbdd1ce28b032c02a6[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 17:52:11 2021 +0100
+
+    refactor crud component and models
+
+[33mcommit 85cc673be1e39c6abcee6053f5c3efb529a5e475[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 14:33:22 2021 +0100
+
+    add logic to login
+
+[33mcommit 55342fcc0c69fea4e7b0c61ead4e6dba3723608d[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 14:30:13 2021 +0100
+
+    move id generation from abstract class to models
+
+[33mcommit 361ce363ad54ba0f178ea5ee57d57de237285002[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 14:00:56 2021 +0100
+
+    write logic for signup
+
+[33mcommit 4cbe9433436cd731f5cdc91ca1f4b326e7f2f914[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 13:38:41 2021 +0100
+
+    add reducer to store
+    ;
+
+[33mcommit 8f54f0cd85537765a7d274187a28d39db1e2a776[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 13:32:55 2021 +0100
+
+    add error slice
+
+[33mcommit d4b67f62c35fb97a1cefeaddd8afbd97447e4a85[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 13:32:24 2021 +0100
+
+    add auth slice
+
+[33mcommit 0c0d49e8f99af21eb21d1d8122cdb78ccfdff9a3[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 13:30:37 2021 +0100
+
+    create auth servicde and credentials interface
+
+[33mcommit 404a44caa091d5a51df8c354a91d71b091c05bf3[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 13:26:45 2021 +0100
+
+    show header and mainview on page
+
+[33mcommit 4d9be820461ba243579fe5cbf2feabd5acc88d81[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 20:05:26 2021 +0200
+
+    inject mapper successfully into service via controller
+
+[33mcommit 557a5f61ffd79313116b8d0f1e8233a99b494234[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 19:53:06 2021 +0200
+
+    try implementing first controller
+
+[33mcommit 3c7462a67ecb84111ee24a8647b03f9e308652a3[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 18:34:22 2021 +0200
+
+    changed model to generate id
+
+[33mcommit 1cce18552d9e3157253b52022dc42b52ec422a35[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 16:55:04 2021 +0200
+
+    temporary disable security on all routes
+
+[33mcommit d487a67226863ec7288b434e46b3e0efb1dc5030[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 16:33:10 2021 +0200
+
+    start building generic crud component
+
+[33mcommit 37a313419368a4bacc0e7dbe3bc013c226d02456[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 15:53:40 2021 +0200
+
+    install react-router and wrap app inrouter
+
+[33mcommit 9450ccc64921e0a28f6b6124d1af1e26c9d69801[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 15:33:39 2021 +0200
+
+    install react-router-dom
+
+[33mcommit aff9b44a5e00902f1a1aa2081d2cdd66ff643fdf[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 15:31:59 2021 +0200
+
+    create components
+
+[33mcommit 938a0ab61e830cef6fdae7a0bfdd3b9548654dda[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 13:32:56 2021 +0200
+
+    get context running
+
+[33mcommit 100b5f314456bcf6bc4f88bea63ca6015a8e741b[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 13:14:23 2021 +0200
+
+    fix all precompile errors
+
+[33mcommit 1da2472bb1f5415c9fe0f05988230b1663682712[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 13:06:18 2021 +0200
+
+    add basic code to model classes

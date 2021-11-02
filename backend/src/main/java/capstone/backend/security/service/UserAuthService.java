@@ -13,8 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.naming.AuthenticationException;
 import java.util.HashMap;
+
+import static capstone.backend.security.service.UserMapper.mapUser;
 
 
 @Service
@@ -23,12 +24,11 @@ public class UserAuthService implements UserDetailsService {
     private final UserRepository repository;
     private final JWTUtilService jwtService;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    private final UserMapper mapper = new UserMapper();
     private final UserAuthUtils utils;
 
 
     @Autowired
-    public UserAuthService(UserRepository repository, JWTUtilService jwtService, UserAuthUtils utils) {
+    public UserAuthService(UserRepository repository, JWTUtilService jwtService,  UserAuthUtils utils) {
         this.repository = repository;
         this.jwtService = jwtService;
         this.utils = utils;
@@ -49,7 +49,7 @@ public class UserAuthService implements UserDetailsService {
         validateUserData(user);
         if (repository.findById(user.getUsername()).isEmpty()) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            repository.save(mapper.mapUser(user));
+            repository.save(mapUser(user));
             return jwtService.createToken(new HashMap<>(), user.getUsername());
         }
         throw new UserAlreadyExistsException(String.format("User with username %s already exists", user.getUsername()));
