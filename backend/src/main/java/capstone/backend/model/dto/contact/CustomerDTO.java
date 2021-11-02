@@ -1,16 +1,13 @@
 package capstone.backend.model.dto.contact;
 
-import capstone.backend.crud.DataTransferObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerDTO extends DataTransferObject {
+public class CustomerDTO {
 
     private String test;
 

@@ -1,13 +1,15 @@
 package capstone.backend.model.db.order;
 
 
-import capstone.backend.crud.DatabaseObject;
 
 import javax.persistence.*;
 
 @MappedSuperclass
-public class Order extends DatabaseObject {
+public class Order {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
 
     @Override

@@ -1,6 +1,5 @@
 package capstone.backend.model.db;
 
-import capstone.backend.crud.DatabaseObject;
 import capstone.backend.model.db.contact.Supplier;
 import lombok.*;
 
@@ -14,8 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "products")
-public class Product extends DatabaseObject {
+public class Product {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     @ManyToMany
     @ToString.Exclude
     private List<Supplier> suppliers;

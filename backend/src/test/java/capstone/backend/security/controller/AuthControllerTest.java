@@ -1,8 +1,8 @@
 package capstone.backend.security.controller;
 
-import capstone.backend.security.model.AppUser;
-import capstone.backend.security.model.UserDTO;
-import capstone.backend.security.repository.UserRepository;
+import capstone.backend.security.model.Employee;
+import capstone.backend.security.model.EmployeeDTO;
+import capstone.backend.security.repository.EmployeeRepository;
 import capstone.backend.security.service.UserMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -20,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.web.client.RestTemplate;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -31,7 +30,6 @@ import java.util.stream.Stream;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
 @Testcontainers
@@ -44,7 +42,7 @@ class AuthControllerTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private UserRepository userRepository;
+    private EmployeeRepository userRepository;
     private final UserMapper mapper = new UserMapper();
 
     @Value("${jwt.secret}")
@@ -70,7 +68,7 @@ class AuthControllerTest {
 
     @Test
     void login() {
-        UserDTO user = sampleUser();
+        EmployeeDTO user = sampleUser();
         userRepository.save(userToSaveInRepo(user));
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/login", user, String.class);
         Claims body = Jwts.parser()
@@ -83,7 +81,7 @@ class AuthControllerTest {
 
     @Test
     void loginFailsWithWrongPassword() {
-        UserDTO user = sampleUser();
+        EmployeeDTO user = sampleUser();
         userRepository.save(userToSaveInRepo(user));
         user.setPassword("123");
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/login", user, String.class);
@@ -91,7 +89,7 @@ class AuthControllerTest {
     }
     @Test
     void loginFailsWithWrongUsername() {
-        UserDTO user = sampleUser();
+        EmployeeDTO user = sampleUser();
         user.setPassword("1234");
         user.setUsername("wrong_username");
         userRepository.save(mapper.mapUser(user));
@@ -102,8 +100,8 @@ class AuthControllerTest {
 
     @Test
     void signupSavesUserAndReturnsLogin() {
-        UserDTO user = sampleUser();
-        AppUser savedUser = userToSaveInRepo(user);
+        EmployeeDTO user = sampleUser();
+        Employee savedUser = userToSaveInRepo(user);
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/signup", user, String.class);
         Claims body = Jwts.parser()
                 .setSigningKey(JWT_SECRET)
@@ -115,7 +113,7 @@ class AuthControllerTest {
     }
     @Test
     void signupFailsWhenUsernameAlreadyRegistered(){
-        UserDTO user = sampleUser();
+        EmployeeDTO user = sampleUser();
         userRepository.save(mapper.mapUser(user));
         user.setPassword("1234");
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/signup", user, String.class);
@@ -124,7 +122,7 @@ class AuthControllerTest {
 
     @ParameterizedTest
     @MethodSource("provideArgumentsForSignupFailsWhenLackingInformation")
-    void signupFailsWhenLackingInformation(UserDTO user){
+    void signupFailsWhenLackingInformation(EmployeeDTO user){
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/signup", user, String.class);
         assertThat(response.getStatusCode(), equalTo(HttpStatus.NOT_ACCEPTABLE));
         assertThat(userRepository.findById(user.getUsername()), is(Optional.empty()));
@@ -132,21 +130,21 @@ class AuthControllerTest {
 
     private static Stream<Arguments> provideArgumentsForSignupFailsWhenLackingInformation(){
         return Stream.of(
-                Arguments.of(new UserDTO("", "234")),
-                Arguments.of(new UserDTO("username", ""))
+                Arguments.of(new EmployeeDTO("", "234")),
+                Arguments.of(new EmployeeDTO("username", ""))
         );
     }
 
-    private UserDTO sampleUser() {
-        return UserDTO
+    private EmployeeDTO sampleUser() {
+        return EmployeeDTO
                 .builder()
                 .username("username")
                 .password("password")
                 .build();
     }
 
-    private AppUser userToSaveInRepo(UserDTO user) {
-        AppUser userToSave = mapper.mapUser(user);
+    private Employee userToSaveInRepo(EmployeeDTO user) {
+        Employee userToSave = mapper.mapUser(user);
         userToSave.setPassword(passwordEncoder.encode(user.getPassword()));
         return userToSave;
     }

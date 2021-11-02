@@ -1,13 +1,12 @@
 package capstone.backend.security.model;
 
-import capstone.backend.model.db.contact.Employee;
+import capstone.backend.model.UserRoles;
+import capstone.backend.model.db.contact.Contact;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -17,17 +16,15 @@ import java.util.Objects;
 @NoArgsConstructor
 @Builder
 @Entity
-public class AppUser {
+public class Employee extends Contact {
 
-    @Id
+    @Column(unique=true)
     private String username;
-
     private String password;
+    @ElementCollection
+    private List<UserRoles> roles;
 
-    @OneToOne
-    private Employee employee;
-
-    public AppUser(String username, String password) {
+    public Employee(String username, String password) {
         this.username = username;
         this.password = password;
     }
@@ -36,7 +33,7 @@ public class AppUser {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        AppUser appUser = (AppUser) o;
+        Employee appUser = (Employee) o;
         return username != null && Objects.equals(username, appUser.username);
     }
 

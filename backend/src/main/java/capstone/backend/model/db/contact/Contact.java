@@ -1,31 +1,28 @@
 package capstone.backend.model.db.contact;
 
-import capstone.backend.crud.DatabaseObject;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.Hibernate;
 
-import javax.persistence.*;
-import java.util.Objects;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 @Getter
 @Setter
+@ToString
+@RequiredArgsConstructor
 @MappedSuperclass
-public abstract class Contact extends DatabaseObject {
+@SuperBuilder
+public abstract class Contact {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String name;
     private String email;
     private String phone;
     private String picture;
 
-    @Override
-    public boolean equals(Object o) {
-        return super.equals(o);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
 
 }

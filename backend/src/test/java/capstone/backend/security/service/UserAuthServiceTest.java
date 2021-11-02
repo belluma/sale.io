@@ -2,9 +2,9 @@ package capstone.backend.security.service;
 
 import capstone.backend.security.exceptions.InvalidCredentialsException;
 import capstone.backend.security.exceptions.UserAlreadyExistsException;
-import capstone.backend.security.model.AppUser;
-import capstone.backend.security.model.UserDTO;
-import capstone.backend.security.repository.UserRepository;
+import capstone.backend.security.model.Employee;
+import capstone.backend.security.model.EmployeeDTO;
+import capstone.backend.security.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 
 class UserAuthServiceTest {
 
-    UserRepository repository = mock(UserRepository.class);
+    EmployeeRepository repository = mock(EmployeeRepository.class);
     private final JWTUtilService jwtService = mock(JWTUtilService.class);
     private final UserAuthUtils utils = mock(UserAuthUtils.class);
 
@@ -29,7 +29,7 @@ class UserAuthServiceTest {
 
     @Test
     void loadUserByUsername() {
-        AppUser user = new AppUser("username", "1234");
+        Employee user = new Employee("username", "1234");
         when(repository.findById("username")).thenReturn(Optional.of(user));
         UserDetails expected = User
                 .withUsername("username")
@@ -51,7 +51,7 @@ class UserAuthServiceTest {
 
     @Test
     void signup() throws InvalidCredentialsException {
-        UserDTO user = new UserDTO("username", "1234");
+        EmployeeDTO user = new EmployeeDTO("username", "1234");
         when(repository.findById("username")).thenReturn(Optional.empty());
         when(jwtService.createToken(new HashMap<>(), "username")).thenReturn("valid.jwt.token");
         String expected = "valid.jwt.token";
@@ -61,7 +61,7 @@ class UserAuthServiceTest {
 
     @Test
     void signupFailsWhenUsernameAlreadyRegistered() {
-        UserDTO user = new UserDTO("username", "1234");
+        EmployeeDTO user = new EmployeeDTO("username", "1234");
         when(repository.findById("username")).thenReturn(Optional.of(mapUser(user)));
         Exception ex = assertThrows(UserAlreadyExistsException.class, () -> service.signup(user));
         assertThat(ex.getMessage(), is("User with username username already exists"));
@@ -69,7 +69,7 @@ class UserAuthServiceTest {
 
     @Test
     void signupFailsWhenUsernameValidationFails() throws InvalidCredentialsException {
-        UserDTO user = new UserDTO("username", "1234");
+        EmployeeDTO user = new EmployeeDTO("username", "1234");
         when(repository.findById("username")).thenReturn(Optional.empty());
         doThrow(new InvalidCredentialsException("Invalid username")).when(utils).validateUsername("username");
         Exception ex = assertThrows(InvalidCredentialsException.class, () -> service.signup(user));
@@ -78,7 +78,7 @@ class UserAuthServiceTest {
 
     @Test
     void signupFailsWhenPasswordValidationFails() throws InvalidCredentialsException {
-        UserDTO user = new UserDTO("username", "1234");
+        EmployeeDTO user = new EmployeeDTO("username", "1234");
         when(repository.findById("username")).thenReturn(Optional.empty());
         doThrow(new InvalidCredentialsException("Invalid password")).when(utils).validatePassword("1234");
         Exception ex = assertThrows(InvalidCredentialsException.class, () -> service.signup(user));

@@ -1,18 +1,18 @@
 package capstone.backend.security.service;
 
-import capstone.backend.security.model.AppUser;
-import capstone.backend.security.model.UserDTO;
+import capstone.backend.security.model.Employee;
+import capstone.backend.security.model.EmployeeDTO;
 
 public class UserMapper {
-    public static AppUser mapUser(UserDTO user) {
-        return AppUser
+    public static Employee mapUser(EmployeeDTO user) {
+        return Employee
                 .builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .build();
     }
-public static UserDTO mapUser(AppUser user) {
-        return UserDTO
+public static EmployeeDTO mapUser(Employee user) {
+        return EmployeeDTO
                 .builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
