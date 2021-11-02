@@ -21,7 +21,7 @@ export const login = createAsyncThunk(
     }
 )
 export const registerAdmin = createAsyncThunk(
-    'login',
+    'signup',
     async (credentials: ICredentials, thunkAPI) => {
         const {data, status, statusText} = await registerAsAdmin(credentials)
         if (status !== 200) {
@@ -62,6 +62,14 @@ export const Authentication = createSlice({
             .addCase(login.pending, state => {
             })
             .addCase(login.fulfilled, (state, action: PayloadAction<IResponseData>) => {
+                if (action.payload.status !== 200) {
+                    return;
+                }
+                state.loggedIn = true;
+                state.token = action.payload.data
+                localStorage.setItem('appNameToken', action.payload.data);
+            })
+            .addCase(registerAdmin.fulfilled, (state, action: PayloadAction<IResponseData>) => {
                 if (action.payload.status !== 200) {
                     return;
                 }
