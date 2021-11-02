@@ -1,5 +1,6 @@
 package capstone.backend.security.service;
 
+import capstone.backend.security.exceptions.InvalidCredentialsException;
 import capstone.backend.security.exceptions.UserAlreadyExistsException;
 import capstone.backend.security.model.UserDTO;
 import capstone.backend.security.repository.UserRepository;
@@ -44,7 +45,7 @@ public class UserAuthService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Username does not exist: " + username));
     }
 
-    public String signup(UserDTO user) throws AuthenticationException, IllegalArgumentException {
+    public String signup(UserDTO user) throws InvalidCredentialsException, IllegalArgumentException {
         validateUserData(user);
         if (repository.findById(user.getUsername()).isEmpty()) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -54,7 +55,7 @@ public class UserAuthService implements UserDetailsService {
         throw new UserAlreadyExistsException(String.format("User with username %s already exists", user.getUsername()));
     }
 
-    private void validateUserData(UserDTO user) throws IllegalArgumentException {
+    private void validateUserData(UserDTO user) throws InvalidCredentialsException {
         utils.validatePassword(user.getPassword());
         utils.validateUsername(user.getUsername());
     }

@@ -1,5 +1,6 @@
 package capstone.backend.security.controller;
 
+import capstone.backend.security.exceptions.InvalidCredentialsException;
 import capstone.backend.security.model.UserDTO;
 import capstone.backend.security.service.JWTUtilService;
 import capstone.backend.security.service.UserAuthService;
@@ -33,7 +34,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public String signup(@RequestBody UserDTO user)throws IllegalArgumentException, AuthenticationException {
+    public String signup(@RequestBody UserDTO user)throws IllegalArgumentException, InvalidCredentialsException {
         return userAuthService.signup(user);
     }
 }
