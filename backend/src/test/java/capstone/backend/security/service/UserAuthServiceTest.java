@@ -6,12 +6,10 @@ import capstone.backend.security.model.AppUser;
 import capstone.backend.security.model.UserDTO;
 import capstone.backend.security.repository.UserRepository;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import javax.naming.AuthenticationException;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -43,7 +41,7 @@ class UserAuthServiceTest {
     }
 
     @Test
-    void loadUserByUsernameThrowsWhenUserIsNotFound() throws Exception {
+    void loadUserByUsernameThrowsWhenUserIsNotFound() {
         when(repository.findById("username")).thenReturn(Optional.empty());
         Exception ex = assertThrows(UsernameNotFoundException.class, () -> service.loadUserByUsername("username"));
         assertThat(ex.getMessage(), is("Username does not exist: username"));
