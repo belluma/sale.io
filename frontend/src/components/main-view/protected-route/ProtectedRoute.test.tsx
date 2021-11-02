@@ -5,4 +5,4 @@ import {Provider} from "react-redux";
 
 
 it('renders without crashing', () => {
-    render(<Provider store={store}><ProtectedRoute /></Provider>);    });
+    render(<Provider store={store}><ProtectedRoute path={'/test'} /></Provider>);    });
