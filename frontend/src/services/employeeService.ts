@@ -1,3 +1,14 @@
 import axios from "axios";
-import {ICredentials} from "../interfaces/IEmployee";
 import {parseError} from './errorService';
+
+
+export const getAllEmployees= () => {
+    return axios({
+        method: 'get',
+        url: `/api/employees`,
+        headers: {}
+    }).then(response => {
+        return response
+    })
+        .catch(err => parseError(err))
+}
