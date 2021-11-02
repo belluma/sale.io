@@ -73,7 +73,6 @@ class AuthControllerTest {
     void login() {
         UserDTO user = sampleUser();
         userRepository.save(userToSaveInRepo(user));
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/login", user, String.class);
         Claims body = Jwts.parser()
                 .setSigningKey(JWT_SECRET)
