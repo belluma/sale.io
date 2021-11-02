@@ -1,6 +1,7 @@
 package capstone.backend.crud;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 import javax.persistence.GeneratedValue;

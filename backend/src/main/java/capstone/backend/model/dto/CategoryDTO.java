@@ -1,6 +1,6 @@
-package capstone.backend.models.dto;
+package capstone.backend.model.dto;
 
-import capstone.backend.models.db.Product;
+import capstone.backend.model.db.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

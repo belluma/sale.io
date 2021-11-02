@@ -1,9 +1,10 @@
-package capstone.backend.models.dto.contact;
+package capstone.backend.model.dto.contact;
 
 
 import capstone.backend.crud.DataTransferObject;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -14,6 +15,5 @@ public abstract class ContactDTO extends DataTransferObject {
     private String name;
     private String email;
     private String phone;
-    //TODO what's the best way to store and access files in Db?
     private String picture;
 }

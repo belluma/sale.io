@@ -1,4 +1,4 @@
-package capstone.backend.models.exception;
+package capstone.backend.model.exception;
 
 import javax.naming.AuthenticationException;
 

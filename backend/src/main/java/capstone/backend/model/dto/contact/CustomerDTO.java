@@ -1,4 +1,4 @@
-package capstone.backend.models.dto.contact;
+package capstone.backend.model.dto.contact;
 
 import capstone.backend.crud.DataTransferObject;
 import lombok.AllArgsConstructor;
@@ -14,5 +14,4 @@ public class CustomerDTO extends DataTransferObject {
 
     private String test;
 
-//    private List<OrderFromCustomer> orders;
 }

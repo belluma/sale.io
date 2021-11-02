@@ -1,8 +1,8 @@
-package capstone.backend.models.db.contact;
+package capstone.backend.model.db.contact;
 
-import capstone.backend.models.Weekdays;
-import capstone.backend.models.db.order.OrderToSupplier;
-import capstone.backend.models.db.Product;
+import capstone.backend.model.Weekdays;
+import capstone.backend.model.db.Product;
+import capstone.backend.model.db.order.OrderToSupplier;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -14,7 +14,6 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "suppliers")
@@ -27,6 +26,11 @@ public class Supplier extends Contact {
     @ToString.Exclude
     private List<OrderToSupplier> orders;
     private Weekdays oderDay;
+
+
+    public Supplier() {
+        super();
+    }
 
     @Override
     public boolean equals(Object o) {

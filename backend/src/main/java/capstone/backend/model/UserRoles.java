@@ -1,4 +1,4 @@
-package capstone.backend.models;
+package capstone.backend.model;
 
 public enum UserRoles {
     ADMIN

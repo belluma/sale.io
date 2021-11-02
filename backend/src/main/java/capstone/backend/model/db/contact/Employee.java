@@ -1,7 +1,8 @@
-package capstone.backend.models.db.contact;
+package capstone.backend.model.db.contact;
 
-import capstone.backend.models.UserRoles;
+import capstone.backend.model.UserRoles;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;

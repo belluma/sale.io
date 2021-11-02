@@ -1,4 +1,4 @@
-package capstone.backend.models.db;
+package capstone.backend.model.db;
 
 
 import capstone.backend.crud.DatabaseObject;

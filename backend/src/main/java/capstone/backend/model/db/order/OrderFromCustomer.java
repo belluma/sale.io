@@ -1,7 +1,8 @@
-package capstone.backend.models.db.order;
+package capstone.backend.model.db.order;
 
 
-import capstone.backend.models.db.contact.Customer;
+
+import capstone.backend.model.db.contact.Customer;
 
 import javax.persistence.*;
 
@@ -9,8 +10,6 @@ import javax.persistence.*;
 @Table(name = "cutomer_orders")
 public class OrderFromCustomer extends Order{
 
-    //TODO find a good way to store products and quantity ordered
-//    private HashMap<Product, Integer> productsOrdered;
     @ManyToOne
     private Customer customer;
 

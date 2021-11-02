@@ -1,7 +1,7 @@
-package capstone.backend.models.db;
+package capstone.backend.model.db;
 
 import capstone.backend.crud.DatabaseObject;
-import capstone.backend.models.db.contact.Supplier;
+import capstone.backend.model.db.contact.Supplier;
 import lombok.*;
 
 import javax.persistence.*;

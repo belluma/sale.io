@@ -1,4 +1,4 @@
-package capstone.backend.models.db.order;
+package capstone.backend.model.db.order;
 
 import lombok.*;
 import org.hibernate.Hibernate;

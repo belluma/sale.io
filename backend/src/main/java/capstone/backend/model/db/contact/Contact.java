@@ -1,7 +1,8 @@
-package capstone.backend.models.db.contact;
+package capstone.backend.model.db.contact;
 
 import capstone.backend.crud.DatabaseObject;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -15,7 +16,6 @@ public abstract class Contact extends DatabaseObject {
     private String name;
     private String email;
     private String phone;
-    //TODO what's the best way to store and access files in Db?
     private String picture;
 
     @Override
