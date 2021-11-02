@@ -1,8 +1,12 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import authenticationReducer from '../slicer/authSlice'
+import errorReducer from '../slicer/errorSlice'
 
 
 export const store = configureStore({
   reducer: {
+    authentication:authenticationReducer,
+    error:errorReducer,
   },
 });
 
