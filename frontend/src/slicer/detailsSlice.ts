@@ -14,7 +14,7 @@ export const detailsSlice = createSlice({
     name:"details" ,
     initialState,
     reducers: {
-        selectDetails: (state, action:PayloadAction<IDetailsData>) => {
+        setDetailData: (state, action:PayloadAction<IDetailsData>) => {
             state.selectedDetails = action.payload
         },
         showDetails: (state) => {
@@ -27,7 +27,7 @@ export const detailsSlice = createSlice({
 
     })
 
-export const {showDetails, hideDetails} = detailsSlice.actions;
+export const {showDetails, hideDetails, setDetailData} = detailsSlice.actions;
 
 export const selectShowDetails = (state: RootState) => state.details.showDetails;
 export default detailsSlice.reducer;

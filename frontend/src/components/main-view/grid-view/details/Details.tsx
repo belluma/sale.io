@@ -1,7 +1,7 @@
 import React from 'react'
-import {Card, CardContent, CardHeader, Dialog, Divider, Typography} from "@mui/material";
-import {useAppSelector} from "../../../../app/hooks";
-import {selectShowDetails} from "../../../../slicer/detailsSlice";
+import {Card, CardContent, CardHeader, ClickAwayListener, Dialog, Divider, Typography} from "@mui/material";
+import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
+import {hideDetails, selectShowDetails} from "../../../../slicer/detailsSlice";
 
 //component imports
 
@@ -10,9 +10,13 @@ import {selectShowDetails} from "../../../../slicer/detailsSlice";
 type Props = {};
 
 function Details(props: Props){
-    const showDetails = useAppSelector(selectShowDetails)
+    const dispatch = useAppDispatch();
+    const showDetails = useAppSelector(selectShowDetails);
+    const handleClose = () => {
+        dispatch(hideDetails());
+    }
     return(
-        <Dialog open={showDetails} >
+        <Dialog open={showDetails} onClose={handleClose} >
                 <Card>
                     <CardHeader title="Error!!1!" align="center"/>
                     <Divider/>

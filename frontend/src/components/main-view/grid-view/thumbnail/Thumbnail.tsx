@@ -7,6 +7,7 @@ import {Card, CardHeader, CardMedia} from "@mui/material";
 
 //interface imports
 import {IDetailsData} from '../../../../interfaces/IThumbnailData';
+import {setDetailData, showDetails} from "../../../../slicer/detailsSlice";
 
 type Props = {
     data: IDetailsData
@@ -15,10 +16,10 @@ type Props = {
 
 function Thumbnail({data}: Props) {
     const {title, subtitle, picture, id, alt} = data;
-    const history = useHistory();
     const dispatch = useAppDispatch();
     const onClick = () => {
-        console.log(id);
+        dispatch(setDetailData(data));
+        dispatch(showDetails());
     }
 
     return (
