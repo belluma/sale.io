@@ -9,6 +9,7 @@ export interface IEmployee extends ICredentials{
     email?:string,
     phone?: string,
     picture?:string,
+    id?: string
 }
 
 export const initialCredentials:ICredentials = {

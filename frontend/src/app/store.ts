@@ -2,6 +2,7 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import authenticationReducer from '../slicer/authSlice'
 import errorReducer from '../slicer/errorSlice'
 import employeeReducer from '../slicer/employeeSlice';
+import detailsReducer from '../slicer/detailsSlice';
 
 
 export const store = configureStore({
@@ -9,6 +10,7 @@ export const store = configureStore({
     authentication:authenticationReducer,
     error:errorReducer,
     employee: employeeReducer,
+    details: detailsReducer,
   },
 });
 
