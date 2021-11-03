@@ -46,9 +46,9 @@ class EmployeeControllerTest {
 
     @Container
     public static PostgreSQLContainer container = new PostgreSQLContainer()
-            .withDatabaseName("quiz")
-            .withUsername("quiz")
-            .withPassword("quiz");
+            .withDatabaseName("pos")
+            .withUsername("pos")
+            .withPassword("pos");
 
     @DynamicPropertySource //https://rieckpil.de/howto-write-spring-boot-integration-tests-with-a-real-database/
     static void postgresqlProperties(DynamicPropertyRegistry registry) {
