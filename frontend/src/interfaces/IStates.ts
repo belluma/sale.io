@@ -1,8 +1,9 @@
-import { IEmployee } from "./IEmployee";
+import {ICredentials, IEmployee} from "./IEmployee";
 
 export interface IEmployeeState {
     employees: IEmployee[],
     currentEmployee: IEmployee | undefined,
+    currentEmployeeCredentials: ICredentials | undefined,
     pending: boolean
 }
 

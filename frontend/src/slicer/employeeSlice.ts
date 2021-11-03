@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import {getErrorMessage} from "./errorSlice";
-import {getAllEmployees} from "../services/employeeService";
+import {extractCredentials, getAllEmployees} from "../services/employeeService";
 import { IResponseGetAllEmployees} from "../interfaces/IApiResponse";
 import { IEmployeeState } from '../interfaces/IStates';
 import { IEmployee } from '../interfaces/IEmployee';
@@ -10,6 +10,7 @@ import { IEmployee } from '../interfaces/IEmployee';
 const initialState:IEmployeeState = {
     employees: [],
     currentEmployee: undefined,
+    currentEmployeeCredentials:undefined,
     pending: false,
 }
 
@@ -31,6 +32,7 @@ export const employeeSlice = createSlice({
     reducers: {
         chooseCurrentEmployee:(state, action:PayloadAction<IEmployee>) => {
             state.currentEmployee = action.payload;
+            state.currentEmployeeCredentials = extractCredentials(action.payload);
         }
     },
     extraReducers: (builder => {
@@ -52,6 +54,7 @@ export const {chooseCurrentEmployee}= employeeSlice.actions;
 
 export const selectEmployees = (state: RootState) => state.employee.employees;
 export const selectCurrentEmployee = (state: RootState) => state.employee.currentEmployee;
+export const selectCurrentEmployeeCredentials = (state: RootState) => state.employee.currentEmployeeCredentials;
 export const selectPending = (state:RootState) => state.employee.pending;
 
 export default employeeSlice.reducer;

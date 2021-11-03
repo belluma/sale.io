@@ -7,7 +7,7 @@ import {Divider, TextField, CardHeader, FormGroup, Button, Card } from '@mui/mat
 import {ICredentials } from '../../../interfaces/IEmployee';
 import { login } from '../../../slicer/authSlice';
 import {useAppDispatch, useAppSelector} from '../../../app/hooks';
-import {selectCurrentEmployee} from "../../../slicer/employeeSlice";
+import {selectCurrentEmployee, selectCurrentEmployeeCredentials} from "../../../slicer/employeeSlice";
 
 type Props = {
 
@@ -15,14 +15,14 @@ type Props = {
 
 function Login(props: Props){
     const dispatch = useAppDispatch();
-    const employee = useAppSelector(selectCurrentEmployee)
-    const [credentials, setsCredentials] = useState<ICredentials>({username: employee?.username})
+    const employee = useAppSelector(selectCurrentEmployeeCredentials)
+    const [password, setPassword] = useState<string>("")
 
     const handleInput = (e:ChangeEvent<HTMLInputElement>) => {
-        setsCredentials({...credentials, password:e.target.value})
+        setPassword( e.target.value)
     }
     const handleLogin = () => {
-        dispatch(login(credentials));
+        if(employee && password.length)dispatch(login({...employee, password:password}));
     }
     return(
         <Card>
@@ -30,7 +30,7 @@ function Login(props: Props){
             <Divider/>
             <FormGroup>
                 <TextField sx={{my: 1}} required label="Password" type="password" onChange={handleInput}/>
-                <Button disabled={!credentials.password} type="submit" onClick={handleLogin}>Register</Button>
+                <Button disabled={!employee || !password.length} type="submit" onClick={handleLogin}>Register</Button>
             </FormGroup>
         </Card>
     )
