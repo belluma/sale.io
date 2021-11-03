@@ -1,7 +1,7 @@
 package capstone.backend.security.controller;
 
 import capstone.backend.security.exceptions.InvalidCredentialsException;
-import capstone.backend.security.model.UserDTO;
+import capstone.backend.security.model.EmployeeDTO;
 import capstone.backend.security.service.JWTUtilService;
 import capstone.backend.security.service.UserAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
-import javax.naming.AuthenticationException;
 import java.util.HashMap;
 
 @RestController
@@ -28,13 +27,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserDTO user){
+    public String login(@RequestBody EmployeeDTO user){
         this.authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         return jwtService.createToken(new HashMap<>(), user.getUsername());
     }
 
     @PostMapping("/signup")
-    public String signup(@RequestBody UserDTO user)throws IllegalArgumentException, InvalidCredentialsException {
+    public String signup(@RequestBody EmployeeDTO user)throws IllegalArgumentException, InvalidCredentialsException {
         return userAuthService.signup(user);
     }
 }

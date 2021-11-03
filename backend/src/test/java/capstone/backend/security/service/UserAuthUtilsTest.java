@@ -23,17 +23,7 @@ class UserAuthUtilsTest {
         }
     }
 
-    @Test
-    void validateUsernameDoesNotThrowWhithValidUsername() {
-        try {
-            utils.validateUsername("username");
-        } catch (InvalidCredentialsException e) {
-            fail();
-        }
-    }
 
-    @Test
-    void validateUsernameThrowsWhenUsernameTooShort() {
-        assertThrows(InvalidCredentialsException.class, () -> utils.validateUsername("ab"));
-    }
+
+
 }

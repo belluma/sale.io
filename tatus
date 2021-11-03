@@ -1,0 +1,394 @@
+[33mcommit 2676b30a3fe4273eb098afe64f312b7ab64329a9[m[33m ([m[1;36mHEAD -> [m[1;32mfrontend[m[33m, [m[1;31morigin/frontend[m[33m)[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Tue Nov 2 11:58:38 2021 +0100
+
+    refactor component structure
+
+[33mcommit 63ed6751ab0d4d1efadeca60e114595fa9e2a44e[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Tue Nov 2 11:47:44 2021 +0100
+
+    remove unused imports
+
+[33mcommit dfabf46b2aaa72e5e444133e9ff559b0b8e59abc[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Tue Nov 2 11:45:09 2021 +0100
+
+    strip backend to minimum
+
+[33mcommit 2c8069a7423fb984a7fe003d795a2bbb2c8f0d60[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Tue Nov 2 11:39:56 2021 +0100
+
+    fix tests
+
+[33mcommit e6bd8449018d16590de1e6a15977ba39d573b653[m[33m ([m[1;31morigin/generic_controller2[m[33m, [m[1;32mgeneric_controller2[m[33m)[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Mon Nov 1 20:43:44 2021 +0100
+
+    fixed login
+
+[33mcommit 9897c44099a76bb5f10ab7d5af7f11402571bc79[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Mon Nov 1 20:33:11 2021 +0100
+
+    update security package
+
+[33mcommit 915d700946c05a6704a946d9fa4add3830eb8a94[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Mon Nov 1 20:29:15 2021 +0100
+
+    delete security package
+
+[33mcommit 88f30269fd8bf0d6430bd12e9ddb428101919ddc[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Mon Nov 1 19:51:47 2021 +0100
+
+    fix crudcontroller
+
+[33mcommit 4b1c557091b01ef855e132653aa0162a37edd6d8[m
+Merge: 1876f04 dda54a8
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 19:27:19 2021 +0100
+
+    Merge remote-tracking branch 'origin/generic_controller2' into generic_controller2
+
+[33mcommit 1876f04c53143884f2d43d8d1f5efa415d3ff676[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 19:00:52 2021 +0100
+
+    adjust models
+
+[33mcommit dda54a8612b468bcc33053459693ab8079fc7944[m
+Author: Benedikt Maciejczyk <59142628+macben888@users.noreply.github.com>
+Date:   Sun Oct 31 17:52:56 2021 +0100
+
+    Update README.md
+
+[33mcommit 41edd8f53c5a2a9695bf78fbdd1ce28b032c02a6[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 17:52:11 2021 +0100
+
+    refactor crud component and models
+
+[33mcommit 85cc673be1e39c6abcee6053f5c3efb529a5e475[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 14:33:22 2021 +0100
+
+    add logic to login
+
+[33mcommit 55342fcc0c69fea4e7b0c61ead4e6dba3723608d[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 14:30:13 2021 +0100
+
+    move id generation from abstract class to models
+
+[33mcommit 361ce363ad54ba0f178ea5ee57d57de237285002[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 14:00:56 2021 +0100
+
+    write logic for signup
+
+[33mcommit 4cbe9433436cd731f5cdc91ca1f4b326e7f2f914[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 13:38:41 2021 +0100
+
+    add reducer to store
+    ;
+
+[33mcommit 8f54f0cd85537765a7d274187a28d39db1e2a776[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 13:32:55 2021 +0100
+
+    add error slice
+
+[33mcommit d4b67f62c35fb97a1cefeaddd8afbd97447e4a85[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 13:32:24 2021 +0100
+
+    add auth slice
+
+[33mcommit 0c0d49e8f99af21eb21d1d8122cdb78ccfdff9a3[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 13:30:37 2021 +0100
+
+    create auth servicde and credentials interface
+
+[33mcommit 404a44caa091d5a51df8c354a91d71b091c05bf3[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Sun Oct 31 13:26:45 2021 +0100
+
+    show header and mainview on page
+
+[33mcommit 4d9be820461ba243579fe5cbf2feabd5acc88d81[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 20:05:26 2021 +0200
+
+    inject mapper successfully into service via controller
+
+[33mcommit 557a5f61ffd79313116b8d0f1e8233a99b494234[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 19:53:06 2021 +0200
+
+    try implementing first controller
+
+[33mcommit 3c7462a67ecb84111ee24a8647b03f9e308652a3[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 18:34:22 2021 +0200
+
+    changed model to generate id
+
+[33mcommit 1cce18552d9e3157253b52022dc42b52ec422a35[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 16:55:04 2021 +0200
+
+    temporary disable security on all routes
+
+[33mcommit d487a67226863ec7288b434e46b3e0efb1dc5030[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 16:33:10 2021 +0200
+
+    start building generic crud component
+
+[33mcommit 37a313419368a4bacc0e7dbe3bc013c226d02456[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 15:53:40 2021 +0200
+
+    install react-router and wrap app inrouter
+
+[33mcommit 9450ccc64921e0a28f6b6124d1af1e26c9d69801[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 15:33:39 2021 +0200
+
+    install react-router-dom
+
+[33mcommit aff9b44a5e00902f1a1aa2081d2cdd66ff643fdf[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 15:31:59 2021 +0200
+
+    create components
+
+[33mcommit 938a0ab61e830cef6fdae7a0bfdd3b9548654dda[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 13:32:56 2021 +0200
+
+    get context running
+
+[33mcommit 100b5f314456bcf6bc4f88bea63ca6015a8e741b[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 13:14:23 2021 +0200
+
+    fix all precompile errors
+
+[33mcommit 1da2472bb1f5415c9fe0f05988230b1663682712[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 13:06:18 2021 +0200
+
+    add basic code to model classes
+
+[33mcommit 95940ddfda0ac7c2682d742426300d2090887756[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 12:01:06 2021 +0200
+
+    add security package
+
+[33mcommit 21f812b4accae21d762a4148d5f94fa3a92fe3a3[m
+Merge: 0a23ded 1e78fe0
+Author: romsenkabomsen <50072487+romsenkabomsen@users.noreply.github.com>
+Date:   Fri Oct 29 11:36:42 2021 +0200
+
+    Merge pull request #2 from macben888/setup_archictecture
+    
+    Setup archictecture
+
+[33mcommit 1e78fe0201c42b0a74ab6b0418629b60c2fb1785[m[33m ([m[1;31morigin/setup_archictecture[m[33m, [m[1;32msetup_archictecture[m[33m)[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 11:29:03 2021 +0200
+
+    add jpa repositoriy
+
+[33mcommit a87c259a92cb31c3aea4a70117731effea02b393[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 11:19:42 2021 +0200
+
+    remove import of unexistant component in frontend
+
+[33mcommit 690cce492e168ef318bde2d03f23e60c09527810[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 11:18:43 2021 +0200
+
+    add test files
+
+[33mcommit ecdd367c622ab3d9267c6294dbc35210e5ab5417[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 10:48:00 2021 +0200
+
+    create classes in backend
+
+[33mcommit e94cf2a01e312e30c98207b94bf517280326c924[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 10:22:23 2021 +0200
+
+    fix error caused by import of nonexistant slicer
+
+[33mcommit 0a23ded83faebce9145da5820f0ed927e3bce9e8[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 09:29:02 2021 +0200
+
+    remove .idea folders from git
+
+[33mcommit c956c943e977ef89dc5d5d099b0941aaa20aece0[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 09:20:46 2021 +0200
+
+    add gitignore to root
+
+[33mcommit 35623b6e0546e36ae059f72d0416fba720ebe2e8[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 09:17:38 2021 +0200
+
+    adjust gitignore
+
+[33mcommit 363295e5a27714f5a9562a337ac7198e361859e0[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Fri Oct 29 09:15:09 2021 +0200
+
+    adjust application.properties
+
+[33mcommit 483807bf82b4efe77d74bfc2401c9b431f408509[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Thu Oct 28 16:41:13 2021 +0200
+
+    remove unneccessary redux boilerplate
+
+[33mcommit 47fd7af206091e51fc9e2fd55dae2902affaec74[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Thu Oct 28 16:40:19 2021 +0200
+
+    add axios to frontend
+
+[33mcommit ea4e004b510e006220efdd0371bec6fd35e323ec[m
+Author: macben888 <59142628+macben888@users.noreply.github.com>
+Date:   Thu Oct 28 16:39:05 2021 +0200
+
+    Update README.md
+
+[33mcommit 2b7ff8c38c7d1472daa30651846fd6d5eb0e3fca[m
+Author: macben888 <59142628+macben888@users.noreply.github.com>
+Date:   Thu Oct 28 16:32:59 2021 +0200
+
+    Create README.md
+
+[33mcommit 590776235f96ddc2f5b9c938e828661a94782166[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Thu Oct 28 16:10:24 2021 +0200
+
+    uncomment sonar sources in properties file
+
+[33mcommit bbc9e32e82a61a4b37a6b4b5c1a9c1959e4b0a1a[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Thu Oct 28 16:00:28 2021 +0200
+
+    fix errors from BackendApplicationTest
+
+[33mcommit 0fda669a7bca493d0c31f728ff303c213d9ede91[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Thu Oct 28 15:27:37 2021 +0200
+
+    reload maven dependencies
+
+[33mcommit 5d7f63dee8985b2716a9122b0a746f54aec12b3d[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Thu Oct 28 15:09:58 2021 +0200
+
+    update java version in sonar-backend.yml
+
+[33mcommit 1ea6cfe1bb549d544941dc61340a363d8376daca[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Thu Oct 28 15:06:41 2021 +0200
+
+    change names of sonar-*.yml
+
+[33mcommit 6a01706ed20fa04de8a278f4c7229549e170ffe4[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Thu Oct 28 15:04:36 2021 +0200
+
+    add lombok.config
+
+[33mcommit fe4b20783efb60192eed683e2593c3b1a697a93d[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Thu Oct 28 15:03:19 2021 +0200
+
+    add javovo to pom plugins
+
+[33mcommit 9032177dcb3e686b338e23ba8513bdf44fa20a9e[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Thu Oct 28 15:00:43 2021 +0200
+
+    add sonar-backend.yml
+
+[33mcommit f01b523bb94e6a5c7e669de8505f7fe49008f29e[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Thu Oct 28 14:57:10 2021 +0200
+
+    add sonar properties to pom
+
+[33mcommit b199c55f064ba025422a29f8f560ff88bb3240c8[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Thu Oct 28 14:54:41 2021 +0200
+
+    initialize backend
+
+[33mcommit a33c33275b3c16e2097d7666d93f23e82f85b01d[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Thu Oct 28 14:47:13 2021 +0200
+
+    move sonar-project.properties to correct location
+
+[33mcommit 9a197ba4281e0cc66da5f9bf3f3c36620a22f1db[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Thu Oct 28 14:44:14 2021 +0200
+
+    add sonar project properties
+
+[33mcommit 7055cc6a707540733d55dcae79bf2cddce3c8df1[m
+Author: ben <benedikt.maciejczyk@gmx.de>
+Date:   Thu Oct 28 14:42:19 2021 +0200
+
+    initialize frontend
+
+[33mcommit cdd2c9228da4f9b9722c6c948a06e31631d13ec8[m
+Author: macben888 <59142628+macben888@users.noreply.github.com>
+Date:   Thu Oct 28 14:39:11 2021 +0200
+
+    Create build.yml
+
+[33mcommit 2de76143ae2bb380c40789e2996d61d770b23103[m
+Author: macben888 <59142628+macben888@users.noreply.github.com>
+Date:   Thu Oct 28 14:16:50 2021 +0200
+
+    change filename of node.yml
+
+[33mcommit 67af025a35ebdde362050d8615dc78c3f667cd16[m
+Author: macben888 <59142628+macben888@users.noreply.github.com>
+Date:   Thu Oct 28 14:14:30 2021 +0200
+
+    Create node.yml
+
+[33mcommit b21acc1e3b785676d83e43c69ca49503f7b72a33[m
+Author: macben888 <59142628+macben888@users.noreply.github.com>
+Date:   Thu Oct 28 14:11:40 2021 +0200
+
+    Update maven.yml
+
+[33mcommit f2f5722fa883e3a6baa55cdff7051e22ca975a86[m
+Author: macben888 <59142628+macben888@users.noreply.github.com>
+Date:   Thu Oct 28 14:10:14 2021 +0200
+
+    Create maven.yml
+
+[33mcommit 5c814dcacc402928ff73c7a0d6f7189407bf16cb[m
+Author: macben888 <59142628+macben888@users.noreply.github.com>
+Date:   Mon Oct 25 12:57:56 2021 +0300
+
+    Initial commit
