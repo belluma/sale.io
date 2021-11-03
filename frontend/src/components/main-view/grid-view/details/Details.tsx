@@ -1,9 +1,10 @@
 import React from 'react'
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
 import {hideDetails, selectDetailsData, selectShowDetails} from "../../../../slicer/detailsSlice";
+import {images} from '../helpers'
 
 //component imports
-import {Card, CardContent, CardHeader, CardMedia, Dialog, Divider, Typography} from "@mui/material";
+import {Card, CardContent, CardHeader, CardMedia, Dialog, Divider} from "@mui/material";
 import Login from "../../../security/login/Login";
 
 //interface imports
@@ -29,13 +30,13 @@ function Details(props: Props) {
     }
     return (
         <Dialog open={showDetails} onClose={handleClose}>
-            <Card>
+            <Card sx={{width:400 ,justifyContent:"center"}}>
                 <CardHeader title={title} subtitle={subtitle} align="center"/>
                 <Divider/>
                 <CardMedia
                     component="img"
-                    height="194"
-                    image={picture}
+                    sx={{width:400}}
+                    image={picture || images[model]}
                     alt={alt}
                 />
                 <CardContent>

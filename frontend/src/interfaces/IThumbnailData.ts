@@ -1,5 +1,10 @@
 import {IEmployee} from "./IEmployee";
 
+export enum Model {
+    NONE = "none",
+    LOGIN = "login",
+}
+
 export interface IThumbnailData {
     title:string,
     subtitle?:string,
@@ -8,10 +13,10 @@ export interface IThumbnailData {
     alt: string,
     model: Model,
 }
-
 export interface IDetailsData extends IThumbnailData{
 
 }
+
 export const parseEmployeeToThumbnailData = (employee:IEmployee):IDetailsData => {
     return {
         title: `${employee.firstName} ${employee.lastName}`,
@@ -21,9 +26,4 @@ export const parseEmployeeToThumbnailData = (employee:IEmployee):IDetailsData =>
         model: Model.LOGIN
 
     }
-}
-
-export enum Model {
-    NONE = "none",
-    LOGIN = "login",
 }

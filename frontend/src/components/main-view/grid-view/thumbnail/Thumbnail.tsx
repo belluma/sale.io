@@ -1,6 +1,6 @@
 import React from 'react'
-import {useHistory} from "react-router";
 import {useAppDispatch} from '../../../../app/hooks';
+import {images} from '../helpers'
 
 //component imports
 import {Card, CardHeader, CardMedia} from "@mui/material";
@@ -32,8 +32,8 @@ function Thumbnail({data}: Props) {
             <CardHeader title={title} subtitle={subtitle}/>
             <CardMedia
                 component="img"
-                height="194"
-                image={picture}
+                height="350"
+image={picture || images[model]}
                 alt={alt}
             />
         </Card>

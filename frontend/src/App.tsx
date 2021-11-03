@@ -16,7 +16,7 @@ import {loginFromStorage} from "./slicer/authSlice";
 function App() {
   const dispatch = useAppDispatch();
   dispatch(getEmployees());
-  // dispatch(loginFromStorage());
+  dispatch(loginFromStorage());
   return (
       <React.Fragment>
       <CssBaseline/>
