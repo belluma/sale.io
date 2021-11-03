@@ -14,8 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.UUID;
 
-import static capstone.backend.security.service.UserMapper.mapUser;
+import static capstone.backend.mapper.EmployeeMapper.mapEmployee;
 
 
 @Service
@@ -49,7 +50,8 @@ public class UserAuthService implements UserDetailsService {
         validateUserData(user);
         if (repository.findByUsername(user.getUsername()).isEmpty()) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            repository.save(mapUser(user));
+            user.setUsername(String.valueOf(UUID.randomUUID()));
+            repository.save(mapEmployee(user));
             return jwtService.createToken(new HashMap<>(), user.getUsername());
         }
         throw new UserAlreadyExistsException(String.format("User with username %s already exists", user.getUsername()));
@@ -57,7 +59,6 @@ public class UserAuthService implements UserDetailsService {
 
     private void validateUserData(EmployeeDTO user) throws InvalidCredentialsException {
         utils.validatePassword(user.getPassword());
-        utils.validateUsername(user.getUsername());
     }
 
 }

@@ -5,7 +5,7 @@ import capstone.backend.security.model.EmployeeDTO;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static capstone.backend.security.service.UserMapper.mapUser;
+import static capstone.backend.mapper.EmployeeMapper.mapEmployee;
 
 public class TestUtils {
 
@@ -56,7 +56,7 @@ public class TestUtils {
 
 
     public Employee userWithEncodedPassword(EmployeeDTO user) {
-        Employee userToSave = mapUser(user);
+        Employee userToSave = mapEmployee(user);
         userToSave.setPassword(passwordEncoder.encode(user.getPassword()));
         return userToSave;
     }

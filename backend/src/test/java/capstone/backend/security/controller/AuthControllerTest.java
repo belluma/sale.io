@@ -1,9 +1,9 @@
 package capstone.backend.security.controller;
 
+import capstone.backend.mapper.EmployeeMapper;
 import capstone.backend.security.model.Employee;
 import capstone.backend.security.model.EmployeeDTO;
 import capstone.backend.security.repository.EmployeeRepository;
-import capstone.backend.security.service.UserMapper;
 import capstone.backend.utils.TestUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -44,7 +44,7 @@ class AuthControllerTest {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private EmployeeRepository repo;
-    private final UserMapper mapper = new UserMapper();
+    private final EmployeeMapper mapper = new EmployeeMapper();
     private final TestUtils utils = new TestUtils();
 
     @Value("${jwt.secret}")
@@ -94,7 +94,7 @@ class AuthControllerTest {
         EmployeeDTO user = utils.sampleUserDTO();
         user.setPassword("1234");
         user.setUsername("wrong_username");
-        repo.save(mapper.mapUser(user));
+        repo.save(mapper.mapEmployee(user));
         user.setPassword("123");
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/login", user, String.class);
         assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
@@ -116,7 +116,7 @@ class AuthControllerTest {
     @Test
     void signupFailsWhenUsernameAlreadyRegistered(){
         EmployeeDTO user = utils.sampleUserDTO();
-        repo.save(UserMapper.mapUser(user));
+        repo.save(mapper.mapEmployee(user));
         user.setPassword("1234");
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/signup", user, String.class);
         assertThat(response.getStatusCode(), equalTo(HttpStatus.NOT_ACCEPTABLE));

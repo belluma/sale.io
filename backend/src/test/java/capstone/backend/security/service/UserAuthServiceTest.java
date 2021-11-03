@@ -13,7 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.HashMap;
 import java.util.Optional;
 
-import static capstone.backend.security.service.UserMapper.mapUser;
+import static capstone.backend.mapper.EmployeeMapper.mapEmployee;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
@@ -62,19 +62,12 @@ class UserAuthServiceTest {
     @Test
     void signupFailsWhenUsernameAlreadyRegistered() {
         EmployeeDTO user = new EmployeeDTO("username", "1234");
-        when(repository.findByUsername("username")).thenReturn(Optional.of(mapUser(user)));
+        when(repository.findByUsername("username")).thenReturn(Optional.of(mapEmployee(user)));
         Exception ex = assertThrows(UserAlreadyExistsException.class, () -> service.signup(user));
         assertThat(ex.getMessage(), is("User with username username already exists"));
     }
 
-    @Test
-    void signupFailsWhenUsernameValidationFails() throws InvalidCredentialsException {
-        EmployeeDTO user = new EmployeeDTO("username", "1234");
-        when(repository.findByUsername("username")).thenReturn(Optional.empty());
-        doThrow(new InvalidCredentialsException("Invalid username")).when(utils).validateUsername("username");
-        Exception ex = assertThrows(InvalidCredentialsException.class, () -> service.signup(user));
-        assertThat(ex.getMessage(), is("Invalid username"));
-    }
+
 
     @Test
     void signupFailsWhenPasswordValidationFails() throws InvalidCredentialsException {
