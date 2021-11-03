@@ -40,11 +40,11 @@ export const Authentication = createSlice({
     reducers: {
         logout: (state) => {
             state.token = "";
-            localStorage.removeItem("appNameToken");
+            localStorage.removeItem("SaleioToken");
             state.loggedIn = false;
         },
         loginFromStorage: (state) => {
-            const token = localStorage.getItem("appNameToken");
+            const token = localStorage.getItem("SaleioToken");
             console.log(token)
             if (token && validateToken(token)) {
                 state.loggedIn = true;
@@ -63,7 +63,7 @@ export const Authentication = createSlice({
                 }
                 state.loggedIn = true;
                 state.token = action.payload.data
-                localStorage.setItem('appNameToken', action.payload.data);
+                localStorage.setItem('SaleioToken', action.payload.data);
             })
             .addCase(registerAdmin.fulfilled, (state, action: PayloadAction<IResponseData>) => {
                 if (action.payload.status !== 200) {
@@ -71,7 +71,7 @@ export const Authentication = createSlice({
                 }
                 state.loggedIn = true;
                 state.token = action.payload.data
-                localStorage.setItem('appNameToken', action.payload.data);
+                localStorage.setItem('SaleioToken', action.payload.data);
             })
     }
 })

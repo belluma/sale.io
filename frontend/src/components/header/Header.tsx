@@ -37,7 +37,7 @@ function Header(props: Props){
         <HideOnScroll {...props}>
             <AppBar sx={{bgcolor: 'primary.light'}}>
                 <Toolbar sx={{justifyContent: "space-between"}}>
-                    <Typography>AppName</Typography>
+                    <Typography>Saleio</Typography>
                 </Toolbar>
                 <Toolbar sx={{mb: 1, alignItems: "stretch", justifyContent: "space-between"}}>
                     <IconButton onClick={handleLogout} edge="end">

@@ -5,10 +5,10 @@ import React from 'react'
 import Signup from "../security/signup/Signup";
 import {Container, Grid} from "@mui/material";
 import {Route, Switch} from "react-router";
-import LoginForm from "../security/login/Login";
 import ErrorMessage from "../error-message/ErrorMessage";
-import StartView from "./views/start-view/StartView";
+import LoginView from "./views/login-view/LoginView";
 import StartRoute from "./start-route/StartRoute";
+import StartView from "./views/start-view/StartView";
 //interface imports
 
 type Props = {};
@@ -18,7 +18,7 @@ function MainView(props: Props){
         <Container sx={{pt: 15}} maxWidth={false}>
             <Grid container justifyContent="center" alignItems="center">
                 <Switch>
-                    <Route path={"/login"} component={LoginForm}/>
+                    <Route path={"/login"} component={LoginView}/>
                     <Route path={"/signup"} component={Signup}/>
                     <Route path={"/start"} component={StartView}/>
                     <Route path={"/"} component={StartRoute} />
