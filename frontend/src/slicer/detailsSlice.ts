@@ -1,21 +1,21 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import {IDetailsData} from "../interfaces/IThumbnailData";
-import {IDetailsState} from "../interfaces/IStates";
+import {IDetailsState, intitialDetailsData} from "../interfaces/IStates";
 
 
 const initialState: IDetailsState = {
-showDetails: false,
-    selectedDetails: undefined,
-    }
+    showDetails: false,
+    detailsData: intitialDetailsData,
+}
 
 
 export const detailsSlice = createSlice({
-    name:"details" ,
+    name: "details",
     initialState,
     reducers: {
-        setDetailData: (state, action:PayloadAction<IDetailsData>) => {
-            state.selectedDetails = action.payload
+        setDetailData: (state, action: PayloadAction<IDetailsData>) => {
+            state.detailsData = action.payload
         },
         showDetails: (state) => {
             state.showDetails = true;
@@ -25,9 +25,10 @@ export const detailsSlice = createSlice({
         }
     },
 
-    })
+})
 
 export const {showDetails, hideDetails, setDetailData} = detailsSlice.actions;
 
 export const selectShowDetails = (state: RootState) => state.details.showDetails;
+export const selectDetailsData = (state: RootState) => state.details.detailsData;
 export default detailsSlice.reducer;

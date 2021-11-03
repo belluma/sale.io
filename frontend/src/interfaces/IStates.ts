@@ -15,5 +15,13 @@ export interface IAuthState {
 
 export interface IDetailsState {
     showDetails:boolean,
-    selectedDetails: IDetailsData | undefined,
+    detailsData: IDetailsData ,
+}
+
+export const intitialDetailsData:IDetailsData = {
+    title:"",
+    subtitle:"",
+    picture: "",
+    id: "",
+    alt: "",
 }
