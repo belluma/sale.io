@@ -17,10 +17,15 @@ function Details(props: Props) {
     const dispatch = useAppDispatch();
     const showDetails = useAppSelector(selectShowDetails);
     const detailsData = useAppSelector(selectDetailsData);
-    const {title, subtitle, picture, id, alt} = detailsData;
+    const {title, subtitle, picture, id, alt, model} = detailsData;
 
     const handleClose = () => {
         dispatch(hideDetails());
+    }
+    const cardContent = {
+        none: (<div/>),
+        login: <Login />,
+
     }
     return (
         <Dialog open={showDetails} onClose={handleClose}>
@@ -34,7 +39,7 @@ function Details(props: Props) {
                     alt={alt}
                 />
                 <CardContent>
-                    <Login/>
+                    {cardContent[model]}
                 </CardContent>
             </Card>
         </Dialog>
