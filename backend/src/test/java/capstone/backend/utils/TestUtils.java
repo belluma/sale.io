@@ -12,7 +12,7 @@ public class TestUtils {
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
-    public EmployeeDTO sampleUserDTO() {
+    public static EmployeeDTO sampleUserDTO() {
         return EmployeeDTO
                 .builder()
                 .id(123L)
@@ -40,10 +40,15 @@ public class TestUtils {
                 .build();
     }
 
-    public Employee sampleUser() {
+    public static Employee sampleUser() {
         return Employee
                 .builder()
                 .id(123L)
+                .firstName("John")
+                .lastName("Doe")
+                .email("a@b.c")
+                .phone("01234")
+                .picture("img")
                 .username("username")
                 .password("password")
                 .build();

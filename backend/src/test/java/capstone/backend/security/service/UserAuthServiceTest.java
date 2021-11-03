@@ -30,39 +30,39 @@ class UserAuthServiceTest {
     @Test
     void loadUserByUsername() {
         Employee user = new Employee("username", "1234");
-        when(repository.findById("username")).thenReturn(Optional.of(user));
+        when(repository.findByUsername("username")).thenReturn(Optional.of(user));
         UserDetails expected = User
                 .withUsername("username")
                 .password("1234")
                 .authorities("user")
                 .build();
         assertThat(expected, is(service.loadUserByUsername("username")));
-        verify(repository).findById("username");
+        verify(repository).findByUsername("username");
     }
 
     @Test
     void loadUserByUsernameThrowsWhenUserIsNotFound() {
-        when(repository.findById("username")).thenReturn(Optional.empty());
+        when(repository.findByUsername("username")).thenReturn(Optional.empty());
         Exception ex = assertThrows(UsernameNotFoundException.class, () -> service.loadUserByUsername("username"));
         assertThat(ex.getMessage(), is("Username does not exist: username"));
-        verify(repository).findById("username");
+        verify(repository).findByUsername("username");
 
     }
 
     @Test
     void signup() throws InvalidCredentialsException {
         EmployeeDTO user = new EmployeeDTO("username", "1234");
-        when(repository.findById("username")).thenReturn(Optional.empty());
+        when(repository.findByUsername("username")).thenReturn(Optional.empty());
         when(jwtService.createToken(new HashMap<>(), "username")).thenReturn("valid.jwt.token");
         String expected = "valid.jwt.token";
         assertThat(expected, is(service.signup(user)));
-        verify(repository).findById("username");
+        verify(repository).findByUsername("username");
     }
 
     @Test
     void signupFailsWhenUsernameAlreadyRegistered() {
         EmployeeDTO user = new EmployeeDTO("username", "1234");
-        when(repository.findById("username")).thenReturn(Optional.of(mapUser(user)));
+        when(repository.findByUsername("username")).thenReturn(Optional.of(mapUser(user)));
         Exception ex = assertThrows(UserAlreadyExistsException.class, () -> service.signup(user));
         assertThat(ex.getMessage(), is("User with username username already exists"));
     }
@@ -70,7 +70,7 @@ class UserAuthServiceTest {
     @Test
     void signupFailsWhenUsernameValidationFails() throws InvalidCredentialsException {
         EmployeeDTO user = new EmployeeDTO("username", "1234");
-        when(repository.findById("username")).thenReturn(Optional.empty());
+        when(repository.findByUsername("username")).thenReturn(Optional.empty());
         doThrow(new InvalidCredentialsException("Invalid username")).when(utils).validateUsername("username");
         Exception ex = assertThrows(InvalidCredentialsException.class, () -> service.signup(user));
         assertThat(ex.getMessage(), is("Invalid username"));
@@ -79,7 +79,7 @@ class UserAuthServiceTest {
     @Test
     void signupFailsWhenPasswordValidationFails() throws InvalidCredentialsException {
         EmployeeDTO user = new EmployeeDTO("username", "1234");
-        when(repository.findById("username")).thenReturn(Optional.empty());
+        when(repository.findByUsername("username")).thenReturn(Optional.empty());
         doThrow(new InvalidCredentialsException("Invalid password")).when(utils).validatePassword("1234");
         Exception ex = assertThrows(InvalidCredentialsException.class, () -> service.signup(user));
         assertThat(ex.getMessage(), is("Invalid password"));
