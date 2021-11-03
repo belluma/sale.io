@@ -57,8 +57,7 @@ export const Authentication = createSlice({
     },
     extraReducers: builder => {
         builder
-            .addCase(login.pending, state => {
-            })
+
             .addCase(login.fulfilled, (state, action: PayloadAction<IResponseData>) => {
                 if (action.payload.status !== 200) {
                     return;
@@ -81,5 +80,4 @@ export const Authentication = createSlice({
 export const {logout, loginFromStorage} = Authentication.actions;
 
 export const selectLoggedIn = (state: RootState) => state.authentication.loggedIn;
-export const selectToken = (state: RootState) => state.authentication.token;
 export default Authentication.reducer;

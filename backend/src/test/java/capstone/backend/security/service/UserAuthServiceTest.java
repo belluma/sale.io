@@ -49,15 +49,6 @@ class UserAuthServiceTest {
 
     }
 
-    @Test
-    void signup() throws InvalidCredentialsException {
-        EmployeeDTO user = new EmployeeDTO("username", "1234");
-        when(repository.findByUsername("username")).thenReturn(Optional.empty());
-        when(jwtService.createToken(new HashMap<>(), "username")).thenReturn("valid.jwt.token");
-        String expected = "valid.jwt.token";
-        assertThat(expected, is(service.signup(user)));
-        verify(repository).findByUsername("username");
-    }
 
     @Test
     void signupFailsWhenUsernameAlreadyRegistered() {

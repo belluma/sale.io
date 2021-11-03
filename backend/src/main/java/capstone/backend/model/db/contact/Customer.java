@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
@@ -15,15 +14,5 @@ import javax.persistence.*;
 @Entity
 @Table(name = "customers")
 public class Customer extends Contact {
-
-    private String test;
-
-
-
-//    @OneToMany
-//    @ToString.Exclude
-//    private List<OrderFromCustomer> orders;
-
-
 
 }

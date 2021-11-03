@@ -10,7 +10,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
-//@AllArgsConstructor
 public class SupplierDTO extends ContactDTO{
 
     private List<Product> products;
