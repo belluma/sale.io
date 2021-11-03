@@ -6,7 +6,7 @@ export interface IThumbnailData {
     picture: string | undefined,
 }
 
-export const parseEmployeeToThumbnailData = (employee:IEmployee):IThumbnailData{
+export const parseEmployeeToThumbnailData = (employee:IEmployee):IThumbnailData => {
     return {
         title: `${employee.firstName} ${employee.lastName}`,
         picture: employee.picture,
