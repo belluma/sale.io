@@ -15,6 +15,7 @@ type Props = {
 function ProtectedRoute(props: Props){
     const loggedIn = useAppSelector(selectLoggedIn);
     const employees = useAppSelector(selectEmployees);
+    console.log(employees)
     const redirect = employees.length ? "/login" : "/signup";
 
     return(

@@ -6,10 +6,10 @@ import React from 'react'
 
 type Props = {};
 
-function ErrorMessage(props: Props){
+function StartView(props: Props){
     return(
-       <div></div>
+       <div>StartView</div>
     )
 }
 
-export default ErrorMessage;
+export default StartView;

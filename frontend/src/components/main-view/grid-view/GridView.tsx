@@ -6,10 +6,10 @@ import React from 'react'
 
 type Props = {};
 
-function ErrorMessage(props: Props){
+function GridView(props: Props){
     return(
-       <div></div>
+       <div>GridView</div>
     )
 }
 
-export default ErrorMessage;
+export default GridView;

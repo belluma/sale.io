@@ -7,8 +7,9 @@ import { IEmployeeState } from '../interfaces/IStates';
 
 
 const initialState:IEmployeeState = {
-    employees: [],
+    employees: undefined,
     currentEmployee: undefined,
+    pending: false,
 }
 
 export const getEmployees = createAsyncThunk(
@@ -29,6 +30,9 @@ export const employeeSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: (builder => {
+        builder.addCase(getEmployees.pending, state => {
+            state.pending = true;
+        })
         builder.addCase(getEmployees.fulfilled, (state, action: PayloadAction<IResponseGetAllEmployees>) => {
             if (action.payload.status !== 200) {
                 return;

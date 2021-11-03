@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useState} from 'react'
-import { useAppDispatch } from '../../../app/hooks';
+import {useAppDispatch, useAppSelector} from '../../../app/hooks';
 import { registerAdmin } from '../../../slicer/authSlice';
 
 
@@ -11,6 +11,7 @@ import {Card, CardHeader} from '@mui/material';
 
 //interface imports
 import { ICredentials } from '../../../interfaces/IEmployee';
+import {selectEmployees} from "../../../slicer/employeeSlice";
 
 type Props = {};
 
@@ -36,6 +37,9 @@ const handleInput = (e:ChangeEvent<HTMLInputElement>) => {
             setButtonDisabled(false);
         }
     }
+
+    // const employees = useAppSelector(selectEmployees);
+    // console.log(employees)
 
     return (
         <Card>
