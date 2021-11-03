@@ -3,6 +3,7 @@ package capstone.backend.security.model;
 import capstone.backend.model.UserRoles;
 import capstone.backend.model.db.contact.Contact;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Entity
 public class Employee extends Contact {
 
