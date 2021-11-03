@@ -4,8 +4,7 @@ import {registerAdmin} from '../../../slicer/authSlice';
 
 
 //component imports
-import {Button, Divider, FormGroup, TextField} from '@mui/material';
-import {Card, CardHeader} from '@mui/material';
+import {Card, CardHeader, Button, Divider, FormGroup, TextField} from '@mui/material';
 
 //interface imports
 import {ICredentials, initialCredentials} from '../../../interfaces/IEmployee';
@@ -51,7 +50,7 @@ function Signup(props: Props) {
                            label="password" type="password"/>
                 <TextField onChange={handleRepeatPassword} sx={{my: 1}} required value={repeatedPassword}
                            label="confirm password" type="password"/>
-                <Button disabled={!passwordConfirmed || !(credentials.firstName.length + credentials.lastName.length > 0)} type="submit" onClick={register}>Register</Button>
+                <Button disabled={!passwordConfirmed || ((credentials.firstName.length + credentials.lastName.length) < 1)} type="submit" onClick={register}>Register</Button>
             </FormGroup>
         </Card>
     )
