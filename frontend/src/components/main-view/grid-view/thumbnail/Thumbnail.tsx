@@ -1,7 +1,7 @@
 import React from 'react'
 import {useHistory} from "react-router";
 import {useAppDispatch} from '../../../../app/hooks';
-import {chooseCurrentEmployee, selectCurrentEmployee} from "../../../../slicer/employeeSlice";
+import {chooseCurrentEmployee} from "../../../../slicer/employeeSlice";
 import {IEmployee} from "../../../../interfaces/IEmployee";
 
 //component imports

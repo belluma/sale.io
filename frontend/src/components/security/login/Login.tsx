@@ -4,7 +4,7 @@ import {Divider, TextField, CardHeader, FormGroup, Button, Card } from '@mui/mat
 
 //interface imports
 
-import {ICredentials, IEmployee } from '../../../interfaces/IEmployee';
+import {ICredentials } from '../../../interfaces/IEmployee';
 import { login } from '../../../slicer/authSlice';
 import {useAppDispatch, useAppSelector} from '../../../app/hooks';
 import {selectCurrentEmployee} from "../../../slicer/employeeSlice";
