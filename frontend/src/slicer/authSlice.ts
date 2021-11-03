@@ -34,19 +34,18 @@ export const registerAdmin = createAsyncThunk(
     }
 )
 
-
-
-
 export const Authentication = createSlice({
     name: 'login',
     initialState,
     reducers: {
         logout: (state) => {
+            state.token = "";
             localStorage.removeItem("appNameToken");
             state.loggedIn = false;
         },
         loginFromStorage: (state) => {
             const token = localStorage.getItem("appNameToken");
+            console.log(token)
             if (token && validateToken(token)) {
                 state.loggedIn = true;
                 state.token = token;

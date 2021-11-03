@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import {getErrorMessage} from "./errorSlice";
-import {getAllEmployees} from "../services/employeeService";
+import {extractCredentials, getAllEmployees} from "../services/employeeService";
 import {IResponseGetAllEmployees} from "../interfaces/IApiResponse";
 import {IEmployeeState} from '../interfaces/IStates';
 
@@ -14,7 +14,7 @@ const initialState:IEmployeeState = {
 }
 
 export const getEmployees = createAsyncThunk(
-    'login',
+    'getEmployees',
     async (_, thunkAPI) => {
         const {data, status, statusText} = await getAllEmployees();
         if (status !== 200) {
@@ -30,8 +30,11 @@ export const employeeSlice = createSlice({
     initialState,
     reducers: {
         chooseCurrentEmployee:(state, action:PayloadAction<string>) => {
-            state.currentEmployee = state.employees.filter(e => e.id === action.payload)[0];
-            // state.currentEmployeeCredentials = extractCredentials(employee);
+            console.log(action.payload)
+            const employee =state.employees.filter(e => e.username === action.payload)[0];
+            console.log(employee)
+            state.currentEmployee = employee
+            state.currentEmployeeCredentials = extractCredentials(employee);
         }
     },
     extraReducers: (builder => {

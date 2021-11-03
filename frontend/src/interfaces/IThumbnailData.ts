@@ -5,7 +5,8 @@ export interface IThumbnailData {
     subtitle?:string,
     picture: string | undefined,
     id: string | undefined
-    alt: string
+    alt: string,
+    model: Model,
 }
 
 export interface IDetailsData extends IThumbnailData{
@@ -16,6 +17,13 @@ export const parseEmployeeToThumbnailData = (employee:IEmployee):IDetailsData =>
         title: `${employee.firstName} ${employee.lastName}`,
         picture: employee.picture,
         id:employee.username,
-        alt: "profile picture"
+        alt: "profile picture",
+        model: Model.LOGIN
+
     }
+}
+
+export enum Model {
+    NONE = "none",
+    LOGIN = "login",
 }

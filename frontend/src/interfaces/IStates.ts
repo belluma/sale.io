@@ -1,5 +1,5 @@
 import {ICredentials, IEmployee} from "./IEmployee";
-import {IDetailsData} from "./IThumbnailData";
+import {IDetailsData, Model} from "./IThumbnailData";
 
 export interface IEmployeeState {
     employees: IEmployee[],
@@ -24,4 +24,5 @@ export const intitialDetailsData:IDetailsData = {
     picture: "",
     id: "",
     alt: "",
+    model: Model.NONE
 }
