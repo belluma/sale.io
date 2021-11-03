@@ -6,6 +6,7 @@ import LoginForm from "../security/login/Login";
 import ErrorMessage from "../error-message/ErrorMessage";
 import StartView from "./views/start-view/StartView";
 import ProtectedRoute from "./protected-route/ProtectedRoute";
+import StartRoute from "./start-route/StartRoute";
 
 //component imports
 
@@ -20,7 +21,9 @@ function MainView(props: Props){
                 <Switch>
                     <Route path={"/login"} component={LoginForm}/>
                     <Route path={"/signup"} component={Signup}/>
-                    <ProtectedRoute path={"/"} component={StartView}/>
+                    <Route path={"/start"} component={StartView}/>
+                    <Route path={"/"} component={StartRoute} />
+                    {/*<ProtectedRoute path={"/"} component={StartView}/>*/}
                 </Switch>
                 <ErrorMessage/>
             </Grid>

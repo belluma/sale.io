@@ -37,6 +37,7 @@ export const employeeSlice = createSlice({
             if (action.payload.status !== 200) {
                 return;
             }
+            state.pending = false;
             state.employees = action.payload.data;
         })
     })
@@ -46,5 +47,6 @@ export const employeeSlice = createSlice({
 
 export const selectEmployees = (state: RootState) => state.employee.employees;
 export const selectCurrentEmployee = (state: RootState) => state.employee.currentEmployee;
+export const selectPending = (state:RootState) => state.employee.pending;
 
 export default employeeSlice.reducer;
