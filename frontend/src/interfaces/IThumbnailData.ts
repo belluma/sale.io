@@ -8,11 +8,14 @@ export interface IThumbnailData {
     alt: string
 }
 
-export const parseEmployeeToThumbnailData = (employee:IEmployee):IThumbnailData => {
+export interface IDetailsData extends IThumbnailData{
+
+}
+export const parseEmployeeToThumbnailData = (employee:IEmployee):IDetailsData => {
     return {
         title: `${employee.firstName} ${employee.lastName}`,
         picture: employee.picture,
-        id:employee.id,
+        id:employee.username,
         alt: "profile picture"
     }
 }
