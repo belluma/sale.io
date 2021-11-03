@@ -11,8 +11,8 @@ import javax.persistence.MappedSuperclass;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @MappedSuperclass
+@NoArgsConstructor
 @SuperBuilder
 public abstract class Contact {
 

@@ -2,7 +2,9 @@ package capstone.backend.mapper;
 
 import capstone.backend.security.model.Employee;
 import capstone.backend.security.model.EmployeeDTO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EmployeeMapper {
 
         public static Employee mapEmployee(EmployeeDTO employee) {
@@ -29,7 +31,7 @@ public class EmployeeMapper {
                     .password(employee.getPassword())
                     .build();
         }
-        public static EmployeeDTO mapEmployeeAndConcealData (Employee employee){
+        public EmployeeDTO mapEmployeeAndConcealData(Employee employee){
             return EmployeeDTO
                     .builder()
                     .firstName(employee.getFirstName())

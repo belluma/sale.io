@@ -9,8 +9,6 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @SuperBuilder
 public class EmployeeDTO extends ContactDTO {
 
@@ -19,6 +17,7 @@ public class EmployeeDTO extends ContactDTO {
     private List<UserRoles> roles;
 
     public EmployeeDTO(String username, String password){
+        super();
         this.username = username;
         this.password = password;
     }

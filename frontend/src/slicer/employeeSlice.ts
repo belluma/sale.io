@@ -14,6 +14,7 @@ const initialState:IEmployeeState = {
 export const getEmployees = createAsyncThunk(
     'login',
     async (_, thunkAPI) => {
+        console.log(123)
         const {data, status, statusText} = await getAllEmployees();
         if (status !== 200) {
             thunkAPI.dispatch(getErrorMessage({status, statusText}))

@@ -1,6 +1,6 @@
 package capstone.backend.controller;
 
-import capstone.backend.security.model.Employee;
+import capstone.backend.security.model.EmployeeDTO;
 import capstone.backend.services.EmployeeService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ public class EmployeeController {
     }
 
     @GetMapping("")
-    public List<Employee> getAllEmployees(){
+    public List<EmployeeDTO> getAllEmployees(){
     return service.getAllEmployees();
 }
 

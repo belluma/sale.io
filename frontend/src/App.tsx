@@ -14,7 +14,7 @@ import MainView from './components/main-view/MainView';
 
 function App() {
   const dispatch = useAppDispatch();
-  dispatch(getEmployees);
+  dispatch(getEmployees());
   return (
       <React.Fragment>
       <CssBaseline/>
