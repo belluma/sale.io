@@ -4,6 +4,7 @@ import capstone.backend.security.model.Employee;
 import capstone.backend.security.model.EmployeeDTO;
 import capstone.backend.security.repository.EmployeeRepository;
 import capstone.backend.security.service.UserMapper;
+import capstone.backend.utils.TestUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.AfterEach;
@@ -42,8 +43,9 @@ class AuthControllerTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private EmployeeRepository userRepository;
+    private EmployeeRepository repo;
     private final UserMapper mapper = new UserMapper();
+    private final TestUtils utils = new TestUtils();
 
     @Value("${jwt.secret}")
     private String JWT_SECRET;
@@ -63,13 +65,13 @@ class AuthControllerTest {
 
     @AfterEach
     public void clearDb() {
-        userRepository.deleteAll();
+        repo.deleteAll();
     }
 
     @Test
     void login() {
-        EmployeeDTO user = sampleUser();
-        userRepository.save(userToSaveInRepo(user));
+        EmployeeDTO user = utils.sampleUserDTO();
+        repo.save(utils.userWithEncodedPassword(user));
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/login", user, String.class);
         Claims body = Jwts.parser()
                 .setSigningKey(JWT_SECRET)
@@ -81,18 +83,18 @@ class AuthControllerTest {
 
     @Test
     void loginFailsWithWrongPassword() {
-        EmployeeDTO user = sampleUser();
-        userRepository.save(userToSaveInRepo(user));
+        EmployeeDTO user = utils.sampleUserDTO();
+        repo.save(utils.userWithEncodedPassword(user));
         user.setPassword("123");
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/login", user, String.class);
         assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
     }
     @Test
     void loginFailsWithWrongUsername() {
-        EmployeeDTO user = sampleUser();
+        EmployeeDTO user = utils.sampleUserDTO();
         user.setPassword("1234");
         user.setUsername("wrong_username");
-        userRepository.save(mapper.mapUser(user));
+        repo.save(mapper.mapUser(user));
         user.setPassword("123");
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/login", user, String.class);
         assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
@@ -100,8 +102,8 @@ class AuthControllerTest {
 
     @Test
     void signupSavesUserAndReturnsLogin() {
-        EmployeeDTO user = sampleUser();
-        Employee savedUser = userToSaveInRepo(user);
+        EmployeeDTO user = utils.sampleUserDTO();
+        Employee savedUser = utils.userWithEncodedPassword(user);
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/signup", user, String.class);
         Claims body = Jwts.parser()
                 .setSigningKey(JWT_SECRET)
@@ -109,12 +111,12 @@ class AuthControllerTest {
                 .getBody();
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
         assertThat(body.getSubject(), equalTo("username"));
-        assertThat(userRepository.findById(user.getUsername()), is(Optional.of(savedUser)));
+        assertThat(repo.findByUsername(user.getUsername()), is(Optional.of(savedUser)));
     }
     @Test
     void signupFailsWhenUsernameAlreadyRegistered(){
-        EmployeeDTO user = sampleUser();
-        userRepository.save(mapper.mapUser(user));
+        EmployeeDTO user = utils.sampleUserDTO();
+        repo.save(UserMapper.mapUser(user));
         user.setPassword("1234");
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/signup", user, String.class);
         assertThat(response.getStatusCode(), equalTo(HttpStatus.NOT_ACCEPTABLE));
@@ -125,27 +127,15 @@ class AuthControllerTest {
     void signupFailsWhenLackingInformation(EmployeeDTO user){
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/signup", user, String.class);
         assertThat(response.getStatusCode(), equalTo(HttpStatus.NOT_ACCEPTABLE));
-        assertThat(userRepository.findById(user.getUsername()), is(Optional.empty()));
+        assertThat(repo.findByUsername(user.getUsername()), is(Optional.empty()));
     }
 
     private static Stream<Arguments> provideArgumentsForSignupFailsWhenLackingInformation(){
         return Stream.of(
-//                Arguments.of(new EmployeeDTO("", "234")),
-//                Arguments.of(new EmployeeDTO("username", ""))
+                Arguments.of(new EmployeeDTO("", "234")),
+                Arguments.of(new EmployeeDTO("username", ""))
         );
     }
 
-    private EmployeeDTO sampleUser() {
-        return EmployeeDTO
-                .builder()
-                .username("username")
-                .password("password")
-                .build();
-    }
 
-    private Employee userToSaveInRepo(EmployeeDTO user) {
-        Employee userToSave = mapper.mapUser(user);
-        userToSave.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userToSave;
-    }
 }
