@@ -18,7 +18,7 @@ function Details(props: Props) {
     const dispatch = useAppDispatch();
     const showDetails = useAppSelector(selectShowDetails);
     const detailsData = useAppSelector(selectDetailsData);
-    const {title, subtitle, picture, id, alt, model} = detailsData;
+    const {title, subtitle, picture,  alt, model} = detailsData;
 
     const handleClose = () => {
         dispatch(hideDetails());

@@ -13,7 +13,6 @@ function StartView(props: Props){
     const loggedIn = useAppSelector(selectLoggedIn);
     return(
        !loggedIn ? <Redirect to={'/login'} /> : <div>StartView</div>
-       // <div>StartView</div>
     )
 }
 
