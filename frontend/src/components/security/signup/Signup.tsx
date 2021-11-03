@@ -1,17 +1,15 @@
 import React, {ChangeEvent, useState} from 'react'
-import {useAppDispatch, useAppSelector} from '../../../app/hooks';
+import {useAppDispatch} from '../../../app/hooks';
 import { registerAdmin } from '../../../slicer/authSlice';
 
 
 
 //component imports
 import {Button, Divider, FormGroup, TextField} from '@mui/material';
-
 import {Card, CardHeader} from '@mui/material';
 
 //interface imports
 import { ICredentials } from '../../../interfaces/IEmployee';
-import {selectEmployees} from "../../../slicer/employeeSlice";
 
 type Props = {};
 
@@ -37,10 +35,6 @@ const handleInput = (e:ChangeEvent<HTMLInputElement>) => {
             setButtonDisabled(false);
         }
     }
-
-    // const employees = useAppSelector(selectEmployees);
-    // console.log(employees)
-
     return (
         <Card>
             <CardHeader title="Choose your administrator Password" align="center"/>

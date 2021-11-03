@@ -1,4 +1,7 @@
 import React from 'react'
+import { useAppSelector } from '../../../../app/hooks';
+import { selectEmployees } from '../../../../slicer/employeeSlice';
+import GridView from "../../grid-view/GridView";
 
 //component imports
 
@@ -7,8 +10,9 @@ import React from 'react'
 type Props = {};
 
 function StartView(props: Props){
+    const employees = useAppSelector(selectEmployees);
     return(
-       <div>StartView</div>
+      <GridView gridItems={employees} />
     )
 }
 

@@ -1,4 +1,5 @@
 export interface ICredentials {
+    username?: String,
     firstName?: string,
     lastName?: string,
     password?: string,

@@ -4,10 +4,11 @@ import {getErrorMessage} from "./errorSlice";
 import {getAllEmployees} from "../services/employeeService";
 import { IResponseGetAllEmployees} from "../interfaces/IApiResponse";
 import { IEmployeeState } from '../interfaces/IStates';
+import { IEmployee } from '../interfaces/IEmployee';
 
 
 const initialState:IEmployeeState = {
-    employees: undefined,
+    employees: [],
     currentEmployee: undefined,
     pending: false,
 }
@@ -15,7 +16,6 @@ const initialState:IEmployeeState = {
 export const getEmployees = createAsyncThunk(
     'login',
     async (_, thunkAPI) => {
-        console.log(123)
         const {data, status, statusText} = await getAllEmployees();
         if (status !== 200) {
             thunkAPI.dispatch(getErrorMessage({status, statusText}))
@@ -28,7 +28,11 @@ export const getEmployees = createAsyncThunk(
 export const employeeSlice = createSlice({
     name: 'employee',
     initialState,
-    reducers: {},
+    reducers: {
+        chooseCurrentEmployee:(state, action:PayloadAction<IEmployee>) => {
+            state.currentEmployee = action.payload;
+        }
+    },
     extraReducers: (builder => {
         builder.addCase(getEmployees.pending, state => {
             state.pending = true;
@@ -44,6 +48,7 @@ export const employeeSlice = createSlice({
 })
 
 
+export const {chooseCurrentEmployee}= employeeSlice.actions;
 
 export const selectEmployees = (state: RootState) => state.employee.employees;
 export const selectCurrentEmployee = (state: RootState) => state.employee.currentEmployee;

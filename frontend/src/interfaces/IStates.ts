@@ -1,7 +1,7 @@
 import { IEmployee } from "./IEmployee";
 
 export interface IEmployeeState {
-    employees: IEmployee[] | undefined,
+    employees: IEmployee[],
     currentEmployee: IEmployee | undefined,
     pending: boolean
 }

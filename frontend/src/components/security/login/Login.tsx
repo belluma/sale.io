@@ -6,16 +6,17 @@ import {Divider, TextField, CardHeader, FormGroup, Button, Card } from '@mui/mat
 
 import {ICredentials, IEmployee } from '../../../interfaces/IEmployee';
 import { login } from '../../../slicer/authSlice';
-import { useAppDispatch } from '../../../app/hooks';
+import {useAppDispatch, useAppSelector} from '../../../app/hooks';
+import {selectCurrentEmployee} from "../../../slicer/employeeSlice";
 
 type Props = {
-    employee:IEmployee
+
 };
 
-function Login({employee}: Props){
+function Login(props: Props){
     const dispatch = useAppDispatch();
-    const {firstName, lastName} = employee;
-    const [credentials, setsCredentials] = useState<ICredentials>({firstName, lastName})
+    const employee = useAppSelector(selectCurrentEmployee)
+    const [credentials, setsCredentials] = useState<ICredentials>({username: employee?.username})
 
     const handleInput = (e:ChangeEvent<HTMLInputElement>) => {
         setsCredentials({...credentials, password:e.target.value})
@@ -25,7 +26,7 @@ function Login({employee}: Props){
     }
     return(
         <Card>
-            <CardHeader title="Choose your administrator Password" align="center"/>
+            <CardHeader title={`Hello ${employee?.firstName} enter your password to login`} align="center"/>
             <Divider/>
             <FormGroup>
                 <TextField sx={{my: 1}} required label="Password" type="password" onChange={handleInput}/>

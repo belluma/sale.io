@@ -1,10 +1,9 @@
 import React from 'react'
 import {selectEmployees, selectPending} from "../../../slicer/employeeSlice";
 import {useAppSelector} from "../../../app/hooks";
-import StartView from '../views/start-view/StartView';
-import {Redirect, Route} from "react-router";
 
 //component imports
+import {Redirect} from "react-router";
 
 //interface imports
 
