@@ -6,6 +6,7 @@ import {registerAdmin as registerAsAdmin, sendLoginData} from "../services/authS
 import {validateToken} from "../services/jwtService";
 import {IResponseData} from "../interfaces/IApiResponse";
 import { IAuthState } from "../interfaces/IStates";
+import history from "../services/history"
 
 const initialState :IAuthState = {
     loggedIn: false,
@@ -42,6 +43,7 @@ export const Authentication = createSlice({
             state.token = "";
             localStorage.removeItem("SaleioToken");
             state.loggedIn = false;
+            history.push('/start')
         },
         loginFromStorage: (state) => {
             const token = localStorage.getItem("SaleioToken");

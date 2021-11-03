@@ -1,10 +1,11 @@
 import React, {useEffect, useState } from 'react'
+import {useAppDispatch} from "../../app/hooks";
+import {logout} from "../../slicer/authSlice";
 
 //component imports
 import { AppBar, IconButton, Slide, Toolbar, Typography, useScrollTrigger } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
-import {useAppDispatch} from "../../app/hooks";
-import {logout} from "../../slicer/authSlice";
+
 //interface imports
 
 type Props = {
