@@ -1,5 +1,6 @@
 import axios from "axios";
 import {parseError} from './errorService';
+import {IProduct} from "../interfaces/IProduct";
 
 
 export const getAllProducts = (token: string) => {
