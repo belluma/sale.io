@@ -2,7 +2,6 @@ package capstone.backend.services;
 
 
 import capstone.backend.mapper.ProductMapper;
-import capstone.backend.model.db.Product;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.model.exception.ProductIdAlreadyTakenException;
 import capstone.backend.model.exception.ProductNotFoundException;
@@ -54,9 +53,7 @@ public class ProductService {
                 .isEmpty()) {
             throw new ProductNotFoundException(String.format("Couldn't find a product with the id %d", product.getId()));
         }
-        Product editedProduct = repo.save(ProductMapper.mapProduct(product));
-        return ProductMapper.mapProductWithDetails(editedProduct);
-//        return ProductMapper.mapProductWithDetails(repo
-//                .save(ProductMapper.mapProduct(product)));
+        return ProductMapper.mapProductWithDetails(repo
+                .save(ProductMapper.mapProduct(product)));
     }
 }

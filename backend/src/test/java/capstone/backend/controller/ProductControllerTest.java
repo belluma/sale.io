@@ -1,9 +1,9 @@
 package capstone.backend.controller;
 
 import capstone.backend.mapper.ProductMapper;
+import capstone.backend.model.db.Product;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.repo.ProductRepo;
-import capstone.backend.security.model.EmployeeDTO;
 import capstone.backend.utils.ControllerTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,9 +21,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.util.Arrays;
 import java.util.List;
 
-import static capstone.backend.utils.EmployeeTestUtils.sampleUser;
-import static capstone.backend.utils.ProductTestUtils.sampleProduct;
-import static capstone.backend.utils.ProductTestUtils.sampleProductDTOWithDetails;
+import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
+import static capstone.backend.utils.ProductTestUtils.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
@@ -75,29 +74,59 @@ class ProductControllerTest {
 
     @Test
     void getAllProductsWithDetails() {
-        repo.save(sampleProduct());
+        Product product = repo.save(sampleProduct());
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         ResponseEntity<ProductDTO[]> response = restTemplate.exchange("/api/product", HttpMethod.GET, new HttpEntity<>(headers), ProductDTO[].class);
+        ProductDTO expected = mapProductWithDetails(product);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertIterableEquals(Arrays.asList(response.getBody()), List.of(mapper.mapProductWithDetails(sampleProduct())));
+        assertIterableEquals(Arrays.asList(response.getBody()), List.of(expected));
     }
 
     @Test
     void getProductDetails() {
-        repo.save(sampleProduct());
+        Product product = repo.save(sampleProduct());
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
-        ProductDTO product = sampleProductDTOWithDetails();
-        ResponseEntity<ProductDTO> response = restTemplate.exchange("/api/product", HttpMethod.GET, new HttpEntity<>(product, headers), ProductDTO.class);
+        ResponseEntity<ProductDTO> response = restTemplate.exchange("/api/product/" + product.getId(), HttpMethod.GET, new HttpEntity<>(headers), ProductDTO.class);
+        ProductDTO expected = mapProductWithDetails(product);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), is(product));
-        assertIterableEquals(Arrays.asList(response.getBody()), List.of(mapper.mapProductWithDetails(sampleProduct())));
+        assertThat(response.getBody(), is(expected));
+    }
+
+    @Test
+    void getProductDetailsReturnsNotFoundWhenProductNonExistant(){
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        ResponseEntity<ProductDTO> response = restTemplate.exchange("/api/product/1", HttpMethod.GET, new HttpEntity<>(headers), ProductDTO.class);
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
+        assertThat(response.getBody(), is("Couldn't find a product with the id 1"));
     }
 
     @Test
     void createProduct() {
+        ProductDTO product = sampleProductDTOWithDetailsWithId();
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        ResponseEntity<ProductDTO> response = restTemplate.exchange("/api/product/", HttpMethod.POST, new HttpEntity<>(product, headers), ProductDTO.class);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(repo.findAll().size(), is(1));
     }
 
     @Test
     void editProduct() {
+        Product product = repo.save(sampleProduct());
+        ProductDTO productToEdit = mapProductWithDetails(product);
+        productToEdit.setRetailPrice(99.99F);
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        ResponseEntity<ProductDTO> response = restTemplate.exchange("/api/product/" + product.getId(), HttpMethod.PUT, new HttpEntity<>(productToEdit, headers), ProductDTO.class);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getRetailPrice(), is(99.99F));
     }
+
+    @Test
+    void editProductFailsWhenProductNonExistant(){
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        ProductDTO productToEdit = sampleProductDTOWithDetailsWithId();
+        ResponseEntity<ProductDTO> response = restTemplate.exchange("/api/product/1", HttpMethod.PUT, new HttpEntity<>(productToEdit,headers), ProductDTO.class);
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
+        assertThat(response.getBody(), is("Couldn't find a product with the id 1"));
+    }
+
 }

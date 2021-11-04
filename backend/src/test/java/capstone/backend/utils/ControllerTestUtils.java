@@ -23,7 +23,7 @@ public class ControllerTestUtils {
     }
 
     public HttpHeaders createHeadersWithJwtAuth() {
-
+        repo.deleteAll();
         Employee user = new Employee("user", passwordEncoder.encode("1234"));
         repo.save(user);
         EmployeeDTO loginData = new EmployeeDTO("user", "1234");
@@ -32,4 +32,4 @@ public class ControllerTestUtils {
         headers.setBearerAuth(response.getBody());
         return headers;
     }
-    }
+}
