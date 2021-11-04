@@ -33,7 +33,8 @@ export const employeeSlice = createSlice({
             const employee = state.employees.filter(e => e.username === action.payload)[0];
             state.currentEmployee = employee
             state.currentEmployeeCredentials = extractCredentials(employee);
-        }
+        },
+        toBeReplaced: (state, action:PayloadAction<string>) => {}
     },
     extraReducers: (builder => {
         builder.addCase(getEmployees.pending, state => {
@@ -50,7 +51,7 @@ export const employeeSlice = createSlice({
 })
 
 
-export const {chooseCurrentEmployee} = employeeSlice.actions;
+export const {chooseCurrentEmployee, toBeReplaced} = employeeSlice.actions;
 
 export const selectEmployees = (state: RootState) => state.employee.employees;
 export const selectCurrentEmployee = (state: RootState) => state.employee.currentEmployee;

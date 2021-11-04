@@ -6,9 +6,9 @@ import {images} from '../helpers'
 import {Card, CardHeader, CardMedia} from "@mui/material";
 
 //interface imports
-import {IDetailsData, Model} from '../../../../interfaces/IThumbnailData';
+import {IDetailsData, Views} from '../../../../interfaces/IThumbnailData';
 import {setDetailData, showDetails} from "../../../../slicer/detailsSlice";
-import {chooseCurrentEmployee} from "../../../../slicer/employeeSlice";
+import {chooseCurrentEmployee, toBeReplaced} from "../../../../slicer/employeeSlice";
 
 type Props = {
     data: IDetailsData
@@ -19,12 +19,17 @@ function Thumbnail({data}: Props) {
     const {title, subtitle, picture, id, alt, model} = data;
     const dispatch = useAppDispatch();
     const selectors = {
+        none: toBeReplaced,
         login: chooseCurrentEmployee,
+        employees: toBeReplaced,
+        products: toBeReplaced,
+        customers: toBeReplaced,
+        suppliers: toBeReplaced,
     }
     const onClick = () => {
         dispatch(setDetailData(data));
         dispatch(showDetails());
-        if (model !== Model.NONE && id) dispatch(selectors[model](id))
+        if (model !== Views.NONE && id) dispatch(selectors[model](id))
     }
 
     return (

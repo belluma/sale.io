@@ -12,18 +12,17 @@ import Login from "../../../security/login/Login";
 type Props = {};
 
 
-
 function Details(props: Props) {
-    const [scroll, setScroll] = React.useState<DialogProps['scroll']>('paper');
+    const [scroll] = React.useState<DialogProps['scroll']>('paper');
     const dispatch = useAppDispatch();
     const showDetails = useAppSelector(selectShowDetails);
     const detailsData = useAppSelector(selectDetailsData);
-    const {title, subtitle, picture,  alt, model} = detailsData;
+    const {title, subtitle, picture, alt, model} = detailsData;
 
     const descriptionElementRef = React.useRef<HTMLDivElement>(null);
     React.useEffect(() => {
         if (showDetails) {
-            const { current: descriptionElement } = descriptionElementRef;
+            const {current: descriptionElement} = descriptionElementRef;
             if (descriptionElement !== null) {
                 descriptionElement.focus();
             }
@@ -34,25 +33,29 @@ function Details(props: Props) {
     }
     const cardContent = {
         none: (<div/>),
-        login: <Login />,
+        login: <Login/>,
+        employees: (<div/>),
+        products: (<div/>),
+        customers: (<div/>),
+        suppliers: (<div/>),
 
     }
     return (
         <Dialog open={showDetails} onClose={handleClose}>
             <DialogContent dividers={scroll === 'paper'}>
-            <Card sx={{width:400 ,justifyContent:"center"}} ref={descriptionElementRef}>
-                <CardHeader title={title} subtitle={subtitle} align="center"/>
-                <Divider/>
-                <CardMedia
-                    component="img"
-                    sx={{width:400}}
-                    image={picture || images[model]}
-                    alt={alt}
-                />
-                <CardContent>
-                    {cardContent[model]}
-                </CardContent>
-            </Card>
+                <Card sx={{width: 400, justifyContent: "center"}} ref={descriptionElementRef}>
+                    <CardHeader title={title} subtitle={subtitle} align="center"/>
+                    <Divider/>
+                    <CardMedia
+                        component="img"
+                        sx={{width: 400}}
+                        image={picture || images[model]}
+                        alt={alt}
+                    />
+                    <CardContent>
+                        {cardContent[model]}
+                    </CardContent>
+                </Card>
             </DialogContent>
         </Dialog>
     )

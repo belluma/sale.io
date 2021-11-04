@@ -1,5 +1,5 @@
 import {ICredentials, IEmployee} from "./IEmployee";
-import {IDetailsData, Model} from "./IThumbnailData";
+import {IDetailsData, Views} from "./IThumbnailData";
 import {IProduct} from "./IProduct";
 
 export interface IEmployeeState {
@@ -25,7 +25,7 @@ export const initialDetailsData:IDetailsData = {
     picture: "",
     id: "",
     alt: "",
-    model: Model.NONE
+    model: Views.NONE
 }
 
 export interface IProductsState {
