@@ -1,3 +1,4 @@
+import {Views} from "../../interfaces/IThumbnailData";
 
 export const images = {
     none: '',
@@ -7,3 +8,5 @@ export const images = {
     customers:'',
     suppliers:'',
 }
+
+export const views = (Object.keys(Views) as Array<keyof typeof Views>).map(v => v).filter((v,i) => i > 1);

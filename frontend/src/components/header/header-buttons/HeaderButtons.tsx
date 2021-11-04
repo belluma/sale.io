@@ -9,6 +9,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 //interface imports
 import {Views} from "../../../interfaces/IThumbnailData";
 import {useHistory} from "react-router";
+import {views} from "../../main-view/helpers";
 
 type Props = {};
 
@@ -19,7 +20,6 @@ function HeaderButtons(props: Props) {
     const dispatch = useAppDispatch();
     const loggedIn = useAppSelector(selectLoggedIn);
     const handleLogout = () => dispatch(logout());
-    const views = (Object.keys(Views) as Array<keyof typeof Views>).map(v => v).filter((v,i) => i > 1);
     const buttons = views.map((view) => <Button key={view} name={view} onClick={reroute}>{view}</Button>)
     return (
         <Toolbar sx={{mb: 1, alignItems: "stretch", justifyContent: "space-between"}}>

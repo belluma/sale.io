@@ -1,6 +1,6 @@
 import React from 'react'
 import {useAppDispatch} from '../../../../app/hooks';
-import {images} from '../helpers'
+import {images} from '../../helpers'
 
 //component imports
 import {Card, CardHeader, CardMedia} from "@mui/material";

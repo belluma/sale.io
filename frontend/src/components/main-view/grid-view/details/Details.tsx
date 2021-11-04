@@ -1,7 +1,7 @@
 import React from 'react'
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
 import {hideDetails, selectDetailsData, selectShowDetails} from "../../../../slicer/detailsSlice";
-import {images} from '../helpers'
+import {images} from '../../helpers'
 
 //component imports
 import {Card, CardContent, CardHeader, CardMedia, Dialog, DialogContent, DialogProps, Divider} from "@mui/material";
