@@ -4,7 +4,7 @@ import {hideDetails, selectDetailsData, selectShowDetails} from "../../../../sli
 import {images} from '../helpers'
 
 //component imports
-import {Card, CardContent, CardHeader, CardMedia, Dialog, Divider} from "@mui/material";
+import {Card, CardContent, CardHeader, CardMedia, Dialog, DialogContent, DialogProps, Divider} from "@mui/material";
 import Login from "../../../security/login/Login";
 
 //interface imports
@@ -14,12 +14,21 @@ type Props = {};
 
 
 function Details(props: Props) {
-
+    const [scroll, setScroll] = React.useState<DialogProps['scroll']>('paper');
     const dispatch = useAppDispatch();
     const showDetails = useAppSelector(selectShowDetails);
     const detailsData = useAppSelector(selectDetailsData);
     const {title, subtitle, picture,  alt, model} = detailsData;
 
+    const descriptionElementRef = React.useRef<HTMLDivElement>(null);
+    React.useEffect(() => {
+        if (showDetails) {
+            const { current: descriptionElement } = descriptionElementRef;
+            if (descriptionElement !== null) {
+                descriptionElement.focus();
+            }
+        }
+    }, [showDetails]);
     const handleClose = () => {
         dispatch(hideDetails());
     }
@@ -30,7 +39,8 @@ function Details(props: Props) {
     }
     return (
         <Dialog open={showDetails} onClose={handleClose}>
-            <Card sx={{width:400 ,justifyContent:"center"}}>
+            <DialogContent dividers={scroll === 'paper'}>
+            <Card sx={{width:400 ,justifyContent:"center"}} ref={descriptionElementRef}>
                 <CardHeader title={title} subtitle={subtitle} align="center"/>
                 <Divider/>
                 <CardMedia
@@ -43,6 +53,7 @@ function Details(props: Props) {
                     {cardContent[model]}
                 </CardContent>
             </Card>
+            </DialogContent>
         </Dialog>
     )
 }
