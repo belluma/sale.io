@@ -20,7 +20,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.util.Arrays;
 import java.util.List;
 
-import static capstone.backend.utils.TestUtils.sampleUser;
+import static capstone.backend.utils.EmployeeTestUtils.sampleUser;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
