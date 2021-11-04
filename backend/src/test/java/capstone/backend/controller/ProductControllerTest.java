@@ -95,9 +95,9 @@ class ProductControllerTest {
     @Test
     void getProductDetailsReturnsNotFoundWhenProductNonExistant(){
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
-        ResponseEntity<ProductDTO> response = restTemplate.exchange("/api/product/1", HttpMethod.GET, new HttpEntity<>(headers), ProductDTO.class);
+        ResponseEntity<ProductDTO> response = restTemplate.exchange("/api/product/12", HttpMethod.GET, new HttpEntity<>(headers), ProductDTO.class);
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
-        assertThat(response.getBody(), is("Couldn't find a product with the id 1"));
+        assertThat(response.getBody(), is("Couldn't find a product with the id 12"));
     }
 
     @Test
@@ -125,8 +125,9 @@ class ProductControllerTest {
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         ProductDTO productToEdit = sampleProductDTOWithDetailsWithId();
         ResponseEntity<ProductDTO> response = restTemplate.exchange("/api/product/1", HttpMethod.PUT, new HttpEntity<>(productToEdit,headers), ProductDTO.class);
-        assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
-        assertThat(response.getBody(), is("Couldn't find a product with the id 1"));
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
+        assertThat(response.getBody(), is(String.format("Couldn't find a product with the id %d", productToEdit.getId())));
+
     }
 
 }
