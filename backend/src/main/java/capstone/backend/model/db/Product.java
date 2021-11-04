@@ -18,6 +18,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String name;
     @ManyToMany
     @ToString.Exclude
     private List<Supplier> suppliers;

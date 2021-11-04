@@ -14,7 +14,7 @@ import java.util.List;
 public class ProductDTO {
 
     private Long id;
-
+    private String name;
     private List<Supplier> suppliers;
     private String stockCodeSupplier;
     private Category category;
