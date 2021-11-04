@@ -2,7 +2,6 @@ package capstone.backend.services;
 
 
 import capstone.backend.mapper.ProductMapper;
-import capstone.backend.model.db.Product;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.model.exception.ProductIdAlreadyTakenException;
 import capstone.backend.model.exception.ProductNotFoundException;
@@ -10,7 +9,6 @@ import capstone.backend.repo.ProductRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductService {

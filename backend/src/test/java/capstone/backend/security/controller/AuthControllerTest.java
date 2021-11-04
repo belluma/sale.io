@@ -110,7 +110,7 @@ class AuthControllerTest {
     void signupFailsWhenInvalidPassword() {
         EmployeeDTO user = new EmployeeDTO("username", "");
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/signup", user, String.class);
-        assertThat(response.getStatusCode(), equalTo(HttpStatus.NOT_ACCEPTABLE));
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
         assertThat(repo.findAll().size(), is(0));
     }
 
