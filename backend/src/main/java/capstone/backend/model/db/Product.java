@@ -11,6 +11,7 @@ import java.util.List;
 @ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "products")
 public class Product {
