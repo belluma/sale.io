@@ -6,10 +6,10 @@ import {IResponseGetAllEmployees} from "../interfaces/IApiResponse";
 import {IEmployeeState} from '../interfaces/IStates';
 
 
-const initialState:IEmployeeState = {
+const initialState: IEmployeeState = {
     employees: [],
     currentEmployee: undefined,
-    currentEmployeeCredentials:undefined,
+    currentEmployeeCredentials: undefined,
     pending: false,
 }
 
@@ -29,9 +29,9 @@ export const employeeSlice = createSlice({
     name: 'employee',
     initialState,
     reducers: {
-        chooseCurrentEmployee:(state, action:PayloadAction<string>) => {
+        chooseCurrentEmployee: (state, action: PayloadAction<string>) => {
             console.log(action.payload)
-            const employee =state.employees.filter(e => e.username === action.payload)[0];
+            const employee = state.employees.filter(e => e.username === action.payload)[0];
             console.log(employee)
             state.currentEmployee = employee
             state.currentEmployeeCredentials = extractCredentials(employee);
@@ -52,11 +52,11 @@ export const employeeSlice = createSlice({
 })
 
 
-export const {chooseCurrentEmployee}= employeeSlice.actions;
+export const {chooseCurrentEmployee} = employeeSlice.actions;
 
 export const selectEmployees = (state: RootState) => state.employee.employees;
 export const selectCurrentEmployee = (state: RootState) => state.employee.currentEmployee;
 export const selectCurrentEmployeeCredentials = (state: RootState) => state.employee.currentEmployeeCredentials;
-export const selectPending = (state:RootState) => state.employee.pending;
+export const selectPending = (state: RootState) => state.employee.pending;
 
 export default employeeSlice.reducer;

@@ -14,7 +14,7 @@ type Props = {
 
 function GridView({gridItems}: Props){
 
-
+//TODO think about renaming to gallery
     const thumbnails = gridItems.map(item => <Grid  item key={item.id}><Thumbnail data={item}/></Grid>)
     return(
         <Grid container spacing={2} sx={{justifyContent: {md: "space-between", xs: "space-around"}}}>

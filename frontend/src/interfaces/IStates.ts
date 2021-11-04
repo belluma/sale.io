@@ -18,7 +18,7 @@ export interface IDetailsState {
     detailsData: IDetailsData ,
 }
 
-export const intitialDetailsData:IDetailsData = {
+export const initialDetailsData:IDetailsData = {
     title:"",
     subtitle:"",
     picture: "",
