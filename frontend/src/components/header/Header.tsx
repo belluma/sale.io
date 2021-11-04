@@ -34,7 +34,6 @@ function Header(props: Props){
             </Slide>
         );
     }
-    //TODO create extra component for appbar only
     return (
         <HideOnScroll {...props}>
             <AppBar sx={{bgcolor: 'primary.light'}}>
