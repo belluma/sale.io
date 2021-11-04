@@ -19,14 +19,13 @@ class EmployeeServiceTest {
     private final EmployeeRepo repo = mock(EmployeeRepo.class);
     private final EmployeeMapper mapper = new EmployeeMapper();
     private final EmployeeService service = new EmployeeService(repo, mapper);
-    private final EmployeeTestUtils utils = new EmployeeTestUtils();
 
 
     @Test
     void getAllEmployees() {
-        when(repo.findAll()).thenReturn(List.of(utils.sampleUser()));
+        when(repo.findAll()).thenReturn(List.of(EmployeeTestUtils.sampleUser()));
         List<EmployeeDTO> actual = service.getAllEmployees();
-        List<EmployeeDTO> expected = List.of(mapper.mapEmployeeAndConcealData(utils.sampleUser()));
+        List<EmployeeDTO> expected = List.of(mapper.mapEmployeeAndConcealData(EmployeeTestUtils.sampleUser()));
         assertIterableEquals( expected, actual);
         verify(repo).findAll();
     }

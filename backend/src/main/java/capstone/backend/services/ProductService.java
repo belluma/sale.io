@@ -2,8 +2,9 @@ package capstone.backend.services;
 
 
 import capstone.backend.mapper.ProductMapper;
+import capstone.backend.model.db.Product;
 import capstone.backend.model.dto.ProductDTO;
-import capstone.backend.model.exception.ProductAlreadyExistsException;
+import capstone.backend.model.exception.ProductIdAlreadyTakenException;
 import capstone.backend.model.exception.ProductNotFoundException;
 import capstone.backend.repo.ProductRepo;
 import org.springframework.stereotype.Service;
@@ -35,12 +36,14 @@ public class ProductService {
                 .orElseThrow(() -> new ProductNotFoundException(String.format("Couldn't find a product with the id %d", id)));
     }
 
-    public ProductDTO createProduct(ProductDTO product) throws ProductAlreadyExistsException {
+    public ProductDTO createProduct(ProductDTO product) throws ProductIdAlreadyTakenException {
         if (repo
                 .findById(product.getId())
                 .isPresent()) {
-            throw new ProductAlreadyExistsException(String.format("Product %s already has the id %d", product.getName(), product.getId()));
+            throw new ProductIdAlreadyTakenException(String.format("Product %s already has the id %d", product.getName(), product.getId()));
         }
+
+
         return ProductMapper.mapProductWithDetails(repo.
                 save(ProductMapper.mapProduct(product)));
     }
@@ -51,7 +54,9 @@ public class ProductService {
                 .isEmpty()) {
             throw new ProductNotFoundException(String.format("Couldn't find a product with the id %d", product.getId()));
         }
-        return ProductMapper.mapProductWithDetails(repo
-                .save(ProductMapper.mapProduct(product)));
+        Product editedProduct = repo.save(ProductMapper.mapProduct(product));
+        return ProductMapper.mapProductWithDetails(editedProduct);
+//        return ProductMapper.mapProductWithDetails(repo
+//                .save(ProductMapper.mapProduct(product)));
     }
 }

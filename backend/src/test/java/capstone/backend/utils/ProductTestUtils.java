@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ProductTestUtils {
 
-    public static ProductDTO sampleProductDTO() {
+    public static ProductDTO sampleProductDTOWithDetails() {
         return ProductDTO
                  .builder()
                 .id(123L)
@@ -22,7 +22,7 @@ public class ProductTestUtils {
 //                .suppliers(List.of(sampleSupplier()))
                 .build();
     }
-  public static Product sampleProductWithDetails() {
+  public static Product sampleProduct() {
         return Product
                  .builder()
                 .id(123L)
