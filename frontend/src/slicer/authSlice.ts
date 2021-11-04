@@ -6,6 +6,7 @@ import {registerAdmin as registerAsAdmin, sendLoginData} from "../services/authS
 import {validateToken} from "../services/jwtService";
 import {IResponseData} from "../interfaces/IApiResponse";
 import { IAuthState } from "../interfaces/IStates";
+import history from "../services/history"
 
 const initialState :IAuthState = {
     loggedIn: false,
@@ -34,19 +35,19 @@ export const registerAdmin = createAsyncThunk(
     }
 )
 
-
-
-
 export const Authentication = createSlice({
     name: 'login',
     initialState,
     reducers: {
         logout: (state) => {
-            localStorage.removeItem("appNameToken");
+            state.token = "";
+            localStorage.removeItem("SaleioToken");
             state.loggedIn = false;
+            history.push('/start')
         },
         loginFromStorage: (state) => {
-            const token = localStorage.getItem("appNameToken");
+            const token = localStorage.getItem("SaleioToken");
+            console.log(token)
             if (token && validateToken(token)) {
                 state.loggedIn = true;
                 state.token = token;
@@ -64,7 +65,7 @@ export const Authentication = createSlice({
                 }
                 state.loggedIn = true;
                 state.token = action.payload.data
-                localStorage.setItem('appNameToken', action.payload.data);
+                localStorage.setItem('SaleioToken', action.payload.data);
             })
             .addCase(registerAdmin.fulfilled, (state, action: PayloadAction<IResponseData>) => {
                 if (action.payload.status !== 200) {
@@ -72,7 +73,7 @@ export const Authentication = createSlice({
                 }
                 state.loggedIn = true;
                 state.token = action.payload.data
-                localStorage.setItem('appNameToken', action.payload.data);
+                localStorage.setItem('SaleioToken', action.payload.data);
             })
     }
 })

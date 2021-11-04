@@ -1,11 +1,12 @@
 import React, {ChangeEvent, useState} from 'react'
-import {useAppDispatch} from '../../../app/hooks';
+import {useAppDispatch, useAppSelector} from '../../../app/hooks';
 import {registerAdmin} from '../../../slicer/authSlice';
+import {selectEmployees} from "../../../slicer/employeeSlice";
 
 
 //component imports
-import {Button, Divider, FormGroup, TextField} from '@mui/material';
-import {Card, CardHeader} from '@mui/material';
+import {Card, CardHeader, Button, Divider, FormGroup, TextField} from '@mui/material';
+import {Redirect} from "react-router";
 
 //interface imports
 import {ICredentials, initialCredentials} from '../../../interfaces/IEmployee';
@@ -14,7 +15,7 @@ type Props = {};
 
 function Signup(props: Props) {
     const dispatch = useAppDispatch();
-
+    const employees = useAppSelector(selectEmployees);
     const [credentials, setCredentials] = useState<ICredentials>(initialCredentials);
     const [repeatedPassword, setRepeatedPassword] = useState<string>("");
     const [passwordConfirmed, setPasswordConfirmed] = useState<boolean>(false);
@@ -35,11 +36,11 @@ function Signup(props: Props) {
     }
     const confirmPassword = (e: ChangeEvent<HTMLInputElement>, repeat: boolean) => {
         const password = repeat ? credentials.password : repeatedPassword;
-        setPasswordConfirmed(password.length > 3 && password === e.target.value) ;
+        setPasswordConfirmed(password.length > 3 && password === e.target.value);
     }
 
     return (
-        <Card>
+        employees.length ? <Redirect to={"/login"}/> : <Card>
             <CardHeader title="Choose your administrator Password" align="center"/>
             <Divider/>
             <FormGroup>
@@ -51,7 +52,9 @@ function Signup(props: Props) {
                            label="password" type="password"/>
                 <TextField onChange={handleRepeatPassword} sx={{my: 1}} required value={repeatedPassword}
                            label="confirm password" type="password"/>
-                <Button disabled={!passwordConfirmed || !(credentials.firstName.length + credentials.lastName.length > 0)} type="submit" onClick={register}>Register</Button>
+                <Button
+                    disabled={!passwordConfirmed || ((credentials.firstName.length + credentials.lastName.length) < 1)}
+                    type="submit" onClick={register}>Register</Button>
             </FormGroup>
         </Card>
     )

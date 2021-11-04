@@ -1,18 +1,18 @@
 import React from 'react'
 import { useAppSelector } from '../../../../app/hooks';
-import { selectEmployees } from '../../../../slicer/employeeSlice';
-import GridView from "../../grid-view/GridView";
+import { selectLoggedIn } from '../../../../slicer/authSlice';
 
 //component imports
+import {Redirect} from "react-router";
 
 //interface imports
 
 type Props = {};
 
 function StartView(props: Props){
-    const employees = useAppSelector(selectEmployees);
+    const loggedIn = useAppSelector(selectLoggedIn);
     return(
-      <GridView gridItems={employees} />
+       !loggedIn ? <Redirect to={'/login'} /> : <div>StartView</div>
     )
 }
 
