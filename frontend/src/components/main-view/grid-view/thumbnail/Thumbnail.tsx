@@ -6,12 +6,12 @@ import {images} from '../../helpers'
 import {Card, CardHeader, CardMedia} from "@mui/material";
 
 //interface imports
-import {IDetailsData, Views} from '../../../../interfaces/IThumbnailData';
+import {IDetailsData, IThumbnailData, Views} from '../../../../interfaces/IThumbnailData';
 import {setDetailData, showDetails} from "../../../../slicer/detailsSlice";
 import {chooseCurrentEmployee, toBeReplaced} from "../../../../slicer/employeeSlice";
 
 type Props = {
-    data: IDetailsData
+    data: IThumbnailData
 }
 
 

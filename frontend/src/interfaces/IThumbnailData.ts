@@ -8,13 +8,16 @@ export enum Views {
     CUSTOMERS = "customers",
     SUPPLIERS = "suppliers",
 }
+export interface INewItem{
 
-export interface IThumbnailData {
-    title:string,
+}
+
+export interface IThumbnailData extends INewItem{
+    title: string,
     subtitle?:string,
-    picture: string | undefined,
-    id: string | undefined
-    alt: string,
+    id?: string | undefined
+    alt?: string,
+    picture?: string,
     model: Views,
 }
 export interface IDetailsData extends IThumbnailData{
