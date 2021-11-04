@@ -4,13 +4,13 @@ import capstone.backend.mapper.ProductMapper;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.repo.ProductRepo;
 import capstone.backend.security.model.EmployeeDTO;
+import capstone.backend.utils.ControllerTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -23,6 +23,7 @@ import java.util.List;
 
 import static capstone.backend.utils.EmployeeTestUtils.sampleUser;
 import static capstone.backend.utils.ProductTestUtils.sampleProduct;
+import static capstone.backend.utils.ProductTestUtils.sampleProductDTOWithDetails;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,6 +46,8 @@ class ProductControllerTest {
     PasswordEncoder passwordEncoder;
     @Autowired
     ProductMapper mapper;
+    @Autowired
+    ControllerTestUtils utils;
 
     @Container
     public static PostgreSQLContainer container = new PostgreSQLContainer()
@@ -73,7 +76,8 @@ class ProductControllerTest {
     @Test
     void getAllProductsWithDetails() {
         repo.save(sampleProduct());
-        ResponseEntity<ProductDTO[]> response = restTemplate.exchange("/api/product", ProductDTO[].class);
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        ResponseEntity<ProductDTO[]> response = restTemplate.exchange("/api/product", HttpMethod.GET, new HttpEntity<>(headers), ProductDTO[].class);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertIterableEquals(Arrays.asList(response.getBody()), List.of(mapper.mapProductWithDetails(sampleProduct())));
     }
@@ -81,8 +85,11 @@ class ProductControllerTest {
     @Test
     void getProductDetails() {
         repo.save(sampleProduct());
-        ResponseEntity<ProductDTO> response = restTemplate.exchange("/api/product", ProductDTO.class);
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        ProductDTO product = sampleProductDTOWithDetails();
+        ResponseEntity<ProductDTO> response = restTemplate.exchange("/api/product", HttpMethod.GET, new HttpEntity<>(product, headers), ProductDTO.class);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody(), is(product));
         assertIterableEquals(Arrays.asList(response.getBody()), List.of(mapper.mapProductWithDetails(sampleProduct())));
     }
 
