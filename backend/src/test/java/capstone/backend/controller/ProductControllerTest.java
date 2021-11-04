@@ -1,7 +1,8 @@
 package capstone.backend.controller;
 
-import capstone.backend.mapper.EmployeeMapper;
-import capstone.backend.repo.EmployeeRepo;
+import capstone.backend.mapper.ProductMapper;
+import capstone.backend.model.dto.ProductDTO;
+import capstone.backend.repo.ProductRepo;
 import capstone.backend.security.model.EmployeeDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,28 +22,29 @@ import java.util.Arrays;
 import java.util.List;
 
 import static capstone.backend.utils.EmployeeTestUtils.sampleUser;
+import static capstone.backend.utils.ProductTestUtils.sampleProduct;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class EmployeeControllerTest {
+class ProductControllerTest {
+
 
     @Autowired
-    EmployeeController controller;
+    ProductController controller;
     @Autowired
     GlobalExceptionHandler exceptionHandler;
     @Autowired
-    EmployeeRepo repo;
+    ProductRepo repo;
     @Autowired
     TestRestTemplate restTemplate;
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
-    EmployeeMapper mapper;
+    ProductMapper mapper;
 
     @Container
     public static PostgreSQLContainer container = new PostgreSQLContainer()
@@ -69,10 +71,26 @@ class EmployeeControllerTest {
 
 
     @Test
-    void getAllEmployees(){
-        repo.save(sampleUser());
-        ResponseEntity<EmployeeDTO[]> response = restTemplate.getForEntity("/api/employee", EmployeeDTO[].class);
+    void getAllProductsWithDetails() {
+        repo.save(sampleProduct());
+        ResponseEntity<ProductDTO[]> response = restTemplate.exchange("/api/product", ProductDTO[].class);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertIterableEquals(Arrays.asList(response.getBody()), List.of(mapper.mapEmployeeAndConcealData(sampleUser())));
+        assertIterableEquals(Arrays.asList(response.getBody()), List.of(mapper.mapProductWithDetails(sampleProduct())));
+    }
+
+    @Test
+    void getProductDetails() {
+        repo.save(sampleProduct());
+        ResponseEntity<ProductDTO> response = restTemplate.exchange("/api/product", ProductDTO.class);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertIterableEquals(Arrays.asList(response.getBody()), List.of(mapper.mapProductWithDetails(sampleProduct())));
+    }
+
+    @Test
+    void createProduct() {
+    }
+
+    @Test
+    void editProduct() {
     }
 }
