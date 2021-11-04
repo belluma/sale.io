@@ -1,5 +1,6 @@
 import {ICredentials, IEmployee} from "./IEmployee";
 import {IDetailsData, Model} from "./IThumbnailData";
+import {IProduct} from "./IProduct";
 
 export interface IEmployeeState {
     employees: IEmployee[],
@@ -25,4 +26,11 @@ export const initialDetailsData:IDetailsData = {
     id: "",
     alt: "",
     model: Model.NONE
+}
+
+export interface IProductsState {
+    products: IProduct[],
+    currentProduct: IProduct | undefined,
+    pending:boolean,
+
 }

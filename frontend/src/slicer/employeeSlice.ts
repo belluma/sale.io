@@ -30,9 +30,7 @@ export const employeeSlice = createSlice({
     initialState,
     reducers: {
         chooseCurrentEmployee: (state, action: PayloadAction<string>) => {
-            console.log(action.payload)
             const employee = state.employees.filter(e => e.username === action.payload)[0];
-            console.log(employee)
             state.currentEmployee = employee
             state.currentEmployeeCredentials = extractCredentials(employee);
         }
