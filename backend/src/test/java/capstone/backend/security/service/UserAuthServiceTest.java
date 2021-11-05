@@ -29,6 +29,7 @@ class UserAuthServiceTest {
 
     @Test
     void loadUserByUsername() {
+        //GIVEN
         Employee user = new Employee("username", "1234");
         when(repository.findByUsername("username")).thenReturn(Optional.of(user));
         UserDetails expected = User
@@ -36,35 +37,41 @@ class UserAuthServiceTest {
                 .password("1234")
                 .authorities("user")
                 .build();
-        assertThat(expected, is(service.loadUserByUsername("username")));
+        //WHEN
+        UserDetails actual = service.loadUserByUsername("username");
+        //THEN
+        assertThat(expected, is(actual));
         verify(repository).findByUsername("username");
     }
 
     @Test
     void loadUserByUsernameThrowsWhenUserIsNotFound() {
+        //GIVEN
         when(repository.findByUsername("username")).thenReturn(Optional.empty());
+        //THEN
         Exception ex = assertThrows(UsernameNotFoundException.class, () -> service.loadUserByUsername("username"));
         assertThat(ex.getMessage(), is("Username does not exist: username"));
         verify(repository).findByUsername("username");
 
     }
 
-
     @Test
     void signupFailsWhenUsernameAlreadyRegistered() {
+        //GIVEN
         EmployeeDTO user = new EmployeeDTO("username", "1234");
         when(repository.findByUsername("username")).thenReturn(Optional.of(mapEmployee(user)));
+        //THEN
         Exception ex = assertThrows(UserAlreadyExistsException.class, () -> service.signup(user));
         assertThat(ex.getMessage(), is("User with username username already exists"));
     }
 
-
-
     @Test
     void signupFailsWhenPasswordValidationFails() throws InvalidCredentialsException {
+        //GIVEN
         EmployeeDTO user = new EmployeeDTO("username", "1234");
         when(repository.findByUsername("username")).thenReturn(Optional.empty());
         doThrow(new InvalidCredentialsException("Invalid password")).when(utils).validatePassword("1234");
+        //THEN
         Exception ex = assertThrows(InvalidCredentialsException.class, () -> service.signup(user));
         assertThat(ex.getMessage(), is("Invalid password"));
     }
