@@ -3,7 +3,6 @@ import {ICredentials} from "../interfaces/IEmployee";
 import {parseError} from './errorService';
 
 export const sendLoginData = (credentials: ICredentials) => {
-    console.log(123)
     return axios({
         method: 'post',
         url: `/auth/login`,
