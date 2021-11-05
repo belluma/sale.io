@@ -14,15 +14,21 @@ type Props = {
 
 
 function CustomForm({model}: Props) {
+
+    const handleFormInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(e.target.value);
+        console.log(e.currentTarget.name);
+    }
     //@ts-ignore
     const {labels, formTypes} = formLabelsAndTypes[model];
     const forms = labels.map((label: string, i: number) => <CustomFormField key={i} label={label}
-                                                                            formType={formTypes[i]}/>)
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) =>{
+                                                                            formType={formTypes[i]}
+                                                                           />)
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         console.log(Object.keys(e.target))
     }
     return (
-        <form>{forms}<Button onClick={handleClick}>test</Button></form>
+        <div>{forms}<Button onClick={handleClick}>test</Button></div>
     )
 }
 

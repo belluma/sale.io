@@ -8,17 +8,18 @@ import TextInput from "./text-input/TextInput";
 //interface imports
 
 type Props = {
-    label:string,
-    formType:any,
-};
+    label: string,
+    formType: any,
+}
 
-function CustomFormField({label, formType}: Props){
+
+function CustomFormField({label, formType}: Props) {
     console.log(formType.length > 1)
 
-    return(
-       formType === 1 ? <NumberInput label={label}/> :
-           formType === "" ? <TextInput label={label}/> :
-               <CustomSelect label={label}/>
+    return (
+        formType === 1 ? <NumberInput label={label}/> :
+            formType === "" ? <TextInput label={label}/> :
+                <CustomSelect label={label}/>
     )
 }
 
