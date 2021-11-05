@@ -4,9 +4,12 @@ import React from 'react'
 
 //interface imports
 
-type Props = {};
+type Props = {
+    label:string,
+    formType:string,
+};
 
-function CustomFormField(props: Props){
+function CustomFormField({label, formType}: Props){
     return(
        <div>CustomFormField</div>
     )

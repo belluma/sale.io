@@ -1,7 +1,14 @@
 import {IEmployee} from "./IEmployee";
 import {IProduct} from "./IProduct";
 
-export enum Views {
+export enum Buttons {
+    EMPLOYEE = "employee",
+    PRODUCT = "product",
+    CUSTOMER = "customer",
+    SUPPLIER = "supplier",
+}
+
+export enum Views  {
     NEW = "new",
     LOGIN = "login",
     EMPLOYEE = "employee",

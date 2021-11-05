@@ -8,6 +8,7 @@ import {Card, CardContent, CardHeader, CardMedia, Divider} from "@mui/material";
 import Login from "../../../../security/login/Login";
 import CustomForm from "../../../../custom-form/CustomForm";
 import {useLocation} from "react-router";
+import {Buttons} from "../../../../../interfaces/IThumbnailData";
 
 //interface imports
 
@@ -17,8 +18,9 @@ function DetailsCard(props: Props){
     const detailsData = useAppSelector(selectDetailsData);
     const {title, subtitle, picture, alt, model} = detailsData;
     const path = useLocation().pathname.slice(1);
+    const formSelector = Object.values(Buttons).includes(path as Buttons) ? path : "none";
     const cardContent = {
-        new: <CustomForm model={path}/>,
+        new: <CustomForm model={formSelector}/>,
         login: <Login/>,
         employee: (<div/>),
         product: (<div/>),

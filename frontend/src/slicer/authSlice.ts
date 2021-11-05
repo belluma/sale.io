@@ -47,7 +47,6 @@ export const Authentication = createSlice({
         },
         loginFromStorage: (state) => {
             const token = localStorage.getItem("SaleioToken");
-            console.log(token)
             if (token && validateToken(token)) {
                 state.loggedIn = true;
                 state.token = token;
