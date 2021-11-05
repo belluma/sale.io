@@ -2,6 +2,8 @@ import React from 'react'
 import NumberInput from "./number-input/NumberInput";
 import CustomSelect from "./custom-select/CustomSelect";
 import TextInput from "./text-input/TextInput";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import {handleFormInput, selectItemToSave} from "../../../slicer/newItemSlice";
 
 //component imports
 
@@ -14,13 +16,16 @@ type Props = {
 
 
 function CustomFormField({label, formType}: Props) {
-    console.log(formType.length > 1)
+    const dispatch = useAppDispatch();
+    const itemToSave = useAppSelector(selectItemToSave)
+    const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const updatedValue = {[e.target.name]: e.target.value}
+        dispatch(handleFormInput({...itemToSave, ...updatedValue}))
+    }
+    if (formType === 1) return <NumberInput label={label} handleChange={handleInput}/>
+    if (formType === "") return <TextInput label={label} handleChange={handleInput}/>
+    return <CustomSelect label={label} handleChange={handleInput}/>
 
-    return (
-        formType === 1 ? <NumberInput label={label}/> :
-            formType === "" ? <TextInput label={label}/> :
-                <CustomSelect label={label}/>
-    )
 }
 
 export default CustomFormField;

@@ -1,26 +1,25 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {MenuItem, TextField} from "@mui/material";
+
 
 //component imports
 
+
 //interface imports
 
-type Props = {
-    label:string
-};
+import {IFormFieldProps} from "../../../../interfaces/INewItem";
 
-function CustomSelect({label}: Props){
-    const [state, setState] = useState();
-    const handleChange =(e:React.ChangeEvent<HTMLInputElement>) => {
+type Props = IFormFieldProps
 
-    }
-    const menuItems:string[] = []
+function CustomSelect({label, handleChange}: Props){
+
+       const menuItems:string[] = ["abc", "def"]
     return(
         <TextField
             id={label}
             select
             label={label}
-            value={state}
+            name={label}
             onChange={handleChange}
             helperText="Please select your currency"
         >

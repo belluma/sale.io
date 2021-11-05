@@ -1,26 +1,18 @@
 import React from 'react'
 import {TextField} from "@mui/material";
-import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
-import {handleFormInput, selectItemToSave} from "../../../../slicer/newItemSlice";
+import {IFormFieldProps} from "../../../../interfaces/INewItem";
 
 //component imports
 
 //interface imports
 
-type Props = {
-    label:string
-};
+type Props = IFormFieldProps
 
-function NumberInput({label}: Props){
-    const dispatch = useAppDispatch();
-    const itemToSave = useAppSelector(selectItemToSave)
-    const handleInput = (e:React.ChangeEvent<HTMLInputElement>) => {
-        const updatedValue = {[e.currentTarget.name]: e.target.value}
-        dispatch(handleFormInput({...itemToSave, ...updatedValue}))
-    }
+function NumberInput({label, handleChange}: Props){
+
     return(
         <TextField
-            onChange={handleInput}
+            onChange={handleChange}
             id={label}
             label={label}
             name={label}
