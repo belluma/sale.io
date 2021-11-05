@@ -1,6 +1,6 @@
 import React from 'react'
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
-import {hideDetails, selectShowDetails} from "../../../../slicer/detailsSlice";
+import {hideDetails, resetDetails, selectShowDetails} from "../../../../slicer/detailsSlice";
 
 //component imports
 import { Dialog, DialogContent, DialogProps} from "@mui/material";
@@ -25,6 +25,7 @@ function Details(props: Props) {
     }, [showDetails]);
     const handleClose = () => {
         dispatch(hideDetails());
+        dispatch(resetDetails());
     }
 
     return (

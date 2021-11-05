@@ -17,6 +17,9 @@ export const detailsSlice = createSlice({
         setDetailData: (state, action: PayloadAction<IDetailsData>) => {
             state.detailsData = action.payload
         },
+        resetDetails: (state) => {
+            state.detailsData = initialDetailsData
+        },
         showDetails: (state) => {
             state.showDetails = true;
         },
@@ -27,7 +30,7 @@ export const detailsSlice = createSlice({
 
 })
 
-export const {showDetails, hideDetails, setDetailData} = detailsSlice.actions;
+export const {showDetails, hideDetails, setDetailData, resetDetails} = detailsSlice.actions;
 
 export const selectShowDetails = (state: RootState) => state.details.showDetails;
 export const selectDetailsData = (state: RootState) => state.details.detailsData;
