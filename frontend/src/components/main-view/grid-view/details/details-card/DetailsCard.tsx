@@ -7,16 +7,18 @@ import {selectDetailsData} from "../../../../../slicer/detailsSlice";
 import {Card, CardContent, CardHeader, CardMedia, Divider} from "@mui/material";
 import Login from "../../../../security/login/Login";
 import CustomForm from "../../../../custom-form/CustomForm";
+import {useLocation} from "react-router";
 
 //interface imports
 
 type Props = {};
 
-function ExistingCard(props: Props){
+function DetailsCard(props: Props){
     const detailsData = useAppSelector(selectDetailsData);
     const {title, subtitle, picture, alt, model} = detailsData;
+    const path = useLocation().pathname.slice(1);
     const cardContent = {
-        new: <CustomForm />,
+        new: <CustomForm model={path}/>,
         login: <Login/>,
         employee: (<div/>),
         product: (<div/>),
@@ -41,4 +43,4 @@ function ExistingCard(props: Props){
     )
 }
 
-export default ExistingCard;
+export default DetailsCard;

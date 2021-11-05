@@ -4,9 +4,11 @@ import React from 'react'
 
 //interface imports
 
-type Props = {};
+type Props = {
+    model:string,
+};
 
-function CustomForm(props: Props){
+function CustomForm({model}: Props){
     return(
        <div>CustomForm</div>
     )

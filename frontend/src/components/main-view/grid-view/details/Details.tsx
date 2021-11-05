@@ -5,7 +5,7 @@ import {hideDetails, selectShowDetails} from "../../../../slicer/detailsSlice";
 //component imports
 import {Card, CardContent, CardHeader, CardMedia, Dialog, DialogContent, DialogProps, Divider} from "@mui/material";
 import Login from "../../../security/login/Login";
-import ExistingCard from "./existing-card/ExistingCard";
+import DetailsCard from "./details-card/DetailsCard";
 
 //interface imports
 
@@ -33,7 +33,7 @@ function Details(props: Props) {
         <Dialog open={showDetails} onClose={handleClose}>
             <DialogContent dividers={scroll === 'paper'}>
                 <div ref={descriptionElementRef}>
-                    <ExistingCard/>
+                    <DetailsCard/>
                 </div>
 
             </DialogContent>
