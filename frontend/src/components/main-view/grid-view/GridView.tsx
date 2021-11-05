@@ -9,10 +9,11 @@ import Details from "./details/Details";
 //interface imports
 
 type Props = {
-    gridItems:IThumbnailData[]
+    gridItems:IThumbnailData[],
+    login?:boolean,
 };
 
-function GridView({gridItems}: Props){
+function GridView({gridItems, login}: Props){
     const newItemData  = {
         title: `new item`,
         picture: '/pictures/add.svg',
@@ -21,7 +22,7 @@ function GridView({gridItems}: Props){
     const thumbnails = gridItems.map(item => <Grid  item key={item.id}><Thumbnail data={item}/></Grid>)
     return(
         <Grid container spacing={2} sx={{justifyContent: {md: "left", xs: "space-around"}}}>
-<Thumbnail data={newItemData} />
+            {!login && <Grid item><Thumbnail data={newItemData} /></Grid>}
             {thumbnails}
             <Details />
         </Grid>

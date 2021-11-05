@@ -16,7 +16,7 @@ function LoginView(props: Props){
     const loggedIn = useAppSelector(selectLoggedIn);
     const employees = useAppSelector(selectEmployees).map(employee => parseEmployeeToThumbnailData(employee));
     return(
-     loggedIn ? <Redirect to={'/start'} /> :  <GridView gridItems={employees} />
+     loggedIn ? <Redirect to={'/start'} /> :  <GridView gridItems={employees} login/>
     )
 }
 
