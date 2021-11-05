@@ -1,9 +1,10 @@
 export interface IProduct {
-    id: number,
+    id?: number,
     name: string,
     suppliers?: any[],
     stockCodeSupplier: string,
     category: Categories,
+    picture:string,
     purchasePrice: number,
     retailPrice: number,
     minAmount: number,

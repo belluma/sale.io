@@ -1,5 +1,4 @@
 import React from 'react'
-import GridView from "../../grid-view/GridView";
 
 //component imports
 
@@ -9,8 +8,7 @@ type Props = {};
 
 function Customers(props: Props){
     return(
-      <GridView gridItems={[]} />
-    )
+<div></div>    )
 }
 
 export default Customers;

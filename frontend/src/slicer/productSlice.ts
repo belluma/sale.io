@@ -20,6 +20,7 @@ export const getProducts = createAsyncThunk(
         //@ts-ignore
         const token = getState().login.token;
         const {data, status, statusText} = await getAllProducts(token);
+        console.log(data)
         if (status !== 200) {
             dispatch(getErrorMessage({status, statusText}))
         }
@@ -39,13 +40,14 @@ export const productSlice = createSlice({
     },
     extraReducers: (builder => {
         builder
-            .addCase(getEmployees.pending, state => {
+            .addCase(getProducts.pending, state => {
                 state.pending = true;
             })
-            .addCase(getEmployees.fulfilled, (state, action: PayloadAction<IResponseGetAllProducts>) => {
+            .addCase(getProducts.fulfilled, (state, action: PayloadAction<IResponseGetAllProducts>) => {
                 if (action.payload.status !== 200) {
                     return;
                 }
+                console.log(action.payload)
                 state.pending = false;
                 state.products = action.payload.data;
             })

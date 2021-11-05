@@ -1,4 +1,5 @@
 import {IEmployee} from "./IEmployee";
+import {IProduct} from "./IProduct";
 
 export enum Views {
     NONE = "none",
@@ -8,29 +9,53 @@ export enum Views {
     CUSTOMERS = "customers",
     SUPPLIERS = "suppliers",
 }
-export interface INewItem{
+
+export interface INewItem {
 
 }
 
-export interface IThumbnailData extends INewItem{
+export interface IThumbnailData extends INewItem {
     title: string,
-    subtitle?:string,
+    subtitle?: string,
     id?: string | undefined
     alt?: string,
     picture?: string,
     model: Views,
 }
-export interface IDetailsData extends IThumbnailData{
+
+export interface IDetailsData extends IThumbnailData {
 
 }
 
-export const parseEmployeeToThumbnailData = (employee:IEmployee):IDetailsData => {
+export const parseEmployeeToThumbnailData = ({firstName ,lastName, username, picture}: IEmployee): IDetailsData => {
     return {
-        title: `${employee.firstName} ${employee.lastName}`,
-        picture: employee.picture,
-        id:employee.username,
+        title: `${firstName} ${lastName}`,
+        picture: picture,
+        id: username,
         alt: "profile picture",
         model: Views.LOGIN
+
+    }
+}
+export const parseProductToThumbnailData = ({
+                                                id,
+                                                name,
+                                                suppliers,
+                                                stockCodeSupplier,
+                                                category,
+    picture,
+                                                purchasePrice,
+                                                retailPrice,
+                                                minAmount,
+                                                maxAmount,
+                                                unitSize
+                                            }: IProduct): IDetailsData => {
+    return {
+        title: name,
+        picture: picture,
+        id: id?.toString() || "",
+        alt: "product picture",
+        model: Views.PRODUCTS
 
     }
 }
