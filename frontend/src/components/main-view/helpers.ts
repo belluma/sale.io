@@ -5,10 +5,10 @@ export const views = (Object.keys(Views) as Array<keyof typeof Views>).map(v => 
 export const images = {
     new: '',
     login: '/images/profile.svg',
-    employees: '/images/profile.svg',
-    products: '',
-    customers: '',
-    suppliers: '',
+    employee: '/images/profile.svg',
+    product: '',
+    customer: '',
+    supplier: '',
 }
 export const newItemData = {
     picture:"images/add.svg",

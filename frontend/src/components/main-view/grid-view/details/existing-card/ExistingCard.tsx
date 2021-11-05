@@ -18,10 +18,10 @@ function ExistingCard(props: Props){
     const cardContent = {
         new: <CustomForm />,
         login: <Login/>,
-        employees: (<div/>),
-        products: (<div/>),
-        customers: (<div/>),
-        suppliers: (<div/>),
+        employee: (<div/>),
+        product: (<div/>),
+        customer: (<div/>),
+        supplier: (<div/>),
 
     }
     return(

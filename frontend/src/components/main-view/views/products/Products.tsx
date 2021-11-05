@@ -13,7 +13,7 @@ type Props = {};
 function Products(props: Props){
     const products = useAppSelector(selectProducts).map(product => parseProductToThumbnailData(product));
     return(
-     <GridView gridItems={products} view={Views.PRODUCTS}/>
+     <GridView gridItems={products} view={Views.PRODUCT}/>
     )
 }
 

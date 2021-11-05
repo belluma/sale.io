@@ -20,7 +20,7 @@ function HeaderButtons(props: Props) {
     const dispatch = useAppDispatch();
     const loggedIn = useAppSelector(selectLoggedIn);
     const handleLogout = () => dispatch(logout());
-    const buttons = views.map((view) => <Button key={view} name={view} onClick={reroute}>{view}</Button>)
+    const buttons = views.map((view) => <Button key={view} name={view} onClick={reroute}>{view}S</Button>)
     return (
         <Toolbar sx={{mb: 1, alignItems: "stretch", justifyContent: "space-between"}}>
             {buttons}

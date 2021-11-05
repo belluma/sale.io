@@ -21,10 +21,10 @@ function Thumbnail({data}: Props) {
     const selectors = {
         none: toBeReplaced,
         login: chooseCurrentEmployee,
-        employees: toBeReplaced,
-        products: toBeReplaced,
-        customers: toBeReplaced,
-        suppliers: toBeReplaced,
+        employee: toBeReplaced,
+        product: toBeReplaced,
+        customer: toBeReplaced,
+        supplier: toBeReplaced,
     }
     const onClick = () => {
         dispatch(setDetailData(data));

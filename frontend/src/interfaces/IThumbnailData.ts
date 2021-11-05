@@ -4,14 +4,13 @@ import {IProduct} from "./IProduct";
 export enum Views {
     NEW = "new",
     LOGIN = "login",
-    EMPLOYEES = "employees",
-    PRODUCTS = "products",
-    CUSTOMERS = "customers",
-    SUPPLIERS = "suppliers",
+    EMPLOYEE = "employee",
+    PRODUCT = "product",
+    CUSTOMER = "customer",
+    SUPPLIER = "supplier",
 }
 
 export interface INewItem {
-
 }
 
 export interface IThumbnailData extends INewItem {
@@ -55,7 +54,7 @@ export const parseProductToThumbnailData = ({
         picture: picture,
         id: id?.toString() || "",
         alt: "product picture",
-        model: Views.PRODUCTS
+        model: Views.PRODUCT
 
     }
 }
