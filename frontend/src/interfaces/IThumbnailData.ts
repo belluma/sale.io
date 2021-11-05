@@ -1,17 +1,24 @@
 import {IEmployee} from "./IEmployee";
 
-export enum Model {
+export enum Views {
     NONE = "none",
     LOGIN = "login",
+    EMPLOYEES = "employees",
+    PRODUCTS = "products",
+    CUSTOMERS = "customers",
+    SUPPLIERS = "suppliers",
+}
+export interface INewItem{
+
 }
 
-export interface IThumbnailData {
-    title:string,
+export interface IThumbnailData extends INewItem{
+    title: string,
     subtitle?:string,
-    picture: string | undefined,
-    id: string | undefined
-    alt: string,
-    model: Model,
+    id?: string | undefined
+    alt?: string,
+    picture?: string,
+    model: Views,
 }
 export interface IDetailsData extends IThumbnailData{
 
@@ -23,7 +30,7 @@ export const parseEmployeeToThumbnailData = (employee:IEmployee):IDetailsData =>
         picture: employee.picture,
         id:employee.username,
         alt: "profile picture",
-        model: Model.LOGIN
+        model: Views.LOGIN
 
     }
 }

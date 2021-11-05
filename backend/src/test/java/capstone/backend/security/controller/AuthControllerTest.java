@@ -1,10 +1,9 @@
 package capstone.backend.security.controller;
 
 import capstone.backend.mapper.EmployeeMapper;
-import capstone.backend.security.model.Employee;
 import capstone.backend.security.model.EmployeeDTO;
 import capstone.backend.security.repository.EmployeeRepository;
-import capstone.backend.utils.TestUtils;
+import capstone.backend.utils.EmployeeTestUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.junit.jupiter.api.AfterEach;
@@ -34,7 +33,7 @@ class AuthControllerTest {
     private TestRestTemplate restTemplate;
     @Autowired
     private EmployeeRepository repo;
-    private final TestUtils utils = new TestUtils();
+    private final EmployeeTestUtils utils = new EmployeeTestUtils();
 
     @Value("${jwt.secret}")
     private String JWT_SECRET;
@@ -59,7 +58,7 @@ class AuthControllerTest {
 
     @Test
     void login() {
-        EmployeeDTO user = TestUtils.sampleUserDTO();
+        EmployeeDTO user = EmployeeTestUtils.sampleUserDTO();
         repo.save(utils.userWithEncodedPassword(user));
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/login", user, String.class);
         Claims body = Jwts.parser()
@@ -72,7 +71,7 @@ class AuthControllerTest {
 
     @Test
     void loginFailsWithWrongPassword() {
-        EmployeeDTO user = TestUtils.sampleUserDTO();
+        EmployeeDTO user = EmployeeTestUtils.sampleUserDTO();
         repo.save(utils.userWithEncodedPassword(user));
         user.setPassword("123");
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/login", user, String.class);
@@ -81,7 +80,7 @@ class AuthControllerTest {
 
     @Test
     void loginFailsWithWrongUsername() {
-        EmployeeDTO user = TestUtils.sampleUserDTO();
+        EmployeeDTO user = EmployeeTestUtils.sampleUserDTO();
         user.setPassword("1234");
         user.setUsername("wrong_username");
         repo.save(EmployeeMapper.mapEmployee(user));
@@ -92,7 +91,7 @@ class AuthControllerTest {
 
     @Test
     void signupSavesUserAndReturnsLogin() {
-        EmployeeDTO user = TestUtils.sampleUserDTO();
+        EmployeeDTO user = EmployeeTestUtils.sampleUserDTO();
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/signup", user, String.class);
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
         assertThat(repo.findAll().size(), is(1));
@@ -100,7 +99,7 @@ class AuthControllerTest {
 
     @Test
     void signupFailsWhenUsernameAlreadyRegistered() {
-        EmployeeDTO user = TestUtils.sampleUserDTO();
+        EmployeeDTO user = EmployeeTestUtils.sampleUserDTO();
         repo.save(EmployeeMapper.mapEmployee(user));
         user.setPassword("1234");
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/signup", user, String.class);
@@ -111,7 +110,7 @@ class AuthControllerTest {
     void signupFailsWhenInvalidPassword() {
         EmployeeDTO user = new EmployeeDTO("username", "");
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/signup", user, String.class);
-        assertThat(response.getStatusCode(), equalTo(HttpStatus.NOT_ACCEPTABLE));
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
         assertThat(repo.findAll().size(), is(0));
     }
 

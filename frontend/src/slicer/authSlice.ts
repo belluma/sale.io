@@ -5,10 +5,10 @@ import {getErrorMessage} from "./errorSlice";
 import {registerAdmin as registerAsAdmin, sendLoginData} from "../services/authService";
 import {validateToken} from "../services/jwtService";
 import {IResponseData} from "../interfaces/IApiResponse";
-import { IAuthState } from "../interfaces/IStates";
+import {IAuthState} from "../interfaces/IStates";
 import history from "../services/history"
 
-const initialState :IAuthState = {
+const initialState: IAuthState = {
     loggedIn: false,
     token: ""
 }

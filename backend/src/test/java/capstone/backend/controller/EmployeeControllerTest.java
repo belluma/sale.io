@@ -20,7 +20,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.util.Arrays;
 import java.util.List;
 
-import static capstone.backend.utils.TestUtils.sampleUser;
+import static capstone.backend.utils.EmployeeTestUtils.sampleUser;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
@@ -50,7 +50,7 @@ class EmployeeControllerTest {
             .withUsername("pos")
             .withPassword("pos");
 
-    @DynamicPropertySource //https://rieckpil.de/howto-write-spring-boot-integration-tests-with-a-real-database/
+    @DynamicPropertySource
     static void postgresqlProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", container::getJdbcUrl);
         registry.add("spring.datasource.password", container::getPassword);

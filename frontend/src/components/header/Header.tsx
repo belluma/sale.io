@@ -1,10 +1,7 @@
 import React, {useEffect, useState } from 'react'
-import {useAppDispatch} from "../../app/hooks";
-import {logout} from "../../slicer/authSlice";
-
 //component imports
-import { AppBar, IconButton, Slide, Toolbar, Typography, useScrollTrigger } from '@mui/material';
-import LogoutIcon from '@mui/icons-material/Logout';
+import { AppBar, Slide, Toolbar, Typography, useScrollTrigger } from '@mui/material';
+import HeaderButtons from "./header-buttons/HeaderButtons";
 
 //interface imports
 
@@ -16,8 +13,6 @@ export default Header;
 
 function Header(props: Props){
     const [scrollTrigger, setScrollTrigger] = useState<boolean>(window.innerWidth < 900);
-    const dispatch = useAppDispatch();
-    const handleLogout = () => dispatch(logout());
     const handleResize = () => {
         if (window.innerWidth < 900 && !scrollTrigger) setScrollTrigger(true)
         if (window.innerWidth >= 900 && scrollTrigger) setScrollTrigger(false)
@@ -40,11 +35,7 @@ function Header(props: Props){
                 <Toolbar sx={{justifyContent: "space-between"}}>
                     <Typography>Saleio</Typography>
                 </Toolbar>
-                <Toolbar sx={{mb: 1, alignItems: "stretch", justifyContent: "space-between"}}>
-                    <IconButton onClick={handleLogout} edge="end">
-                        <LogoutIcon/>
-                    </IconButton>
-                </Toolbar>
+                <HeaderButtons />
             </AppBar>
         </HideOnScroll>
     )

@@ -2,7 +2,7 @@ name: Deploy App to Heroku Server
 on:
   push:
     branches:
-      - deploy
+      - main
 
 jobs:
   build-frontend:

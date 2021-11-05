@@ -1,12 +1,12 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import {IDetailsData} from "../interfaces/IThumbnailData";
-import {IDetailsState, intitialDetailsData} from "../interfaces/IStates";
+import {IDetailsState, initialDetailsData} from "../interfaces/IStates";
 
 
 const initialState: IDetailsState = {
     showDetails: false,
-    detailsData: intitialDetailsData,
+    detailsData: initialDetailsData,
 }
 
 

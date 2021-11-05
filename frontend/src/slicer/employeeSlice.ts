@@ -6,10 +6,10 @@ import {IResponseGetAllEmployees} from "../interfaces/IApiResponse";
 import {IEmployeeState} from '../interfaces/IStates';
 
 
-const initialState:IEmployeeState = {
+const initialState: IEmployeeState = {
     employees: [],
     currentEmployee: undefined,
-    currentEmployeeCredentials:undefined,
+    currentEmployeeCredentials: undefined,
     pending: false,
 }
 
@@ -29,13 +29,12 @@ export const employeeSlice = createSlice({
     name: 'employee',
     initialState,
     reducers: {
-        chooseCurrentEmployee:(state, action:PayloadAction<string>) => {
-            console.log(action.payload)
-            const employee =state.employees.filter(e => e.username === action.payload)[0];
-            console.log(employee)
+        chooseCurrentEmployee: (state, action: PayloadAction<string>) => {
+            const employee = state.employees.filter(e => e.username === action.payload)[0];
             state.currentEmployee = employee
             state.currentEmployeeCredentials = extractCredentials(employee);
-        }
+        },
+        toBeReplaced: (state, action:PayloadAction<string>) => {}
     },
     extraReducers: (builder => {
         builder.addCase(getEmployees.pending, state => {
@@ -52,11 +51,11 @@ export const employeeSlice = createSlice({
 })
 
 
-export const {chooseCurrentEmployee}= employeeSlice.actions;
+export const {chooseCurrentEmployee, toBeReplaced} = employeeSlice.actions;
 
 export const selectEmployees = (state: RootState) => state.employee.employees;
 export const selectCurrentEmployee = (state: RootState) => state.employee.currentEmployee;
 export const selectCurrentEmployeeCredentials = (state: RootState) => state.employee.currentEmployeeCredentials;
-export const selectPending = (state:RootState) => state.employee.pending;
+export const selectPending = (state: RootState) => state.employee.pending;
 
 export default employeeSlice.reducer;

@@ -1,5 +1,6 @@
 import {ICredentials, IEmployee} from "./IEmployee";
-import {IDetailsData, Model} from "./IThumbnailData";
+import {IDetailsData, Views} from "./IThumbnailData";
+import {IProduct} from "./IProduct";
 
 export interface IEmployeeState {
     employees: IEmployee[],
@@ -18,11 +19,18 @@ export interface IDetailsState {
     detailsData: IDetailsData ,
 }
 
-export const intitialDetailsData:IDetailsData = {
+export const initialDetailsData:IDetailsData = {
     title:"",
     subtitle:"",
     picture: "",
     id: "",
     alt: "",
-    model: Model.NONE
+    model: Views.NONE
+}
+
+export interface IProductsState {
+    products: IProduct[],
+    currentProduct: IProduct | undefined,
+    pending:boolean,
+
 }

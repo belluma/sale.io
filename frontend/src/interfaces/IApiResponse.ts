@@ -1,4 +1,5 @@
 import {IEmployee} from "./IEmployee";
+import { IProduct } from "./IProduct";
 
 interface IResponseBase {
     status: number,
@@ -11,4 +12,8 @@ export interface IResponseData extends IResponseBase{
 }
 export interface IResponseGetAllEmployees extends IResponseBase{
     data: IEmployee[];
+}
+
+export interface IResponseGetAllProducts extends IResponseBase{
+    data: IProduct[];
 }

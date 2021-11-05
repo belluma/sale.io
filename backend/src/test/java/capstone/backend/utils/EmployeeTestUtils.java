@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static capstone.backend.mapper.EmployeeMapper.mapEmployee;
 
-public class TestUtils {
+public class EmployeeTestUtils {
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 

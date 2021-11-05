@@ -3,6 +3,7 @@ import authenticationReducer from '../slicer/authSlice'
 import errorReducer from '../slicer/errorSlice'
 import employeeReducer from '../slicer/employeeSlice';
 import detailsReducer from '../slicer/detailsSlice';
+import productReducer from '../slicer/productSlice';
 
 
 export const store = configureStore({
@@ -11,6 +12,7 @@ export const store = configureStore({
     error:errorReducer,
     employee: employeeReducer,
     details: detailsReducer,
+    product: productReducer,
   },
 });
 
