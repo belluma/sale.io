@@ -6,7 +6,7 @@ import {images} from '../../helpers'
 import {Card, CardHeader, CardMedia} from "@mui/material";
 
 //interface imports
-import {IDetailsData, IThumbnailData, Views} from '../../../../interfaces/IThumbnailData';
+import {IThumbnailData, Views} from '../../../../interfaces/IThumbnailData';
 import {setDetailData, showDetails} from "../../../../slicer/detailsSlice";
 import {chooseCurrentEmployee, toBeReplaced} from "../../../../slicer/employeeSlice";
 
@@ -38,7 +38,7 @@ function Thumbnail({data}: Props) {
             <CardMedia
                 component="img"
                 height="350"
-image={picture || images[model]}
+                image={picture || images[model]}
                 alt={alt}
             />
         </Card>
