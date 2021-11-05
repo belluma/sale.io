@@ -25,7 +25,7 @@ export const initialDetailsData:IDetailsData = {
     picture: "",
     id: "",
     alt: "",
-    model: Views.NONE
+    model: Views.NEW
 }
 
 export interface IProductsState {

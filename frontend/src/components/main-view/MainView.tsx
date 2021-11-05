@@ -22,7 +22,7 @@ type Props = {};
 
 function MainView(props: Props){
     const protectedViews = {
-        NONE:StartView,
+        NEW:StartView,
         LOGIN: StartView,
         EMPLOYEES: Employees,
         PRODUCTS: Products,

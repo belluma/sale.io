@@ -15,7 +15,7 @@ type Props = {
 };
 
 function GridView({gridItems, view}: Props){
-   const thumbnailData = newItemData[view];
+   const thumbnailData = {title:`new ${view}`, ...newItemData};
     const thumbnails = gridItems.map(item => <Grid  item key={item.id}><Thumbnail data={item}/></Grid>)
     return(
         <Grid container spacing={2} sx={{justifyContent: {md: "left", xs: "space-around"}}}>

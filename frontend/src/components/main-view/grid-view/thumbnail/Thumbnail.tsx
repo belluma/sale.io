@@ -29,7 +29,7 @@ function Thumbnail({data}: Props) {
     const onClick = () => {
         dispatch(setDetailData(data));
         dispatch(showDetails());
-        if (model !== Views.NONE && id) dispatch(selectors[model](id))
+        if (model !== Views.NEW && id) dispatch(selectors[model](id))
     }
 
     return (

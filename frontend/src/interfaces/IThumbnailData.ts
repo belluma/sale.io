@@ -2,7 +2,7 @@ import {IEmployee} from "./IEmployee";
 import {IProduct} from "./IProduct";
 
 export enum Views {
-    NONE = "none",
+    NEW = "new",
     LOGIN = "login",
     EMPLOYEES = "employees",
     PRODUCTS = "products",
@@ -27,7 +27,7 @@ export interface IDetailsData extends IThumbnailData {
 
 }
 
-export const parseEmployeeToThumbnailData = ({firstName ,lastName, username, picture}: IEmployee): IDetailsData => {
+export const parseEmployeeToThumbnailData = ({firstName, lastName, username, picture}: IEmployee): IDetailsData => {
     return {
         title: `${firstName} ${lastName}`,
         picture: picture,
@@ -43,7 +43,7 @@ export const parseProductToThumbnailData = ({
                                                 suppliers,
                                                 stockCodeSupplier,
                                                 category,
-    picture,
+                                                picture,
                                                 purchasePrice,
                                                 retailPrice,
                                                 minAmount,
