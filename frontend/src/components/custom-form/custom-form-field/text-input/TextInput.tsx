@@ -9,12 +9,12 @@ type Props = {
     label:string
 };
 
-function TextInput(props: Props){
+function TextInput({label}: Props){
     return(
         <TextField
-            id="outlined-required"
-            label="Required"
-            defaultValue="Hello World"
+            id={label}
+            label={label}
+            variant="standard"
         />
     )
 }

@@ -1,4 +1,5 @@
 import React from 'react'
+import {TextField} from "@mui/material";
 
 //component imports
 
@@ -8,9 +9,17 @@ type Props = {
     label:string
 };
 
-function NumberInput(props: Props){
+function NumberInput({label}: Props){
     return(
-       <div>NumberInput</div>
+        <TextField
+            id={label}
+            label={label}
+            type="number"
+            InputLabelProps={{
+                shrink: true,
+            }}
+            variant="standard"
+        />
     )
 }
 

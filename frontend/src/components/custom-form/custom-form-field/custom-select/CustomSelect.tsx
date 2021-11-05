@@ -1,4 +1,5 @@
-import React from 'react'
+import React, {useState} from 'react'
+import {MenuItem, TextField} from "@mui/material";
 
 //component imports
 
@@ -8,9 +9,27 @@ type Props = {
     label:string
 };
 
-function CustomSelect(props: Props){
+function CustomSelect({label}: Props){
+    const [state, setState] = useState();
+    const handleChange =(e:React.ChangeEvent<HTMLInputElement>) => {
+
+    }
+    const menuItems:string[] = []
     return(
-       <div>CustomSelect</div>
+        <TextField
+            id={label}
+            select
+            label={label}
+            value={state}
+            onChange={handleChange}
+            helperText="Please select your currency"
+        >
+            {menuItems.map((option) => (
+                <MenuItem key={option} value={option}>
+                    {option}
+                </MenuItem>
+            ))}
+        </TextField>
     )
 }
 
