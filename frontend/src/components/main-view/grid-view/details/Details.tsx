@@ -3,12 +3,10 @@ import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
 import {hideDetails, selectShowDetails} from "../../../../slicer/detailsSlice";
 
 //component imports
-import {Card, CardContent, CardHeader, CardMedia, Dialog, DialogContent, DialogProps, Divider} from "@mui/material";
-import Login from "../../../security/login/Login";
+import { Dialog, DialogContent, DialogProps} from "@mui/material";
 import DetailsCard from "./details-card/DetailsCard";
 
 //interface imports
-
 type Props = {};
 
 

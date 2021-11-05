@@ -2,7 +2,6 @@ import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import { IProductsState } from '../interfaces/IStates';
 import {getAllProducts} from '../services/productService';
-import { getEmployees } from './employeeSlice';
 import {getErrorMessage} from "./errorSlice";
 import {IResponseGetAllProducts} from "../interfaces/IApiResponse";
 
