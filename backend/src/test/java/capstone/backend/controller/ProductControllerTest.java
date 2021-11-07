@@ -129,7 +129,7 @@ class ProductControllerTest {
         ResponseEntity<ProductDTO> response = restTemplate.exchange("/api/product/" + product.getId(), HttpMethod.PUT, new HttpEntity<>(productToEdit, headers), ProductDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody().getRetailPrice(), is(99.99F));
+        assertThat(response.getBody(), is(productToEdit));
     }
 
     @Test

@@ -1,7 +1,7 @@
 import {IProduct, Product} from "../../interfaces/IProduct";
 
-const productLabels = Object.keys(new Product()) as Array<keyof IProduct>;
-const productFormType = Object.values(new Product()) as Array<keyof IProduct>;
+const productLabels = Object.keys(new Product()).slice(1) as Array<keyof IProduct>;
+const productFormType = Object.values(new Product()).slice(1) as Array<keyof IProduct>;
 
 interface IFormData {
     labels:string[],
