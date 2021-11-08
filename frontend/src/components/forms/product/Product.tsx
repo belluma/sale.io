@@ -1,13 +1,14 @@
 import React from 'react'
-import {TextField, Toolbar} from "@mui/material";
+
+//component imports
+import { Toolbar} from "@mui/material";
 import CustomSelect from "../custom-select/CustomSelect";
 import CustomText from "../custom-text/CustomText";
 import CustomNumber from "../custom-number/CustomNumber";
-import {IFormProps} from "../../../interfaces/INewItem";
-
-//component imports
 
 //interface imports
+
+import {IFormProps} from "../../../interfaces/INewItem";
 
 type Props = IFormProps
 
