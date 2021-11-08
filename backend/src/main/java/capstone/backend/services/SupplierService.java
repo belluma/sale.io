@@ -1,5 +1,9 @@
 package capstone.backend.services;
 
+import capstone.backend.exception.model.EntityNotFoundException;
+import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
+import capstone.backend.exception.model.SupplierNotFoundException;
+import capstone.backend.mapper.SupplierMapper;
 import capstone.backend.model.dto.contact.SupplierDTO;
 import capstone.backend.repo.SupplierRepo;
 import org.springframework.stereotype.Service;
@@ -16,22 +20,40 @@ public class SupplierService {
     }
 
     public List<SupplierDTO> getAllSuppliersWithDetails() {
-        return List.of();
+        return repo.findAll()
+                .stream()
+                .map(SupplierMapper::mapSupplier)
+                .toList();
     }
 
     public SupplierDTO getSupplierDetails(Long id) {
-        return SupplierDTO.builder().build();
+        return repo
+                .findById(id)
+                .map(SupplierMapper::mapSupplier)
+                .orElseThrow(() -> new SupplierNotFoundException(String.format("No Supplier found with id %d", id)));
     }
 
     public SupplierDTO createSupplier(SupplierDTO supplier) {
-
-        return SupplierDTO.builder().build();
+        if (supplier.getId() != null && repo
+                .findById(supplier.getId())
+                .isPresent()) {
+            throw new EntityWithThisIdAlreadyExistException(String.format("Supplier %s already has the id %d", supplier.getFirstName(), supplier.getId()));
+        }
+        return SupplierMapper.mapSupplier(repo.
+                save(SupplierMapper.mapSupplier(supplier)));
     }
 
     public SupplierDTO editSupplier(SupplierDTO supplier) {
-        return SupplierDTO.builder().build();
-
+        if (repo
+                .findById(supplier.getId())
+                .isEmpty()) {
+            throw new EntityNotFoundException(String.format("Couldn't find a supplier with the id %d", supplier.getId()));
+        }
+        return SupplierMapper.mapSupplier(repo
+                .save(SupplierMapper.mapSupplier(supplier)));
     }
 
-
 }
+
+
+

@@ -1,4 +1,4 @@
-package capstone.backend.exception.exception;
+package capstone.backend.exception.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -7,8 +7,8 @@ import java.util.NoSuchElementException;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ProductNotFoundException extends NoSuchElementException {
-    public ProductNotFoundException(String message) {
+public class EntityNotFoundException extends NoSuchElementException {
+    public EntityNotFoundException(String message) {
         super(message);
     }
 }

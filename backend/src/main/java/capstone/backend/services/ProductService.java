@@ -3,8 +3,8 @@ package capstone.backend.services;
 
 import capstone.backend.mapper.ProductMapper;
 import capstone.backend.model.dto.ProductDTO;
-import capstone.backend.exception.exception.ProductIdAlreadyTakenException;
-import capstone.backend.exception.exception.ProductNotFoundException;
+import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
+import capstone.backend.exception.model.EntityNotFoundException;
 import capstone.backend.repo.ProductRepo;
 import org.springframework.stereotype.Service;
 
@@ -32,14 +32,14 @@ public class ProductService {
         return repo
                 .findById(id)
                 .map(ProductMapper::mapProductWithDetails)
-                .orElseThrow(() -> new ProductNotFoundException(String.format("Couldn't find a product with the id %d", id)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Couldn't find a product with the id %d", id)));
     }
 
-    public ProductDTO createProduct(ProductDTO product) throws ProductIdAlreadyTakenException {
+    public ProductDTO createProduct(ProductDTO product) throws EntityWithThisIdAlreadyExistException {
         if (product.getId() != null && repo
                 .findById(product.getId())
                 .isPresent()) {
-            throw new ProductIdAlreadyTakenException(String.format("Product %s already has the id %d", product.getName(), product.getId()));
+            throw new EntityWithThisIdAlreadyExistException(String.format("Product %s already has the id %d", product.getName(), product.getId()));
         }
         return ProductMapper.mapProductWithDetails(repo.
                 save(ProductMapper.mapProduct(product)));
@@ -49,7 +49,7 @@ public class ProductService {
         if (repo
                 .findById(product.getId())
                 .isEmpty()) {
-            throw new ProductNotFoundException(String.format("Couldn't find a product with the id %d", product.getId()));
+            throw new EntityNotFoundException(String.format("Couldn't find a product with the id %d", product.getId()));
         }
         return ProductMapper.mapProductWithDetails(repo
                 .save(ProductMapper.mapProduct(product)));

@@ -1,7 +1,7 @@
 package capstone.backend.services;
 
-import capstone.backend.exception.exception.ProductIdAlreadyTakenException;
-import capstone.backend.exception.exception.ProductNotFoundException;
+import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
+import capstone.backend.exception.model.EntityNotFoundException;
 import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.dto.contact.SupplierDTO;
 import capstone.backend.model.enums.Weekdays;
@@ -57,7 +57,7 @@ class SupplierServiceTest {
         //GIVEN
         when(repo.findById(123L)).thenReturn(Optional.empty());
         //WHEN - THEN
-        Exception ex = assertThrows(ProductNotFoundException.class, () -> service.getSupplierDetails(123L));
+        Exception ex = assertThrows(EntityNotFoundException.class, () -> service.getSupplierDetails(123L));
         assertThat(ex.getMessage(), is("Couldn't find a product with the id 123"));
         verify(repo).findById(123L);
         }
@@ -79,7 +79,7 @@ class SupplierServiceTest {
         //GIVEN
         Supplier supplier = sampleSupplier();
         when(repo.findById(123L)).thenReturn(Optional.of(supplier));
-        Exception ex = assertThrows(ProductIdAlreadyTakenException.class, () -> service.createSupplier(sampleSupplierDTO()));
+        Exception ex = assertThrows(EntityWithThisIdAlreadyExistException.class, () -> service.createSupplier(sampleSupplierDTO()));
         //THEN
         assertThat(ex.getMessage(), is(String.format("Supplier %s already has the id %d", supplier.getFirstName(), supplier.getId())));
         verify(repo).findById(123L);
@@ -108,7 +108,7 @@ class SupplierServiceTest {
         //GIVEN
         Supplier supplier = sampleSupplier();
         when(repo.findById(123L)).thenReturn(Optional.of(supplier));
-        Exception ex = assertThrows(ProductIdAlreadyTakenException.class, () -> service.editSupplier(sampleSupplierDTO()));
+        Exception ex = assertThrows(EntityWithThisIdAlreadyExistException.class, () -> service.editSupplier(sampleSupplierDTO()));
         //THEN
         assertThat(ex.getMessage(), is(String.format("Supplier %s already has the id %d", supplier.getFirstName(), supplier.getId())));
         verify(repo).findById(123L);

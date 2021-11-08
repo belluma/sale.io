@@ -2,8 +2,8 @@ package capstone.backend.services;
 
 import capstone.backend.model.db.Product;
 import capstone.backend.model.dto.ProductDTO;
-import capstone.backend.exception.exception.ProductIdAlreadyTakenException;
-import capstone.backend.exception.exception.ProductNotFoundException;
+import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
+import capstone.backend.exception.model.EntityNotFoundException;
 import capstone.backend.repo.ProductRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -55,7 +55,7 @@ class ProductServiceTest {
         //GIVEN
         when(repo.findById(123L)).thenReturn(Optional.empty());
         //WHEN - THEN
-        Exception ex = assertThrows(ProductNotFoundException.class, () -> service.getProductDetails(123L));
+        Exception ex = assertThrows(EntityNotFoundException.class, () -> service.getProductDetails(123L));
         assertThat(ex.getMessage(), is("Couldn't find a product with the id 123"));
         verify(repo).findById(123L);
     }
@@ -78,7 +78,7 @@ class ProductServiceTest {
         //GIVEN
         Product product = sampleProductWithId();
         when(repo.findById(123L)).thenReturn(Optional.of(product));
-        Exception ex = assertThrows(ProductIdAlreadyTakenException.class, () -> service.createProduct(sampleProductDTOWithDetailsWithId()));
+        Exception ex = assertThrows(EntityWithThisIdAlreadyExistException.class, () -> service.createProduct(sampleProductDTOWithDetailsWithId()));
         //THEN
         assertThat(ex.getMessage(), is(String.format("Product %s already has the id %d", product.getName(), product.getId())));
         verify(repo).findById(123L);
@@ -107,7 +107,7 @@ class ProductServiceTest {
         ProductDTO nonExistantProduct = sampleProductDTOWithDetailsWithId();
         when(repo.findById(123L)).thenReturn(Optional.empty());
         //WHEN
-        Exception ex = assertThrows(ProductNotFoundException.class, () -> service.editProduct(nonExistantProduct));
+        Exception ex = assertThrows(EntityNotFoundException.class, () -> service.editProduct(nonExistantProduct));
         //THEN
         assertThat(ex.getMessage(), is((String.format("Couldn't find a product with the id %d", nonExistantProduct.getId()))));
         verify(repo).findById(123L);
