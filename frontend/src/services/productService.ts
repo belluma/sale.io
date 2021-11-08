@@ -19,7 +19,7 @@ export const getAllProducts = (token: string) => {
 export const getSingleProduct = (token:string, id:number) => {
     return axios({
         method: 'get',
-        url: `/api/product/id`,
+        url: `/api/product/${id}`,
         headers: {...jsonHeaders(), ...authHeaders(token)}
     }).then(response => {
         return response
@@ -31,7 +31,8 @@ export const createProduct = (token:string, product:IProduct) => {
     return axios({
         method: 'post',
         url: `/api/product`,
-        headers: {...jsonHeaders(), ...authHeaders(token)}
+        headers: {...jsonHeaders(), ...authHeaders(token)},
+        data: (product),
     }).then(response => {
         return response
     })
@@ -42,7 +43,8 @@ export const editProduct = (token:string, product: IProduct) => {
     return axios({
         method: 'put',
         url: `/api/product/id`,
-        headers: {...jsonHeaders(), ...authHeaders(token)}
+        headers: {...jsonHeaders(), ...authHeaders(token)},
+        data:{product}
     }).then(response => {
         return response
     })

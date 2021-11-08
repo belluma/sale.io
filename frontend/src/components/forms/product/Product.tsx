@@ -19,8 +19,8 @@ function Product({handleChange}: Props) {
             <CustomSelect name="supplier" label={"supplier"} options={[]} {...props}  />
             <CustomSelect name="category" label={"category"} options={[]} {...props}  />
             <Toolbar>
-                <CustomNumber name="purchasePrice" label={"purchase price"}  {...props} />
-                <CustomNumber name="retailPrice" label={"retail price"}  {...props} />
+                <CustomNumber currency name="purchasePrice" label={"purchase price"}  {...props} />
+                <CustomNumber currency name="retailPrice" label={"retail price"}  {...props} />
             </Toolbar>
             <Toolbar>
                 <CustomNumber name="minAmount" label={"min amount"}  {...props} />

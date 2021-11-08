@@ -1,14 +1,14 @@
 import React from 'react'
-import {TextField} from "@mui/material";
-import {ITextFieldProps} from "../../../interfaces/INewItem";
+import {InputAdornment, TextField} from "@mui/material";
+import {INumberFieldProps} from "../../../interfaces/INewItem";
 
 //component imports
 
 //interface imports
 
-type Props = ITextFieldProps;
+type Props = INumberFieldProps;
 
-function CustomNumber({label, handleChange, name}: Props){
+function CustomNumber({label, handleChange, name, negative, currency}: Props){
     return(
         <TextField
             onChange={handleChange}
@@ -16,6 +16,9 @@ function CustomNumber({label, handleChange, name}: Props){
             label={label}
             name={name}
             type="number"
+            InputProps = {{
+                startAdornment: currency && <InputAdornment position="start">€</InputAdornment>,
+                inputProps: {min:!negative && 0}}}
             InputLabelProps={{
                 shrink: true,
             }}

@@ -1,17 +1,14 @@
 import React from 'react'
-import {MenuItem, TextField} from "@mui/material";
-import {Buttons} from "../../../interfaces/IThumbnailData";
-import {ISelectProps, ITextFieldProps} from "../../../interfaces/INewItem";
 
 //component imports
+import {MenuItem, TextField} from "@mui/material";
 
 //interface imports
+import {ISelectProps} from "../../../interfaces/INewItem";
 
 type Props = ISelectProps
 
-function CustomSelect({label, options, model, name}: Props){
-    const handleChange = () => {
-    };
+function CustomSelect({label, options, model, name, handleChange}: Props){
     return(
         <TextField
             id={`Select ${label}`}

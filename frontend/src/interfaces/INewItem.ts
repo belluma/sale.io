@@ -9,6 +9,10 @@ export interface ITextFieldProps extends IFormProps {
     label: string,
     model: string
 }
+export interface INumberFieldProps extends ITextFieldProps {
+    negative?: boolean,
+    currency?: boolean,
+}
 export interface ISelectProps extends ITextFieldProps{
     options:string[],
 }
