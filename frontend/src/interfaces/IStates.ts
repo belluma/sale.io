@@ -2,6 +2,8 @@ import {ICredentials, IEmployee} from "./IEmployee";
 import {IDetailsData, Views} from "./IThumbnailData";
 import {IProduct} from "./IProduct";
 import {IBody} from "./IApi";
+import {ICustomer} from "./ICustomer";
+import {ISupplier} from "./ISupplier";
 
 export interface IEmployeeState {
     employees: IEmployee[],
@@ -39,4 +41,13 @@ export interface INewItemState {
     itemToSave: IBody | {},
     pending: boolean,
     savedItem?: IBody
+}
+
+export interface IAPIState {
+    customers: ICustomer[],
+    employees: IEmployee[],
+    products: IProduct[],
+    suppliers: ISupplier[],
+    pending: boolean,
+    selectedEntity: ICustomer | IEmployee | IProduct | ISupplier | undefined,
 }

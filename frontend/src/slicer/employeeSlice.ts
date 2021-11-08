@@ -14,7 +14,7 @@ const initialState: IEmployeeState = {
 }
 
 export const getEmployees = createAsyncThunk(
-    'getEmployees',
+    'employees/getAll',
     async (_, thunkAPI) => {
         const {data, status, statusText} = await getAllEmployees();
         if (status !== 200) {
@@ -41,10 +41,10 @@ export const employeeSlice = createSlice({
             state.pending = true;
         })
         builder.addCase(getEmployees.fulfilled, (state, action: PayloadAction<IResponseGetAllEmployees>) => {
+            state.pending = false;
             if (action.payload.status !== 200) {
                 return;
             }
-            state.pending = false;
             state.employees = action.payload.data;
         })
     })
