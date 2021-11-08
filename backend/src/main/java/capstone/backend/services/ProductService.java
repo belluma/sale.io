@@ -36,13 +36,11 @@ public class ProductService {
     }
 
     public ProductDTO createProduct(ProductDTO product) throws ProductIdAlreadyTakenException {
-        if (repo
+        if (product.getId() != null && repo
                 .findById(product.getId())
                 .isPresent()) {
             throw new ProductIdAlreadyTakenException(String.format("Product %s already has the id %d", product.getName(), product.getId()));
         }
-
-
         return ProductMapper.mapProductWithDetails(repo.
                 save(ProductMapper.mapProduct(product)));
     }

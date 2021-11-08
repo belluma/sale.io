@@ -6,9 +6,10 @@ import React from 'react'
 
 type Props = {};
 
-function Customers(props: Props){
+function Order(props: Props){
     return(
-<div></div>    )
+       <div>Order</div>
+    )
 }
 
-export default Customers;
+export default Order;

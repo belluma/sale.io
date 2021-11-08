@@ -6,10 +6,10 @@ import React from 'react'
 
 type Props = {};
 
-function CustomForm(props: Props){
+function Customer(props: Props){
     return(
-       <div>CustomForm</div>
+       <div>Customer</div>
     )
 }
 
-export default CustomForm;
+export default Customer;

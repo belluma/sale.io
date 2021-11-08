@@ -23,9 +23,12 @@ class EmployeeServiceTest {
 
     @Test
     void getAllEmployees() {
+        //GIVEN
         when(repo.findAll()).thenReturn(List.of(EmployeeTestUtils.sampleUser()));
         List<EmployeeDTO> actual = service.getAllEmployees();
+       //WHEN
         List<EmployeeDTO> expected = List.of(mapper.mapEmployeeAndConcealData(EmployeeTestUtils.sampleUser()));
+        //THEN
         assertIterableEquals( expected, actual);
         verify(repo).findAll();
     }

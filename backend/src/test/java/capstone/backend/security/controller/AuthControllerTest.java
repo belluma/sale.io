@@ -58,58 +58,76 @@ class AuthControllerTest {
 
     @Test
     void login() {
+        //GIVEN
         EmployeeDTO user = EmployeeTestUtils.sampleUserDTO();
         repo.save(utils.userWithEncodedPassword(user));
+        //WHEN
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/login", user, String.class);
         Claims body = Jwts.parser()
                 .setSigningKey(JWT_SECRET)
                 .parseClaimsJws(response.getBody())
                 .getBody();
+        //THEN
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
         assertThat(body.getSubject(), equalTo("username"));
     }
 
     @Test
     void loginFailsWithWrongPassword() {
+        //GIVEN
         EmployeeDTO user = EmployeeTestUtils.sampleUserDTO();
         repo.save(utils.userWithEncodedPassword(user));
         user.setPassword("123");
+        //WHEN
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/login", user, String.class);
+        //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
     }
 
     @Test
     void loginFailsWithWrongUsername() {
+        //GIVEN
         EmployeeDTO user = EmployeeTestUtils.sampleUserDTO();
         user.setPassword("1234");
         user.setUsername("wrong_username");
         repo.save(EmployeeMapper.mapEmployee(user));
         user.setPassword("123");
+        //WHEN
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/login", user, String.class);
+        //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
     }
 
     @Test
     void signupSavesUserAndReturnsLogin() {
+        //GIVEN
         EmployeeDTO user = EmployeeTestUtils.sampleUserDTO();
+        //WHEN
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/signup", user, String.class);
+        //THEN
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
         assertThat(repo.findAll().size(), is(1));
     }
 
     @Test
     void signupFailsWhenUsernameAlreadyRegistered() {
+        //GIVEN
         EmployeeDTO user = EmployeeTestUtils.sampleUserDTO();
         repo.save(EmployeeMapper.mapEmployee(user));
         user.setPassword("1234");
+        //WHEN
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/signup", user, String.class);
+        //THEN
         assertThat(response.getStatusCode(), equalTo(HttpStatus.NOT_ACCEPTABLE));
     }
 
     @Test
     void signupFailsWhenInvalidPassword() {
+        //GIVEN
         EmployeeDTO user = new EmployeeDTO("username", "");
+        //WHEN
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/signup", user, String.class);
+        //THEN
         assertThat(response.getStatusCode(), equalTo(HttpStatus.BAD_REQUEST));
         assertThat(repo.findAll().size(), is(0));
     }

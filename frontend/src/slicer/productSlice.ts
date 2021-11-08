@@ -2,7 +2,6 @@ import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import { IProductsState } from '../interfaces/IStates';
 import {getAllProducts} from '../services/productService';
-import { getEmployees } from './employeeSlice';
 import {getErrorMessage} from "./errorSlice";
 import {IResponseGetAllProducts} from "../interfaces/IApiResponse";
 
@@ -18,7 +17,7 @@ export const getProducts = createAsyncThunk(
     'getProducts',
     async (_, {getState, dispatch}) => {
         //@ts-ignore
-        const token = getState().login.token;
+        const token = getState().authentication.token;
         const {data, status, statusText} = await getAllProducts(token);
         if (status !== 200) {
             dispatch(getErrorMessage({status, statusText}))
@@ -39,10 +38,10 @@ export const productSlice = createSlice({
     },
     extraReducers: (builder => {
         builder
-            .addCase(getEmployees.pending, state => {
+            .addCase(getProducts.pending, state => {
                 state.pending = true;
             })
-            .addCase(getEmployees.fulfilled, (state, action: PayloadAction<IResponseGetAllProducts>) => {
+            .addCase(getProducts.fulfilled, (state, action: PayloadAction<IResponseGetAllProducts>) => {
                 if (action.payload.status !== 200) {
                     return;
                 }

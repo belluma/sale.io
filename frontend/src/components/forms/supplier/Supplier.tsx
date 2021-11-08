@@ -6,10 +6,10 @@ import React from 'react'
 
 type Props = {};
 
-function CustomFormField(props: Props){
+function Supplier(props: Props){
     return(
-       <div>CustomFormField</div>
+       <div>Supplier</div>
     )
 }
 
-export default CustomFormField;
+export default Supplier;

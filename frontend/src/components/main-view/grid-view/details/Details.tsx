@@ -1,14 +1,12 @@
 import React from 'react'
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
-import {hideDetails, selectDetailsData, selectShowDetails} from "../../../../slicer/detailsSlice";
-import {images} from '../../helpers'
+import {hideDetails, resetDetails, selectShowDetails} from "../../../../slicer/detailsSlice";
 
 //component imports
-import {Card, CardContent, CardHeader, CardMedia, Dialog, DialogContent, DialogProps, Divider} from "@mui/material";
-import Login from "../../../security/login/Login";
+import { Dialog, DialogContent, DialogProps} from "@mui/material";
+import DetailsCard from "./details-card/DetailsCard";
 
 //interface imports
-
 type Props = {};
 
 
@@ -16,9 +14,6 @@ function Details(props: Props) {
     const [scroll] = React.useState<DialogProps['scroll']>('paper');
     const dispatch = useAppDispatch();
     const showDetails = useAppSelector(selectShowDetails);
-    const detailsData = useAppSelector(selectDetailsData);
-    const {title, subtitle, picture, alt, model} = detailsData;
-
     const descriptionElementRef = React.useRef<HTMLDivElement>(null);
     React.useEffect(() => {
         if (showDetails) {
@@ -30,32 +25,16 @@ function Details(props: Props) {
     }, [showDetails]);
     const handleClose = () => {
         dispatch(hideDetails());
+        dispatch(resetDetails());
     }
-    const cardContent = {
-        none: (<div/>),
-        login: <Login/>,
-        employees: (<div/>),
-        products: (<div/>),
-        customers: (<div/>),
-        suppliers: (<div/>),
 
-    }
     return (
         <Dialog open={showDetails} onClose={handleClose}>
             <DialogContent dividers={scroll === 'paper'}>
-                <Card sx={{width: 400, justifyContent: "center"}} ref={descriptionElementRef}>
-                    <CardHeader title={title} subtitle={subtitle} align="center"/>
-                    <Divider/>
-                    <CardMedia
-                        component="img"
-                        sx={{width: 400}}
-                        image={picture || images[model]}
-                        alt={alt}
-                    />
-                    <CardContent>
-                        {cardContent[model]}
-                    </CardContent>
-                </Card>
+                <div ref={descriptionElementRef}>
+                    <DetailsCard/>
+                </div>
+
             </DialogContent>
         </Dialog>
     )

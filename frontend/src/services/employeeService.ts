@@ -1,13 +1,14 @@
 import axios from "axios";
 import {parseError} from './errorService';
 import {ICredentials, IEmployee} from "../interfaces/IEmployee";
+import {jsonHeaders} from "./serviceUtils";
 
 
 export const getAllEmployees = () => {
     return axios({
         method: 'get',
         url: `/api/employee`,
-        headers: {"Content-Type": "application/json"}
+        headers: jsonHeaders(),
     }).then(response => {
         return response
     })

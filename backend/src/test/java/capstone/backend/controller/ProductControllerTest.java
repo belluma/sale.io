@@ -47,6 +47,7 @@ class ProductControllerTest {
     ProductMapper mapper;
     @Autowired
     ControllerTestUtils utils;
+    String BASEURL = "/api/products";
 
     @Container
     public static PostgreSQLContainer container = new PostgreSQLContainer()
@@ -76,54 +77,70 @@ class ProductControllerTest {
     void getAllProductsWithDetails() {
         Product product = repo.save(sampleProduct());
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
-        ResponseEntity<ProductDTO[]> response = restTemplate.exchange("/api/product", HttpMethod.GET, new HttpEntity<>(headers), ProductDTO[].class);
+        //WHEN
+        ResponseEntity<ProductDTO[]> response = restTemplate.exchange(BASEURL, HttpMethod.GET, new HttpEntity<>(headers), ProductDTO[].class);
         ProductDTO expected = mapProductWithDetails(product);
+        //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertIterableEquals(Arrays.asList(response.getBody()), List.of(expected));
     }
 
     @Test
     void getProductDetails() {
+        //GIVEN
         Product product = repo.save(sampleProduct());
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
-        ResponseEntity<ProductDTO> response = restTemplate.exchange("/api/product/" + product.getId(), HttpMethod.GET, new HttpEntity<>(headers), ProductDTO.class);
+        //WHEN
+        ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/" + product.getId(), HttpMethod.GET, new HttpEntity<>(headers), ProductDTO.class);
         ProductDTO expected = mapProductWithDetails(product);
+        //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(expected));
     }
 
     @Test
-    void getProductDetailsReturnsNotFoundWhenProductNonExistant(){
+    void getProductDetailsReturnsNotFoundWhenProductNonExistant() {
+        //GIVEN
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
-        ResponseEntity<ProductDTO> response = restTemplate.exchange("/api/product/12", HttpMethod.GET, new HttpEntity<>(headers), ProductDTO.class);
+        //WHEN
+        ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/12", HttpMethod.GET, new HttpEntity<>(headers), ProductDTO.class);
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
     }
 
     @Test
     void createProduct() {
+        //GIVEN
         ProductDTO product = sampleProductDTOWithDetailsWithId();
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
-        ResponseEntity<ProductDTO> response = restTemplate.exchange("/api/product/", HttpMethod.POST, new HttpEntity<>(product, headers), ProductDTO.class);
+        //WHEN
+        ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(product, headers), ProductDTO.class);
+        //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(repo.findAll().size(), is(1));
     }
 
     @Test
     void editProduct() {
+        //GIVEN
         Product product = repo.save(sampleProduct());
         ProductDTO productToEdit = mapProductWithDetails(product);
         productToEdit.setRetailPrice(99.99F);
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
-        ResponseEntity<ProductDTO> response = restTemplate.exchange("/api/product/" + product.getId(), HttpMethod.PUT, new HttpEntity<>(productToEdit, headers), ProductDTO.class);
+        //WHEN
+        ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/" + product.getId(), HttpMethod.PUT, new HttpEntity<>(productToEdit, headers), ProductDTO.class);
+        //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody().getRetailPrice(), is(99.99F));
+        assertThat(response.getBody(), is(productToEdit));
     }
 
     @Test
-    void editProductFailsWhenProductNonExistant(){
+    void editProductFailsWhenProductNonExistant() {
+        //GIVEN
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         ProductDTO productToEdit = sampleProductDTOWithDetailsWithId();
-        ResponseEntity<ProductDTO> response = restTemplate.exchange("/api/product/1", HttpMethod.PUT, new HttpEntity<>(productToEdit,headers), ProductDTO.class);
+        //WHEN
+        ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/1", HttpMethod.PUT, new HttpEntity<>(productToEdit, headers), ProductDTO.class);
+        //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
     }
 

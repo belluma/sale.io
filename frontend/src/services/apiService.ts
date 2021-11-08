@@ -1,13 +1,13 @@
 import axios from "axios";
 import {parseError} from './errorService';
-import {IProduct} from "../interfaces/IProduct";
 import {authHeaders, jsonHeaders} from "./serviceUtils";
+import {IBody} from "../interfaces/IApi";
 
 
-export const getAllProducts = (token: string) => {
+export const getAll = (type: string, token: string) => {
     return axios({
         method: 'get',
-        url: `/api/product`,
+        url: `/api/{${type}s`,
         headers: {...jsonHeaders(), ...authHeaders(token)}
     }).then(response => {
         return response
@@ -15,10 +15,10 @@ export const getAllProducts = (token: string) => {
         .catch(err => parseError(err))
 }
 
-export const getSingleProduct = (token:string, id:number) => {
+export const getSingle = (type: string, token:string, id:number) => {
     return axios({
         method: 'get',
-        url: `/api/product/${id}`,
+        url: `/api/${type}s/${id}`,
         headers: {...jsonHeaders(), ...authHeaders(token)}
     }).then(response => {
         return response
@@ -26,24 +26,25 @@ export const getSingleProduct = (token:string, id:number) => {
         .catch(err => parseError(err))
 }
 
-export const createProduct = (token:string, product:IProduct) => {
+export const create = (type: string, token:string, data:IBody) => {
     return axios({
         method: 'post',
-        url: `/api/product`,
+        url: `/api/${type}s`,
         headers: {...jsonHeaders(), ...authHeaders(token)},
-        data: (product),
+       data,
     }).then(response => {
+
         return response
     })
         .catch(err => parseError(err))
 }
 
-export const editProduct = (token:string, product: IProduct) => {
+export const edit = (type: string, token:string, data: IBody) => {
     return axios({
         method: 'put',
-        url: `/api/product/id`,
+        url: `/api/${type}s/id`,
         headers: {...jsonHeaders(), ...authHeaders(token)},
-        data:{product}
+        data
     }).then(response => {
         return response
     })

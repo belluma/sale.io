@@ -1,12 +1,17 @@
 import {Views} from "../../interfaces/IThumbnailData";
 
+export const views = (Object.keys(Views) as Array<keyof typeof Views>).slice(2)
 export const images = {
-    none: '',
-    login: '/pictures/profile.svg',
-    employees: '/pictures/profile.svg',
-    products:'',
-    customers:'',
-    suppliers:'',
+    new: '',
+    login: '/images/profile.svg',
+    employee: '/images/profile.svg',
+    product: '',
+    customer: '',
+    supplier: '',
+}
+export const newItemData = {
+    picture:"images/add.svg",
+    model:Views.NEW
 }
 
-export const views = (Object.keys(Views) as Array<keyof typeof Views>).map(v => v).filter((v,i) => i > 1);
+

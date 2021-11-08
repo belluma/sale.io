@@ -6,7 +6,7 @@ import {images} from '../../helpers'
 import {Card, CardHeader, CardMedia} from "@mui/material";
 
 //interface imports
-import {IDetailsData, IThumbnailData, Views} from '../../../../interfaces/IThumbnailData';
+import {IThumbnailData, Views} from '../../../../interfaces/IThumbnailData';
 import {setDetailData, showDetails} from "../../../../slicer/detailsSlice";
 import {chooseCurrentEmployee, toBeReplaced} from "../../../../slicer/employeeSlice";
 
@@ -21,15 +21,15 @@ function Thumbnail({data}: Props) {
     const selectors = {
         none: toBeReplaced,
         login: chooseCurrentEmployee,
-        employees: toBeReplaced,
-        products: toBeReplaced,
-        customers: toBeReplaced,
-        suppliers: toBeReplaced,
+        employee: toBeReplaced,
+        product: toBeReplaced,
+        customer: toBeReplaced,
+        supplier: toBeReplaced,
     }
     const onClick = () => {
         dispatch(setDetailData(data));
         dispatch(showDetails());
-        if (model !== Views.NONE && id) dispatch(selectors[model](id))
+        if (model !== Views.NEW && id) dispatch(selectors[model](id))
     }
 
     return (
@@ -38,7 +38,7 @@ function Thumbnail({data}: Props) {
             <CardMedia
                 component="img"
                 height="350"
-image={picture || images[model]}
+                image={picture || images[model]}
                 alt={alt}
             />
         </Card>

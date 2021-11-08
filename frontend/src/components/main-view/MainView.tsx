@@ -22,12 +22,12 @@ type Props = {};
 
 function MainView(props: Props){
     const protectedViews = {
-        NONE:StartView,
+        NEW:StartView,
         LOGIN: StartView,
-        EMPLOYEES: Employees,
-        PRODUCTS: Products,
-        SUPPLIERS: Suppliers,
-        CUSTOMERS: Customers,
+        EMPLOYEE: Employees,
+        PRODUCT: Products,
+        SUPPLIER: Suppliers,
+        CUSTOMER: Customers,
     };
     const protectedRoutes = views.map((view) => <ProtectedRoute key={view} path={`/${Views[view]}`} component={protectedViews[view]} />)
     return (

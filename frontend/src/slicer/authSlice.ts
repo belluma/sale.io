@@ -7,6 +7,7 @@ import {validateToken} from "../services/jwtService";
 import {IResponseData} from "../interfaces/IApiResponse";
 import {IAuthState} from "../interfaces/IStates";
 import history from "../services/history"
+import {hideDetails} from "./detailsSlice";
 
 const initialState: IAuthState = {
     loggedIn: false,
@@ -20,6 +21,8 @@ export const login = createAsyncThunk(
         const {data, status, statusText} = await sendLoginData(credentials);
         if (status !== 200) {
             thunkAPI.dispatch(getErrorMessage({status, statusText}));
+        }else {
+            thunkAPI.dispatch(hideDetails())
         }
         return {data, status, statusText};
     }
@@ -47,7 +50,6 @@ export const Authentication = createSlice({
         },
         loginFromStorage: (state) => {
             const token = localStorage.getItem("SaleioToken");
-            console.log(token)
             if (token && validateToken(token)) {
                 state.loggedIn = true;
                 state.token = token;
