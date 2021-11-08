@@ -10,7 +10,6 @@ export const getAllProducts = (token: string) => {
         url: `/api/product`,
         headers: {...jsonHeaders(), ...authHeaders(token)}
     }).then(response => {
-        console.log(response)
         return response
     })
         .catch(err => parseError(err))

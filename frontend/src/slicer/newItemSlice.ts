@@ -13,7 +13,6 @@ const initialState: INewItemState = {
 export const saveItem = createAsyncThunk(
     'saveItem',
     async (item: string, {getState, dispatch}) => {
-        console.log(item)
         //@ts-ignore
         const token = getState().authentication.token;
         //@ts-ignore
@@ -44,11 +43,11 @@ export const newItemSlice = createSlice({
                 state.pending = true
             })
             .addCase(saveItem.fulfilled, (state, {payload}: PayloadAction<any>) => {
+                state.pending = false;
                 if (payload.status !== 200) {
                     return;
                 }
                 state.savedItem = payload.data;
-                state.pending = false;
                 state.itemToSave = {};
             })
     })

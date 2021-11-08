@@ -10,7 +10,6 @@ export const getAll = (type: string, token: string) => {
         url: `/api/{${type}s`,
         headers: {...jsonHeaders(), ...authHeaders(token)}
     }).then(response => {
-        console.log(response)
         return response
     })
         .catch(err => parseError(err))
@@ -34,6 +33,7 @@ export const create = (type: string, token:string, data:IBody) => {
         headers: {...jsonHeaders(), ...authHeaders(token)},
        data,
     }).then(response => {
+
         return response
     })
         .catch(err => parseError(err))
