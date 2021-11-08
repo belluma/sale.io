@@ -1,15 +1,14 @@
 import React from 'react'
 import {TextField} from "@mui/material";
-import {IFormFieldProps} from "../../../../interfaces/INewItem";
+import {ITextFieldProps} from "../../../interfaces/INewItem";
 
 //component imports
 
 //interface imports
 
-type Props = IFormFieldProps
+type Props = ITextFieldProps;
 
-function NumberInput({label, handleChange}: Props){
-
+function CustomNumber({label, handleChange}: Props){
     return(
         <TextField
             onChange={handleChange}
@@ -25,4 +24,4 @@ function NumberInput({label, handleChange}: Props){
     )
 }
 
-export default NumberInput;
+export default CustomNumber;

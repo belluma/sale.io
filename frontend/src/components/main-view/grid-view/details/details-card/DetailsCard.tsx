@@ -6,9 +6,9 @@ import {selectDetailsData} from "../../../../../slicer/detailsSlice";
 //component imports
 import {Card, CardContent, CardHeader, CardMedia, Divider} from "@mui/material";
 import Login from "../../../../security/login/Login";
-import CustomForm from "../../../../custom-form/CustomForm";
 import {useLocation} from "react-router";
 import {Buttons} from "../../../../../interfaces/IThumbnailData";
+import FormWrapper from "../../../../forms/form-wrapper/FormWrapper";
 
 //interface imports
 
@@ -20,7 +20,8 @@ function DetailsCard(props: Props){
     const path = useLocation().pathname.slice(1);
     const formSelector = Object.values(Buttons).includes(path as Buttons) ? path : "none";
     const cardContent = {
-        new: <CustomForm model={formSelector}/>,
+        //@ts-ignore check type in ternary statement at declaration of formSelector
+        new: <FormWrapper model={formSelector}/>,
         login: <Login/>,
         employee: (<div/>),
         product: (<div/>),

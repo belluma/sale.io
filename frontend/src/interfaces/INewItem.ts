@@ -1,7 +1,12 @@
 import React from "react";
 
-export interface IFormFieldProps {
+export interface ITextFieldProps {
+
     label: string,
-    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    model: string
+}
+export interface ISelectProps extends ITextFieldProps{
+    options:string[],
 }
 
