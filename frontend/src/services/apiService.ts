@@ -28,7 +28,6 @@ export const getSingle = (type: string, token:string, id:number) => {
 }
 
 export const create = (type: string, token:string, data:IBody) => {
-    console.log(type)
     return axios({
         method: 'post',
         url: `/api/${type}s`,

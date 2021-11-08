@@ -24,7 +24,6 @@ function FormWrapper({model}: Props) {
         dispatch(handleFormInput({...itemToSave, ...updatedValue}))
     }
     const handleSubmit = () => {
-        console.log(123)
         dispatch(saveItem("product"))
     }
     const formSelector = {

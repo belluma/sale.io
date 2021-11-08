@@ -17,7 +17,8 @@ export const getProducts = createAsyncThunk(
     'getProducts',
     async (_, {getState, dispatch}) => {
         //@ts-ignore
-        const token = getState().login.token;
+        const token = getState().authentication.token;
+        console.log(token)
         const {data, status, statusText} = await getAllProducts(token);
         if (status !== 200) {
             dispatch(getErrorMessage({status, statusText}))
