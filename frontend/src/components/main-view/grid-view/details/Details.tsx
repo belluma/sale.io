@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogProps} from "@mui/material";
 import DetailsCard from "./details-card/DetailsCard";
 
 //interface imports
+
 type Props = {};
 
 
