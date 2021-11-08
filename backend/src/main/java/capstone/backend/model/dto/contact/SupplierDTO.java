@@ -1,6 +1,6 @@
 package capstone.backend.model.dto.contact;
 
-import capstone.backend.model.Weekdays;
+import capstone.backend.model.enums.Weekdays;
 import capstone.backend.model.db.Product;
 import capstone.backend.model.db.order.OrderToSupplier;
 import lombok.*;

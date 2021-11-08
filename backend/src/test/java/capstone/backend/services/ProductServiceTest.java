@@ -2,8 +2,8 @@ package capstone.backend.services;
 
 import capstone.backend.model.db.Product;
 import capstone.backend.model.dto.ProductDTO;
-import capstone.backend.model.exception.ProductIdAlreadyTakenException;
-import capstone.backend.model.exception.ProductNotFoundException;
+import capstone.backend.exception.exception.ProductIdAlreadyTakenException;
+import capstone.backend.exception.exception.ProductNotFoundException;
 import capstone.backend.repo.ProductRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

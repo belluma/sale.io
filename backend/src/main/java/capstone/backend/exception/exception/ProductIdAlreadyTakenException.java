@@ -1,4 +1,4 @@
-package capstone.backend.model.exception;
+package capstone.backend.exception.exception;
 
 public class ProductIdAlreadyTakenException extends RuntimeException {
     public ProductIdAlreadyTakenException(String message) {

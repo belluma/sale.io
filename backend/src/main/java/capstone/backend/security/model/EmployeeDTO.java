@@ -1,6 +1,6 @@
 package capstone.backend.security.model;
 
-import capstone.backend.model.UserRoles;
+import capstone.backend.model.enums.UserRoles;
 import capstone.backend.model.dto.contact.ContactDTO;
 import lombok.*;
 import lombok.experimental.SuperBuilder;

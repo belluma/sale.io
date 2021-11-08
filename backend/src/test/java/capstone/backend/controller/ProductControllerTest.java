@@ -1,5 +1,6 @@
 package capstone.backend.controller;
 
+import capstone.backend.exception.GlobalExceptionHandler;
 import capstone.backend.mapper.ProductMapper;
 import capstone.backend.model.db.Product;
 import capstone.backend.model.dto.ProductDTO;

@@ -1,8 +1,7 @@
-package capstone.backend.controller;
+package capstone.backend.exception;
 
-import capstone.backend.model.CustomError;
-import capstone.backend.model.exception.ProductIdAlreadyTakenException;
-import capstone.backend.model.exception.ProductNotFoundException;
+import capstone.backend.exception.exception.ProductIdAlreadyTakenException;
+import capstone.backend.exception.exception.ProductNotFoundException;
 import capstone.backend.security.exceptions.UserAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;

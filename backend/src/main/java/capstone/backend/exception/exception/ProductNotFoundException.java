@@ -1,4 +1,4 @@
-package capstone.backend.model.exception;
+package capstone.backend.exception.exception;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
