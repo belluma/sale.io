@@ -1,15 +1,15 @@
 package capstone.backend.controller;
 
 import capstone.backend.exception.GlobalExceptionHandler;
-import capstone.backend.mapper.ProductMapper;
-import capstone.backend.model.db.Product;
-import capstone.backend.model.dto.ProductDTO;
-import capstone.backend.repo.ProductRepo;
+import capstone.backend.mapper.SupplierMapper;
+import capstone.backend.model.db.contact.Supplier;
+import capstone.backend.model.dto.contact.SupplierDTO;
+import capstone.backend.model.enums.Weekdays;
+import capstone.backend.repo.SupplierRepo;
 import capstone.backend.utils.ControllerTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,38 +17,35 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
-import static capstone.backend.utils.ProductTestUtils.*;
+import static capstone.backend.mapper.SupplierMapper.mapSupplier;
+import static capstone.backend.utils.SupplierTestUtils.sampleSupplier;
+import static capstone.backend.utils.SupplierTestUtils.sampleSupplierDTO;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
-@Testcontainers
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class ProductControllerTest {
-
+class SupplierControllerTest {
 
     @Autowired
-    ProductController controller;
+    SupplierController controller;
     @Autowired
     GlobalExceptionHandler exceptionHandler;
     @Autowired
-    ProductRepo repo;
+    SupplierRepo repo;
     @Autowired
     TestRestTemplate restTemplate;
     @Autowired
     PasswordEncoder passwordEncoder;
     @Autowired
-    ProductMapper mapper;
+    SupplierMapper mapper;
     @Autowired
     ControllerTestUtils utils;
-    String BASEURL = "/api/products";
+    String BASEURL = "/api/suppliers";
 
     @Container
     public static PostgreSQLContainer container = new PostgreSQLContainer()
@@ -73,74 +70,73 @@ class ProductControllerTest {
         assertTrue(container.isRunning());
     }
 
-
     @Test
-    void getAllProductsWithDetails() {
-        Product product = repo.save(sampleProduct());
+    void getAllSuppliersWithDetails() {
+        Supplier supplier = repo.save(sampleSupplier());
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
-        ResponseEntity<ProductDTO[]> response = restTemplate.exchange(BASEURL, HttpMethod.GET, new HttpEntity<>(headers), ProductDTO[].class);
-        ProductDTO expected = mapProductWithDetails(product);
+        ResponseEntity<SupplierDTO[]> response = restTemplate.exchange(BASEURL, HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO[].class);
+        SupplierDTO expected = mapSupplier(supplier);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertIterableEquals(Arrays.asList(response.getBody()), List.of(expected));
     }
 
     @Test
-    void getProductDetails() {
+    void getSupplierDetails() {
         //GIVEN
-        Product product = repo.save(sampleProduct());
+        Supplier supplier = repo.save(sampleSupplier());
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
-        ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/" + product.getId(), HttpMethod.GET, new HttpEntity<>(headers), ProductDTO.class);
-        ProductDTO expected = mapProductWithDetails(product);
+        ResponseEntity<SupplierDTO> response = restTemplate.exchange(BASEURL + "/" + supplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
+        SupplierDTO expected = mapSupplier(supplier);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(expected));
     }
 
     @Test
-    void getProductDetailsReturnsNotFoundWhenProductNonExistent() {
+    void getSupplierDetailsReturnsNotFoundWhenSupplierNonExistent() {
         //GIVEN
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
-        ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/12", HttpMethod.GET, new HttpEntity<>(headers), ProductDTO.class);
+        ResponseEntity<SupplierDTO> response = restTemplate.exchange(BASEURL + "/12", HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
     }
 
     @Test
-    void createProduct() {
+    void createSupplier() {
         //GIVEN
-        ProductDTO product = sampleProductDTOWithDetailsWithId();
+        SupplierDTO supplier = sampleSupplierDTO();
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
-        ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(product, headers), ProductDTO.class);
+        ResponseEntity<SupplierDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(supplier, headers), SupplierDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(repo.findAll().size(), is(1));
     }
 
     @Test
-    void editProduct() {
+    void editSupplier() {
         //GIVEN
-        Product product = repo.save(sampleProduct());
-        ProductDTO productToEdit = mapProductWithDetails(product);
-        productToEdit.setRetailPrice(99.99F);
+        Supplier supplier = repo.save(sampleSupplier());
+        SupplierDTO supplierToEdit = mapSupplier(supplier);
+        supplierToEdit.setOrderDay(Weekdays.FRIDAY);
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
-        ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/" + product.getId(), HttpMethod.PUT, new HttpEntity<>(productToEdit, headers), ProductDTO.class);
+        ResponseEntity<SupplierDTO> response = restTemplate.exchange(BASEURL + "/" + supplier.getId(), HttpMethod.PUT, new HttpEntity<>(supplierToEdit, headers), SupplierDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), is(productToEdit));
+        assertThat(response.getBody(), is(supplierToEdit));
     }
 
     @Test
-    void editProductFailsWhenProductNonExistant() {
+    void editSupplierFailsWhenSupplierNonExistant() {
         //GIVEN
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
-        ProductDTO productToEdit = sampleProductDTOWithDetailsWithId();
+        SupplierDTO supplierToEdit = sampleSupplierDTO();
         //WHEN
-        ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/1", HttpMethod.PUT, new HttpEntity<>(productToEdit, headers), ProductDTO.class);
+        ResponseEntity<SupplierDTO> response = restTemplate.exchange(BASEURL + "/1", HttpMethod.PUT, new HttpEntity<>(supplierToEdit, headers), SupplierDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
     }

@@ -2,10 +2,16 @@ package capstone.backend.mapper;
 
 import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.dto.contact.SupplierDTO;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class SupplierMapper {
+
+    private SupplierMapper(){
+
+    }
 
     public static Supplier mapSupplier(SupplierDTO supplier){
         return Supplier
