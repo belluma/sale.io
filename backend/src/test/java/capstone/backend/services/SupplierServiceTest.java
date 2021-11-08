@@ -13,6 +13,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.List;
 import java.util.Optional;
 
+import static capstone.backend.mapper.SupplierMapper.mapSupplier;
 import static capstone.backend.utils.SupplierTestUtils.sampleSupplier;
 import static capstone.backend.utils.SupplierTestUtils.sampleSupplierDTO;
 import static org.hamcrest.MatcherAssert.assertThat;
