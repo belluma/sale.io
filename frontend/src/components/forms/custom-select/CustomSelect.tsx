@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 //component imports
 import {MenuItem, TextField} from "@mui/material";
@@ -9,13 +9,19 @@ import {ISelectProps} from "../../../interfaces/INewItem";
 type Props = ISelectProps
 
 function CustomSelect({label, options, model, name, handleChange}: Props){
+    const [selected, setSelected] = useState('')
+    const select = (e: React.ChangeEvent<HTMLInputElement>) =>{
+        handleChange(e)
+        setSelected(e.target.value)
+    }
     return(
         <TextField
             id={`Select ${label}`}
             select
             label={`Select ${label}`}
             name={name}
-            onChange={handleChange}
+            value={selected}
+            onChange={select}
             helperText={`Please select your ${model}`}
         >
             {options.map((option) => (

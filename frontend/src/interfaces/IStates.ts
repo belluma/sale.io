@@ -1,6 +1,7 @@
 import {ICredentials, IEmployee} from "./IEmployee";
 import {IDetailsData, Views} from "./IThumbnailData";
 import {IProduct} from "./IProduct";
+import {IBody} from "./IApi";
 
 export interface IEmployeeState {
     employees: IEmployee[],
@@ -32,5 +33,10 @@ export interface IProductsState {
     products: IProduct[],
     currentProduct: IProduct | undefined,
     pending:boolean,
+}
 
+export interface INewItemState {
+    itemToSave: IBody | {},
+    pending: boolean,
+    savedItem?: IBody
 }

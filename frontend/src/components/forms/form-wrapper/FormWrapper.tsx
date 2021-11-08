@@ -1,16 +1,16 @@
 import React from 'react'
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import {handleFormInput, saveItem, selectItemToSave} from "../../../slicer/newItemSlice";
+
+//component imports
+import {Button} from "@mui/material";
 import Employee from "../employee/Employee";
 import Customer from "../customer/Customer";
 import Supplier from "../supplier/Supplier";
 import Product from "../product/Product";
-import {Buttons} from "../../../interfaces/IThumbnailData";
-import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {handleFormInput, selectItemToSave} from "../../../slicer/newItemSlice";
-import {Button} from "@mui/material";
-
-//component imports
 
 //interface imports
+import {Buttons} from "../../../interfaces/IThumbnailData";
 
 type Props = {
     model: Buttons
@@ -24,7 +24,8 @@ function FormWrapper({model}: Props) {
         dispatch(handleFormInput({...itemToSave, ...updatedValue}))
     }
     const handleSubmit = () => {
-        console.log(itemToSave)
+        console.log(123)
+        dispatch(saveItem("product"))
     }
     const formSelector = {
         none: "couldn't find the right form",

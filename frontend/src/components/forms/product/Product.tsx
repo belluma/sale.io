@@ -17,8 +17,8 @@ function Product({handleChange}: Props) {
     return (
         <div>
             <CustomText name="name" label={"name"}  {...props} />
-            <CustomSelect name="supplier" label={"supplier"} options={[]} {...props}  />
-            <CustomSelect name="category" label={"category"} options={[]} {...props}  />
+            <CustomSelect name="supplier" label={"supplier"} options={[`farmer's market`]} {...props}  />
+            <CustomSelect name="category" label={"category"} options={[`vegetables`]} {...props}  />
             <Toolbar>
                 <CustomNumber currency name="purchasePrice" label={"purchase price"}  {...props} />
                 <CustomNumber currency name="retailPrice" label={"retail price"}  {...props} />
