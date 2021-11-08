@@ -54,6 +54,7 @@ class ProductServiceTest {
     void getProductDetailsThrowsWhenNoProductFound() {
         //GIVEN
         when(repo.findById(123L)).thenReturn(Optional.empty());
+        //WHEN - THEN
         Exception ex = assertThrows(ProductNotFoundException.class, () -> service.getProductDetails(123L));
         assertThat(ex.getMessage(), is("Couldn't find a product with the id 123"));
         verify(repo).findById(123L);
