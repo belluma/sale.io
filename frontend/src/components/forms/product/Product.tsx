@@ -1,30 +1,30 @@
 import React from 'react'
 import {TextField, Toolbar} from "@mui/material";
 import CustomSelect from "../custom-select/CustomSelect";
-import {Buttons} from "../../../interfaces/IThumbnailData";
 import CustomText from "../custom-text/CustomText";
 import CustomNumber from "../custom-number/CustomNumber";
+import {IFormProps} from "../../../interfaces/INewItem";
 
 //component imports
 
 //interface imports
 
-type Props = {};
+type Props = IFormProps
 
-function Product(props: Props) {
-    const handleChange = () => {}
+function Product({handleChange}: Props) {
+    const props = {handleChange: handleChange, model: "product"}
     return (
         <div>
-           <CustomText label={"name"} handleChange={handleChange} model={"product"} />
-            <CustomSelect label={"supplier"} options={[]} model={"product"}  handleChange={handleChange}/>
-            <CustomSelect label={"category"} options={[]} model={"product"}  handleChange={handleChange}/>
+            <CustomText name="name" label={"name"}  {...props} />
+            <CustomSelect name="supplier" label={"supplier"} options={[]} {...props}  />
+            <CustomSelect name="category" label={"category"} options={[]} {...props}  />
             <Toolbar>
-                <CustomNumber label={"purchase price"} handleChange={handleChange} model={"model"} />
-                <CustomNumber label={"retail price"} handleChange={handleChange} model={"model"} />
+                <CustomNumber name="purchasePrice" label={"purchase price"}  {...props} />
+                <CustomNumber name="retailPrice" label={"retail price"}  {...props} />
             </Toolbar>
             <Toolbar>
-                <CustomNumber label={"min amount"} handleChange={handleChange} model={"model"} />
-                <CustomNumber label={"max amount"} handleChange={handleChange} model={"model"} />
+                <CustomNumber name="minAmount" label={"min amount"}  {...props} />
+                <CustomNumber name="maxAmount" label={"max amount"}  {...props} />
             </Toolbar>
         </div>
     )

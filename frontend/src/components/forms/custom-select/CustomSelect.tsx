@@ -9,7 +9,7 @@ import {ISelectProps, ITextFieldProps} from "../../../interfaces/INewItem";
 
 type Props = ISelectProps
 
-function CustomSelect({label, options, model}: Props){
+function CustomSelect({label, options, model, name}: Props){
     const handleChange = () => {
     };
     return(
@@ -17,6 +17,7 @@ function CustomSelect({label, options, model}: Props){
             id={`Select ${label}`}
             select
             label={`Select ${label}`}
+            name={name}
             onChange={handleChange}
             helperText={`Please select your ${model}`}
         >

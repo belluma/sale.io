@@ -8,13 +8,13 @@ import {ITextFieldProps} from "../../../interfaces/INewItem";
 
 type Props = ITextFieldProps;
 
-function CustomNumber({label, handleChange}: Props){
+function CustomNumber({label, handleChange, name}: Props){
     return(
         <TextField
             onChange={handleChange}
             id={label}
             label={label}
-            name={label}
+            name={name}
             type="number"
             InputLabelProps={{
                 shrink: true,
