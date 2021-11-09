@@ -29,13 +29,15 @@ function Header(props: Props){
             </Slide>
         );
     }
+
+    const appBarHeight = 100;
     return (
         <HideOnScroll {...props}>
-            <AppBar sx={{bgcolor: 'primary.light'}}>
+            <AppBar sx={{bgcolor: 'primary.light' ,height:appBarHeight, zIndex:1400}}>
                 <Toolbar sx={{justifyContent: "space-between"}}>
                     <Typography>Saleio</Typography>
                 </Toolbar>
-                <HeaderButtons />
+                <HeaderButtons appBarHeight={appBarHeight} />
             </AppBar>
         </HideOnScroll>
     )
