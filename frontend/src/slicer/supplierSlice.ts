@@ -36,7 +36,7 @@ export const getAllSuppliers = createAsyncThunk<IResponseGetAllSuppliers, void, 
     }
 )
 
-export const getOneSupplier = createAsyncThunk<IResponseGetAllSuppliers, number, { state: RootState, dispatch: Dispatch }>(
+export const getOneSupplier = createAsyncThunk<IResponseGetAllSuppliers, string, { state: RootState, dispatch: Dispatch }>(
     'getOne/suppliers',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
@@ -66,7 +66,7 @@ export const editSupplier = createAsyncThunk<IResponseGetAllSuppliers, ISupplier
     }
 )
 
-export const deleteSupplier = createAsyncThunk<IResponseGetAllSuppliers, number, { state: RootState, dispatch: Dispatch }>(
+export const deleteSupplier = createAsyncThunk<IResponseGetAllSuppliers, string, { state: RootState, dispatch: Dispatch }>(
     'delete/suppliers',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
@@ -80,7 +80,7 @@ export const supplierSlice = createSlice({
     name: 'supplier/suppliers',
     initialState,
     reducers: {
-        chooseCurrentSupplier: (state:ISuppliersState, action: PayloadAction<number>) => {
+        chooseCurrentSupplier: (state:ISuppliersState, action: PayloadAction<string>) => {
             state.currentSupplier = state.suppliers.filter(p => p.id === action.payload)[0];
         }
     },

@@ -15,6 +15,7 @@ export const store = configureStore({
     employee: employeeReducer,
     details: detailsReducer,
     product: productReducer,
+    newItem: newItemReducer,
     supplier: supplierReducer,
   },
 });

@@ -15,7 +15,7 @@ export const getAll = (model: string, token: string) => {
         .catch(err => parseError(err))
 }
 
-export const getOne = (model: string, token: string, id: number) => {
+export const getOne = (model: string, token: string, id: string) => {
     return axios({
         method: 'get',
         url: `/api/${model}s/${id}`,
@@ -50,7 +50,7 @@ export const edit = (model: string, token: string, data: IBody) => {
     })
         .catch(err => parseError(err))
 }
-export const del = (model: string, token: string, id: number) => {
+export const del = (model: string, token: string, id: string) => {
     return axios({
         method: 'delete',
         url: `/api/${model}s/${id}`,

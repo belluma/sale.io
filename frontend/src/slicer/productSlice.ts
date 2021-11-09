@@ -36,7 +36,7 @@ export const getAllProducts = createAsyncThunk<IResponseGetAllProducts, void, { 
     }
 )
 
-export const getOneProduct = createAsyncThunk<IResponseGetAllProducts, number, { state: RootState, dispatch: Dispatch }>(
+export const getOneProduct = createAsyncThunk<IResponseGetAllProducts, string, { state: RootState, dispatch: Dispatch }>(
     'getOne',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
@@ -66,7 +66,7 @@ export const editProduct = createAsyncThunk<IResponseGetAllProducts, IProduct, {
     }
 )
 
-export const deleteProduct = createAsyncThunk<IResponseGetAllProducts, number, { state: RootState, dispatch: Dispatch }>(
+export const deleteProduct = createAsyncThunk<IResponseGetAllProducts, string, { state: RootState, dispatch: Dispatch }>(
     'delete',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
@@ -80,7 +80,7 @@ export const productSlice = createSlice({
     name: 'product',
     initialState,
     reducers: {
-        chooseCurrentProduct: (state, action: PayloadAction<number>) => {
+        chooseCurrentProduct: (state, action: PayloadAction<string>) => {
             state.currentProduct = state.products.filter(p => p.id === action.payload)[0];
         }
     },
