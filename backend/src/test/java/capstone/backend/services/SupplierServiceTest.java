@@ -58,7 +58,7 @@ class SupplierServiceTest {
         when(repo.findById(123L)).thenReturn(Optional.empty());
         //WHEN - THEN
         Exception ex = assertThrows(EntityNotFoundException.class, () -> service.getSupplierDetails(123L));
-        assertThat(ex.getMessage(), is("Couldn't find a product with the id 123"));
+        assertThat(ex.getMessage(), is("Couldn't find a supplier with the id 123"));
         verify(repo).findById(123L);
         }
     @Test
@@ -75,7 +75,7 @@ class SupplierServiceTest {
     }
 
     @Test
-    void createProductThrowsWhenProductIdAlreadyTaken() {
+    void createSupplierThrowsWhenProductIdAlreadyTaken() {
         //GIVEN
         Supplier supplier = sampleSupplier();
         when(repo.findById(123L)).thenReturn(Optional.of(supplier));
@@ -89,14 +89,14 @@ class SupplierServiceTest {
     @Test
     void editSupplier() {
         //GIVEN
-        Supplier product = sampleSupplier();
+        Supplier supplier = sampleSupplier();
         Supplier editedSupplier = sampleSupplier();
         editedSupplier.setOrderDay(Weekdays.MONDAY);
-        when(repo.findById(123L)).thenReturn(Optional.of(product));
+        when(repo.findById(123L)).thenReturn(Optional.of(supplier));
         when(repo.save(editedSupplier)).thenReturn(editedSupplier);
         //WHEN
         SupplierDTO expected = sampleSupplierDTO();
-        expected.setOrderDay(Weekdays.FRIDAY);
+        expected.setOrderDay(Weekdays.MONDAY);
         //THEN
         assertThat(expected, is(service.editSupplier(mapSupplier(editedSupplier))));
         verify(repo).findById(123L);
@@ -104,13 +104,13 @@ class SupplierServiceTest {
     }
 
     @Test
-    void editProductThrowsWhenProductIdAlreadyTaken() {
+    void editSupplierThrowsWhenProductNonExistent() {
         //GIVEN
         Supplier supplier = sampleSupplier();
-        when(repo.findById(123L)).thenReturn(Optional.of(supplier));
-        Exception ex = assertThrows(EntityWithThisIdAlreadyExistException.class, () -> service.editSupplier(sampleSupplierDTO()));
+        when(repo.findById(123L)).thenReturn(Optional.empty());
+        Exception ex = assertThrows(EntityNotFoundException.class, () -> service.editSupplier(sampleSupplierDTO()));
         //THEN
-        assertThat(ex.getMessage(), is(String.format("Supplier %s already has the id %d", supplier.getFirstName(), supplier.getId())));
+        assertThat(ex.getMessage(), is(String.format("Couldn't find a supplier with the id %d", supplier.getId())));
         verify(repo).findById(123L);
     }
 

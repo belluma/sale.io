@@ -19,6 +19,8 @@ public class SupplierMapper {
                 .id(supplier.getId())
                 .firstName(supplier.getFirstName())
                 .lastName(supplier.getLastName())
+                .phone(supplier.getPhone())
+                .email(supplier.getEmail())
                 .products(supplier
                         .getProducts()
                         .stream()
@@ -34,6 +36,8 @@ public class SupplierMapper {
                 .id(supplier.getId())
                 .firstName(supplier.getFirstName())
                 .lastName(supplier.getLastName())
+                .phone(supplier.getPhone())
+                .email(supplier.getEmail())
                 .products(supplier
                         .getProducts()
                         .stream()

@@ -14,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -39,11 +40,14 @@ public class Supplier extends Contact {
 
     @Override
     public boolean equals(Object o) {
-        return super.equals(o);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Supplier supplier = (Supplier) o;
+        return Objects.equals(products, supplier.products) && Objects.equals(orders, supplier.orders) && orderDay == supplier.orderDay;
     }
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return Objects.hash(products, orders, orderDay);
     }
 }
