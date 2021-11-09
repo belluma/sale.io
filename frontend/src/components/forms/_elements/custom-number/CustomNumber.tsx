@@ -4,7 +4,7 @@ import {InputAdornment, TextField} from "@mui/material";
 
 //interface imports
 
-import {INumberFieldProps} from "../../../interfaces/INewItem";
+import {INumberFieldProps} from "../../../../interfaces/INewItem";
 
 type Props = INumberFieldProps;
 

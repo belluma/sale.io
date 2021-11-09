@@ -2,9 +2,9 @@ import React from 'react'
 
 //component imports
 import { Toolbar} from "@mui/material";
-import CustomSelect from "../custom-select/CustomSelect";
-import CustomText from "../custom-text/CustomText";
-import CustomNumber from "../custom-number/CustomNumber";
+import CustomSelect from "../_elements/custom-select/CustomSelect";
+import CustomText from "../_elements/custom-text/CustomText";
+import CustomNumber from "../_elements/custom-number/CustomNumber";
 
 //interface imports
 

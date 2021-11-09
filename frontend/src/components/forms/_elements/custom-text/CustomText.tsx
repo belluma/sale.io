@@ -4,7 +4,7 @@ import {TextField} from "@mui/material";
 
 //interface imports
 
-import {ITextFieldProps} from "../../../interfaces/INewItem";
+import {ITextFieldProps} from "../../../../interfaces/INewItem";
 
 type Props = ITextFieldProps;
 
