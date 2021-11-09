@@ -5,6 +5,7 @@ import employeeReducer from '../slicer/employeeSlice';
 import detailsReducer from '../slicer/detailsSlice';
 import productReducer from '../slicer/productSlice';
 import newItemReducer from '../slicer/newItemSlice';
+import supplierReducer from '../slicer/supplierSlice';
 
 
 export const store = configureStore({
@@ -14,7 +15,7 @@ export const store = configureStore({
     employee: employeeReducer,
     details: detailsReducer,
     product: productReducer,
-    newItem: newItemReducer,
+    supplier: supplierReducer,
   },
 });
 

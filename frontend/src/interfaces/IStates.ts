@@ -31,15 +31,22 @@ export const initialDetailsData:IDetailsData = {
     model: Views.NEW
 }
 
-export interface IProductsState {
-    products: IProduct[],
-    currentProduct: IProduct | undefined,
-    pending:boolean,
+interface IBaseState {
+    pending:boolean
 }
 
-export interface INewItemState {
+export interface IProductsState extends IBaseState {
+    products: IProduct[],
+    currentProduct: IProduct | undefined,
+}
+
+export interface ISuppliersState extends IBaseState {
+    suppliers: ISupplier[],
+    currentSupplier: ISupplier | undefined,
+}
+
+export interface INewItemState extends IBaseState{
     itemToSave: IBody | {},
-    pending: boolean,
     savedItem?: IBody
 }
 

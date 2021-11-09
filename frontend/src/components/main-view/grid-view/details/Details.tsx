@@ -25,8 +25,8 @@ function Details(props: Props) {
         }
     }, [showDetails]);
     const handleClose = () => {
-        dispatch(hideDetails());
         dispatch(resetDetails());
+        dispatch(hideDetails());
     }
 
     return (

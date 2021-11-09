@@ -1,21 +1,17 @@
-export class CredentialsClass {
-    username= "";
-    firstName= "";
-    lastName= "";
-    password= "";
+import {IContact} from "./IContact";
+
+export interface ICredentials {
+    username: string,
+    firstName: string,
+    lastName: string,
+    password: string,
 }
 
-export interface ICredentials extends CredentialsClass {
-}
-
-export class EmployeeClass extends CredentialsClass {
-    email = "";
-    phone = "";
-    picture = "";
-    id = "";
-}
-
-export interface IEmployee extends EmployeeClass{
+export interface IEmployee extends IContact, ICredentials {
+    email : string,
+    phone : string,
+    picture : string,
+    id : string,
 }
 
 export const initialCredentials:ICredentials = {
