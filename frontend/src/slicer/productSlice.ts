@@ -28,7 +28,6 @@ export const handleError = (status:number, statusText: string, dispatch: Dispatc
 export const getAllProducts = createAsyncThunk<IResponseGetAllProducts, void, { state: RootState, dispatch: Dispatch }>(
     'getAll',
     async (_, {getState, dispatch}) => {
-        console.log(Date.now());
         const token = getState().authentication.token;
         const {data, status, statusText} = await apiGetAll("product", token);
         handleError(status, statusText, dispatch);

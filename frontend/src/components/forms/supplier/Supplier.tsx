@@ -7,6 +7,7 @@ import Contact from "../_elements/contact/Contact";
 //interface imports
 import {IFormProps} from "../../../interfaces/INewItem";
 import {Weekdays} from "../../../interfaces/weekdays";
+import {mapWeekdaysToSelectData} from "../helper";
 
 type Props = IFormProps;
 
@@ -15,7 +16,7 @@ function Supplier({handleChange}: Props){
     return(
         <div>
             <Contact {...props}/>
-            <CustomSelect name="weekdays" label={"Weekdays"} options={Object.values(Weekdays)} {...props}  />
+            <CustomSelect name="weekdays" label={"Weekdays"} options={mapWeekdaysToSelectData()} {...props}  />
         </div>
     )
 }

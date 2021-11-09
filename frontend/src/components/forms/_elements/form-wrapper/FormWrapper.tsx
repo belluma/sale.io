@@ -11,6 +11,7 @@ import Product from "../../product/Product";
 
 //interface imports
 import {Buttons} from "../../../../interfaces/IThumbnailData";
+import {selectSuppliers} from "../../../../slicer/supplierSlice";
 
 type Props = {
     model: Buttons
@@ -19,6 +20,7 @@ type Props = {
 function FormWrapper({model}: Props) {
     const dispatch = useAppDispatch();
     const itemToSave = useAppSelector(selectItemToSave)
+    const suppliers = useAppSelector(selectSuppliers);
     const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         const updatedValue = {[e.target.name]: e.target.value}
         dispatch(handleFormInput({...itemToSave, ...updatedValue}))
@@ -26,6 +28,9 @@ function FormWrapper({model}: Props) {
     const handleSubmit = () => {
         dispatch(saveItem(model))
     }
+    const disableButton = () => {
+        return (model === Buttons.PRODUCT && !suppliers.length)
+            }
     const formSelector = {
         none: "couldn't find the right form",
         employee: <Employee/>,
@@ -36,7 +41,7 @@ function FormWrapper({model}: Props) {
     return (
         <form>{formSelector[model]}
             <section>
-                <Button onClick={handleSubmit}>save</Button>
+                <Button onClick={handleSubmit} disabled={disableButton()}>save</Button>
             </section>
         </form>
     )
