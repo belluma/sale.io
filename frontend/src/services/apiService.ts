@@ -4,10 +4,10 @@ import {authHeaders, jsonHeaders} from "./serviceUtils";
 import {IBody} from "../interfaces/IApi";
 
 
-export const getAll = (type: string, token: string) => {
+export const getAll = (model: string, token: string) => {
     return axios({
         method: 'get',
-        url: `/api/{${type}s`,
+        url: `/api/${model}s`,
         headers: {...jsonHeaders(), ...authHeaders(token)}
     }).then(response => {
         return response
