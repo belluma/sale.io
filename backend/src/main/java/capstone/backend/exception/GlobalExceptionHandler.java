@@ -1,8 +1,7 @@
-package capstone.backend.controller;
+package capstone.backend.exception;
 
-import capstone.backend.model.CustomError;
-import capstone.backend.model.exception.ProductIdAlreadyTakenException;
-import capstone.backend.model.exception.ProductNotFoundException;
+import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
+import capstone.backend.exception.model.EntityNotFoundException;
 import capstone.backend.security.exceptions.UserAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -22,13 +21,13 @@ import java.util.NoSuchElementException;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler({IllegalArgumentException.class, AuthenticationException.class, UserAlreadyExistsException.class, ProductIdAlreadyTakenException.class})
+    @ExceptionHandler({IllegalArgumentException.class, AuthenticationException.class, UserAlreadyExistsException.class, EntityWithThisIdAlreadyExistException.class})
     public ResponseEntity<Object> handleIllegalArgumentException(Exception ex) {
         CustomError message = new CustomError(ex);
         return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @ExceptionHandler({NoSuchElementException.class, ProductNotFoundException.class})
+    @ExceptionHandler({NoSuchElementException.class, EntityNotFoundException.class})
     public ResponseEntity<Object> handleNoSuchElementException(Exception ex) {
         CustomError message = new CustomError(ex);
         return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.NOT_FOUND);

@@ -1,19 +1,26 @@
 package capstone.backend.model.dto.contact;
 
-import capstone.backend.model.Weekdays;
-import capstone.backend.model.db.Product;
 import capstone.backend.model.db.order.OrderToSupplier;
-import lombok.*;
+import capstone.backend.model.dto.ProductDTO;
+import capstone.backend.model.enums.Weekdays;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
-@Getter
-@Setter
+//@EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@SuperBuilder
 public class SupplierDTO extends ContactDTO{
 
-    private List<Product> products;
+    private Long id;
+    private List<ProductDTO> products;
     private List<OrderToSupplier> orders;
-    private Weekdays oderDay;
+    private Weekdays orderDay;
+
 
 }

@@ -1,4 +1,4 @@
-package capstone.backend.model;
+package capstone.backend.model.enums;
 
 public enum Weekdays {
     MONDAY,

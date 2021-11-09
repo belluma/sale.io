@@ -1,4 +1,4 @@
-package capstone.backend.model;
+package capstone.backend.exception;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;

@@ -13,13 +13,5 @@ import javax.persistence.Table;
 @Table(name ="supplier_orders")
 public class OrderToSupplier extends Order {
 
-    @Override
-    public boolean equals(Object o) {
-        return super.equals(o);
-    }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
 }
