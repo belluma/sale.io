@@ -34,7 +34,7 @@ export const employeeSlice = createSlice({
             state.currentEmployee = employee
             state.currentEmployeeCredentials = extractCredentials(employee);
         },
-        toBeReplaced: (state, action:PayloadAction<string>) => {}
+        toBeReplaced: (state, action:PayloadAction<string>) => {console.log("I have to stay here until all view are implemented")}
     },
     extraReducers: (builder => {
         builder.addCase(getEmployees.pending, state => {

@@ -24,7 +24,7 @@ function FormWrapper({model}: Props) {
         dispatch(handleFormInput({...itemToSave, ...updatedValue}))
     }
     const handleSubmit = () => {
-        dispatch(saveItem("product"))
+        dispatch(saveItem(model))
     }
     const formSelector = {
         none: "couldn't find the right form",

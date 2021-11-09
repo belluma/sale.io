@@ -28,7 +28,6 @@ export const handleError = (status:number, statusText: string, dispatch: Dispatc
 export const getAllSuppliers = createAsyncThunk<IResponseGetAllSuppliers, void, { state: RootState, dispatch: Dispatch }>(
     'getAll/suppliers',
     async (_, {getState, dispatch}) => {
-        console.log(Date.now());
         const token = getState().authentication.token;
         const {data, status, statusText} = await apiGetAll("supplier", token);
         handleError(status, statusText, dispatch);
@@ -46,11 +45,11 @@ export const getOneSupplier = createAsyncThunk<IResponseGetAllSuppliers, string,
     }
 )
 
-export const createSupplier = createAsyncThunk<IResponseGetAllSuppliers, ISupplier, { state: RootState, dispatch: Dispatch }>(
+export const createSupplier = createAsyncThunk<IResponseGetAllSuppliers, void, { state: RootState, dispatch: Dispatch }>(
     'create/suppliers',
-    async (supplier, {getState, dispatch}) => {
+    async (_, {getState, dispatch}) => {
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiCreate("supplier", token, supplier);
+        const {data, status, statusText} = await apiCreate("supplier", token, getState().newItem.itemToSave);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }

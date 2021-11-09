@@ -46,11 +46,11 @@ export const getOneProduct = createAsyncThunk<IResponseGetAllProducts, string, {
     }
 )
 
-export const createProduct = createAsyncThunk<IResponseGetAllProducts, IProduct, { state: RootState, dispatch: Dispatch }>(
+export const createProduct = createAsyncThunk<IResponseGetAllProducts, void, { state: RootState, dispatch: Dispatch }>(
     'create',
-    async (product, {getState, dispatch}) => {
+    async (_, {getState, dispatch}) => {
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiCreate("product", token, product);
+        const {data, status, statusText} = await apiCreate("product", token, getState().newItem.itemToSave);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
