@@ -31,7 +31,7 @@ function FormWrapper({model}: Props) {
         employee: <Employee/>,
         product: <Product handleChange={handleInput}/>,
         customer: <Customer/>,
-        supplier: <Supplier/>,
+        supplier: <Supplier handleChange={handleInput}/>,
     }
     return (
         <form>{formSelector[model]}

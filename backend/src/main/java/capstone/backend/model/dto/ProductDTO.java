@@ -2,6 +2,7 @@ package capstone.backend.model.dto;
 
 import capstone.backend.model.db.Category;
 import capstone.backend.model.db.contact.Supplier;
+import capstone.backend.model.dto.contact.SupplierDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,7 @@ public class ProductDTO {
 
     private Long id;
     private String name;
-    private List<Supplier> suppliers;
+    private List<SupplierDTO> suppliers;
     private String stockCodeSupplier;
     private Category category;
     private Float purchasePrice;
