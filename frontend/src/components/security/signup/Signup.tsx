@@ -9,14 +9,14 @@ import {Card, CardHeader, Button, Divider, FormGroup, TextField} from '@mui/mate
 import {Redirect} from "react-router";
 
 //interface imports
-import {ICredentials, initialCredentials} from '../../../interfaces/IEmployee';
+import {IUserCredentials, initialCredentials} from '../../../interfaces/IEmployee';
 
 type Props = {};
 
 function Signup(props: Props) {
     const dispatch = useAppDispatch();
     const employees = useAppSelector(selectEmployees);
-    const [credentials, setCredentials] = useState<ICredentials>(initialCredentials);
+    const [credentials, setCredentials] = useState<IUserCredentials>(initialCredentials);
     const [repeatedPassword, setRepeatedPassword] = useState<string>("");
     const [passwordConfirmed, setPasswordConfirmed] = useState<boolean>(false);
     const register = () => {

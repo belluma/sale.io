@@ -1,4 +1,4 @@
-import {ICredentials, IEmployee} from "./IEmployee";
+import {IUserCredentials, IEmployee} from "./IEmployee";
 import {IDetailsData, Views} from "./IThumbnailData";
 import {IProduct} from "./IProduct";
 import {IBody} from "./IApi";
@@ -8,7 +8,7 @@ import {ISupplier} from "./ISupplier";
 export interface IEmployeeState {
     employees: IEmployee[],
     currentEmployee: IEmployee | undefined,
-    currentEmployeeCredentials: ICredentials | undefined,
+    currentEmployeeCredentials: IUserCredentials | undefined,
     pending: boolean
 }
 

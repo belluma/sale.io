@@ -1,6 +1,6 @@
 import axios from "axios";
 import {parseError} from './errorService';
-import {ICredentials, IEmployee} from "../interfaces/IEmployee";
+import {IUserCredentials, IEmployee} from "../interfaces/IEmployee";
 import {jsonHeaders} from "./serviceUtils";
 
 
@@ -16,7 +16,7 @@ export const getAllEmployees = () => {
 }
 
 
-export const extractCredentials = (employee:IEmployee):ICredentials => {
+export const extractCredentials = (employee:IEmployee):IUserCredentials => {
     const {email, phone, picture, ...credentials} = employee;
     return credentials;
 }

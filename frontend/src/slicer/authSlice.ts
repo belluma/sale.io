@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {ICredentials} from "../interfaces/IEmployee";
+import {IUserCredentials} from "../interfaces/IEmployee";
 import {RootState} from "../app/store";
 import {getErrorMessage} from "./errorSlice";
 import {registerAdmin as registerAsAdmin, sendLoginData} from "../services/authService";
@@ -17,7 +17,7 @@ const initialState: IAuthState = {
 
 export const login = createAsyncThunk(
     'login',
-    async (credentials: ICredentials, thunkAPI) => {
+    async (credentials: IUserCredentials, thunkAPI) => {
         const {data, status, statusText} = await sendLoginData(credentials);
         if (status !== 200) {
             thunkAPI.dispatch(getErrorMessage({status, statusText}));
@@ -29,7 +29,7 @@ export const login = createAsyncThunk(
 )
 export const registerAdmin = createAsyncThunk(
     'signup',
-    async (credentials: ICredentials, thunkAPI) => {
+    async (credentials: IUserCredentials, thunkAPI) => {
         const {data, status, statusText} = await registerAsAdmin(credentials);
         if (status !== 200) {
             thunkAPI.dispatch(getErrorMessage({status, statusText}));

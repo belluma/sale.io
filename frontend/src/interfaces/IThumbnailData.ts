@@ -44,11 +44,11 @@ export const parseEmployeeToThumbnailData = ({firstName, lastName, username, pic
 
     }
 }
-export const parseSupplierToThumbnailData = ({firstName, lastName, username, picture}: ISupplier): IDetailsData => {
+export const parseSupplierToThumbnailData = ({firstName, lastName, id, picture}: ISupplier): IDetailsData => {
     return {
         title: `${firstName} ${lastName}`,
         picture: picture,
-        id: username,
+        id: id,
         alt: "profile picture",
         model: Views.LOGIN
 

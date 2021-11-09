@@ -1,3 +1,5 @@
-export interface IModel {
+import {INames} from "./IEmployee";
+
+export interface IModel extends INames{
     id: string
 }

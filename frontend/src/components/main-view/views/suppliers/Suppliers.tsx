@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react'
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
 import { parseSupplierToThumbnailData, Views} from "../../../../interfaces/IThumbnailData";
-import GridView from "../../grid-view/GridView";
 import {getAllSuppliers, selectSuppliers} from "../../../../slicer/supplierSlice";
 
 //component imports
+import GridView from "../../grid-view/GridView";
 
 //interface imports
 
