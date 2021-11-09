@@ -12,16 +12,19 @@ import FormWrapper from "../../../../forms/_elements/form-wrapper/FormWrapper";
 
 //interface imports
 
-type Props = {};
+type Props = {
+    fullScreen: boolean,
+    handleClose:()=>void
+};
 
-function DetailsCard(props: Props){
+function DetailsCard({fullScreen, handleClose}: Props){
     const detailsData = useAppSelector(selectDetailsData);
     const {title, subtitle, picture, alt, model} = detailsData;
     const path = useLocation().pathname.slice(1);
     const formSelector = Object.values(Buttons).includes(path as Buttons) ? path : "none";
     const cardContent = {
         //@ts-ignore check type in ternary statement at declaration of formSelector
-        new: <FormWrapper model={formSelector}/>,
+        new: <FormWrapper fullScreen={fullScreen} handleClose={handleClose}model={formSelector}/>,
         login: <Login/>,
         employee: (<div/>),
         product: (<div/>),

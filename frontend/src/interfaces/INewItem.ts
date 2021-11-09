@@ -1,5 +1,4 @@
 import React from "react";
-import {Weekdays} from "./weekdays";
 
 export interface IFormProps {
     handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void,

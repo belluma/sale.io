@@ -24,9 +24,9 @@ function CustomSelect({label, options, model, name, handleChange}: Props){
             onChange={select}
             helperText={`Please select the ${model}`}
         >
-            {options.map(({id, name}:Option) => (
+            {options.map(({id, name: option}:Option) => (
                 <MenuItem key={id} value={id}>
-                    {name}
+                    {option}
                 </MenuItem>
             ))}
         </TextField>

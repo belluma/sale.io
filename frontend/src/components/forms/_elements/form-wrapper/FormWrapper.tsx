@@ -14,10 +14,12 @@ import {Buttons} from "../../../../interfaces/IThumbnailData";
 import {selectSuppliers} from "../../../../slicer/supplierSlice";
 
 type Props = {
-    model: Buttons
+    model: Buttons,
+    fullScreen:boolean,
+    handleClose:()=> void
 };
 
-function FormWrapper({model}: Props) {
+function FormWrapper({model, fullScreen, handleClose}: Props) {
     const dispatch = useAppDispatch();
     const itemToSave = useAppSelector(selectItemToSave)
     const suppliers = useAppSelector(selectSuppliers);
@@ -42,6 +44,7 @@ function FormWrapper({model}: Props) {
         <form>{formSelector[model]}
             <section>
                 <Button onClick={handleSubmit} disabled={disableButton()}>save</Button>
+                {fullScreen && <Button onClick={handleClose}>Close</Button>}
             </section>
         </form>
     )
