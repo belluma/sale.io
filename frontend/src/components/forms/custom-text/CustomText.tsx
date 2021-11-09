@@ -1,10 +1,10 @@
 import React from 'react'
-import {ITextFieldProps} from "../../../interfaces/INewItem";
 //component imports
-
 import {TextField} from "@mui/material";
 
 //interface imports
+
+import {ITextFieldProps} from "../../../interfaces/INewItem";
 
 type Props = ITextFieldProps;
 

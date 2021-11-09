@@ -18,6 +18,11 @@ const initialState: IProductsState = {
     currentProduct: undefined,
     pending: false,
 }
+export const handleError = (status:number, statusText: string, dispatch: Dispatch) => {
+    if (status !== 200) {
+        dispatch(getErrorMessage({status, statusText}))
+    }
+}
 
 
 export const getAllProducts = createAsyncThunk<IResponseGetAllProducts, string, { state: RootState, dispatch: Dispatch }>(
@@ -25,9 +30,7 @@ export const getAllProducts = createAsyncThunk<IResponseGetAllProducts, string, 
     async (_, {getState, dispatch}) => {
         const token = getState().authentication.token;
         const {data, status, statusText} = await apiGetAll("product", token);
-        if (status !== 200) {
-            dispatch(getErrorMessage({status, statusText}))
-        }
+        handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
 )
@@ -37,9 +40,7 @@ export const getOneProduct = createAsyncThunk<IResponseGetAllProducts, number, {
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
         const {data, status, statusText} = await apiGetOne("product", token, id);
-        if (status !== 200) {
-            dispatch(getErrorMessage({status, statusText}))
-        }
+        handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
 )
@@ -49,9 +50,7 @@ export const createProduct = createAsyncThunk<IResponseGetAllProducts, IProduct,
     async (product, {getState, dispatch}) => {
         const token = getState().authentication.token
         const {data, status, statusText} = await apiCreate("product", token, product);
-        if (status !== 200) {
-            dispatch(getErrorMessage({status, statusText}))
-        }
+        handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
 )
@@ -61,9 +60,7 @@ export const editProduct = createAsyncThunk<IResponseGetAllProducts, IProduct, {
     async (product, {getState, dispatch}) => {
         const token = getState().authentication.token
         const {data, status, statusText} = await apiEdit("product", token, product);
-        if (status !== 200) {
-            dispatch(getErrorMessage({status, statusText}))
-        }
+        handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
 )
@@ -73,9 +70,7 @@ export const deleteProduct = createAsyncThunk<IResponseGetAllProducts, number, {
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
         const {data, status, statusText} = await apiDelete("product", token, id);
-        if (status !== 200) {
-            dispatch(getErrorMessage({status, statusText}))
-        }
+        handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
 )
