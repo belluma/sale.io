@@ -24,7 +24,7 @@ export interface INewItem {
 export interface IThumbnailData extends INewItem {
     title: string,
     subtitle?: string,
-    id: string | undefined
+    id?: string | undefined
     alt?: string,
     picture?: string,
     model: Views,
