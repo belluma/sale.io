@@ -4,12 +4,14 @@ import capstone.backend.exception.GlobalExceptionHandler;
 import capstone.backend.mapper.SupplierMapper;
 import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.dto.contact.SupplierDTO;
-import capstone.backend.model.enums.Weekdays;
+import capstone.backend.repo.ProductRepo;
 import capstone.backend.repo.SupplierRepo;
 import capstone.backend.utils.ControllerTestUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,11 +19,13 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static capstone.backend.mapper.SupplierMapper.mapSupplier;
+import static capstone.backend.utils.ProductTestUtils.sampleProductWithId;
 import static capstone.backend.utils.SupplierTestUtils.sampleSupplier;
 import static capstone.backend.utils.SupplierTestUtils.sampleSupplierDTO;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -29,6 +33,8 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Testcontainers
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class SupplierControllerTest {
 
     @Autowired
@@ -36,7 +42,9 @@ class SupplierControllerTest {
     @Autowired
     GlobalExceptionHandler exceptionHandler;
     @Autowired
-    SupplierRepo repo;
+    SupplierRepo supplierRepo;
+    @Autowired
+    ProductRepo productRepo;
     @Autowired
     TestRestTemplate restTemplate;
     @Autowired
@@ -61,8 +69,14 @@ class SupplierControllerTest {
     }
 
     @BeforeEach
+    void saveSampleProduct() {
+        productRepo.save(sampleProductWithId());
+    }
+
+    @AfterEach
     public void clearDB() {
-        repo.deleteAll();
+        supplierRepo.deleteAll();
+        productRepo.deleteAll();
     }
 
     @Test
@@ -72,7 +86,7 @@ class SupplierControllerTest {
 
     @Test
     void getAllSuppliersWithDetails() {
-        Supplier supplier = repo.save(sampleSupplier());
+        Supplier supplier = supplierRepo.save(sampleSupplier());
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<SupplierDTO[]> response = restTemplate.exchange(BASEURL, HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO[].class);
@@ -85,7 +99,7 @@ class SupplierControllerTest {
     @Test
     void getSupplierDetails() {
         //GIVEN
-        Supplier supplier = repo.save(sampleSupplier());
+        Supplier supplier = supplierRepo.save(sampleSupplier());
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<SupplierDTO> response = restTemplate.exchange(BASEURL + "/" + supplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
@@ -113,15 +127,15 @@ class SupplierControllerTest {
         ResponseEntity<SupplierDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(supplier, headers), SupplierDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(repo.findAll().size(), is(1));
+        assertThat(supplierRepo.findAll().size(), is(1));
     }
 
     @Test
     void editSupplier() {
         //GIVEN
-        Supplier supplier = repo.save(sampleSupplier());
+        Supplier supplier = supplierRepo.save(sampleSupplier());
         SupplierDTO supplierToEdit = mapSupplier(supplier);
-        supplierToEdit.setOrderDay(Weekdays.FRIDAY);
+//        supplierToEdit.setOrderDay(Weekdays.FRIDAY);
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<SupplierDTO> response = restTemplate.exchange(BASEURL + "/" + supplier.getId(), HttpMethod.PUT, new HttpEntity<>(supplierToEdit, headers), SupplierDTO.class);

@@ -2,7 +2,6 @@ package capstone.backend.services;
 
 import capstone.backend.exception.model.EntityNotFoundException;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
-import capstone.backend.exception.model.SupplierNotFoundException;
 import capstone.backend.mapper.SupplierMapper;
 import capstone.backend.model.dto.contact.SupplierDTO;
 import capstone.backend.repo.SupplierRepo;
@@ -30,7 +29,7 @@ public class SupplierService {
         return repo
                 .findById(id)
                 .map(SupplierMapper::mapSupplier)
-                .orElseThrow(() -> new SupplierNotFoundException(String.format("No Supplier found with id %d", id)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Couldn't find a supplier with the id %d", id)));
     }
 
     public SupplierDTO createSupplier(SupplierDTO supplier) {
@@ -39,8 +38,10 @@ public class SupplierService {
                 .isPresent()) {
             throw new EntityWithThisIdAlreadyExistException(String.format("Supplier %s already has the id %d", supplier.getFirstName(), supplier.getId()));
         }
-        return SupplierMapper.mapSupplier(repo.
-                save(SupplierMapper.mapSupplier(supplier)));
+        return SupplierMapper
+                .mapSupplier(repo
+                        .save(SupplierMapper
+                                .mapSupplier(supplier)));
     }
 
     public SupplierDTO editSupplier(SupplierDTO supplier) {

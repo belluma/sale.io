@@ -6,9 +6,6 @@ import capstone.backend.model.enums.Weekdays;
 
 import java.util.List;
 
-import static capstone.backend.utils.ProductTestUtils.sampleProductDTOWithDetailsWithId;
-import static capstone.backend.utils.ProductTestUtils.sampleProductWithId;
-
 public class SupplierTestUtils {
 
     public static SupplierDTO sampleSupplierDTO(){
@@ -20,7 +17,7 @@ public class SupplierTestUtils {
                 .email("a@b.c")
                 .phone("01234")
                 .picture("img")
-                .products(List.of(sampleProductDTOWithDetailsWithId()))
+                .products(List.of())
                 .orders(List.of())
                 .orderDay(Weekdays.FRIDAY)
                 .build();
@@ -34,9 +31,10 @@ public class SupplierTestUtils {
                 .email("a@b.c")
                 .phone("01234")
                 .picture("img")
-                .products(List.of(sampleProductWithId()))
+                .products(List.of())
                 .orders(List.of())
                 .orderDay(Weekdays.FRIDAY)
                 .build();
     }
+
 }
