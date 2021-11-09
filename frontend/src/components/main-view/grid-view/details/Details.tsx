@@ -18,7 +18,7 @@ function Details(props: Props) {
     const showDetails = useAppSelector(selectShowDetails);
     const descriptionElementRef = React.useRef<HTMLDivElement>(null);
     const theme = useTheme();
-    const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
     React.useEffect(() => {
         if (showDetails) {
             const {current: descriptionElement} = descriptionElementRef;
@@ -33,8 +33,8 @@ function Details(props: Props) {
     }
 
     return (
-        <Dialog fullScreen={fullScreen} open={showDetails} onClose={handleClose}>
-            <DialogContent dividers={scroll === 'paper'}>
+        <Dialog fullScreen={fullScreen} open={showDetails} onClose={handleClose} >
+            <DialogContent dividers={scroll === 'paper'} sx={{padding:0}}>
                 <div ref={descriptionElementRef}>
                     <DetailsCard fullScreen={fullScreen} handleClose={handleClose}/>
                 </div>
