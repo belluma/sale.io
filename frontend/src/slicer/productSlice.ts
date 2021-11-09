@@ -25,7 +25,7 @@ export const handleError = (status:number, statusText: string, dispatch: Dispatc
 }
 
 
-export const getAllProducts = createAsyncThunk<IResponseGetAllProducts, string, { state: RootState, dispatch: Dispatch }>(
+export const getAllProducts = createAsyncThunk<IResponseGetAllProducts, void, { state: RootState, dispatch: Dispatch }>(
     'getAll',
     async (_, {getState, dispatch}) => {
         const token = getState().authentication.token;
@@ -75,7 +75,6 @@ export const deleteProduct = createAsyncThunk<IResponseGetAllProducts, number, {
     }
 )
 
-
 export const productSlice = createSlice({
     name: 'product',
     initialState,
@@ -103,16 +102,16 @@ export const productSlice = createSlice({
                 state.products = action.payload.data;
             })
             .addCase(getOneProduct.fulfilled, (state, action: PayloadAction<IResponseGetAllProducts>) => {
-              if (stopPendingAndHandleError(state, action)) return;
+                stopPendingAndHandleError(state, action);
             })
             .addCase(createProduct.fulfilled, (state, action: PayloadAction<IResponseGetAllProducts>) => {
-              if (stopPendingAndHandleError(state, action)) return;
+                stopPendingAndHandleError(state, action);
             })
             .addCase(editProduct.fulfilled, (state, action: PayloadAction<IResponseGetAllProducts>) => {
-              if (stopPendingAndHandleError(state, action)) return;
+                stopPendingAndHandleError(state, action);
             })
             .addCase(deleteProduct.fulfilled, (state, action: PayloadAction<IResponseGetAllProducts>) => {
-              if (stopPendingAndHandleError(state, action)) return;
+                stopPendingAndHandleError(state, action);
             })
     })
 })
