@@ -14,7 +14,7 @@ type Props = {
 
 export default function Drawer({open, toggle, buttons, marginTop}: Props) {
 
-    const listItems = buttons.map(button => <ListItem>{button}</ListItem>)
+    const listItems = buttons.map((button, i) => <ListItem key={i}>{button}</ListItem>)
     return (
         <div>
             <React.Fragment>

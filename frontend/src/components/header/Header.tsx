@@ -30,7 +30,7 @@ function Header(props: Props){
         );
     }
 
-    const appBarHeight = 100;
+    const appBarHeight = 120;
     return (
         <HideOnScroll {...props}>
             <AppBar sx={{bgcolor: 'primary.light' ,height:appBarHeight, zIndex:1400}}>

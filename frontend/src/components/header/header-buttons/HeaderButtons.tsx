@@ -12,6 +12,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Drawer from "../../drawer/Drawer";
 //interface imports
 import {Views} from "../../../interfaces/IThumbnailData";
+import ChangeView from "./change-view/ChangeView";
 
 type Props = {
     appBarHeight: number,
@@ -28,16 +29,20 @@ function HeaderButtons({appBarHeight}: Props) {
     const dispatch = useAppDispatch();
     const loggedIn = useAppSelector(selectLoggedIn);
     const handleLogout = () => dispatch(logout());
-    const buttons =views.map((view) => <Button key={view} name={view} onClick={reroute}>{view}S</Button>)
-    const burgerMenu = <IconButton onClick={toggleDrawer}><MenuIcon/></IconButton>
+    const buttons = views.map((view) => <Button key={view} name={view} onClick={reroute}>{view}S</Button>);
+
+        const burgerMenu = <IconButton onClick={toggleDrawer}><MenuIcon/></IconButton>
     return (
-        <Toolbar sx={{mb: 1, alignItems: "stretch", justifyContent: "space-between"}}>
+        <div>
             <Drawer open={drawerOpen} toggle={toggleDrawer} reroute={reroute} buttons={buttons} marginTop={appBarHeight}/>
+            <Toolbar sx={{mb: 1, alignItems: "stretch", justifyContent: "space-between"}}>
             {smallScreen ? burgerMenu : buttons}
+                <ChangeView key={"changeView"}/>
             {loggedIn && <IconButton onClick={handleLogout} edge="end">
                 <LogoutIcon/>
             </IconButton>}
         </Toolbar>
+        </div>
 
     )
 }
