@@ -1,12 +1,14 @@
-import {ICredentials, IEmployee} from "./IEmployee";
+import {IUserCredentials, IEmployee} from "./IEmployee";
 import {IDetailsData, Views} from "./IThumbnailData";
 import {IProduct} from "./IProduct";
 import {IBody} from "./IApi";
+import {ICustomer} from "./ICustomer";
+import {ISupplier} from "./ISupplier";
 
 export interface IEmployeeState {
     employees: IEmployee[],
     currentEmployee: IEmployee | undefined,
-    currentEmployeeCredentials: ICredentials | undefined,
+    currentEmployeeCredentials: IUserCredentials | undefined,
     pending: boolean
 }
 
@@ -29,14 +31,30 @@ export const initialDetailsData:IDetailsData = {
     model: Views.NEW
 }
 
-export interface IProductsState {
-    products: IProduct[],
-    currentProduct: IProduct | undefined,
-    pending:boolean,
+interface IBaseState {
+    pending:boolean
 }
 
-export interface INewItemState {
+export interface IProductsState extends IBaseState {
+    products: IProduct[],
+    currentProduct: IProduct | undefined,
+}
+
+export interface ISuppliersState extends IBaseState {
+    suppliers: ISupplier[],
+    currentSupplier: ISupplier | undefined,
+}
+
+export interface INewItemState extends IBaseState{
     itemToSave: IBody | {},
-    pending: boolean,
     savedItem?: IBody
+}
+
+export interface IAPIState {
+    customers: ICustomer[],
+    employees: IEmployee[],
+    products: IProduct[],
+    suppliers: ISupplier[],
+    pending: boolean,
+    selectedEntity: ICustomer | IEmployee | IProduct | ISupplier | undefined,
 }

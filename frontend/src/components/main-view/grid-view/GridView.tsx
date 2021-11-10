@@ -1,13 +1,13 @@
 import React from 'react'
-import {Grid} from "@mui/material";
-import Thumbnail from "./thumbnail/Thumbnail";
-import {IThumbnailData, Views} from "../../../interfaces/IThumbnailData";
-import Details from "./details/Details";
 import {newItemData} from "../helpers";
-
 //component imports
+import Details from "./details/Details";
+import {Grid} from "@mui/material";
 
+import Thumbnail from "./thumbnail/Thumbnail";
 //interface imports
+
+import {IThumbnailData, Views} from "../../../interfaces/IThumbnailData";
 
 type Props = {
     gridItems:IThumbnailData[],

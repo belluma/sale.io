@@ -1,8 +1,8 @@
 import axios from "axios";
-import {ICredentials} from "../interfaces/IEmployee";
+import {IUserCredentials} from "../interfaces/IEmployee";
 import {parseError} from './errorService';
 
-export const sendLoginData = (credentials: ICredentials) => {
+export const sendLoginData = (credentials: IUserCredentials) => {
     return axios({
         method: 'post',
         url: `/auth/login`,
@@ -14,7 +14,7 @@ export const sendLoginData = (credentials: ICredentials) => {
         .catch(err => parseError(err))
 }
 
-export const registerAdmin = (credentials: ICredentials) => {
+export const registerAdmin = (credentials: IUserCredentials) => {
     return axios({
         method: 'post',
         url: `/auth/signup`,

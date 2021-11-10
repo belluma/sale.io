@@ -29,9 +29,9 @@ import static capstone.backend.utils.ProductTestUtils.sampleProductWithId;
 import static capstone.backend.utils.SupplierTestUtils.sampleSupplier;
 import static capstone.backend.utils.SupplierTestUtils.sampleSupplierDTO;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.hamcrest.Matchers.is;
 
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

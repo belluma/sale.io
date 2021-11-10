@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogProps} from "@mui/material";
 import DetailsCard from "./details-card/DetailsCard";
 
 //interface imports
+
 type Props = {};
 
 
@@ -24,8 +25,8 @@ function Details(props: Props) {
         }
     }, [showDetails]);
     const handleClose = () => {
-        dispatch(hideDetails());
         dispatch(resetDetails());
+        dispatch(hideDetails());
     }
 
     return (

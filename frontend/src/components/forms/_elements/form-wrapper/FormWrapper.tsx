@@ -1,16 +1,16 @@
 import React from 'react'
-import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {handleFormInput, saveItem, selectItemToSave} from "../../../slicer/newItemSlice";
+import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
+import {handleFormInput, saveItem, selectItemToSave} from "../../../../slicer/newItemSlice";
 
 //component imports
 import {Button} from "@mui/material";
-import Employee from "../employee/Employee";
-import Customer from "../customer/Customer";
-import Supplier from "../supplier/Supplier";
-import Product from "../product/Product";
+import Employee from "../../employee/Employee";
+import Customer from "../../customer/Customer";
+import Supplier from "../../supplier/Supplier";
+import Product from "../../product/Product";
 
 //interface imports
-import {Buttons} from "../../../interfaces/IThumbnailData";
+import {Buttons} from "../../../../interfaces/IThumbnailData";
 
 type Props = {
     model: Buttons
@@ -24,14 +24,14 @@ function FormWrapper({model}: Props) {
         dispatch(handleFormInput({...itemToSave, ...updatedValue}))
     }
     const handleSubmit = () => {
-        dispatch(saveItem("product"))
+        dispatch(saveItem(model))
     }
     const formSelector = {
         none: "couldn't find the right form",
         employee: <Employee/>,
         product: <Product handleChange={handleInput}/>,
         customer: <Customer/>,
-        supplier: <Supplier/>,
+        supplier: <Supplier handleChange={handleInput}/>,
     }
     return (
         <form>{formSelector[model]}

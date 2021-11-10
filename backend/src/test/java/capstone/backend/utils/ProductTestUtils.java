@@ -19,7 +19,7 @@ public class ProductTestUtils {
                 .minAmount(5)
                 .maxAmount(20)
                 .unitSize(5)
-//                .suppliers(List.of(sampleSupplier()))
+                .suppliers(List.of())
                 .build();
     }
   public static Product sampleProductWithId() {
@@ -34,7 +34,7 @@ public class ProductTestUtils {
                 .minAmount(5)
                 .maxAmount(20)
                 .unitSize(5)
-//                .suppliers(List.of(sampleSupplier()))
+                .suppliers(List.of())
                 .build();
     }
 public static ProductDTO sampleProductDTOWithDetails() {

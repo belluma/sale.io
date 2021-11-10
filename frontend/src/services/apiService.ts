@@ -4,10 +4,10 @@ import {authHeaders, jsonHeaders} from "./serviceUtils";
 import {IBody} from "../interfaces/IApi";
 
 
-export const getAll = (type: string, token: string) => {
+export const getAll = (model: string, token: string) => {
     return axios({
         method: 'get',
-        url: `/api/{${type}s`,
+        url: `/api/${model}s`,
         headers: {...jsonHeaders(), ...authHeaders(token)}
     }).then(response => {
         return response
@@ -15,10 +15,10 @@ export const getAll = (type: string, token: string) => {
         .catch(err => parseError(err))
 }
 
-export const getSingle = (type: string, token:string, id:number) => {
+export const getOne = (model: string, token: string, id: string) => {
     return axios({
         method: 'get',
-        url: `/api/${type}s/${id}`,
+        url: `/api/${model}s/${id}`,
         headers: {...jsonHeaders(), ...authHeaders(token)}
     }).then(response => {
         return response
@@ -26,12 +26,12 @@ export const getSingle = (type: string, token:string, id:number) => {
         .catch(err => parseError(err))
 }
 
-export const create = (type: string, token:string, data:IBody) => {
+export const create = (model: string, token: string, data: IBody) => {
     return axios({
         method: 'post',
-        url: `/api/${type}s`,
+        url: `/api/${model}s`,
         headers: {...jsonHeaders(), ...authHeaders(token)},
-       data,
+        data,
     }).then(response => {
 
         return response
@@ -39,12 +39,22 @@ export const create = (type: string, token:string, data:IBody) => {
         .catch(err => parseError(err))
 }
 
-export const edit = (type: string, token:string, data: IBody) => {
+export const edit = (model: string, token: string, data: IBody) => {
     return axios({
         method: 'put',
-        url: `/api/${type}s/id`,
+        url: `/api/${model}s/${data.id}`,
         headers: {...jsonHeaders(), ...authHeaders(token)},
         data
+    }).then(response => {
+        return response
+    })
+        .catch(err => parseError(err))
+}
+export const del = (model: string, token: string, id: string) => {
+    return axios({
+        method: 'delete',
+        url: `/api/${model}s/${id}`,
+        headers: {...jsonHeaders(), ...authHeaders(token)},
     }).then(response => {
         return response
     })

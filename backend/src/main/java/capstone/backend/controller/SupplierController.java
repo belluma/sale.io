@@ -30,8 +30,8 @@ public class SupplierController {
     public SupplierDTO createSupplier(@RequestBody SupplierDTO supplier) {
         return service.createSupplier(supplier);
     }
-    @PutMapping("/{id}")
-    public SupplierDTO editSupplier( @RequestBody SupplierDTO supplier) {
+    @PutMapping("{id}")
+    public SupplierDTO editSupplier( @RequestBody SupplierDTO supplier, @PathVariable Long id) {
         return service.editSupplier(supplier);
     }
 

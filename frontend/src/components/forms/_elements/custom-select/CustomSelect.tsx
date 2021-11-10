@@ -4,7 +4,7 @@ import React, {useState} from 'react'
 import {MenuItem, TextField} from "@mui/material";
 
 //interface imports
-import {ISelectProps} from "../../../interfaces/INewItem";
+import {ISelectProps} from "../../../../interfaces/INewItem";
 
 type Props = ISelectProps
 

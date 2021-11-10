@@ -1,5 +1,6 @@
 import {IEmployee} from "./IEmployee";
 import {IProduct} from "./IProduct";
+import {ISupplier} from "./ISupplier";
 
 export enum Buttons {
     EMPLOYEE = "employee",
@@ -43,6 +44,16 @@ export const parseEmployeeToThumbnailData = ({firstName, lastName, username, pic
 
     }
 }
+export const parseSupplierToThumbnailData = ({firstName, lastName, id, picture}: ISupplier): IDetailsData => {
+    return {
+        title: `${firstName} ${lastName}`,
+        picture: picture,
+        id: id,
+        alt: "profile picture",
+        model: Views.SUPPLIER
+
+    }
+}
 export const parseProductToThumbnailData = ({
                                                 id,
                                                 name,
@@ -62,6 +73,5 @@ export const parseProductToThumbnailData = ({
         id: id?.toString() || "",
         alt: "product picture",
         model: Views.PRODUCT
-
     }
 }

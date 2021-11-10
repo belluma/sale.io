@@ -1,5 +1,7 @@
 import {IEmployee} from "./IEmployee";
 import { IProduct } from "./IProduct";
+import {ICustomer} from "./ICustomer";
+import {ISupplier} from "./ISupplier";
 
 interface IResponseBase {
     status: number,
@@ -16,4 +18,16 @@ export interface IResponseGetAllEmployees extends IResponseBase{
 
 export interface IResponseGetAllProducts extends IResponseBase{
     data: IProduct[];
+}
+export interface IResponseGetAllSuppliers extends IResponseBase{
+    data: ISupplier[];
+}
+
+export interface IApiResponse {
+    status: number,
+    statusText:string,
+    data: string | IEmployee[]  | ICustomer[] | IProduct[] | ISupplier[],
+}
+export interface IApiPayload extends IApiResponse {
+    model: "employees"
 }

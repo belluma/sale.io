@@ -3,6 +3,7 @@ import {RootState} from '../app/store';
 import {INewItemState} from "../interfaces/IStates";
 import {create} from "../services/apiService";
 import {getErrorMessage} from "./errorSlice";
+import {Buttons} from "../interfaces/IThumbnailData";
 
 
 const initialState: INewItemState = {
@@ -12,7 +13,7 @@ const initialState: INewItemState = {
 
 export const saveItem = createAsyncThunk(
     'saveItem',
-    async (item: string, {getState, dispatch}) => {
+    async (item: Buttons, {getState, dispatch}) => {
         //@ts-ignore
         const token = getState().authentication.token;
         //@ts-ignore

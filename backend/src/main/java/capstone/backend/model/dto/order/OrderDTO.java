@@ -1,5 +1,5 @@
 package capstone.backend.model.dto.order;
 
 
-public class OrderDTO {
+public abstract class OrderDTO {
 }

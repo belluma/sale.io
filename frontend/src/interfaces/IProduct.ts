@@ -1,21 +1,19 @@
+import {ISupplier} from "./ISupplier";
+
 export enum Categories {
     TEST = "test"
 }
 
-export class Product {
-    id? = 1;
-    name = "";
-    suppliers? = [];
-    stockCodeSupplier = "";
-    category = Categories.TEST;
-    picture = "";
-    purchasePrice = 1;
-    retailPrice = 1;
-    minAmount = 1;
-    maxAmount = 1;
-    unitSize = 1;
-}
-
-export interface IProduct extends Product {
-
+export interface IProduct {
+    id?:string,
+    name:string
+    suppliers?: ISupplier[];
+    stockCodeSupplier:string
+    category:Categories,
+    picture:string
+    purchasePrice:number,
+    retailPrice:number,
+    minAmount:number,
+    maxAmount:number,
+    unitSize:number,
 }

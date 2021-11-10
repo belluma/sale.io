@@ -14,7 +14,7 @@ const initialState: IEmployeeState = {
 }
 
 export const getEmployees = createAsyncThunk(
-    'getEmployees',
+    'employees/getAll',
     async (_, thunkAPI) => {
         const {data, status, statusText} = await getAllEmployees();
         if (status !== 200) {
@@ -34,17 +34,17 @@ export const employeeSlice = createSlice({
             state.currentEmployee = employee
             state.currentEmployeeCredentials = extractCredentials(employee);
         },
-        toBeReplaced: (state, action:PayloadAction<string>) => {}
+        toBeReplaced: (state, action:PayloadAction<string>) => {console.log("I have to stay here until all view are implemented")}
     },
     extraReducers: (builder => {
         builder.addCase(getEmployees.pending, state => {
             state.pending = true;
         })
         builder.addCase(getEmployees.fulfilled, (state, action: PayloadAction<IResponseGetAllEmployees>) => {
+            state.pending = false;
             if (action.payload.status !== 200) {
                 return;
             }
-            state.pending = false;
             state.employees = action.payload.data;
         })
     })
