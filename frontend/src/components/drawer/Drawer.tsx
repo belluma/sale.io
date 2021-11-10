@@ -8,7 +8,6 @@ import { List, ListItem} from '@mui/material';
 type Props = {
     open: boolean,
     toggle: () => void,
-    reroute: (e: React.MouseEvent<HTMLButtonElement>) => void,
     buttons: JSX.Element[], marginTop: number
 }
 

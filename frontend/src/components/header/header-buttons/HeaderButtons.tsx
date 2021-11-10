@@ -24,24 +24,28 @@ function HeaderButtons({appBarHeight}: Props) {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const toggleDrawer = () => setDrawerOpen(!drawerOpen);
     const history = useHistory()
-    //@ts-ignore
-    const reroute = (e:React.MouseEvent<HTMLButtonElement>) => {history.push(Views[e.currentTarget.name])}
+
+
     const dispatch = useAppDispatch();
     const loggedIn = useAppSelector(selectLoggedIn);
     const handleLogout = () => dispatch(logout());
+    const reroute = (e: React.MouseEvent<HTMLButtonElement>) => {
+        //@ts-ignore check happens on buttons
+        history.push(Views[e.currentTarget.name])
+    }
     const buttons = views.map((view) => <Button key={view} name={view} onClick={reroute}>{view}S</Button>);
-
-        const burgerMenu = <IconButton onClick={toggleDrawer}><MenuIcon/></IconButton>
+    const burgerMenu = <IconButton onClick={toggleDrawer}><MenuIcon/></IconButton>
     return (
         <div>
-            <Drawer open={drawerOpen} toggle={toggleDrawer} reroute={reroute} buttons={buttons} marginTop={appBarHeight}/>
+            <Drawer open={drawerOpen} toggle={toggleDrawer} buttons={buttons}
+                    marginTop={appBarHeight}/>
             <Toolbar sx={{mb: 1, alignItems: "stretch", justifyContent: "space-between"}}>
-            {smallScreen ? burgerMenu : buttons}
-                <ChangeView key={"changeView"}/>
-            {loggedIn && <IconButton onClick={handleLogout} edge="end">
-                <LogoutIcon/>
-            </IconButton>}
-        </Toolbar>
+                {smallScreen ? burgerMenu : buttons}
+                {!smallScreen && <ChangeView key={"changeView"}/>}
+                {loggedIn && <IconButton onClick={handleLogout} edge="end">
+                    <LogoutIcon/>
+                </IconButton>}
+            </Toolbar>
         </div>
 
     )

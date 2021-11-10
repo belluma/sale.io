@@ -13,11 +13,14 @@ export const viewSlice = createSlice({
     reducers: {
         toggleView: (state) => {
             state.gridView = !state.gridView;
+        },
+        gridView: (state) => {
+            state.gridView = true;
         }
     },
     })
 
-export const {toggleView} = viewSlice.actions;
+export const {toggleView, gridView} = viewSlice.actions;
 export const selectView = (state:RootState) => state.view.gridView;
 
 export default viewSlice.reducer;
