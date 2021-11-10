@@ -6,7 +6,7 @@ import {selectView} from "../../../../slicer/viewSlice";
 import GridView from "../../grid-view/GridView";
 import ListView from "../../list-view/ListView";
 import {productColumns} from "../../list-view/columnDefinition";
-import {getAllEmployees} from "../../../../services/employeeService";
+import {getEmployees} from "../../../../slicer/employeeSlice";
 
 //component imports
 
@@ -17,7 +17,7 @@ type Props = {};
 function Employees(props: Props){
     const dispatch = useAppDispatch();
     useEffect(() => {
-        dispatch(getAllEmployees());
+        dispatch(getEmployees());
     }, [dispatch]);
 
     const products = useAppSelector(selectProducts)
