@@ -23,10 +23,14 @@ export const detailsSlice = createSlice({
         showDetails: (state) => {
             state.showDetails = true;
         },
+        hideDetails: (state) => {
+            state.showDetails = false;
+        }
     },
-    })
 
-export const {showDetails, setDetailData, resetDetails} = detailsSlice.actions;
+})
+
+export const {showDetails, hideDetails, setDetailData, resetDetails} = detailsSlice.actions;
 
 export const selectShowDetails = (state: RootState) => state.details.showDetails;
 export const selectDetailsData = (state: RootState) => state.details.detailsData;
