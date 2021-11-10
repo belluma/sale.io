@@ -13,26 +13,31 @@ import {mapSupplierToSelectData} from "../helper";
 import {handleProductFormInput, selectProductToSave} from "../../../slicer/productSlice";
 
 
-type Props = {}
 
-function Product({}: Props) {
+function Product() {
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(getAllSuppliers())
     }, [dispatch]);
     const productToSave = useAppSelector(selectProductToSave);
+    const suppliers = useAppSelector(selectSuppliers);
+
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         dispatch(handleProductFormInput({...productToSave, [e.target.name]: value}));
     };
+    const handleSupplierChange = (e:ChangeEvent<HTMLInputElement>) => {
+        const selectedSupplier = suppliers.filter(s => s.id === e.target.value);
+        dispatch(handleProductFormInput({...productToSave, supplier:selectedSupplier}))
+    }
     const props = {handleChange: handleChange, model: "product"};
-    const suppliers = mapSupplierToSelectData(useAppSelector(selectSuppliers));
+    const supplierOptions = mapSupplierToSelectData(suppliers);
     return (
         !suppliers.length ? <div>"Please create a supplier first</div> :
             <div>
                 <CustomText name="name" label={"name"}  {...props} />
                <Toolbar>
-                <CustomSelect name="supplier" label={"supplier"} options={suppliers} {...props}  />
+                <CustomSelect name="supplier" label={"supplier"} options={supplierOptions} handleChange={handleSupplierChange} model={"product"} />
                 <CustomSelect name="category" label={"category"} options={[{id:'1', name:`vegetables`}]} {...props}  />
                </Toolbar>
                 <Toolbar>
