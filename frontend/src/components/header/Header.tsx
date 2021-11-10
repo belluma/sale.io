@@ -39,7 +39,7 @@ function Header(props: Props){
                 </Toolbar>
                 <HeaderButtons appBarHeight={appBarHeight} />
             </AppBar>
-        </HideOnScroll>
+         </HideOnScroll>
     )
 }
 

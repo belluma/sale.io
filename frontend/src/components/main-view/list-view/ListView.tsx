@@ -18,6 +18,7 @@ export default function ListView({rows, columns}:Props) {
     return (
         <div style={{ height: 400, width: '100%' }}>
             <DataGrid
+                disableColumnMenu
                 rows={rows}
                 columns={columns}
                 pageSize={5}
