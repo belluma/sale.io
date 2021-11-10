@@ -25,8 +25,10 @@ function Product({handleChange}: Props) {
         !suppliers.length ? <div>"Please create a supplier first</div> :
             <div>
                 <CustomText name="name" label={"name"}  {...props} />
+               <Toolbar>
                 <CustomSelect name="supplier" label={"supplier"} options={suppliers} {...props}  />
                 <CustomSelect name="category" label={"category"} options={[{id:'1', name:`vegetables`}]} {...props}  />
+               </Toolbar>
                 <Toolbar>
                     <CustomNumber currency name="purchasePrice" label={"purchase price"}  {...props} />
                     <CustomNumber currency name="retailPrice" label={"retail price"}  {...props} />

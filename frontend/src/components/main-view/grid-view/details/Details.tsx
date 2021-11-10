@@ -20,7 +20,6 @@ function Details(props: Props) {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const alignItems = fullScreen ? "center" : "";
-    // const dialogPadding = fullScreen ? appBarHeight / 8 : 0;
     React.useEffect(() => {
         if (showDetails) {
             const {current: descriptionElement} = descriptionElementRef;
