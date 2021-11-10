@@ -32,6 +32,7 @@ function HeaderButtons({appBarHeight}: Props) {
     const reroute = (e: React.MouseEvent<HTMLButtonElement>) => {
         //@ts-ignore check happens on buttons
         history.push(Views[e.currentTarget.name])
+        setDrawerOpen(false);
     }
     const buttons = views.map((view) => <Button key={view} name={view} onClick={reroute}>{view}S</Button>);
     const burgerMenu = <IconButton onClick={toggleDrawer}><MenuIcon/></IconButton>

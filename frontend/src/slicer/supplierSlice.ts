@@ -11,6 +11,7 @@ import {
     del as apiDelete
 } from '../services/apiService'
 import {ISupplier} from "../interfaces/ISupplier";
+import { handleError } from './helper';
 
 
 const initialState: ISuppliersState = {
@@ -18,12 +19,6 @@ const initialState: ISuppliersState = {
     currentSupplier: undefined,
     pending: false,
 }
-export const handleError = (status:number, statusText: string, dispatch: Dispatch) => {
-    if (status !== 200) {
-        dispatch(getErrorMessage({status, statusText}))
-    }
-}
-
 
 export const getAllSuppliers = createAsyncThunk<IResponseGetAllSuppliers, void, { state: RootState, dispatch: Dispatch }>(
     'getAll/suppliers',

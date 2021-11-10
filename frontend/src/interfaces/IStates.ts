@@ -1,6 +1,6 @@
 import {IUserCredentials, IEmployee} from "./IEmployee";
 import {IDetailsData, Views} from "./IThumbnailData";
-import {IProduct} from "./IProduct";
+import {IProduct, IProductBuilder} from "./IProduct";
 import {IBody} from "./IApi";
 import {ICustomer} from "./ICustomer";
 import {ISupplier} from "./ISupplier";
@@ -38,6 +38,7 @@ interface IBaseState {
 export interface IProductsState extends IBaseState {
     products: IProduct[],
     currentProduct: IProduct | undefined,
+    productToSave: IProductBuilder,
 }
 
 export interface ISuppliersState extends IBaseState {

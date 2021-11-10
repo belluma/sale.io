@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
-import { IProductsState} from '../interfaces/IStates';
+import {IProductsState} from '../interfaces/IStates';
 import {getErrorMessage} from "./errorSlice";
 import {IResponseGetAllProducts} from "../interfaces/IApiResponse";
 import {
@@ -11,19 +11,21 @@ import {
     del as apiDelete
 } from '../services/apiService'
 import {IProduct} from "../interfaces/IProduct";
+import {handleError} from "./helper";
 
 
 const initialState: IProductsState = {
     products: [],
     currentProduct: undefined,
     pending: false,
+    productToSave: {},
 }
-export const handleError = (status:number, statusText: string, dispatch: Dispatch) => {
-    if (status !== 200) {
-        dispatch(getErrorMessage({status, statusText}))
-    }
+const validateProduct = (state: RootState) => {
+    const necessaryValues = ['name', 'suppliers', 'category', 'purchasePrice', 'unitSize']
+    const setValues = Object.keys(state.product.productToSave)
+    return setValues.every(v => necessaryValues.indexOf(v) >= 0);
 }
-
+const invalidProductError = {data: '', status: 406, statusText: "Not all necessary values are set"}
 
 export const getAllProducts = createAsyncThunk<IResponseGetAllProducts, void, { state: RootState, dispatch: Dispatch }>(
     'getAll',
@@ -48,6 +50,10 @@ export const getOneProduct = createAsyncThunk<IResponseGetAllProducts, string, {
 export const createProduct = createAsyncThunk<IResponseGetAllProducts, void, { state: RootState, dispatch: Dispatch }>(
     'create',
     async (_, {getState, dispatch}) => {
+        if (!validateProduct(getState())) {
+//handleError here
+            return invalidProductError;
+        }
         const token = getState().authentication.token
         const {data, status, statusText} = await apiCreate("product", token, getState().newItem.itemToSave);
         handleError(status, statusText, dispatch);
