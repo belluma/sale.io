@@ -1,25 +1,30 @@
 import React, {useEffect} from 'react'
 import {useAppDispatch, useAppSelector} from '../../../../app/hooks';
-import GridView from "../../grid-view/GridView";
 import {getAllProducts, selectProducts} from "../../../../slicer/productSlice";
 import {parseProductToThumbnailData, Views} from "../../../../interfaces/IThumbnailData";
+import {selectView} from "../../../../slicer/viewSlice";
+import {productColumns} from "../../list-view/columnDefinition";
 
 //component imports
+import ListView from "../../list-view/ListView";
+import GridView from "../../grid-view/GridView";
 
 //interface imports
 
 type Props = {};
 
-function Products(props: Props){
+function Products(props: Props) {
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(getAllProducts());
-    },[dispatch] );
+    }, [dispatch]);
 
-    const products = useAppSelector(selectProducts).map(product => parseProductToThumbnailData(product));
-    return(
-     <GridView gridItems={products} view={Views.PRODUCT}/>
-    )
+    const products = useAppSelector(selectProducts)
+    const thumbnails = products.map(product => parseProductToThumbnailData(product));
+
+    return useAppSelector(selectView) ?
+        <GridView gridItems={thumbnails} view={Views.PRODUCT}/> :
+        <ListView rows={products} columns={productColumns}/>
 }
 
 export default Products;

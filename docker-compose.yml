@@ -1,0 +1,24 @@
+version: '3.1'
+services:
+  app:
+    container_name: saleio
+    image: app
+    build: ./
+    ports:
+      - "8080:8080"
+    depends_on:
+      - dbpostgresql
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://dbpostgresql:5432/pos
+      - SPRING_DATASOURCE_USERNAME=pos
+      - SPRING_DATASOURCE_PASSWORD=pos
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - JWT_SECRET=secret
+  dbpostgresql:
+    image: postgres
+    ports:
+      - "5431:5432"
+    environment:
+      - POSTGRES_PASSWORD=pos
+      - POSTGRES_USER=pos
+      - POSTGRES_DB=pos

@@ -6,7 +6,8 @@ import HeaderButtons from "./header-buttons/HeaderButtons";
 //interface imports
 
 type Props = {
-    children?: React.ReactElement;
+    //typescript complaining children can't be undefined since last update
+    children?:any
 };
 
 export default Header;
@@ -20,8 +21,7 @@ function Header(props: Props){
     useEffect(() => {
         window.addEventListener("resize", handleResize, false);
     })
-    function HideOnScroll(props: Props) {
-        const {children} = props;
+    function HideOnScroll({children}: Props) {
         const trigger = useScrollTrigger({});
         return (
             <Slide appear={false} direction="down" in={!scrollTrigger ? true : !trigger}>
@@ -29,15 +29,17 @@ function Header(props: Props){
             </Slide>
         );
     }
+
+    const appBarHeight = 120;
     return (
         <HideOnScroll {...props}>
-            <AppBar sx={{bgcolor: 'primary.light'}}>
+            <AppBar sx={{bgcolor: 'primary.light' ,height:appBarHeight, zIndex:1400}}>
                 <Toolbar sx={{justifyContent: "space-between"}}>
                     <Typography>Saleio</Typography>
                 </Toolbar>
-                <HeaderButtons />
+                <HeaderButtons appBarHeight={appBarHeight} />
             </AppBar>
-        </HideOnScroll>
+         </HideOnScroll>
     )
 }
 

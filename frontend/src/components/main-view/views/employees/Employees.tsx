@@ -1,4 +1,12 @@
-import React from 'react'
+import React, {useEffect} from 'react'
+import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
+import { selectProducts} from "../../../../slicer/productSlice";
+import {parseProductToThumbnailData, Views} from "../../../../interfaces/IThumbnailData";
+import {selectView} from "../../../../slicer/viewSlice";
+import GridView from "../../grid-view/GridView";
+import ListView from "../../list-view/ListView";
+import {productColumns} from "../../list-view/columnDefinition";
+import {getEmployees} from "../../../../slicer/employeeSlice";
 
 //component imports
 
@@ -7,9 +15,17 @@ import React from 'react'
 type Props = {};
 
 function Employees(props: Props){
-    return(
-       <div>Employees</div>
-    )
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        dispatch(getEmployees());
+    }, [dispatch]);
+
+    const products = useAppSelector(selectProducts)
+    const thumbnails = products.map(product => parseProductToThumbnailData(product));
+
+    return useAppSelector(selectView) ?
+        <GridView gridItems={thumbnails} view={Views.PRODUCT}/> :
+        <ListView rows={products} columns={productColumns}/>
 }
 
 export default Employees;
