@@ -12,3 +12,19 @@ export const productColumns:GridColDef[] =[
     {field:'unitSize', headerName: 'Unit Size', flex: 0.1},
 ]
 
+export const EmployeeColumns: GridColDef[] = [
+{field:"firstName", headerName: "First Name", flex:0.1},
+{field:"lastName", headerName: "LastName", flex:0.1},
+{field:"email", headerName: "Email", flex:0.1},
+{field:"phone", headerName: "Phone", flex:0.1},
+]
+
+export const SupplierColumns: GridColDef[] = [
+{field:"firstName", headerName: "First Name", flex:0.1},
+{field:"lastName", headerName: "LastName", flex:0.1},
+{field:"email", headerName: "Email", flex:0.1},
+{field:"phone", headerName: "Phone", flex:0.1},
+{field:"products", headerName: "Products", flex:0.1},
+{field:"orderDay", headerName: "Order Day", flex:0.1},
+]
+
