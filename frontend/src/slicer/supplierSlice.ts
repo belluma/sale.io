@@ -10,7 +10,7 @@ import {
     del as apiDelete
 } from '../services/apiService'
 import {ISupplier} from "../interfaces/ISupplier";
-import { handleError } from './helper';
+import {handleError, invalidDataError} from './helper';
 
 
 const initialState: ISuppliersState = {
@@ -18,6 +18,12 @@ const initialState: ISuppliersState = {
     currentSupplier: undefined,
     supplierToSave: {},
     pending: false,
+}
+const validateSupplier = (state: RootState) => {
+    const supplierKeys = Object.keys(state.supplier.supplierToSave);
+    const name = supplierKeys.includes("firstName") || supplierKeys.includes("lastName");
+    const contact = supplierKeys.includes("email") || supplierKeys.includes("phone");
+    return name && contact;
 }
 
 export const getAllSuppliers = createAsyncThunk<IResponseGetAllSuppliers, void, { state: RootState, dispatch: Dispatch }>(
@@ -43,6 +49,10 @@ export const getOneSupplier = createAsyncThunk<IResponseGetAllSuppliers, string,
 export const createSupplier = createAsyncThunk<IResponseGetAllSuppliers, void, { state: RootState, dispatch: Dispatch }>(
     'create/suppliers',
     async (_, {getState, dispatch}) => {
+        if (!validateSupplier(getState())) {
+//handleError here
+            return invalidDataError;
+        }
         const token = getState().authentication.token
         const {data, status, statusText} = await apiCreate("supplier", token, getState().supplier.supplierToSave);
         handleError(status, statusText, dispatch);

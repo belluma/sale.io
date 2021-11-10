@@ -10,7 +10,7 @@ import {
     del as apiDelete
 } from '../services/apiService'
 import {IProduct} from "../interfaces/IProduct";
-import {handleError} from "./helper";
+import {handleError, invalidDataError} from "./helper";
 
 
 const initialState: IProductsState = {
@@ -24,7 +24,7 @@ const validateProduct = (state: RootState) => {
     const setValues = Object.keys(state.product.productToSave)
     return setValues.every(v => necessaryValues.indexOf(v) >= 0);
 }
-const invalidProductError = {data: '', status: 406, statusText: "Not all necessary values are set"}
+
 
 export const getAllProducts = createAsyncThunk<IResponseGetAllProducts, void, { state: RootState, dispatch: Dispatch }>(
     'getAll',
@@ -51,7 +51,7 @@ export const createProduct = createAsyncThunk<IResponseGetAllProducts, void, { s
     async (_, {getState, dispatch}) => {
         if (!validateProduct(getState())) {
 //handleError here
-            return invalidProductError;
+            return invalidDataError;
         }
         const token = getState().authentication.token
         const {data, status, statusText} = await apiCreate("product", token, getState().product.productToSave);

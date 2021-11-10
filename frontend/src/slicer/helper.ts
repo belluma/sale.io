@@ -6,3 +6,5 @@ export const handleError = (status:number, statusText: string, dispatch: Dispatc
         dispatch(getErrorMessage({status, statusText}))
     }
 }
+
+export const invalidDataError = {data: '', status: 406, statusText: "Not all necessary values are set"}
