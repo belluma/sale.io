@@ -9,14 +9,12 @@ import {IProduct} from "../../../interfaces/IProduct";
 
 //interface imports
 type Props = {
-    rows: IEmployee[] | ISupplier[] | IProduct[]
+    rows: IEmployee[] | ISupplier[] | IProduct[],
+    columns: GridColDef[]
 };
 
-const columns: GridColDef[] = [
 
-];
-
-export default function ListView({rows}:Props) {
+export default function ListView({rows, columns}:Props) {
     return (
         <div style={{ height: 400, width: '100%' }}>
             <DataGrid
