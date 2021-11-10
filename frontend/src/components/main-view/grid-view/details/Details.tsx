@@ -19,6 +19,8 @@ function Details(props: Props) {
     const descriptionElementRef = React.useRef<HTMLDivElement>(null);
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+    const alignItems = fullScreen ? "center" : "";
+    // const dialogPadding = fullScreen ? appBarHeight / 8 : 0;
     React.useEffect(() => {
         if (showDetails) {
             const {current: descriptionElement} = descriptionElementRef;
@@ -34,7 +36,7 @@ function Details(props: Props) {
 
     return (
         <Dialog fullScreen={fullScreen} open={showDetails} onClose={handleClose} >
-            <DialogContent dividers={scroll === 'paper'} sx={{padding:0}}>
+            <DialogContent dividers={scroll === 'paper'} sx={{padding:0, display:'flex', alignItems:alignItems}}>
                 <div ref={descriptionElementRef}>
                     <DetailsCard fullScreen={fullScreen} handleClose={handleClose}/>
                 </div>
