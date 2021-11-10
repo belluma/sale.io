@@ -6,7 +6,6 @@ import CustomSelect from "../_elements/custom-select/CustomSelect";
 import Contact from "../_elements/contact/Contact";
 //interface imports
 import {IFormProps} from "../../../interfaces/INewItem";
-import {Weekdays} from "../../../interfaces/weekdays";
 import {mapWeekdaysToSelectData} from "../helper";
 
 type Props = IFormProps;

@@ -8,7 +8,6 @@ import {loginFromStorage} from "./slicer/authSlice";
 import {CssBaseline, Toolbar} from '@mui/material';
 import Header from './components/header/Header';
 import MainView from './components/main-view/MainView';
-import Drawer from "./components/drawer/Drawer";
 
 
 function App() {
