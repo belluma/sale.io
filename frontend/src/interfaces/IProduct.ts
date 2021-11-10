@@ -7,7 +7,7 @@ export enum Categories {
 export interface IProduct {
     id?:string,
     name?:string
-    suppliers?: string[];
+    suppliers?: ISupplier[];
     stockCodeSupplier?:string
     category?:Categories,
     picture?:string

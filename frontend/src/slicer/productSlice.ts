@@ -87,7 +87,7 @@ export const productSlice = createSlice({
         chooseCurrentProduct: (state, action: PayloadAction<string>) => {
             state.currentProduct = state.products.filter(p => p.id === action.payload)[0];
         },
-        handleProductFormInput: (state, {payload}: PayloadAction<any>) => {
+        handleProductFormInput: (state, {payload}: PayloadAction<IProduct>) => {
             state.productToSave = payload;
         },
     },

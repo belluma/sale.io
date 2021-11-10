@@ -21,14 +21,13 @@ function Product() {
     }, [dispatch]);
     const productToSave = useAppSelector(selectProductToSave);
     const suppliers = useAppSelector(selectSuppliers);
-
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         dispatch(handleProductFormInput({...productToSave, [e.target.name]: value}));
     };
     const handleSupplierChange = (e:ChangeEvent<HTMLInputElement>) => {
         const selectedSupplier = suppliers.filter(s => s.id === e.target.value);
-        dispatch(handleProductFormInput({...productToSave, supplier:selectedSupplier}))
+        dispatch(handleProductFormInput({...productToSave, suppliers:selectedSupplier}))
     }
     const props = {handleChange: handleChange, model: "product"};
     const supplierOptions = mapSupplierToSelectData(suppliers);

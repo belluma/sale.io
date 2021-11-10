@@ -47,10 +47,6 @@ export interface ISuppliersState extends IBaseState {
     supplierToSave: ISupplier,
 }
 
-export interface INewItemState extends IBaseState{
-    itemToSave: IBody | {},
-    savedItem?: IBody
-}
 
 export interface IAPIState {
     customers: ICustomer[],

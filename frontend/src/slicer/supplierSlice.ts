@@ -76,7 +76,10 @@ export const supplierSlice = createSlice({
     reducers: {
         chooseCurrentSupplier: (state:ISuppliersState, action: PayloadAction<string>) => {
             state.currentSupplier = state.suppliers.filter(p => p.id === action.payload)[0];
-        }
+        },
+        handleSupplierFormInput: (state, {payload}: PayloadAction<ISupplier>) => {
+            state.supplierToSave = payload;
+        },
     },
     extraReducers: (builder => {
         const setPending = (state: ISuppliersState) => {
@@ -111,10 +114,11 @@ export const supplierSlice = createSlice({
     })
 })
 
-export const {chooseCurrentSupplier} = supplierSlice.actions;
+export const {chooseCurrentSupplier, handleSupplierFormInput} = supplierSlice.actions;
 
 export const selectSuppliers = (state: RootState) => state.supplier.suppliers;
 export const selectCurrentSupplier = (state: RootState) => state.supplier.currentSupplier;
+export const selectSupplierToSave = (state: RootState) => state.supplier.supplierToSave;
 export const selectPending = (state: RootState) => state.supplier.pending;
 
 
