@@ -5,12 +5,13 @@ import CustomSelect from "../_elements/custom-select/CustomSelect";
 
 import Contact from "../_elements/contact/Contact";
 //interface imports
-import {IFormProps} from "../../../interfaces/INewItem";
 import {mapWeekdaysToSelectData} from "../helper";
 
-type Props = IFormProps;
+type Props = {};
 
-function Supplier({handleChange}: Props){
+function Supplier({}: Props){
+    const handleChange = () => {
+    };
     const props = {handleChange: handleChange, model: "supplier"}
     return(
         <div>

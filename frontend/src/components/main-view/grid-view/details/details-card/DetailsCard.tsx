@@ -7,7 +7,7 @@ import {selectDetailsData} from "../../../../../slicer/detailsSlice";
 import {Card, CardContent, CardHeader, CardMedia, Divider} from "@mui/material";
 import Login from "../../../../security/login/Login";
 import {useLocation} from "react-router";
-import {Buttons} from "../../../../../interfaces/IThumbnailData";
+import {Model} from "../../../../../interfaces/IThumbnailData";
 import FormWrapper from "../../../../forms/_elements/form-wrapper/FormWrapper";
 
 //interface imports
@@ -21,7 +21,7 @@ function DetailsCard({fullScreen, handleClose}: Props){
     const detailsData = useAppSelector(selectDetailsData);
     const {title, subtitle, picture, alt, model} = detailsData;
     const path = useLocation().pathname.slice(1);
-    const formSelector = Object.values(Buttons).includes(path as Buttons) ? path : "none";
+    const formSelector = Object.values(Model).includes(path as Model) ? path : "none";
     const cardContent = {
         //@ts-ignore check type in ternary statement at declaration of formSelector
         new: <FormWrapper fullScreen={fullScreen} handleClose={handleClose}model={formSelector}/>,

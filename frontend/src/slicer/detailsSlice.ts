@@ -1,20 +1,13 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import {IDetailsData} from "../interfaces/IThumbnailData";
 import {IDetailsState, initialDetailsData} from "../interfaces/IStates";
-import {resetForm} from "./newItemSlice";
 
 
 const initialState: IDetailsState = {
     showDetails: false,
     detailsData: initialDetailsData,
 }
-
-export const hideDetails = createAsyncThunk(
-    'hideDetails',
-    (_, thunkAPI) => {
-        thunkAPI.dispatch(resetForm())
-    })
 
 
 export const detailsSlice = createSlice({
@@ -31,13 +24,7 @@ export const detailsSlice = createSlice({
             state.showDetails = true;
         },
     },
-    extraReducers: (builder => {
-        builder.addCase(hideDetails.fulfilled, (state) => {
-            state.showDetails = false;
-        })
     })
-
-})
 
 export const {showDetails, setDetailData, resetDetails} = detailsSlice.actions;
 

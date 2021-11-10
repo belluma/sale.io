@@ -1,7 +1,6 @@
 import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import { ISuppliersState} from '../interfaces/IStates';
-import {getErrorMessage} from "./errorSlice";
 import {IResponseGetAllSuppliers} from "../interfaces/IApiResponse";
 import {
     getAll as apiGetAll,
@@ -17,6 +16,7 @@ import { handleError } from './helper';
 const initialState: ISuppliersState = {
     suppliers: [],
     currentSupplier: undefined,
+    supplierToSave: {},
     pending: false,
 }
 
@@ -44,7 +44,7 @@ export const createSupplier = createAsyncThunk<IResponseGetAllSuppliers, void, {
     'create/suppliers',
     async (_, {getState, dispatch}) => {
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiCreate("supplier", token, getState().newItem.itemToSave);
+        const {data, status, statusText} = await apiCreate("supplier", token, getState().supplier.supplierToSave);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }

@@ -1,7 +1,6 @@
 import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import {IProductsState} from '../interfaces/IStates';
-import {getErrorMessage} from "./errorSlice";
 import {IResponseGetAllProducts} from "../interfaces/IApiResponse";
 import {
     getAll as apiGetAll,
@@ -55,7 +54,7 @@ export const createProduct = createAsyncThunk<IResponseGetAllProducts, void, { s
             return invalidProductError;
         }
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiCreate("product", token, getState().newItem.itemToSave);
+        const {data, status, statusText} = await apiCreate("product", token, getState().product.productToSave);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
@@ -87,7 +86,10 @@ export const productSlice = createSlice({
     reducers: {
         chooseCurrentProduct: (state, action: PayloadAction<string>) => {
             state.currentProduct = state.products.filter(p => p.id === action.payload)[0];
-        }
+        },
+        handleProductFormInput: (state, {payload}: PayloadAction<any>) => {
+            state.productToSave = payload;
+        },
     },
     extraReducers: (builder => {
         const setPending = (state: IProductsState) => {
@@ -122,10 +124,11 @@ export const productSlice = createSlice({
     })
 })
 
-export const {chooseCurrentProduct} = productSlice.actions;
+export const {chooseCurrentProduct, handleProductFormInput} = productSlice.actions;
 
 export const selectProducts = (state: RootState) => state.product.products;
 export const selectCurrentProduct = (state: RootState) => state.product.currentProduct;
+export const selectProductToSave = (state: RootState) => state.product.productToSave;
 export const selectPending = (state: RootState) => state.product.pending;
 
 
