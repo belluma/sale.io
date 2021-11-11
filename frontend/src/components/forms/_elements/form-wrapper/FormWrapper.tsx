@@ -1,5 +1,5 @@
 import React from 'react'
-import { useAppSelector} from "../../../../app/hooks";
+import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
 
 //component imports
 import {Button} from "@mui/material";
@@ -10,28 +10,40 @@ import Product from "../../product/Product";
 
 //interface imports
 import {Model} from "../../../../interfaces/IThumbnailData";
-import {selectSuppliers} from "../../../../slicer/supplierSlice";
+import {createSupplier, selectSuppliers} from "../../../../slicer/supplierSlice";
+import {hideDetails} from "../../../../slicer/detailsSlice";
+import {toBeReplaced} from "../../../../slicer/employeeSlice";
+import {createProduct} from "../../../../slicer/productSlice";
 
 type Props = {
     model: Model,
-    fullScreen:boolean,
-    handleClose:()=> void
+    fullScreen: boolean,
+    handleClose: () => void
 };
 
 function FormWrapper({model, fullScreen, handleClose}: Props) {
+    const dispatch = useAppDispatch();
     const suppliers = useAppSelector(selectSuppliers);
 
-    const handleSubmit = () => {
-    }
     const disableButton = () => {
-        return (model === Model.PRODUCT && !suppliers.length)
-            }
+        return (model === Model.PRODUCT && !suppliers.length);
+    };
     const formSelector = {
         none: "couldn't find the right form",
         employee: <Employee/>,
-        product: <Product />,
+        product: <Product/>,
         customer: <Customer/>,
-        supplier: <Supplier />,
+        supplier: <Supplier/>,
+    };
+    const submitSelector = {
+        none: hideDetails,
+        employee: toBeReplaced,
+        product: createProduct,
+        customer: toBeReplaced,
+        supplier: createSupplier,
+    };
+    const handleSubmit = () => {
+        dispatch(submitSelector[model]);
     }
     return (
         <form>{formSelector[model]}
