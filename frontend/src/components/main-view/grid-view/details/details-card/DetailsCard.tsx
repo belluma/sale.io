@@ -30,7 +30,7 @@ function DetailsCard({fullScreen, handleClose}: Props){
         product: (<div/>),
         customer: (<div/>),
         supplier: (<div/>),
-
+order: <div/>
     }
     return(
         <Card sx={{width:{md:400, sm: .99}, justifyContent: "center"}} >

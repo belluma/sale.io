@@ -7,7 +7,10 @@ export enum Model {
     PRODUCT = "product",
     CUSTOMER = "customer",
     SUPPLIER = "supplier",
+    ORDER = "order",
 }
+
+
 
 export enum Views  {
     NEW = "new",
@@ -16,6 +19,7 @@ export enum Views  {
     PRODUCT = "product",
     CUSTOMER = "customer",
     SUPPLIER = "supplier",
+    ORDER = "order",
 }
 
 export interface INewItem {

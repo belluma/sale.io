@@ -14,6 +14,7 @@ import {createSupplier, selectSuppliers} from "../../../../slicer/supplierSlice"
 import {hideDetails} from "../../../../slicer/detailsSlice";
 import {toBeReplaced} from "../../../../slicer/employeeSlice";
 import {createProduct} from "../../../../slicer/productSlice";
+import {createOrder} from "../../../../slicer/orderSlice";
 
 type Props = {
     model: Model,
@@ -34,6 +35,7 @@ function FormWrapper({model, fullScreen, handleClose}: Props) {
         product: <Product/>,
         customer: <Customer/>,
         supplier: <Supplier/>,
+        order: <div/>,
     };
     const submitSelector = {
         none: hideDetails,
@@ -41,6 +43,7 @@ function FormWrapper({model, fullScreen, handleClose}: Props) {
         product: createProduct,
         customer: toBeReplaced,
         supplier: createSupplier,
+        order: createOrder,
     };
     const handleSubmit = () => {
         dispatch(submitSelector[model]());

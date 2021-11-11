@@ -9,6 +9,8 @@ import {Card, CardHeader, CardMedia} from "@mui/material";
 import {IThumbnailData, Views} from '../../../../interfaces/IThumbnailData';
 import {setDetailData, showDetails} from "../../../../slicer/detailsSlice";
 import {chooseCurrentEmployee, toBeReplaced} from "../../../../slicer/employeeSlice";
+import {chooseCurrentProduct} from "../../../../slicer/productSlice";
+import {chooseCurrentSupplier} from "../../../../slicer/supplierSlice";
 
 type Props = {
     data: IThumbnailData
@@ -22,9 +24,10 @@ function Thumbnail({data}: Props) {
         none: toBeReplaced,
         login: chooseCurrentEmployee,
         employee: toBeReplaced,
-        product: toBeReplaced,
+        product: chooseCurrentProduct,
         customer: toBeReplaced,
-        supplier: toBeReplaced,
+        supplier: chooseCurrentSupplier,
+        order: chooseCurrentProduct,
     }
     const onClick = () => {
         dispatch(setDetailData(data));

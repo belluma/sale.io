@@ -8,6 +8,7 @@ export const images = {
     product: '',
     customer: '',
     supplier: '',
+    order: ''
 }
 export const newItemData = {
     picture:"images/add.svg",

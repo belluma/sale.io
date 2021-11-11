@@ -15,6 +15,7 @@ import Employees from "./views/employees/Employees";
 import Products from "./views/products/Products";
 import Suppliers from "./views/suppliers/Suppliers";
 import Customers from "./views/customers/Customers";
+import Orders from "./views/orders/Orders";
 //interface imports
 import {Views} from "../../interfaces/IThumbnailData";
 
@@ -28,6 +29,7 @@ function MainView(props: Props){
         PRODUCT: Products,
         SUPPLIER: Suppliers,
         CUSTOMER: Customers,
+        ORDER: Orders
     };
     const protectedRoutes = views.map((view) => <ProtectedRoute key={view} path={`/${Views[view]}`} component={protectedViews[view]} />)
     return (
