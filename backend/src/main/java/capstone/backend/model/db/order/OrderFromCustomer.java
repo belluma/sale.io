@@ -6,9 +6,7 @@ import capstone.backend.model.db.contact.Customer;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "cutomer_orders")
-public class OrderFromCustomer extends Order{
+public class OrderFromCustomer {
 
     @ManyToOne
     private Customer customer;

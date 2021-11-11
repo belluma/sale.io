@@ -7,6 +7,7 @@ import capstone.backend.model.dto.contact.SupplierDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class SupplierMapper {
@@ -24,7 +25,7 @@ public class SupplierMapper {
                 .phone(supplier.getPhone())
                 .email(supplier.getEmail())
                 .products(mapProductList(supplier))
-                .orders(List.of())
+                .orders(Set.of())
                 .orderDay(supplier.getOrderDay())
                 .build();
     }

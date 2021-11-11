@@ -5,6 +5,7 @@ import capstone.backend.model.dto.contact.SupplierDTO;
 import capstone.backend.model.enums.Weekdays;
 
 import java.util.List;
+import java.util.Set;
 
 public class SupplierTestUtils {
 
@@ -32,7 +33,7 @@ public class SupplierTestUtils {
                 .phone("01234")
                 .picture("img")
                 .products(List.of())
-                .orders(List.of())
+                .orders(Set.of())
                 .orderDay(Weekdays.FRIDAY)
                 .build();
     }
