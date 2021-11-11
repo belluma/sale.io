@@ -8,6 +8,6 @@ interface orderItem {
 }
 
 export interface IOrder extends IModel {
-    items: orderItem[],
-    supplier: ISupplier
+    items?: orderItem[],
+    supplier?: ISupplier
 }

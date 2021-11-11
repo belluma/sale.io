@@ -2,6 +2,7 @@ import {IEmployee} from "./IEmployee";
 import { IProduct } from "./IProduct";
 import {ICustomer} from "./ICustomer";
 import {ISupplier} from "./ISupplier";
+import {IOrder} from "./IOrder";
 
 interface IResponseBase {
     status: number,
@@ -21,6 +22,9 @@ export interface IResponseGetAllProducts extends IResponseBase{
 }
 export interface IResponseGetAllSuppliers extends IResponseBase{
     data: ISupplier[];
+}
+export interface IResponseGetAllOrders extends IResponseBase{
+    data: IOrder[];
 }
 
 export interface IApiResponse {

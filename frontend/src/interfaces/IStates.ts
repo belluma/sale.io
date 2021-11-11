@@ -4,6 +4,7 @@ import {IProduct} from "./IProduct";
 import {IBody} from "./IApi";
 import {ICustomer} from "./ICustomer";
 import {ISupplier} from "./ISupplier";
+import {IOrder} from "./IOrder";
 
 export interface IEmployeeState {
     employees: IEmployee[],
@@ -45,6 +46,12 @@ export interface ISuppliersState extends IBaseState {
     suppliers: ISupplier[],
     currentSupplier: ISupplier | undefined,
     supplierToSave: ISupplier,
+}
+
+export interface IOrdersState extends IBaseState {
+    orders: IOrder[],
+    currentOrder: IOrder | undefined,
+    orderToSave: IOrder,
 }
 
 
