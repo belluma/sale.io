@@ -1,7 +1,6 @@
 import {IUserCredentials, IEmployee} from "./IEmployee";
 import {IDetailsData, Views} from "./IThumbnailData";
 import {IProduct} from "./IProduct";
-import {IBody} from "./IApi";
 import {ICustomer} from "./ICustomer";
 import {ISupplier} from "./ISupplier";
 import {IOrder} from "./IOrder";

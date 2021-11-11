@@ -1,17 +1,17 @@
 import React, {ChangeEvent, useEffect, useState} from 'react'
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {addProductToOrder, getAllOrders, handleOrderFormInput, selectCurrentOrder, selectOrderToSave} from "../../../slicer/orderSlice";
-import CustomSelect from "../_elements/custom-select/CustomSelect";
-import {Button, Grid, Toolbar} from "@mui/material";
+import {addProductToOrder, getAllOrders,   selectOrderToSave} from "../../../slicer/orderSlice";
 import {getAllProducts, selectProducts} from "../../../slicer/productSlice";
 import {mapProductsToSelectData} from "../helper";
-import CustomNumber from "../_elements/custom-number/CustomNumber";
-import {IOrderItem} from "../../../interfaces/IOrder";
-import OrderItem from "./order-item/OrderItem";
 
 //component imports
+import CustomSelect from "../_elements/custom-select/CustomSelect";
+import OrderItem from "./order-item/OrderItem";
+import CustomNumber from "../_elements/custom-number/CustomNumber";
 
 //interface imports
+import {IOrderItem} from "../../../interfaces/IOrder";
+import {Button, Grid} from "@mui/material";
 
 type Props = {};
 
@@ -20,9 +20,8 @@ function Order(props: Props) {
     useEffect(() => {
         dispatch(getAllProducts());
         dispatch(getAllOrders());
-    }, []);
+    }, [dispatch]);
     const orderToSave = useAppSelector(selectOrderToSave);
-    const currentOrder = useAppSelector(selectCurrentOrder);
     const [productToAdd, setProductToAdd] = useState<IOrderItem>();
     const [selectedProductId, setSelectedProductId] = useState<string>();
     const [quantity, setQuantity] = useState<number>(0);
@@ -34,7 +33,7 @@ function Order(props: Props) {
             product = products.filter(p => p.id === selectedProductId)[0];
         }
         setProductToAdd({product, quantity})
-    }, [selectedProductId, quantity])
+    }, [selectedProductId, quantity, products])
     const selectProduct = (e: ChangeEvent<HTMLInputElement>) => {
         setSelectedProductId(e.target.value);
     }
@@ -46,7 +45,6 @@ function Order(props: Props) {
         //@ts-ignore check in line above
         if (validateProduct) dispatch(addProductToOrder(productToAdd));
         setProductToAdd({});
-        setSelectedProductId(undefined);
         setQuantity(0);
     }
     const addOrderToList = ({product, quantity}:IOrderItem, index:number) => {

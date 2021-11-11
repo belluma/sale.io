@@ -1,8 +1,7 @@
 import React from 'react'
-import {Grid, Toolbar} from "@mui/material";
-import {IProduct} from "../../../../interfaces/IProduct";
 
 //component imports
+import {Grid, Toolbar} from "@mui/material";
 
 //interface imports
 
@@ -23,7 +22,6 @@ function OrderItem({productName, quantity, total}: Props) {
             <Grid item xs={7}>{productName}</Grid>
             <Grid item xs={2}>qty.: {quantity}</Grid>
             <Grid item xs={3}>€ {formatPrice()}</Grid>
-
         </Toolbar>
     )
 }

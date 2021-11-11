@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react'
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
-import {getAllSuppliers, selectSuppliers} from "../../../../slicer/supplierSlice";
 import {parseSupplierToThumbnailData, Views} from "../../../../interfaces/IThumbnailData";
 import {selectView} from "../../../../slicer/viewSlice";
 import GridView from "../../grid-view/GridView";
