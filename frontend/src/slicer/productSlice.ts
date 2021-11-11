@@ -11,6 +11,7 @@ import {
 } from '../services/apiService'
 import {IProduct} from "../interfaces/IProduct";
 import {handleError, invalidDataError} from "./helper";
+import {hideDetails} from "./detailsSlice";
 
 
 const initialState: IProductsState = {
@@ -19,10 +20,10 @@ const initialState: IProductsState = {
     pending: false,
     productToSave: {},
 }
-const validateProduct = (state: RootState) => {
-    const necessaryValues = ['name', 'suppliers', 'category', 'purchasePrice', 'unitSize']
-    const setValues = Object.keys(state.product.productToSave)
-    return setValues.every(v => necessaryValues.indexOf(v) >= 0);
+const validateProduct = ({product}: RootState) => {
+    const necessaryValues = ['name', 'suppliers', 'purchasePrice', 'unitSize']
+    const setValues = Object.keys(product.productToSave)
+    return necessaryValues.every(v => setValues.indexOf(v) >= 0);
 }
 
 
@@ -50,12 +51,14 @@ export const createProduct = createAsyncThunk<IResponseGetAllProducts, void, { s
     'products/create',
     async (_, {getState, dispatch}) => {
         if (!validateProduct(getState())) {
+            console.log('invalid')
 //handleError here
             return invalidDataError;
         }
         const token = getState().authentication.token
         const {data, status, statusText} = await apiCreate("product", token, getState().product.productToSave);
         handleError(status, statusText, dispatch);
+        dispatch(hideDetails());
         return {data, status, statusText}
     }
 )
@@ -89,6 +92,7 @@ export const productSlice = createSlice({
         },
         handleProductFormInput: (state, {payload}: PayloadAction<IProduct>) => {
             state.productToSave = payload;
+
         },
     },
     extraReducers: (builder => {

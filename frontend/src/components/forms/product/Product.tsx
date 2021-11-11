@@ -47,6 +47,9 @@ function Product() {
                     <CustomNumber name="minAmount" label={"min amount"}  {...props} />
                     <CustomNumber name="maxAmount" label={"max amount"}  {...props} />
                 </Toolbar>
+                <Toolbar>
+                    <CustomNumber name={"unitSize"} label={"Unit size"} {...props} />
+                </Toolbar>
             </div>
     )
 }
