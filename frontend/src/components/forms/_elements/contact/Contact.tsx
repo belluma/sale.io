@@ -4,7 +4,7 @@ import CustomText from "../custom-text/CustomText";
 
 //interface imports
 
-import {IFormProps} from "../../../../interfaces/INewItem";
+import {IFormProps} from "../../../../interfaces/IForms";
 
 interface IContactProps extends IFormProps {
     model: string

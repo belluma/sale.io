@@ -9,7 +9,7 @@ import {
     edit as apiEdit,
     del as apiDelete
 } from '../services/apiService'
-import {IOrder} from "../interfaces/IOrder";
+import {IOrder, IOrderItem} from "../interfaces/IOrder";
 import {handleError, invalidDataError} from "./helper";
 
 
@@ -17,7 +17,9 @@ const initialState: IOrdersState = {
     orders: [],
     currentOrder: undefined,
     pending: false,
-    orderToSave: {},
+    orderToSave: {
+        items: []
+    },
 }
 const validateOrder = (state: RootState) => {
     const necessaryValues = ['name', 'suppliers', 'category', 'purchasePrice', 'unitSize']
@@ -27,7 +29,7 @@ const validateOrder = (state: RootState) => {
 
 
 export const getAllOrders = createAsyncThunk<IResponseGetAllOrders, void, { state: RootState, dispatch: Dispatch }>(
-    'getAll',
+    'orders/getAll',
     async (_, {getState, dispatch}) => {
         const token = getState().authentication.token;
         const {data, status, statusText} = await apiGetAll("order", token);
@@ -37,7 +39,7 @@ export const getAllOrders = createAsyncThunk<IResponseGetAllOrders, void, { stat
 )
 
 export const getOneOrder = createAsyncThunk<IResponseGetAllOrders, string, { state: RootState, dispatch: Dispatch }>(
-    'getOne',
+    'orders/getOne',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
         const {data, status, statusText} = await apiGetOne("order", token, id);
@@ -47,7 +49,7 @@ export const getOneOrder = createAsyncThunk<IResponseGetAllOrders, string, { sta
 )
 
 export const createOrder = createAsyncThunk<IResponseGetAllOrders, void, { state: RootState, dispatch: Dispatch }>(
-    'create',
+    'orders/create',
     async (_, {getState, dispatch}) => {
         if (!validateOrder(getState())) {
 //handleError here
@@ -61,7 +63,7 @@ export const createOrder = createAsyncThunk<IResponseGetAllOrders, void, { state
 )
 
 export const editOrder = createAsyncThunk<IResponseGetAllOrders, IOrder, { state: RootState, dispatch: Dispatch }>(
-    'edit',
+    'orders/edit',
     async (order, {getState, dispatch}) => {
         const token = getState().authentication.token
         const {data, status, statusText} = await apiEdit("order", token, order);
@@ -71,7 +73,7 @@ export const editOrder = createAsyncThunk<IResponseGetAllOrders, IOrder, { state
 )
 
 export const deleteOrder = createAsyncThunk<IResponseGetAllOrders, string, { state: RootState, dispatch: Dispatch }>(
-    'delete',
+    'orders/delete',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
         const {data, status, statusText} = await apiDelete("order", token, id);
@@ -84,8 +86,11 @@ export const orderSlice = createSlice({
     name: 'order',
     initialState,
     reducers: {
-        chooseCurrentOrder: (state, action: PayloadAction<string>) => {
-            state.currentOrder = state.orders.filter(p => p.id === action.payload)[0];
+        chooseCurrentOrder: (state, {payload}: PayloadAction<string>) => {
+            state.currentOrder = state.orders.filter(p => p.id === payload)[0];
+        },
+        addProductToOrder: ({orderToSave}, {payload}: PayloadAction<IOrderItem>) => {
+            orderToSave.items = [...orderToSave.items, payload]
         },
         handleOrderFormInput: (state, {payload}: PayloadAction<IOrder>) => {
             state.orderToSave = payload;
@@ -124,7 +129,7 @@ export const orderSlice = createSlice({
     })
 })
 
-export const {chooseCurrentOrder, handleOrderFormInput} = orderSlice.actions;
+export const {chooseCurrentOrder, handleOrderFormInput, addProductToOrder} = orderSlice.actions;
 
 export const selectOrders = (state: RootState) => state.order.orders;
 export const selectCurrentOrder = (state: RootState) => state.order.currentOrder;

@@ -33,7 +33,7 @@ function DetailsCard({fullScreen, handleClose}: Props){
 order: <div/>
     }
     return(
-        <Card sx={{width:{md:400, sm: .99}, justifyContent: "center"}} >
+        <Card sx={{width:{ sm: .99}, justifyContent: "center"}} >
             <CardHeader title={title} subtitle={subtitle} align="center"/>
             <Divider/>
             {model !== "new" && <CardMedia

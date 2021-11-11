@@ -27,7 +27,7 @@ const validateProduct = (state: RootState) => {
 
 
 export const getAllProducts = createAsyncThunk<IResponseGetAllProducts, void, { state: RootState, dispatch: Dispatch }>(
-    'getAll',
+    'products/getAll',
     async (_, {getState, dispatch}) => {
         const token = getState().authentication.token;
         const {data, status, statusText} = await apiGetAll("product", token);
@@ -37,7 +37,7 @@ export const getAllProducts = createAsyncThunk<IResponseGetAllProducts, void, { 
 )
 
 export const getOneProduct = createAsyncThunk<IResponseGetAllProducts, string, { state: RootState, dispatch: Dispatch }>(
-    'getOne',
+    'products/getOne',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
         const {data, status, statusText} = await apiGetOne("product", token, id);
@@ -47,7 +47,7 @@ export const getOneProduct = createAsyncThunk<IResponseGetAllProducts, string, {
 )
 
 export const createProduct = createAsyncThunk<IResponseGetAllProducts, void, { state: RootState, dispatch: Dispatch }>(
-    'create',
+    'products/create',
     async (_, {getState, dispatch}) => {
         if (!validateProduct(getState())) {
 //handleError here
@@ -61,7 +61,7 @@ export const createProduct = createAsyncThunk<IResponseGetAllProducts, void, { s
 )
 
 export const editProduct = createAsyncThunk<IResponseGetAllProducts, IProduct, { state: RootState, dispatch: Dispatch }>(
-    'edit',
+    'products/edit',
     async (product, {getState, dispatch}) => {
         const token = getState().authentication.token
         const {data, status, statusText} = await apiEdit("product", token, product);
@@ -71,7 +71,7 @@ export const editProduct = createAsyncThunk<IResponseGetAllProducts, IProduct, {
 )
 
 export const deleteProduct = createAsyncThunk<IResponseGetAllProducts, string, { state: RootState, dispatch: Dispatch }>(
-    'delete',
+    'products/delete',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
         const {data, status, statusText} = await apiDelete("product", token, id);
