@@ -2,7 +2,6 @@ package capstone.backend.model.db.order;
 
 
 
-import capstone.backend.model.db.Product;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,7 +26,7 @@ public abstract class Order {
     private Long id;
     @ManyToMany
     @ToString.Exclude
-    private Set<Product> products;
+    private Set<OrderQuantity> orderQuantity;
 
     @Override
     public boolean equals(Object o) {
