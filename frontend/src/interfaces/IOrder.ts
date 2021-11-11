@@ -7,7 +7,7 @@ interface orderItem {
     quantity: number,
 }
 
-export interface Order extends IModel {
+export interface IOrder extends IModel {
     items: orderItem[],
     supplier: ISupplier
 }
