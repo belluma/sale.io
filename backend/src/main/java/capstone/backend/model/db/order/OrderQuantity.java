@@ -16,20 +16,17 @@ import java.util.Objects;
 @Entity
 public class OrderQuantity {
 
-    @EmbeddedId
-    OrderQuantitiesKey id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     @ManyToOne
-    @MapsId("productId")
-    @JoinColumn(name = "product_id")
-    Product product;
+    private Product product;
 
     @ManyToOne
-    @MapsId("orderId")
-    @JoinColumn(name = "order_id")
-    OrderToSupplier order;
+    private OrderToSupplier order;
 
-    int quantity;
+    private int quantity;
 
     @Override
     public boolean equals(Object o) {

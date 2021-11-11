@@ -2,6 +2,7 @@ package capstone.backend.model.db.order;
 
 import capstone.backend.model.db.contact.Supplier;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @Entity
+@SuperBuilder
 @Table(name ="supplier_orders")
 public class OrderToSupplier extends Order {
 
