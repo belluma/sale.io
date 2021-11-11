@@ -1,7 +1,6 @@
 import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
-import { IProductsState} from '../interfaces/IStates';
-import {getErrorMessage} from "./errorSlice";
+import {IProductsState} from '../interfaces/IStates';
 import {IResponseGetAllProducts} from "../interfaces/IApiResponse";
 import {
     getAll as apiGetAll,
@@ -11,22 +10,25 @@ import {
     del as apiDelete
 } from '../services/apiService'
 import {IProduct} from "../interfaces/IProduct";
+import {handleError, invalidDataError} from "./helper";
+import {hideDetails} from "./detailsSlice";
 
 
 const initialState: IProductsState = {
     products: [],
     currentProduct: undefined,
     pending: false,
+    productToSave: {},
 }
-export const handleError = (status:number, statusText: string, dispatch: Dispatch) => {
-    if (status !== 200) {
-        dispatch(getErrorMessage({status, statusText}))
-    }
+const validateProduct = ({product}: RootState) => {
+    const necessaryValues = ['name', 'suppliers', 'purchasePrice', 'unitSize']
+    const setValues = Object.keys(product.productToSave)
+    return necessaryValues.every(v => setValues.indexOf(v) >= 0);
 }
 
 
 export const getAllProducts = createAsyncThunk<IResponseGetAllProducts, void, { state: RootState, dispatch: Dispatch }>(
-    'getAll',
+    'products/getAll',
     async (_, {getState, dispatch}) => {
         const token = getState().authentication.token;
         const {data, status, statusText} = await apiGetAll("product", token);
@@ -36,7 +38,7 @@ export const getAllProducts = createAsyncThunk<IResponseGetAllProducts, void, { 
 )
 
 export const getOneProduct = createAsyncThunk<IResponseGetAllProducts, string, { state: RootState, dispatch: Dispatch }>(
-    'getOne',
+    'products/getOne',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
         const {data, status, statusText} = await apiGetOne("product", token, id);
@@ -46,17 +48,23 @@ export const getOneProduct = createAsyncThunk<IResponseGetAllProducts, string, {
 )
 
 export const createProduct = createAsyncThunk<IResponseGetAllProducts, void, { state: RootState, dispatch: Dispatch }>(
-    'create',
+    'products/create',
     async (_, {getState, dispatch}) => {
+        if (!validateProduct(getState())) {
+            console.log('invalid')
+//handleError here
+            return invalidDataError;
+        }
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiCreate("product", token, getState().newItem.itemToSave);
+        const {data, status, statusText} = await apiCreate("product", token, getState().product.productToSave);
         handleError(status, statusText, dispatch);
+        dispatch(hideDetails());
         return {data, status, statusText}
     }
 )
 
 export const editProduct = createAsyncThunk<IResponseGetAllProducts, IProduct, { state: RootState, dispatch: Dispatch }>(
-    'edit',
+    'products/edit',
     async (product, {getState, dispatch}) => {
         const token = getState().authentication.token
         const {data, status, statusText} = await apiEdit("product", token, product);
@@ -66,7 +74,7 @@ export const editProduct = createAsyncThunk<IResponseGetAllProducts, IProduct, {
 )
 
 export const deleteProduct = createAsyncThunk<IResponseGetAllProducts, string, { state: RootState, dispatch: Dispatch }>(
-    'delete',
+    'products/delete',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
         const {data, status, statusText} = await apiDelete("product", token, id);
@@ -81,7 +89,11 @@ export const productSlice = createSlice({
     reducers: {
         chooseCurrentProduct: (state, action: PayloadAction<string>) => {
             state.currentProduct = state.products.filter(p => p.id === action.payload)[0];
-        }
+        },
+        handleProductFormInput: (state, {payload}: PayloadAction<IProduct>) => {
+            state.productToSave = payload;
+
+        },
     },
     extraReducers: (builder => {
         const setPending = (state: IProductsState) => {
@@ -116,10 +128,11 @@ export const productSlice = createSlice({
     })
 })
 
-export const {chooseCurrentProduct} = productSlice.actions;
+export const {chooseCurrentProduct, handleProductFormInput} = productSlice.actions;
 
 export const selectProducts = (state: RootState) => state.product.products;
 export const selectCurrentProduct = (state: RootState) => state.product.currentProduct;
+export const selectProductToSave = (state: RootState) => state.product.productToSave;
 export const selectPending = (state: RootState) => state.product.pending;
 
 

@@ -1,6 +1,5 @@
 import React from 'react'
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
-import {handleFormInput, saveItem, selectItemToSave} from "../../../../slicer/newItemSlice";
 
 //component imports
 import {Button} from "@mui/material";
@@ -10,35 +9,45 @@ import Supplier from "../../supplier/Supplier";
 import Product from "../../product/Product";
 
 //interface imports
-import {Buttons} from "../../../../interfaces/IThumbnailData";
-import {selectSuppliers} from "../../../../slicer/supplierSlice";
+import {Model} from "../../../../interfaces/IThumbnailData";
+import {createSupplier, selectSuppliers} from "../../../../slicer/supplierSlice";
+import {hideDetails} from "../../../../slicer/detailsSlice";
+import {toBeReplaced} from "../../../../slicer/employeeSlice";
+import {createProduct} from "../../../../slicer/productSlice";
+import {createOrder} from "../../../../slicer/orderSlice";
+import Order from "../../order/Order";
 
 type Props = {
-    model: Buttons,
-    fullScreen:boolean,
-    handleClose:()=> void
+    model: Model,
+    fullScreen: boolean,
+    handleClose: () => void
 };
 
 function FormWrapper({model, fullScreen, handleClose}: Props) {
     const dispatch = useAppDispatch();
-    const itemToSave = useAppSelector(selectItemToSave)
     const suppliers = useAppSelector(selectSuppliers);
-    const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const updatedValue = {[e.target.name]: e.target.value}
-        dispatch(handleFormInput({...itemToSave, ...updatedValue}))
-    }
-    const handleSubmit = () => {
-        dispatch(saveItem(model))
-    }
+
     const disableButton = () => {
-        return (model === Buttons.PRODUCT && !suppliers.length)
-            }
+        return (model === Model.PRODUCT && !suppliers.length);
+    };
     const formSelector = {
         none: "couldn't find the right form",
         employee: <Employee/>,
-        product: <Product handleChange={handleInput}/>,
+        product: <Product/>,
         customer: <Customer/>,
-        supplier: <Supplier handleChange={handleInput}/>,
+        supplier: <Supplier/>,
+        order: <Order/>,
+    };
+    const submitSelector = {
+        none: hideDetails,
+        employee: toBeReplaced,
+        product: createProduct,
+        customer: toBeReplaced,
+        supplier: createSupplier,
+        order: createOrder,
+    };
+    const handleSubmit = () => {
+        dispatch(submitSelector[model]());
     }
     return (
         <form>{formSelector[model]}

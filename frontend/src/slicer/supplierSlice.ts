@@ -1,7 +1,6 @@
 import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import { ISuppliersState} from '../interfaces/IStates';
-import {getErrorMessage} from "./errorSlice";
 import {IResponseGetAllSuppliers} from "../interfaces/IApiResponse";
 import {
     getAll as apiGetAll,
@@ -11,19 +10,21 @@ import {
     del as apiDelete
 } from '../services/apiService'
 import {ISupplier} from "../interfaces/ISupplier";
+import {handleError, invalidDataError} from './helper';
 
 
 const initialState: ISuppliersState = {
     suppliers: [],
     currentSupplier: undefined,
+    supplierToSave: {},
     pending: false,
 }
-export const handleError = (status:number, statusText: string, dispatch: Dispatch) => {
-    if (status !== 200) {
-        dispatch(getErrorMessage({status, statusText}))
-    }
+const validateSupplier = (state: RootState) => {
+    const supplierKeys = Object.keys(state.supplier.supplierToSave);
+    const name = supplierKeys.includes("firstName") || supplierKeys.includes("lastName");
+    const contact = supplierKeys.includes("email") || supplierKeys.includes("phone");
+    return name && contact;
 }
-
 
 export const getAllSuppliers = createAsyncThunk<IResponseGetAllSuppliers, void, { state: RootState, dispatch: Dispatch }>(
     'getAll/suppliers',
@@ -48,8 +49,12 @@ export const getOneSupplier = createAsyncThunk<IResponseGetAllSuppliers, string,
 export const createSupplier = createAsyncThunk<IResponseGetAllSuppliers, void, { state: RootState, dispatch: Dispatch }>(
     'create/suppliers',
     async (_, {getState, dispatch}) => {
+        if (!validateSupplier(getState())) {
+//handleError here
+            return invalidDataError;
+        }
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiCreate("supplier", token, getState().newItem.itemToSave);
+        const {data, status, statusText} = await apiCreate("supplier", token, getState().supplier.supplierToSave);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
@@ -81,7 +86,10 @@ export const supplierSlice = createSlice({
     reducers: {
         chooseCurrentSupplier: (state:ISuppliersState, action: PayloadAction<string>) => {
             state.currentSupplier = state.suppliers.filter(p => p.id === action.payload)[0];
-        }
+        },
+        handleSupplierFormInput: (state, {payload}: PayloadAction<ISupplier>) => {
+            state.supplierToSave = payload;
+        },
     },
     extraReducers: (builder => {
         const setPending = (state: ISuppliersState) => {
@@ -116,10 +124,11 @@ export const supplierSlice = createSlice({
     })
 })
 
-export const {chooseCurrentSupplier} = supplierSlice.actions;
+export const {chooseCurrentSupplier, handleSupplierFormInput} = supplierSlice.actions;
 
 export const selectSuppliers = (state: RootState) => state.supplier.suppliers;
 export const selectCurrentSupplier = (state: RootState) => state.supplier.currentSupplier;
+export const selectSupplierToSave = (state: RootState) => state.supplier.supplierToSave;
 export const selectPending = (state: RootState) => state.supplier.pending;
 
 

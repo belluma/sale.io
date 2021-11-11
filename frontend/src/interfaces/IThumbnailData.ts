@@ -2,12 +2,15 @@ import {IEmployee} from "./IEmployee";
 import {IProduct} from "./IProduct";
 import {ISupplier} from "./ISupplier";
 
-export enum Buttons {
+export enum Model {
     EMPLOYEE = "employee",
     PRODUCT = "product",
     CUSTOMER = "customer",
     SUPPLIER = "supplier",
+    ORDER = "order",
 }
+
+
 
 export enum Views  {
     NEW = "new",
@@ -16,13 +19,14 @@ export enum Views  {
     PRODUCT = "product",
     CUSTOMER = "customer",
     SUPPLIER = "supplier",
+    ORDER = "order",
 }
 
 export interface INewItem {
 }
 
 export interface IThumbnailData extends INewItem {
-    title: string,
+    title?: string,
     subtitle?: string,
     id?: string | undefined
     alt?: string,

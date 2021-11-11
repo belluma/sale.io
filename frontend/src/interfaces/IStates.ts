@@ -1,9 +1,9 @@
 import {IUserCredentials, IEmployee} from "./IEmployee";
 import {IDetailsData, Views} from "./IThumbnailData";
 import {IProduct} from "./IProduct";
-import {IBody} from "./IApi";
 import {ICustomer} from "./ICustomer";
 import {ISupplier} from "./ISupplier";
+import {IOrder} from "./IOrder";
 
 export interface IEmployeeState {
     employees: IEmployee[],
@@ -38,17 +38,21 @@ interface IBaseState {
 export interface IProductsState extends IBaseState {
     products: IProduct[],
     currentProduct: IProduct | undefined,
+    productToSave: IProduct,
 }
 
 export interface ISuppliersState extends IBaseState {
     suppliers: ISupplier[],
     currentSupplier: ISupplier | undefined,
+    supplierToSave: ISupplier,
 }
 
-export interface INewItemState extends IBaseState{
-    itemToSave: IBody | {},
-    savedItem?: IBody
+export interface IOrdersState extends IBaseState {
+    orders: IOrder[],
+    currentOrder: IOrder | undefined,
+    orderToSave: IOrder,
 }
+
 
 export interface IAPIState {
     customers: ICustomer[],

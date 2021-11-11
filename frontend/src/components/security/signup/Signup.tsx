@@ -20,7 +20,7 @@ function Signup(props: Props) {
     const [repeatedPassword, setRepeatedPassword] = useState<string>("");
     const [passwordConfirmed, setPasswordConfirmed] = useState<boolean>(false);
     const register = () => {
-        credentials.password.length && (credentials.firstName.length || credentials.lastName.length)
+        credentials.password.length && (credentials.firstName?.length || credentials.lastName?.length)
         && dispatch(registerAdmin(credentials));
     }
     const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +38,6 @@ function Signup(props: Props) {
         const password = repeat ? credentials.password : repeatedPassword;
         setPasswordConfirmed(password.length > 3 && password === e.target.value);
     }
-
     return (
         employees.length ? <Redirect to={"/login"}/> : <Card>
             <CardHeader title="Choose your administrator Password" align="center"/>
@@ -53,7 +52,7 @@ function Signup(props: Props) {
                 <TextField onChange={handleRepeatPassword} sx={{my: 1}} required value={repeatedPassword}
                            label="confirm password" type="password"/>
                 <Button
-                    disabled={!passwordConfirmed || ((credentials.firstName.length + credentials.lastName.length) < 1)}
+                    disabled={!passwordConfirmed || (!credentials.firstName && !credentials.lastName)}
                     type="submit" onClick={register}>Register</Button>
             </FormGroup>
         </Card>

@@ -6,14 +6,14 @@ export enum Categories {
 
 export interface IProduct {
     id?:string,
-    name:string
+    name?:string
     suppliers?: ISupplier[];
-    stockCodeSupplier:string
-    category:Categories,
-    picture:string
-    purchasePrice:number,
-    retailPrice:number,
-    minAmount:number,
-    maxAmount:number,
-    unitSize:number,
+    stockCodeSupplier?:string
+    category?:Categories,
+    picture?:string
+    purchasePrice?:number,
+    retailPrice?:number,
+    minAmount?:number,
+    maxAmount?:number,
+    unitSize?:number,
 }

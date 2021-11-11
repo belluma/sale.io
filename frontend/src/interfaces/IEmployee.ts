@@ -1,8 +1,9 @@
 import {IContact} from "./IContact";
+import {IModel} from "./IModel";
 
 export interface INames {
-    firstName: string,
-    lastName: string,
+    firstName?: string,
+    lastName?: string,
 }
 
 interface ICredentials {
@@ -14,11 +15,8 @@ export interface IUserCredentials extends INames, ICredentials {
 
 }
 
-export interface IEmployee extends IContact, IUserCredentials {
-    email: string,
-    phone: string,
-    picture: string,
-    id: string,
+export interface IEmployee extends IContact, IUserCredentials, IModel {
+
 }
 
 export const initialCredentials: IUserCredentials = {

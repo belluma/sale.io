@@ -17,22 +17,21 @@ const initialState: IAuthState = {
 
 export const login = createAsyncThunk(
     'login',
-    async (credentials: IUserCredentials, thunkAPI) => {
+    async (credentials: IUserCredentials, {dispatch}) => {
         const {data, status, statusText} = await sendLoginData(credentials);
+        dispatch(hideDetails());
         if (status !== 200) {
-            thunkAPI.dispatch(getErrorMessage({status, statusText}));
-        }else {
-            thunkAPI.dispatch(hideDetails())
+            dispatch(getErrorMessage({status, statusText}));
         }
         return {data, status, statusText};
     }
 )
 export const registerAdmin = createAsyncThunk(
     'signup',
-    async (credentials: IUserCredentials, thunkAPI) => {
+    async (credentials: IUserCredentials, {dispatch}) => {
         const {data, status, statusText} = await registerAsAdmin(credentials);
         if (status !== 200) {
-            thunkAPI.dispatch(getErrorMessage({status, statusText}));
+            dispatch(getErrorMessage({status, statusText}));
         }
         return {data, status, statusText};
     }

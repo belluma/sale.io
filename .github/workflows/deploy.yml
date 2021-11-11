@@ -56,7 +56,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: app.jar
-          path: target
+          path: backend/target
       - name: Login to Heroku
         run: heroku container:login
       - name: Push docker container
