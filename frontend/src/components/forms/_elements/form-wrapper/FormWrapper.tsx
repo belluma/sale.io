@@ -43,7 +43,7 @@ function FormWrapper({model, fullScreen, handleClose}: Props) {
         supplier: createSupplier,
     };
     const handleSubmit = () => {
-        dispatch(submitSelector[model]);
+        dispatch(submitSelector[model]());
     }
     return (
         <form>{formSelector[model]}
