@@ -6,6 +6,7 @@ import detailsReducer from '../slicer/detailsSlice';
 import productReducer from '../slicer/productSlice';
 import supplierReducer from '../slicer/supplierSlice';
 import viewReducer from '../slicer/viewSlice';
+import orderReducer from '../slicer/orderSlice';
 
 
 export const store = configureStore({
@@ -17,6 +18,7 @@ export const store = configureStore({
     product: productReducer,
     supplier: supplierReducer,
     view: viewReducer,
+    order: orderReducer,
   },
 });
 
