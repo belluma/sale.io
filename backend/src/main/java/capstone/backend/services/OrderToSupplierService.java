@@ -14,12 +14,10 @@ public class OrderToSupplierService {
 
     private final OrderToSupplierRepo repo;
     private final ProductService productService;
-    private final OrderItemService qtyService;
 
-    public OrderToSupplierService(OrderToSupplierRepo repo, ProductService productService, OrderItemService qtyService) {
+    public OrderToSupplierService(OrderToSupplierRepo repo, ProductService productService) {
         this.repo = repo;
         this.productService = productService;
-        this.qtyService = qtyService;
     }
 
     public List<OrderToSupplierDTO> getAllOrders() {
