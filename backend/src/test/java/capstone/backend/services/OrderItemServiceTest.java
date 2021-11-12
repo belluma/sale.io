@@ -2,6 +2,7 @@ package capstone.backend.services;
 
 import capstone.backend.exception.model.EntityNotFoundException;
 import capstone.backend.model.db.order.OrderItem;
+import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.repo.OrderItemRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +11,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.List;
 import java.util.Optional;
 
+import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
+import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItemDTO;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,43 +32,43 @@ class OrderItemServiceTest {
         when(repo.findAll()).thenReturn(List.of(sampleOrderItem()));
         OrderItem expected = sampleOrderItem();
         //WHEN
-        List<OrderItemDTO> actual = service.getAllOrderQuantities();
+        List<OrderItemDTO> actual = service.getAllOrderItems();
         //THEN
-        assertThat(actual.get(0).withId(1L), is(expected.withId(1L)));
+        assertThat(actual.get(0), is(expected));
         verify(repo).findAll();
     }
 
     @Test
     void getSingleOrderQuantity() {
         //GIVEN
-        when(repo.findById(123L)).thenReturn(Optional.of(sampleOrderItem().withId(123L)));
-        OrderItem expected = sampleOrderItem().withId(123L);
+        when(repo.findById(1L)).thenReturn(Optional.of(sampleOrderItem().withId(1L)));
+        OrderItem expected = sampleOrderItem().withId(1L);
         //WHEN
-        OrderItem actual = service.getSingleOrderQuantity(123L);
+        OrderItemDTO actual = service.getSingleOrderItem(1L);
         //THEN
         assertThat(actual, is(expected));
-        verify(repo).findById(123L);
+        verify(repo).findById(1L);
     }
 
     @Test
     void getSingleOrderQuantityThrowsWhenNoProductFound() {
         //GIVEN
-        when(repo.findById(123L)).thenReturn(Optional.empty());
+        when(repo.findById(1L)).thenReturn(Optional.empty());
         //WHEN - THEN
-        Exception ex = assertThrows(EntityNotFoundException.class, () -> service.getSingleOrderQuantity(123L));
+        Exception ex = assertThrows(EntityNotFoundException.class, () -> service.getSingleOrderItem(1L));
         assertThat(ex.getMessage(), is("Something went wrong while retrieving your data!"));
-        verify(repo).findById(123L);
+        verify(repo).findById(1L);
     }
 
     @Test
     void createProduct() {
         //GIVEN
-        OrderItem expected = sampleOrderItem();
-        when(repo.save(expected)).thenReturn(expected);
+        OrderItemDTO expected = sampleOrderItemDTO();
+        when(repo.save(mapOrderItem(expected))).thenReturn(mapOrderItem(expected));
         //WHEN
-        OrderItem actual = service.addOrderQuantity(expected);
+        OrderItemDTO actual = service.addOrderQuantity(expected);
         //THEN
-        verify(repo).save(expected);
+        verify(repo).save(mapOrderItem(expected));
         assertThat(actual, is(expected));
     }
 }

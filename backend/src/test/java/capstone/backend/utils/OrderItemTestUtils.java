@@ -17,7 +17,7 @@ public class OrderItemTestUtils {
                 .build();
     }
 
-    public static OrderItemDTO sampleOrderItemDTO() {}{
+    public static OrderItemDTO sampleOrderItemDTO() {
         return OrderItemDTO
                 .builder()
                 .id(1L)

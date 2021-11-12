@@ -5,8 +5,14 @@ import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.dto.order.OrderItemDTO;
 
 import static capstone.backend.mapper.ProductMapper.mapProduct;
+import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
 
 public class OrderItemMapper {
+
+    private OrderItemMapper() {
+
+    }
+
 
     public static OrderItem mapOrderItem(OrderItemDTO orderItem){
         return OrderItem
@@ -20,7 +26,7 @@ public static OrderItemDTO mapOrderItem(OrderItem orderItem){
         return OrderItemDTO
                 .builder()
                 .id(orderItem.getId())
-                .product(mapProduct(orderItem.getProduct()))
+                .product(mapProductWithDetails(orderItem.getProduct()))
                 .quantity(orderItem.getQuantity())
                 .build();
     }
