@@ -10,7 +10,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.List;
 import java.util.Optional;
 
-import static capstone.backend.utils.OrderItemTestUtils.sampleOrderQuantity;
+import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.*;
 
 
 @RunWith(MockitoJUnitRunner.class)
-class OrderQuantityServiceTest {
+class OrderItemServiceTest {
 
     private final OrderItemRepo repo = mock(OrderItemRepo.class);
     private final OrderItemService service = new OrderItemService(repo);
@@ -26,10 +26,10 @@ class OrderQuantityServiceTest {
     @Test
     void getAllOrderQuantities() {
         //GIVEN
-        when(repo.findAll()).thenReturn(List.of(sampleOrderQuantity()));
-        OrderItem expected = sampleOrderQuantity();
+        when(repo.findAll()).thenReturn(List.of(sampleOrderItem()));
+        OrderItem expected = sampleOrderItem();
         //WHEN
-        List<OrderItem> actual = service.getAllOrderQuantities();
+        List<OrderItemDTO> actual = service.getAllOrderQuantities();
         //THEN
         assertThat(actual.get(0).withId(1L), is(expected.withId(1L)));
         verify(repo).findAll();
@@ -38,8 +38,8 @@ class OrderQuantityServiceTest {
     @Test
     void getSingleOrderQuantity() {
         //GIVEN
-        when(repo.findById(123L)).thenReturn(Optional.of(sampleOrderQuantity().withId(123L)));
-        OrderItem expected = sampleOrderQuantity().withId(123L);
+        when(repo.findById(123L)).thenReturn(Optional.of(sampleOrderItem().withId(123L)));
+        OrderItem expected = sampleOrderItem().withId(123L);
         //WHEN
         OrderItem actual = service.getSingleOrderQuantity(123L);
         //THEN
@@ -60,7 +60,7 @@ class OrderQuantityServiceTest {
     @Test
     void createProduct() {
         //GIVEN
-        OrderItem expected = sampleOrderQuantity();
+        OrderItem expected = sampleOrderItem();
         when(repo.save(expected)).thenReturn(expected);
         //WHEN
         OrderItem actual = service.addOrderQuantity(expected);

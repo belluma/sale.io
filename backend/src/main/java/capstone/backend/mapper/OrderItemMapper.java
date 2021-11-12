@@ -1,2 +1,27 @@
-package capstone.backend.mapper;public class OrderItemMapper {
+package capstone.backend.mapper;
+
+
+import capstone.backend.model.db.order.OrderItem;
+import capstone.backend.model.dto.order.OrderItemDTO;
+
+import static capstone.backend.mapper.ProductMapper.mapProduct;
+
+public class OrderItemMapper {
+
+    public static OrderItem mapOrderItem(OrderItemDTO orderItem){
+        return OrderItem
+                .builder()
+                .id(orderItem.getId())
+                .product(mapProduct(orderItem.getProduct()))
+                .quantity(orderItem.getQuantity())
+                .build();
+    }
+public static OrderItemDTO mapOrderItem(OrderItem orderItem){
+        return OrderItemDTO
+                .builder()
+                .id(orderItem.getId())
+                .product(mapProduct(orderItem.getProduct()))
+                .quantity(orderItem.getQuantity())
+                .build();
+    }
 }

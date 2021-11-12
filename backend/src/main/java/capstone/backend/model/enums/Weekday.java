@@ -1,6 +1,6 @@
 package capstone.backend.model.enums;
 
-public enum Weekdays {
+public enum Weekday {
     MONDAY,
     TUESDAY,
     WEDNESDAY,

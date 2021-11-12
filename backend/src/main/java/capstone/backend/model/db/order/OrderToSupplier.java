@@ -3,39 +3,42 @@ package capstone.backend.model.db.order;
 import capstone.backend.model.db.contact.Supplier;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Objects;
+import java.util.List;
 
-@Getter
-@Setter
 @ToString
 @AllArgsConstructor
 @Entity
 @SuperBuilder
-@Table(name ="supplier_orders")
+@Table(name = "supplier_orders")
 public class OrderToSupplier extends Order {
 
-    public OrderToSupplier(){
+    public OrderToSupplier() {
         super();
     }
 
     @ManyToOne
     private Supplier supplier;
 
+    public Supplier getSupplier() {
+        return this.supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        OrderToSupplier that = (OrderToSupplier) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
+        return super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return super.hashCode();
     }
 }

@@ -2,16 +2,13 @@ package capstone.backend.model.db.order;
 
 
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -19,14 +16,15 @@ import java.util.Set;
 @MappedSuperclass
 @SuperBuilder
 @NoArgsConstructor
+@AllArgsConstructor
 public abstract class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToMany
+    @OneToMany
     @ToString.Exclude
-    private Set<OrderQuantity> orderQuantity;
+    private List<OrderItem> orderQuantity;
 
     @Override
     public boolean equals(Object o) {

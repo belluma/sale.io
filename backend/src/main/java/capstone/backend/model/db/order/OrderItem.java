@@ -16,15 +16,14 @@ import java.util.Objects;
 @Builder
 @With
 @Entity
-public class OrderQuantity {
+public class OrderItem {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    private Long productId;
-    private Long orderId;
+    @OneToOne
+    private Product product;
 
     private int quantity;
 
@@ -32,7 +31,7 @@ public class OrderQuantity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        OrderQuantity that = (OrderQuantity) o;
+        OrderItem that = (OrderItem) o;
         return id != null && Objects.equals(id, that.id);
     }
 

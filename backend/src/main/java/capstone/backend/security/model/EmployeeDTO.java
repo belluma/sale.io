@@ -1,6 +1,6 @@
 package capstone.backend.security.model;
 
-import capstone.backend.model.enums.UserRoles;
+import capstone.backend.model.enums.UserRole;
 import capstone.backend.model.dto.contact.ContactDTO;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -14,7 +14,7 @@ public class EmployeeDTO extends ContactDTO {
 
     private String username;
     private String password;
-    private List<UserRoles> roles;
+    private List<UserRole> roles;
 
     public EmployeeDTO(String username, String password){
         super();
