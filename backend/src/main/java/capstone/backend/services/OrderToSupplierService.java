@@ -3,17 +3,11 @@ package capstone.backend.services;
 import capstone.backend.exception.model.EntityNotFoundException;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.mapper.OrderToSupplierMapper;
-import capstone.backend.model.db.order.OrderItem;
-import capstone.backend.model.db.order.OrderToSupplier;
 import capstone.backend.model.dto.order.OrderToSupplierDTO;
 import capstone.backend.repo.OrderToSupplierRepo;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
-
 import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
-import static capstone.backend.mapper.SupplierMapper.mapSupplier;
 
 @Service
 public class OrderToSupplierService {
@@ -35,27 +29,20 @@ public class OrderToSupplierService {
                 .toList();
     }
     public OrderToSupplierDTO createOrder(OrderToSupplierDTO order) throws EntityNotFoundException {
-        if (!checkIfProductsExistant(order)) {
+        if (!checkIfProductsExistent(order)) {
             throw new EntityNotFoundException("You tried to order a product that doesn't exist!");
         }
         if(repo.findById(order.getId()).isPresent()){
             throw new EntityWithThisIdAlreadyExistException("An Order with this id already exists!");
         }
-        OrderToSupplier persisted = repo.save(mapOrder(order));
-        persisted.setSupplier(mapSupplier(order.getSupplier()));
-        List<OrderItem> qties = new ArrayList<>();
-        order.getOrderQuantity().forEach(qty ->
-                qties.add(qty));//qtyService.addOrderQuantity(qty)));//.withOrderId(persisted.getId()))));
-        persisted.setOrderQuantity(qties);
-        return mapOrder(persisted);
-//        return mapOrder(repo.save(persisted));
+        return mapOrder(repo.save(mapOrder(order)));
     }
 
-    private boolean checkIfProductsExistant(OrderToSupplierDTO order) {
+    private boolean checkIfProductsExistent(OrderToSupplierDTO order) {
         return !order
-                .getOrderQuantity()
+                .getOrderItems()
                 .stream()
-//                .map(qty -> productService.checkIfProductExists(qty.getProductId()))
+                .map(item -> productService.checkIfProductExists(item.getProduct().getId()))
                 .toList()
                 .contains(false);
     }

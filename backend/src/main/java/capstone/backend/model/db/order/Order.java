@@ -24,7 +24,7 @@ public abstract class Order {
     private Long id;
     @OneToMany
     @ToString.Exclude
-    private List<OrderItem> orderQuantity;
+    private List<OrderItem> orderItems;
 
     @Override
     public boolean equals(Object o) {

@@ -15,7 +15,7 @@ public class OrderToSupplierTestUtils {
         return OrderToSupplier
                 .builder()
                 .id(123L)
-                .orderQuantity(List.of(sampleOrderItem()))
+                .orderItems(List.of(sampleOrderItem()))
                 .supplier(sampleSupplier())
                 .build();
     }
@@ -23,7 +23,7 @@ public static OrderToSupplierDTO sampleOrderDTO(){
         return OrderToSupplierDTO
                 .builder()
                 .id(123L)
-                .orderQuantity(List.of(sampleOrderItem()))
+                .orderItems(List.of(sampleOrderItem()))
                 .supplier(sampleSupplierDTO())
                 .build();
     }

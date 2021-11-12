@@ -16,7 +16,7 @@ import java.util.List;
 public abstract class OrderDTO {
 
     private Long id;
-    private List<OrderItem> orderQuantity;
+    private List<OrderItem> orderItems;
 
 
 }
