@@ -15,7 +15,11 @@ public class OrderToSupplierMapper {
         OrderToSupplier mappedOrder = OrderToSupplier
                 .builder()
                 .supplier(mapSupplier(order.getSupplier()))
-                .orderItems(order.getOrderItems())
+                .orderItems(order
+                        .getOrderItems()
+                        .stream()
+                        .map(OrderItemMapper::mapOrderItem)
+                        .toList())
                 .build();
         if (order.getId() != null) {
             mappedOrder.setId(order.getId());
@@ -28,7 +32,11 @@ public class OrderToSupplierMapper {
         OrderToSupplierDTO mappedOrder = OrderToSupplierDTO
                 .builder()
                 .supplier(mapSupplier(order.getSupplier()))
-                .orderItems(order.getOrderItems())
+                .orderItems(order
+                        .getOrderItems()
+                        .stream()
+                        .map(OrderItemMapper::mapOrderItem)
+                        .toList())
                 .build();
         if (order.getId() != null) {
             mappedOrder.setId(order.getId());

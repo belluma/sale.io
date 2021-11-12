@@ -1,7 +1,6 @@
 package capstone.backend.services;
 
 import capstone.backend.exception.model.EntityNotFoundException;
-import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.repo.OrderItemRepo;
 import org.junit.jupiter.api.Test;
@@ -66,7 +65,7 @@ class OrderItemServiceTest {
         OrderItemDTO expected = sampleOrderItemDTO();
         when(repo.save(mapOrderItem(expected))).thenReturn(mapOrderItem(expected));
         //WHEN
-        OrderItemDTO actual = service.addOrderQuantity(expected);
+        OrderItemDTO actual = service.addOrderItem(expected);
         //THEN
         verify(repo).save(mapOrderItem(expected));
         assertThat(actual, is(expected));

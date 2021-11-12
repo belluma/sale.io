@@ -1,6 +1,5 @@
 package capstone.backend.controller;
 
-import capstone.backend.exception.GlobalExceptionHandler;
 import capstone.backend.mapper.ProductMapper;
 import capstone.backend.model.db.Product;
 import capstone.backend.model.dto.ProductDTO;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -37,13 +35,9 @@ class ProductControllerTest {
     @Autowired
     ProductController controller;
     @Autowired
-    GlobalExceptionHandler exceptionHandler;
-    @Autowired
     ProductRepo repo;
     @Autowired
     TestRestTemplate restTemplate;
-    @Autowired
-    PasswordEncoder passwordEncoder;
     @Autowired
     ProductMapper mapper;
     @Autowired

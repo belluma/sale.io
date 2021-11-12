@@ -14,10 +14,12 @@ public class OrderToSupplierService {
 
     private final OrderToSupplierRepo repo;
     private final ProductService productService;
+    private final OrderItemService orderItemService;
 
-    public OrderToSupplierService(OrderToSupplierRepo repo, ProductService productService) {
+    public OrderToSupplierService(OrderToSupplierRepo repo, ProductService productService, OrderItemService orderItemService) {
         this.repo = repo;
         this.productService = productService;
+        this.orderItemService = orderItemService;
     }
 
     public List<OrderToSupplierDTO> getAllOrders() {
@@ -33,6 +35,11 @@ public class OrderToSupplierService {
         if(repo.findById(order.getId()).isPresent()){
             throw new EntityWithThisIdAlreadyExistException("An Order with this id already exists!");
         }
+        order.setOrderItems(order
+                        .getOrderItems()
+                        .stream()
+                        .map(orderItemService::addOrderItem)
+                        .toList());
         return mapOrder(repo.save(mapOrder(order)));
     }
 

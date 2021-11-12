@@ -34,9 +34,9 @@ public class OrderItemService {
                 .map(OrderItemMapper::mapOrderItem)
                 .orElseThrow(() -> new EntityNotFoundException("Something went wrong while retrieving your data!"));
     }
-    public OrderItemDTO addOrderQuantity(OrderItemDTO orderQuantity) {
+    public OrderItemDTO addOrderItem(OrderItemDTO orderItem) {
 
-        return mapOrderItem(repo.save(mapOrderItem(orderQuantity)));
+        return mapOrderItem(repo.save(mapOrderItem(orderItem)));
     }
 
 }

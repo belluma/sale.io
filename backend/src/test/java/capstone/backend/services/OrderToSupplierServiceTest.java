@@ -1,12 +1,16 @@
 package capstone.backend.services;
+
 import capstone.backend.exception.model.EntityNotFoundException;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
+import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.db.order.OrderToSupplier;
+import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToSupplierDTO;
 import capstone.backend.repo.OrderToSupplierRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -23,8 +27,9 @@ import static org.mockito.Mockito.*;
 class OrderToSupplierServiceTest {
 
     private final OrderToSupplierRepo orderRepo = mock(OrderToSupplierRepo.class);
-    private final  ProductService productService = mock(ProductService.class);
-    private final OrderToSupplierService orderService = new OrderToSupplierService(orderRepo, productService);
+    private final ProductService productService = mock(ProductService.class);
+    private final OrderItemService orderItemService = mock(OrderItemService.class);
+    private final OrderToSupplierService orderService = new OrderToSupplierService(orderRepo, productService, orderItemService);
 
 
     @Test
@@ -44,21 +49,24 @@ class OrderToSupplierServiceTest {
         //GIVEN
         OrderToSupplier orderToSave = sampleOrder();
         OrderToSupplierDTO expected = sampleOrderDTO();
+        OrderItemDTO orderItem = expected.getOrderItems().get(0);
         Long productId = orderToSave.getOrderItems().get(0).getProduct().getId();
         when(orderRepo.save(orderToSave)).thenReturn(orderToSave);
         when(orderRepo.findById(orderToSave.getId())).thenReturn(Optional.empty());
         when(productService.checkIfProductExists(productId)).thenReturn(true);
+        when(orderItemService.addOrderItem(orderItem)).thenReturn(orderItem);
         //WHEN
         OrderToSupplierDTO actual = orderService.createOrder(sampleOrderDTO());
         //THEN
         verify(orderRepo).save(orderToSave);
         verify(orderRepo).findById(123L);
         verify(productService).checkIfProductExists(productId);
+        verify(orderItemService).addOrderItem(orderItem);
         assertThat(actual, is(expected));
     }
 
     @Test
-    void createOrderThrowsWhenProductNonExistent(){
+    void createOrderThrowsWhenProductNonExistent() {
         //GIVEN
         OrderToSupplierDTO orderToSave = sampleOrderDTO();
         Long productId = orderToSave.getOrderItems().get(0).getProduct().getId();
@@ -68,6 +76,7 @@ class OrderToSupplierServiceTest {
         assertThat(ex.getMessage(), is("You tried to order a product that doesn't exist!"));
         verify(productService).checkIfProductExists(productId);
     }
+
     @Test
     void createOrdreThrowsWhenOrderAlreadyExists() {
         //GIVEN

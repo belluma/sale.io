@@ -2,10 +2,7 @@ package capstone.backend.model.dto.order;
 
 
 import capstone.backend.model.dto.contact.SupplierDTO;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.With;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 
@@ -13,6 +10,7 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 @AllArgsConstructor
+@NoArgsConstructor
 @With
 public class OrderToSupplierDTO extends OrderDTO {
 
