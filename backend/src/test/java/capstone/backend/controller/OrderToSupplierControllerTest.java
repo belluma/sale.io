@@ -4,11 +4,12 @@ import capstone.backend.model.db.Product;
 import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.db.order.OrderToSupplier;
+import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToSupplierDTO;
+import capstone.backend.repo.OrderItemRepo;
 import capstone.backend.repo.OrderToSupplierRepo;
 import capstone.backend.repo.ProductRepo;
 import capstone.backend.repo.SupplierRepo;
-import capstone.backend.services.ProductService;
 import capstone.backend.utils.ControllerTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,9 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.util.Arrays;
 import java.util.List;
 
+import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
+import static capstone.backend.mapper.SupplierMapper.mapSupplier;
+import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
 import static capstone.backend.utils.OrderToSupplierTestUtils.sampleOrder;
 import static capstone.backend.utils.OrderToSupplierTestUtils.sampleOrderDTO;
 import static capstone.backend.utils.ProductTestUtils.sampleProduct;
@@ -45,6 +49,8 @@ class OrderToSupplierControllerTest {
     ProductRepo productRepo;
     @Autowired
     SupplierRepo supplierRepo;
+    @Autowired
+    OrderItemRepo orderItemRepo;
     @Autowired
     TestRestTemplate restTemplate;
     @Autowired
@@ -93,8 +99,8 @@ class OrderToSupplierControllerTest {
         //GIVEN
         Product product = productRepo.save(sampleProduct());
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
-        OrderToSupplierDTO order = new OrderToSupplierDTO();//1L, List.of(new));
-//        order.setOrderItems(List.of(new OrderItem(1L, product, 1)));
+        OrderItem orderItem = orderItemRepo.save(new OrderItem(product, 1));
+        OrderToSupplierDTO order = new OrderToSupplierDTO(1L, List.of(mapOrderItem(orderItem)),mapSupplier(sampleSupplier) );
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(order, headers), OrderToSupplierDTO.class);
