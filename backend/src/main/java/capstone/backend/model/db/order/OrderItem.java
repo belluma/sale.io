@@ -18,21 +18,13 @@ import java.util.Objects;
 @Entity
 public class OrderQuantity {
 
-public OrderQuantity (Product product, OrderToSupplier order ,int quantity){
-    this.product = product;
-    this.order = order;
-    this.quantity = quantity;
-}
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
-    private Product product;
-
-    @ManyToOne
-    private OrderToSupplier order;
+    private Long productId;
+    private Long orderId;
 
     private int quantity;
 

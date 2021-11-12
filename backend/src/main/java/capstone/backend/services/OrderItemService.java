@@ -1,7 +1,7 @@
 package capstone.backend.services;
 
 import capstone.backend.exception.model.EntityNotFoundException;
-import capstone.backend.model.db.order.OrderQuantity;
+import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.repo.OrderQuantityRepo;
 import org.springframework.stereotype.Service;
 
@@ -17,15 +17,15 @@ public class OrderQuantityService {
         this.repo = repo;
     }
 
-    public List<OrderQuantity> getAllOrderQuantities() {
+    public List<OrderItem> getAllOrderQuantities() {
         return repo.findAll();
     }
 
-    public OrderQuantity getSingleOrderQuantity(Long id) throws EntityNotFoundException {
+    public OrderItem getSingleOrderQuantity(Long id) throws EntityNotFoundException {
         return repo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Something went wrong while retrieving your data!"));
     }
-    public OrderQuantity addOrderQuantity(OrderQuantity orderQuantity) {
+    public OrderItem addOrderQuantity(OrderItem orderQuantity) {
         return repo.save(orderQuantity);
     }
 
