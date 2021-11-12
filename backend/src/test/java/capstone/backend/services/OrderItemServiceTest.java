@@ -30,7 +30,7 @@ class OrderItemServiceTest {
     void getAllOrderQuantities() {
         //GIVEN
         when(repo.findAll()).thenReturn(List.of(sampleOrderItem()));
-        OrderItem expected = sampleOrderItem();
+        OrderItemDTO expected = sampleOrderItemDTO();
         //WHEN
         List<OrderItemDTO> actual = service.getAllOrderItems();
         //THEN
@@ -42,7 +42,7 @@ class OrderItemServiceTest {
     void getSingleOrderQuantity() {
         //GIVEN
         when(repo.findById(1L)).thenReturn(Optional.of(sampleOrderItem().withId(1L)));
-        OrderItem expected = sampleOrderItem().withId(1L);
+        OrderItemDTO expected = sampleOrderItemDTO();
         //WHEN
         OrderItemDTO actual = service.getSingleOrderItem(1L);
         //THEN

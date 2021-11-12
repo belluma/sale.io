@@ -74,7 +74,7 @@ class EmployeeControllerTest {
         //GIVEN
         repo.save(sampleUser());
         //WHEN
-        ResponseEntity<EmployeeDTO[]> response = restTemplate.getForEntity("/api/employee", EmployeeDTO[].class);
+        ResponseEntity<EmployeeDTO[]> response = restTemplate.getForEntity("/api/employees", EmployeeDTO[].class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertIterableEquals(Arrays.asList(response.getBody()), List.of(mapper.mapEmployeeAndConcealData(sampleUser())));
