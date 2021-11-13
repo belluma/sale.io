@@ -169,4 +169,18 @@ class OrderToSupplierControllerTest {
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
     }
+    @Test
+    void createOrderReturnsNotAcceptableWhenSupplierDoesNotCarryProduct(){
+        //GIVEN
+        Supplier supplierToOrderFrom = supplierRepo.save(sampleSupplier());
+        Supplier supplierToAssociateProductWith = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(supplierToAssociateProductWith)));
+        OrderItem orderItem = new OrderItem(product, 1);
+        OrderToSupplierDTO order = new OrderToSupplierDTO(1L, List.of(mapOrderItem(orderItem)), mapSupplier(supplierToOrderFrom));
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        //WHEN
+        ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(order, headers), OrderToSupplierDTO.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
+    }
 }
