@@ -44,8 +44,6 @@ class SupplierControllerTest {
     @Autowired
     SupplierRepo supplierRepo;
     @Autowired
-    ProductRepo productRepo;
-    @Autowired
     TestRestTemplate restTemplate;
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -68,19 +66,13 @@ class SupplierControllerTest {
         registry.add("spring.datasource.username", container::getUsername);
     }
 
-    @BeforeEach
-    void saveSampleProduct() {
-        productRepo.save(sampleProductWithId());
-    }
-
     @AfterEach
     public void clearDB() {
         supplierRepo.deleteAll();
-        productRepo.deleteAll();
     }
 
     @Test
-    void test() {
+    void containerIsRunning() {
         assertTrue(container.isRunning());
     }
 
