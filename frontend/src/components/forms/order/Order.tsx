@@ -13,6 +13,7 @@ import CustomNumber from "../_elements/custom-number/CustomNumber";
 import {IOrderItem} from "../../../interfaces/IOrder";
 import {Button, Grid, Toolbar} from "@mui/material";
 import {getAllSuppliers, selectSuppliers} from "../../../slicer/supplierSlice";
+import {productsBySupplier} from "./helper";
 
 type Props = {};
 
@@ -30,7 +31,7 @@ function Order(props: Props) {
     const [quantity, setQuantity] = useState<number>(0);
     const products = useAppSelector(selectProducts);
     const suppliers = useAppSelector(selectSuppliers);
-    const productOptions = mapProductsToSelectData(products);
+    const productOptions = mapProductsToSelectData(products.filter(productsBySupplier, selectedSupplierId));
     const supplierOptions = mapSupplierToSelectData(suppliers);
     useEffect(() => {
         let product;
@@ -58,7 +59,7 @@ function Order(props: Props) {
     const addOrderToList = ({product, quantity}: IOrderItem, index: number) => {
         if (!product || !quantity) return;
         return <OrderItem key={index} productName={product.name} quantity={quantity}
-                          //@ts-ignore function returns before getting here in case either of the values is undefined
+            //@ts-ignore function returns before getting here in case either of the values is undefined
                           total={product.purchasePrice * quantity}/>
     }
     const orderItems = orderToSave ? orderToSave.items.map(addOrderToList) : <></>;
