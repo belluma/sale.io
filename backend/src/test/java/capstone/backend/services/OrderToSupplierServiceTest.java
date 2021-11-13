@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
+import static capstone.backend.utils.SupplierTestUtils.sampleSupplier;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static capstone.backend.utils.OrderToSupplierTestUtils.sampleOrder;
@@ -29,7 +30,8 @@ class OrderToSupplierServiceTest {
     private final OrderToSupplierRepo orderRepo = mock(OrderToSupplierRepo.class);
     private final ProductService productService = mock(ProductService.class);
     private final OrderItemService orderItemService = mock(OrderItemService.class);
-    private final OrderToSupplierService orderService = new OrderToSupplierService(orderRepo, productService, orderItemService);
+    private final SupplierService supplierService = mock(SupplierService.class);
+    private final OrderToSupplierService orderService = new OrderToSupplierService(orderRepo, productService, orderItemService, supplierService);
 
 
     @Test
@@ -51,16 +53,19 @@ class OrderToSupplierServiceTest {
         OrderToSupplierDTO expected = sampleOrderDTO();
         OrderItemDTO orderItem = expected.getOrderItems().get(0);
         Long productId = orderToSave.getOrderItems().get(0).getProduct().getId();
+        Long supplierId = orderToSave.getSupplier().getId();
         when(orderRepo.save(orderToSave)).thenReturn(orderToSave);
         when(orderRepo.findById(orderToSave.getId())).thenReturn(Optional.empty());
         when(productService.checkIfProductExists(productId)).thenReturn(true);
         when(orderItemService.addOrderItem(orderItem)).thenReturn(orderItem);
+        when(supplierService.checkIfSupplierExists(supplierId)).thenReturn(true);
         //WHEN
         OrderToSupplierDTO actual = orderService.createOrder(sampleOrderDTO());
         //THEN
         verify(orderRepo).save(orderToSave);
         verify(orderRepo).findById(123L);
         verify(productService).checkIfProductExists(productId);
+        verify(supplierService).checkIfSupplierExists(supplierId);
         verify(orderItemService).addOrderItem(orderItem);
         assertThat(actual, is(expected));
     }
@@ -89,5 +94,21 @@ class OrderToSupplierServiceTest {
         assertThat(ex.getMessage(), is("An Order with this id already exists!"));
         verify(productService).checkIfProductExists(productId);
         verify(orderRepo).findById(orderToSave.getId());
+    }
+    @Test
+    void createOrderThrowsWhenSupplierNonExitent(){
+        //GIVEN
+        OrderToSupplierDTO orderToSave = sampleOrderDTO();
+        Long productId = orderToSave.getOrderItems().get(0).getProduct().getId();
+        Long supplierId = orderToSave.getSupplier().getId();
+        when(productService.checkIfProductExists(productId)).thenReturn(true);
+        when(orderRepo.findById(orderToSave.getId())).thenReturn(Optional.empty());
+        when(supplierService.checkIfSupplierExists(supplierId)).thenReturn(false);
+        //WHEN - //THEN
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.createOrder(orderToSave));
+        assertThat(ex.getMessage(), is("You tried to order from a supplier that doesn't exist!"));
+        verify(productService).checkIfProductExists(productId);
+        verify(orderRepo).findById(orderToSave.getId());
+        verify(supplierService).checkIfSupplierExists(supplierId);
     }
 }
