@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.List;
@@ -21,7 +22,8 @@ public class OrderToSupplier extends Order {
         this.supplier = supplier;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
     private Supplier supplier;
 
     public Supplier getSupplier() {

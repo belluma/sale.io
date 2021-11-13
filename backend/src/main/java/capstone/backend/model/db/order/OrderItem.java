@@ -27,7 +27,8 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
     private Product product;
 
     private int quantity;

@@ -77,6 +77,9 @@ class OrderToSupplierControllerTest {
     @BeforeEach
     public void clearDB() {
         orderRepo.deleteAll();
+        orderItemRepo.deleteAll();
+        productRepo.deleteAll();
+        supplierRepo.deleteAll();
     }
 
     @Test
@@ -88,11 +91,14 @@ class OrderToSupplierControllerTest {
     @Test
     void getAllOrders() {
         //GIVEN
-        OrderToSupplier order = orderRepo.save(sampleOrder());
+        Supplier supplier = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(supplier)));
+        OrderItem orderItem = orderItemRepo.save(sampleOrderItem().withProduct(product));
+        OrderToSupplier order = orderRepo.save(new OrderToSupplier(1L, List.of(orderItem), supplier));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<OrderToSupplierDTO[]> response = restTemplate.exchange(BASEURL, HttpMethod.GET, new HttpEntity<>(headers), OrderToSupplierDTO[].class);
-        OrderToSupplierDTO expected = sampleOrderDTO();
+        OrderToSupplierDTO expected = mapOrder(order);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertIterableEquals(Arrays.asList(response.getBody()), List.of(expected));
@@ -101,8 +107,8 @@ class OrderToSupplierControllerTest {
     @Test
     void createOrder() {
         //GIVEN
-        Product product = productRepo.save(sampleProduct());
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(sampleSupplier)));
         OrderItem orderItem = new OrderItem(product, 1);
         OrderToSupplierDTO order = new OrderToSupplierDTO(1L, List.of(mapOrderItem(orderItem)),mapSupplier(sampleSupplier) );
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
@@ -120,8 +126,8 @@ class OrderToSupplierControllerTest {
     @Test
     void createOrderSavesOrderItem(){
         //GIVEN
-        Product product = productRepo.save(sampleProduct());
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(sampleSupplier)));
         OrderItem orderItem = new OrderItem(product, 1);
         OrderToSupplierDTO order = new OrderToSupplierDTO(1L, List.of(mapOrderItem(orderItem)),mapSupplier(sampleSupplier) );
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
@@ -136,7 +142,7 @@ class OrderToSupplierControllerTest {
     }
 
     @Test
-    void createOrderReturnsNotFoundWhenProductNonExistent() {
+    void createOrderReturnsNotAcceptableWhenProductNonExistent() {
         //GIVEN
         Product product = sampleProductWithId();
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());

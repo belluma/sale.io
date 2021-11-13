@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 public class OrderFromCustomer {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Customer customer;
 
 

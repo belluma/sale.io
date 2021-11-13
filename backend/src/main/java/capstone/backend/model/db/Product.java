@@ -17,6 +17,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
+@With
 @Table(name = "products")
 public class Product {
 
@@ -24,18 +25,19 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
     private List<Supplier> suppliers;
     private String stockCodeSupplier;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
     private Category category;
     private Float purchasePrice;
     private Float retailPrice;
     private int minAmount;
     private int maxAmount;
     private int unitSize;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
     private Set<OrderItem> orderQuantity;
 
