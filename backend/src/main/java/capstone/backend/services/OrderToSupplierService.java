@@ -3,10 +3,14 @@ package capstone.backend.services;
 import capstone.backend.exception.model.EntityNotFoundException;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.mapper.OrderToSupplierMapper;
+import capstone.backend.model.dto.ProductDTO;
+import capstone.backend.model.dto.contact.SupplierDTO;
 import capstone.backend.model.dto.order.OrderToSupplierDTO;
 import capstone.backend.repo.OrderToSupplierRepo;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+
 import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
 
 @Service
@@ -30,22 +34,14 @@ public class OrderToSupplierService {
                 .map(OrderToSupplierMapper::mapOrder)
                 .toList();
     }
+
     public OrderToSupplierDTO createOrder(OrderToSupplierDTO order) throws EntityNotFoundException {
-validateOrder(order);
-        //        if (!checkIfProductsExistent(order)) {
-//            throw new IllegalArgumentException("You tried to order a product that doesn't exist!");
-//        }
-//        if(repo.findById(order.getId()).isPresent()){
-//            throw new EntityWithThisIdAlreadyExistException("An Order with this id already exists!");
-//        }
-//        if(!supplierService.checkIfSupplierExists(order.getSupplier().getId())){
-//            throw new IllegalArgumentException("You tried to order from a supplier that doesn't exist!");
-//        }
+        validateOrder(order);
         order.setOrderItems(order
-                        .getOrderItems()
-                        .stream()
-                        .map(orderItemService::addOrderItem)
-                        .toList());
+                .getOrderItems()
+                .stream()
+                .map(orderItemService::addOrderItem)
+                .toList());
         return mapOrder(repo.save(mapOrder(order)));
     }
 
@@ -57,15 +53,34 @@ validateOrder(order);
                 .toList()
                 .contains(false);
     }
-    private void validateOrder(OrderToSupplierDTO order) throws IllegalArgumentException, EntityWithThisIdAlreadyExistException{
+    private boolean supplierDoesNotCarryProduct(OrderToSupplierDTO order){
+        return order
+                .getOrderItems()
+                .stream()
+                .map(item -> extractSupplierIds(item.getProduct()).contains(order.getSupplier().getId()))
+                .toList()
+                .contains(false);
+    }
+    private List<Long> extractSupplierIds (ProductDTO product){
+        return product
+                .getSuppliers()
+                .stream()
+                .map(SupplierDTO::getId)
+                .toList();
+    }
+
+    private void validateOrder(OrderToSupplierDTO order) throws IllegalArgumentException, EntityWithThisIdAlreadyExistException {
         if (!checkIfProductsExistent(order)) {
             throw new IllegalArgumentException("You tried to order a product that doesn't exist!");
         }
-        if(repo.findById(order.getId()).isPresent()){
+        if (repo.findById(order.getId()).isPresent()) {
             throw new EntityWithThisIdAlreadyExistException("An Order with this id already exists!");
         }
-        if(!supplierService.checkIfSupplierExists(order.getSupplier().getId())){
+        if (!supplierService.checkIfSupplierExists(order.getSupplier().getId())) {
             throw new IllegalArgumentException("You tried to order from a supplier that doesn't exist!");
+        }
+        if(supplierDoesNotCarryProduct(order)){
+            throw new IllegalArgumentException("The supplier doesn't carry one or several of the items you tried to order!");
         }
     }
 
