@@ -72,7 +72,7 @@ class OrderToSupplierServiceTest {
         Long productId = orderToSave.getOrderItems().get(0).getProduct().getId();
         when(productService.checkIfProductExists(productId)).thenReturn(false);
         //WHEN - //THEN
-        Exception ex = assertThrows(EntityNotFoundException.class, () -> orderService.createOrder(orderToSave));
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.createOrder(orderToSave));
         assertThat(ex.getMessage(), is("You tried to order a product that doesn't exist!"));
         verify(productService).checkIfProductExists(productId);
     }

@@ -30,7 +30,7 @@ public class OrderToSupplierService {
     }
     public OrderToSupplierDTO createOrder(OrderToSupplierDTO order) throws EntityNotFoundException {
         if (!checkIfProductsExistent(order)) {
-            throw new EntityNotFoundException("You tried to order a product that doesn't exist!");
+            throw new IllegalArgumentException("You tried to order a product that doesn't exist!");
         }
         if(repo.findById(order.getId()).isPresent()){
             throw new EntityWithThisIdAlreadyExistException("An Order with this id already exists!");
