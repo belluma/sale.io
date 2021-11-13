@@ -1,8 +1,6 @@
 package capstone.backend.services;
 
-import capstone.backend.exception.model.EntityNotFoundException;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
-import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.db.order.OrderToSupplier;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToSupplierDTO;
@@ -10,12 +8,9 @@ import capstone.backend.repo.OrderToSupplierRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
-
 import java.util.List;
 import java.util.Optional;
-
 import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
-import static capstone.backend.utils.SupplierTestUtils.sampleSupplier;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static capstone.backend.utils.OrderToSupplierTestUtils.sampleOrder;
@@ -107,6 +102,23 @@ class OrderToSupplierServiceTest {
         //WHEN - //THEN
         Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.createOrder(orderToSave));
         assertThat(ex.getMessage(), is("You tried to order from a supplier that doesn't exist!"));
+        verify(productService).checkIfProductExists(productId);
+        verify(orderRepo).findById(orderToSave.getId());
+        verify(supplierService).checkIfSupplierExists(supplierId);
+    }
+    @Test
+    void createOrderThrowsWhenProductOrderedIsNotCarrriedBySupplier(){
+        //GIVEN
+        OrderToSupplierDTO orderToSave = sampleOrderDTO();
+        Long productId = orderToSave.getOrderItems().get(0).getProduct().getId();
+        Long supplierId = orderToSave.getSupplier().getId() + 1;
+        orderToSave.getSupplier().setId(supplierId);
+        when(productService.checkIfProductExists(productId)).thenReturn(true);
+        when(orderRepo.findById(orderToSave.getId())).thenReturn(Optional.empty());
+        when(supplierService.checkIfSupplierExists(supplierId)).thenReturn(true);
+        //WHEN - //THEN
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.createOrder(orderToSave));
+        assertThat(ex.getMessage(), is("The supplier doesn't carry one or several of the items you tried to order!"));
         verify(productService).checkIfProductExists(productId);
         verify(orderRepo).findById(orderToSave.getId());
         verify(supplierService).checkIfSupplierExists(supplierId);
