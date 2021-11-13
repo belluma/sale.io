@@ -1,5 +1,6 @@
 package capstone.backend.controller;
 
+import capstone.backend.exception.GlobalExceptionHandler;
 import capstone.backend.model.db.Product;
 import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.db.order.OrderItem;
@@ -25,13 +26,16 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
+import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
 import static capstone.backend.mapper.SupplierMapper.mapSupplier;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
 import static capstone.backend.utils.OrderToSupplierTestUtils.sampleOrder;
 import static capstone.backend.utils.OrderToSupplierTestUtils.sampleOrderDTO;
 import static capstone.backend.utils.ProductTestUtils.sampleProduct;
+import static capstone.backend.utils.ProductTestUtils.sampleProductWithId;
 import static capstone.backend.utils.SupplierTestUtils.sampleSupplier;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -76,7 +80,7 @@ class OrderToSupplierControllerTest {
     }
 
     @Test
-    void test() {
+    void containerIsRunning() {
         assertTrue(container.isRunning());
     }
 
@@ -99,27 +103,64 @@ class OrderToSupplierControllerTest {
         //GIVEN
         Product product = productRepo.save(sampleProduct());
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
-        OrderItem orderItem = orderItemRepo.save(new OrderItem(product, 1));
+        OrderItem orderItem = new OrderItem(product, 1);
         OrderToSupplierDTO order = new OrderToSupplierDTO(1L, List.of(mapOrderItem(orderItem)),mapSupplier(sampleSupplier) );
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(order, headers), OrderToSupplierDTO.class);
+        order.setId(response.getBody().getId());
+        order.getOrderItems().get(0).setId(response.getBody().getOrderItems().get(0).getId());
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        order.setId(response.getBody().getId());
         assertThat(response.getBody(), is(order));
+        assertThat(orderRepo.findAll().size(), is(1));
+        assertThat(orderRepo.findById(order.getId()).get(), is(mapOrder(order)));
+    }
+
+    @Test
+    void createOrderSavesOrderItem(){
+        //GIVEN
+        Product product = productRepo.save(sampleProduct());
+        Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
+        OrderItem orderItem = new OrderItem(product, 1);
+        OrderToSupplierDTO order = new OrderToSupplierDTO(1L, List.of(mapOrderItem(orderItem)),mapSupplier(sampleSupplier) );
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        //WHEN
+        ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(order, headers), OrderToSupplierDTO.class);
+        Long orderItemId = response.getBody().getOrderItems().get(0).getId();
+        orderItem.setId(orderItemId);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(orderItemRepo.findAll().size(), is(1));
+        assertThat(orderItemRepo.findById(orderItemId).get(), is(orderItem));
     }
 
     @Test
     void createOrderReturnsNotFoundWhenProductNonExistent() {
         //GIVEN
-
-
+        Product product = sampleProductWithId();
+        Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
+        OrderItem orderItem = new OrderItem(product, 1);
+        OrderToSupplierDTO order = new OrderToSupplierDTO(1L, List.of(mapOrderItem(orderItem)),mapSupplier(sampleSupplier) );
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
-
-
+        ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(order, headers), OrderToSupplierDTO.class);
         //THEN
-
-
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
+    }
+    @Test
+    void createOrderReturnsNotAcceptableWhenOrderIdAlreadyExists(){
+        //GIVEN
+        Product product = productRepo.save(sampleProduct());
+        Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
+        OrderItem firstOrderItem = orderItemRepo.save(new OrderItem(product, 1));
+        OrderItem orderItem = new OrderItem(product, 1);
+        OrderToSupplier firstOrder = orderRepo.save(new OrderToSupplier((1L), List.of(firstOrderItem), sampleSupplier));
+        OrderToSupplierDTO order = new OrderToSupplierDTO(firstOrder.getId(), List.of(mapOrderItem(orderItem)),mapSupplier(sampleSupplier) );
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        //WHEN
+        ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(order, headers), OrderToSupplierDTO.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
     }
 }
