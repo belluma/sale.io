@@ -21,10 +21,15 @@ const initialState: IProductsState = {
     productToSave: {},
 }
 const route = "products";
-const validateProduct = ({product}: RootState) => {
+
+export const validateProduct = (product:IProduct):boolean => {
     const necessaryValues = ['name', 'suppliers', 'purchasePrice', 'unitSize']
-    const setValues = Object.keys(product.productToSave)
+    const setValues = Object.keys(product)
     return necessaryValues.every(v => setValues.indexOf(v) >= 0);
+}
+
+const validateBeforeSendingToBackend = ({product}: RootState) => {
+   return validateProduct
 }
 
 
@@ -51,7 +56,7 @@ export const getOneProduct = createAsyncThunk<IResponseGetAllProducts, string, {
 export const createProduct = createAsyncThunk<IResponseGetAllProducts, void, { state: RootState, dispatch: Dispatch }>(
     'products/create',
     async (_, {getState, dispatch}) => {
-        if (!validateProduct(getState())) {
+        if (!validateBeforeSendingToBackend(getState())) {
             console.log('invalid')
 //handleError here
             return invalidDataError;

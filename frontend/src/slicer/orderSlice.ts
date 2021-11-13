@@ -22,13 +22,16 @@ const initialState: IOrdersState = {
     },
 }
 const route = "orders_suppliers";
-const validateOrder = ({order}: RootState) => {
-    const {orderToSave} = order;
-    if(!orderToSave.items.length || !orderToSave.supplier) return false;
-    return orderToSave.items.every(i => {
+export const validateOrder = (order: IOrder):boolean => {
+    if(!order.items.length || !order.supplier) return false;
+    return order.items.every(i => {
         return i.product &&
-        i.product.id === orderToSave.supplier?.id
+            i.product.id === order.supplier?.id
     });
+}
+const validateBeforeSendingToBackend = ({order}: RootState):boolean => {
+    const {orderToSave} = order;
+    return validateOrder(orderToSave);
 }
 
 
@@ -55,7 +58,7 @@ export const getOneOrder = createAsyncThunk<IResponseGetAllOrders, string, { sta
 export const createOrder = createAsyncThunk<IResponseGetAllOrders, void, { state: RootState, dispatch: Dispatch }>(
     'orders/create',
     async (_, {getState, dispatch}) => {
-        if (!validateOrder(getState())) {
+        if (!validateBeforeSendingToBackend(getState())) {
 //handleError here
             return invalidDataError;
         }

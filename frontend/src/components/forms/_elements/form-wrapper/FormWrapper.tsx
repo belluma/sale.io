@@ -1,21 +1,25 @@
 import React from 'react'
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
-
+import {
+    createSupplier,
+    selectSupplierToSave,
+    validateSupplier
+} from "../../../../slicer/supplierSlice";
+import {hideDetails} from "../../../../slicer/detailsSlice";
+import {toBeReplaced} from "../../../../slicer/employeeSlice";
+import {createProduct, selectProductToSave, validateProduct} from "../../../../slicer/productSlice";
+import {createOrder, selectOrderToSave, validateOrder} from "../../../../slicer/orderSlice";
 //component imports
 import {Button} from "@mui/material";
 import Employee from "../../employee/Employee";
 import Customer from "../../customer/Customer";
 import Supplier from "../../supplier/Supplier";
 import Product from "../../product/Product";
+import Order from "../../order/Order";
 
 //interface imports
 import {Model} from "../../../../interfaces/IThumbnailData";
-import {createSupplier, selectSuppliers} from "../../../../slicer/supplierSlice";
-import {hideDetails} from "../../../../slicer/detailsSlice";
-import {toBeReplaced} from "../../../../slicer/employeeSlice";
-import {createProduct} from "../../../../slicer/productSlice";
-import {createOrder} from "../../../../slicer/orderSlice";
-import Order from "../../order/Order";
+
 
 type Props = {
     model: Model,
@@ -25,10 +29,25 @@ type Props = {
 
 function FormWrapper({model, fullScreen, handleClose}: Props) {
     const dispatch = useAppDispatch();
-    const suppliers = useAppSelector(selectSuppliers);
+    const product = useAppSelector(selectProductToSave)
+    const supplier = useAppSelector(selectSupplierToSave)
+    const order = useAppSelector(selectOrderToSave)
 
     const disableButton = () => {
-        return (model === Model.PRODUCT && !suppliers.length);
+        switch(model){
+            case Model.EMPLOYEE:
+                break;
+            case Model.CUSTOMER:
+                break;
+            case Model.PRODUCT:
+                return !validateProduct(product);
+            case Model.SUPPLIER:
+                return !validateSupplier(supplier);
+            case Model.ORDER:
+                return !validateOrder(order);
+            default:
+                return false;
+        }
     };
     const formSelector = {
         none: "couldn't find the right form",
