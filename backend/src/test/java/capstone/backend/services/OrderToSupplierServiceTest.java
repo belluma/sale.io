@@ -78,7 +78,7 @@ class OrderToSupplierServiceTest {
     }
 
     @Test
-    void createOrdreThrowsWhenOrderAlreadyExists() {
+    void createOrderThrowsWhenOrderAlreadyExists() {
         //GIVEN
         OrderToSupplierDTO orderToSave = sampleOrderDTO();
         Long productId = orderToSave.getOrderItems().get(0).getProduct().getId();

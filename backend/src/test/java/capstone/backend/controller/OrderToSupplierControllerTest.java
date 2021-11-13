@@ -146,7 +146,7 @@ class OrderToSupplierControllerTest {
         //WHEN
         ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(order, headers), OrderToSupplierDTO.class);
         //THEN
-        assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
     }
     @Test
     void createOrderReturnsNotAcceptableWhenOrderIdAlreadyExists(){
