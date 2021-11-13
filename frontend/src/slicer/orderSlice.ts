@@ -22,10 +22,13 @@ const initialState: IOrdersState = {
     },
 }
 const route = "orders_suppliers";
-const validateOrder = (state: RootState) => {
-    const necessaryValues = ['name', 'suppliers', 'category', 'purchasePrice', 'unitSize']
-    const setValues = Object.keys(state.order.orderToSave)
-    return setValues.every(v => necessaryValues.indexOf(v) >= 0);
+const validateOrder = ({order}: RootState) => {
+    const {orderToSave} = order;
+    if(!orderToSave.items.length || !orderToSave.supplier) return false;
+    return orderToSave.items.every(i => {
+        return i.product &&
+        i.product.id === orderToSave.supplier?.id
+    });
 }
 
 
