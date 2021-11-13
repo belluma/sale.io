@@ -7,7 +7,7 @@ import {IBody} from "../interfaces/IApi";
 export const getAll = (model: string, token: string) => {
     return axios({
         method: 'get',
-        url: `/api/${model}s`,
+        url: `/api/${model}`,
         headers: {...jsonHeaders(), ...authHeaders(token)}
     }).then(response => {
         return response
@@ -18,7 +18,7 @@ export const getAll = (model: string, token: string) => {
 export const getOne = (model: string, token: string, id: string) => {
     return axios({
         method: 'get',
-        url: `/api/${model}s/${id}`,
+        url: `/api/${model}/${id}`,
         headers: {...jsonHeaders(), ...authHeaders(token)}
     }).then(response => {
         return response
@@ -29,7 +29,7 @@ export const getOne = (model: string, token: string, id: string) => {
 export const create = (model: string, token: string, data: IBody) => {
     return axios({
         method: 'post',
-        url: `/api/${model}s`,
+        url: `/api/${model}`,
         headers: {...jsonHeaders(), ...authHeaders(token)},
         data,
     }).then(response => {
@@ -42,7 +42,7 @@ export const create = (model: string, token: string, data: IBody) => {
 export const edit = (model: string, token: string, data: IBody) => {
     return axios({
         method: 'put',
-        url: `/api/${model}s/${data.id}`,
+        url: `/api/${model}/${data.id}`,
         headers: {...jsonHeaders(), ...authHeaders(token)},
         data
     }).then(response => {
@@ -53,7 +53,7 @@ export const edit = (model: string, token: string, data: IBody) => {
 export const del = (model: string, token: string, id: string) => {
     return axios({
         method: 'delete',
-        url: `/api/${model}s/${id}`,
+        url: `/api/${model}/${id}`,
         headers: {...jsonHeaders(), ...authHeaders(token)},
     }).then(response => {
         return response

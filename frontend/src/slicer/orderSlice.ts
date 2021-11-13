@@ -21,6 +21,7 @@ const initialState: IOrdersState = {
         items: []
     },
 }
+const route = "orders_suppliers";
 const validateOrder = (state: RootState) => {
     const necessaryValues = ['name', 'suppliers', 'category', 'purchasePrice', 'unitSize']
     const setValues = Object.keys(state.order.orderToSave)
@@ -32,7 +33,7 @@ export const getAllOrders = createAsyncThunk<IResponseGetAllOrders, void, { stat
     'orders/getAll',
     async (_, {getState, dispatch}) => {
         const token = getState().authentication.token;
-        const {data, status, statusText} = await apiGetAll("order", token);
+        const {data, status, statusText} = await apiGetAll(route, token);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
@@ -42,7 +43,7 @@ export const getOneOrder = createAsyncThunk<IResponseGetAllOrders, string, { sta
     'orders/getOne',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiGetOne("order", token, id);
+        const {data, status, statusText} = await apiGetOne(route, token, id);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
@@ -56,7 +57,7 @@ export const createOrder = createAsyncThunk<IResponseGetAllOrders, void, { state
             return invalidDataError;
         }
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiCreate("order", token, getState().order.orderToSave);
+        const {data, status, statusText} = await apiCreate(route, token, getState().order.orderToSave);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
@@ -66,7 +67,7 @@ export const editOrder = createAsyncThunk<IResponseGetAllOrders, IOrder, { state
     'orders/edit',
     async (order, {getState, dispatch}) => {
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiEdit("order", token, order);
+        const {data, status, statusText} = await apiEdit(route, token, order);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
@@ -76,7 +77,7 @@ export const deleteOrder = createAsyncThunk<IResponseGetAllOrders, string, { sta
     'orders/delete',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiDelete("order", token, id);
+        const {data, status, statusText} = await apiDelete(route, token, id);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }

@@ -19,6 +19,7 @@ const initialState: ISuppliersState = {
     supplierToSave: {},
     pending: false,
 }
+const route = "suppliers";
 const validateSupplier = (state: RootState) => {
     const supplierKeys = Object.keys(state.supplier.supplierToSave);
     const name = supplierKeys.includes("firstName") || supplierKeys.includes("lastName");
@@ -30,7 +31,7 @@ export const getAllSuppliers = createAsyncThunk<IResponseGetAllSuppliers, void, 
     'getAll/suppliers',
     async (_, {getState, dispatch}) => {
         const token = getState().authentication.token;
-        const {data, status, statusText} = await apiGetAll("supplier", token);
+        const {data, status, statusText} = await apiGetAll(route, token);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
@@ -40,7 +41,7 @@ export const getOneSupplier = createAsyncThunk<IResponseGetAllSuppliers, string,
     'getOne/suppliers',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiGetOne("supplier", token, id);
+        const {data, status, statusText} = await apiGetOne(route, token, id);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
@@ -54,7 +55,7 @@ export const createSupplier = createAsyncThunk<IResponseGetAllSuppliers, void, {
             return invalidDataError;
         }
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiCreate("supplier", token, getState().supplier.supplierToSave);
+        const {data, status, statusText} = await apiCreate(route, token, getState().supplier.supplierToSave);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
@@ -64,7 +65,7 @@ export const editSupplier = createAsyncThunk<IResponseGetAllSuppliers, ISupplier
     'edit/suppliers',
     async (supplier, {getState, dispatch}) => {
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiEdit("supplier", token, supplier);
+        const {data, status, statusText} = await apiEdit(route, token, supplier);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
@@ -74,7 +75,7 @@ export const deleteSupplier = createAsyncThunk<IResponseGetAllSuppliers, string,
     'delete/suppliers',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiDelete("supplier", token, id);
+        const {data, status, statusText} = await apiDelete(route, token, id);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
