@@ -15,10 +15,7 @@ type Props = {
 };
 
 function OrderItem({productName, quantity, total}: Props) {
-    const formatPrice = () => {
-        if(!total || !quantity) return 0.00;
-        return (Math.ceil(total * quantity * 100) / 100).toFixed(2);
-    }
+
     return (
             <Toolbar sx={{width:0.99}} disableGutters>
             <Grid item  container xs={2}>

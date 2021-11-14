@@ -80,7 +80,7 @@ function Order(props: Props) {
             <Grid item xs={2}>
                 <Button disabled={!validateProduct} onClick={addProduct}>Add</Button>
             </Grid>
-            <Preview/>
+            {selectedSupplierId && <Preview/>}
         </Grid>
     )
 }

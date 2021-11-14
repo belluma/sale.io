@@ -1,15 +1,15 @@
 import React from 'react'
 import {selectOrderToSave} from "../../../../slicer/orderSlice";
 import {useAppSelector} from "../../../../app/hooks";
+
+//component imports
 import OrderItem from "../order-item/OrderItem";
 import {Card, CardActions, CardHeader, Divider, Toolbar} from "@mui/material";
 import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
-import {IOrderItem} from "../../../../interfaces/IOrder";
-
-//component imports
 
 //interface imports
+import {IOrderItem} from "../../../../interfaces/IOrder";
 
 type Props = {};
 
