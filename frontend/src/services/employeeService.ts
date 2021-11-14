@@ -7,7 +7,7 @@ import {jsonHeaders} from "./serviceUtils";
 export const getAllEmployees = () => {
     return axios({
         method: 'get',
-        url: `/api/employee`,
+        url: `/api/employees`,
         headers: jsonHeaders(),
     }).then(response => {
         return response

@@ -1,12 +1,14 @@
 package capstone.backend.model.db;
 
 import capstone.backend.model.db.contact.Supplier;
+import capstone.backend.model.db.order.OrderItem;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -33,6 +35,9 @@ public class Product {
     private int minAmount;
     private int maxAmount;
     private int unitSize;
+    @ManyToMany
+    @ToString.Exclude
+    private Set<OrderItem> orderQuantity;
 
 
     @Override

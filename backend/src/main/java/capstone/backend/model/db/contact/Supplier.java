@@ -2,7 +2,7 @@ package capstone.backend.model.db.contact;
 
 import capstone.backend.model.db.Product;
 import capstone.backend.model.db.order.OrderToSupplier;
-import capstone.backend.model.enums.Weekdays;
+import capstone.backend.model.enums.Weekday;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
-import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -28,11 +28,10 @@ public class Supplier extends Contact {
     @ManyToMany
     @ToString.Exclude
     private List<Product> products;
+    private Weekday orderDay;
     @OneToMany
     @ToString.Exclude
-    private List<OrderToSupplier> orders;
-    private Weekdays orderDay;
-
+    private Set<OrderToSupplier> orders;
 
     public Supplier() {
         super();
@@ -40,14 +39,11 @@ public class Supplier extends Contact {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Supplier supplier = (Supplier) o;
-        return Objects.equals(products, supplier.products) && Objects.equals(orders, supplier.orders) && orderDay == supplier.orderDay;
+        return super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(products, orders, orderDay);
+        return super.hashCode();
     }
 }

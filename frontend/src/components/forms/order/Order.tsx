@@ -48,7 +48,7 @@ function Order(props: Props) {
         setQuantity(0);
     }
     const addOrderToList = ({product, quantity}:IOrderItem, index:number) => {
-        if(!product || !quantity) return <></>;
+        if(!product || !quantity) return// <></>;
         //@ts-ignore check in line above
         return <OrderItem key={index} productName={product.name} quantity={quantity} total={product.purchasePrice * quantity} />
     }

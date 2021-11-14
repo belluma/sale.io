@@ -4,7 +4,7 @@ import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.exception.model.EntityNotFoundException;
 import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.dto.contact.SupplierDTO;
-import capstone.backend.model.enums.Weekdays;
+import capstone.backend.model.enums.Weekday;
 import capstone.backend.repo.SupplierRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -91,12 +91,12 @@ class SupplierServiceTest {
         //GIVEN
         Supplier supplier = sampleSupplier();
         Supplier editedSupplier = sampleSupplier();
-        editedSupplier.setOrderDay(Weekdays.MONDAY);
+        editedSupplier.setOrderDay(Weekday.MONDAY);
         when(repo.findById(123L)).thenReturn(Optional.of(supplier));
         when(repo.save(editedSupplier)).thenReturn(editedSupplier);
         //WHEN
         SupplierDTO expected = sampleSupplierDTO();
-        expected.setOrderDay(Weekdays.MONDAY);
+        expected.setOrderDay(Weekday.MONDAY);
         //THEN
         assertThat(expected, is(service.editSupplier(mapSupplier(editedSupplier))));
         verify(repo).findById(123L);

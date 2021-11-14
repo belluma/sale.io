@@ -54,4 +54,8 @@ public class ProductService {
         return ProductMapper.mapProductWithDetails(repo
                 .save(ProductMapper.mapProduct(product)));
     }
+
+    public boolean checkIfProductExists(Long id){
+        return repo.existsById(id);
+    }
 }

@@ -77,8 +77,9 @@ class ProductServiceTest {
     void createProductThrowsWhenProductIdAlreadyTaken() {
         //GIVEN
         Product product = sampleProductWithId();
+        ProductDTO nonExistentProduct = mapProductWithDetails(product);
         when(repo.findById(123L)).thenReturn(Optional.of(product));
-        Exception ex = assertThrows(EntityWithThisIdAlreadyExistException.class, () -> service.createProduct(sampleProductDTOWithDetailsWithId()));
+        Exception ex = assertThrows(EntityWithThisIdAlreadyExistException.class, () -> service.createProduct(nonExistentProduct));
         //THEN
         assertThat(ex.getMessage(), is(String.format("Product %s already has the id %d", product.getName(), product.getId())));
         verify(repo).findById(123L);
@@ -104,12 +105,12 @@ class ProductServiceTest {
     @Test
     void editProductThrowsWhenProductNotFound() {
         //GIVEN
-        ProductDTO nonExistantProduct = sampleProductDTOWithDetailsWithId();
+        ProductDTO nonExistentProduct = sampleProductDTOWithDetailsWithId();
         when(repo.findById(123L)).thenReturn(Optional.empty());
         //WHEN
-        Exception ex = assertThrows(EntityNotFoundException.class, () -> service.editProduct(nonExistantProduct));
+        Exception ex = assertThrows(EntityNotFoundException.class, () -> service.editProduct(nonExistentProduct));
         //THEN
-        assertThat(ex.getMessage(), is((String.format("Couldn't find a product with the id %d", nonExistantProduct.getId()))));
+        assertThat(ex.getMessage(), is((String.format("Couldn't find a product with the id %d", nonExistentProduct.getId()))));
         verify(repo).findById(123L);
     }
 }

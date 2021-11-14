@@ -1,5 +1,5 @@
 package capstone.backend.model.enums;
 
-public enum UserRoles {
+public enum UserRole {
     ADMIN
 }

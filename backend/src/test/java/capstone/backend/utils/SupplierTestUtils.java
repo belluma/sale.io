@@ -2,9 +2,10 @@ package capstone.backend.utils;
 
 import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.dto.contact.SupplierDTO;
-import capstone.backend.model.enums.Weekdays;
+import capstone.backend.model.enums.Weekday;
 
 import java.util.List;
+import java.util.Set;
 
 public class SupplierTestUtils {
 
@@ -19,7 +20,7 @@ public class SupplierTestUtils {
                 .picture("img")
                 .products(List.of())
                 .orders(List.of())
-                .orderDay(Weekdays.FRIDAY)
+                .orderDay(Weekday.FRIDAY)
                 .build();
     }
   public static Supplier sampleSupplier(){
@@ -32,8 +33,8 @@ public class SupplierTestUtils {
                 .phone("01234")
                 .picture("img")
                 .products(List.of())
-                .orders(List.of())
-                .orderDay(Weekdays.FRIDAY)
+                .orders(Set.of())
+                .orderDay(Weekday.FRIDAY)
                 .build();
     }
 

@@ -1,6 +1,6 @@
 package capstone.backend.security.model;
 
-import capstone.backend.model.enums.UserRoles;
+import capstone.backend.model.enums.UserRole;
 import capstone.backend.model.db.contact.Contact;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -23,7 +23,7 @@ public class Employee extends Contact {
     private String username;
     private String password;
     @ElementCollection
-    private List<UserRoles> roles;
+    private List<UserRole> roles;
 
     public Employee(String username, String password) {
         this.username = username;

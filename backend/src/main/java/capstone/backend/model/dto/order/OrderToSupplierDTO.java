@@ -1,17 +1,22 @@
 package capstone.backend.model.dto.order;
 
 
+import capstone.backend.model.dto.contact.SupplierDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.With;
 import lombok.experimental.SuperBuilder;
 
+
+@EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
-@NoArgsConstructor
 @AllArgsConstructor
-public class OrderToSupplierDTO {
+@With
+public class OrderToSupplierDTO extends OrderDTO {
 
-    private Long id;
+
+    private SupplierDTO supplier;
 
 }

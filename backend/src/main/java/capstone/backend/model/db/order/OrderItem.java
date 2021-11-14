@@ -1,43 +1,42 @@
 package capstone.backend.model.db.order;
 
-
-
+import capstone.backend.model.db.Product;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
+
 
 @Getter
 @Setter
 @ToString
-@MappedSuperclass
-@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class Order {
+@Builder
+@With
+@Entity
+public class OrderItem {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToMany
-    @ToString.Exclude
-    private List<OrderItem> orderItems;
+    @OneToOne
+    private Product product;
+
+    private int quantity;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Order order = (Order) o;
-        return id != null && Objects.equals(id, order.id);
+        OrderItem that = (OrderItem) o;
+        return id != null && Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(id);
     }
-
-
 }
