@@ -5,6 +5,7 @@ import {MenuItem, TextField} from "@mui/material";
 
 //interface imports
 import {ISelectProps, Option} from "../../../../interfaces/IForms";
+import {inputStyles} from "../styles";
 
 type Props = ISelectProps
 
@@ -16,7 +17,7 @@ function CustomSelect({label, options, model, name, handleChange}: Props){
     }
     return(
         <TextField
-            sx={{width: '.8',}}
+            sx={inputStyles}
             id={`Select ${label}`}
             select
             label={`Select ${label}`}

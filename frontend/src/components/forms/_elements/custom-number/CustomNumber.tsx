@@ -5,6 +5,7 @@ import {InputAdornment, TextField} from "@mui/material";
 //interface imports
 
 import {INumberFieldProps} from "../../../../interfaces/IForms";
+import {inputStyles} from "../styles";
 
 type Props = INumberFieldProps;
 
@@ -23,6 +24,7 @@ function CustomNumber({label, handleChange, name, negative, currency, value}: Pr
             InputLabelProps={{
                 shrink: true,
             }}
+            sx={inputStyles}
             variant="standard"
         />
     )
