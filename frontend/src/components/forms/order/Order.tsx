@@ -67,17 +67,17 @@ function Order(props: Props) {
         <div>
             <Toolbar>
                 <CustomSelect label={'supplier'} value={selectedSupplierId} name={"supplier"} options={supplierOptions}
-                              handleChange={selectSupplier} model="supplier"/>
+                              onChange={selectSupplier} model="supplier"/>
             </Toolbar>
             <h2>Add items to your order</h2>
             <Grid container>
                 <Grid item xs={8}>
                     <CustomSelect label={'product'} value={selectedProductId} name="product" options={productOptions}
-                                  handleChange={selectProduct}
+                                  onChange={selectProduct}
                                   model="product"/>
                 </Grid>
                 <Grid item xs={2}>
-                    <CustomNumber label={'quantity'} value={quantity} name="quantity" handleChange={changeQuantity}
+                    <CustomNumber label={'quantity'} value={quantity} name="quantity" onChange={changeQuantity}
                                   model="order"/></Grid>
                 <Grid item xs={2}>
                     <Button disabled={!validateProduct} onClick={addProduct}>Add</Button>

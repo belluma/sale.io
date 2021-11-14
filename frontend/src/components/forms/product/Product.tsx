@@ -28,7 +28,7 @@ function Product() {
         const selectedSupplier = suppliers.filter(s => s.id === e.target.value);
         dispatch(handleProductFormInput({...productToSave, suppliers: selectedSupplier}))
     }
-    const props = {handleChange: handleChange, model: "product"};
+    const props = {onChange: handleChange, model: "product"};
     const supplierOptions = mapSupplierToSelectData(suppliers);
     return (
         !suppliers.length ? <div>"Please create a supplier first</div> :
@@ -39,7 +39,7 @@ function Product() {
                     </Grid>
                     <Grid item xs={6}>
                         <CustomSelect name="supplier" label={"supplier"} options={supplierOptions}
-                                      handleChange={handleSupplierChange} model={"product"}/>
+                                      onChange={handleSupplierChange} model={"product"}/>
                     </Grid>
                     <Grid item xs={6}><CustomSelect name="category" label={"category"}
                                                     options={[{id: '1', name: `vegetables`}]} {...props}  />

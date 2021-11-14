@@ -17,7 +17,7 @@ function Supplier(){
         const value = e.target.value;
         dispatch(handleSupplierFormInput({...supplierToSave, [e.target.name]: value}));
     };
-    const props = {handleChange: handleChange, model: "supplier"}
+    const props = {onChange: handleChange, model: "supplier"}
     return(
         <div>
             <Contact {...props}/>

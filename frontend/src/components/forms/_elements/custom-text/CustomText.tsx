@@ -9,14 +9,13 @@ import {inputStyles} from "../styles";
 
 type Props = ITextFieldProps;
 
-function CustomText({label, handleChange, model, name}: Props){
+function CustomText({label, model, ...props}: Props){
     return(
         <TextField
             sx={inputStyles}
-            onChange={handleChange}
             id={`${model}-${label}`}
             label={`${model} ${label}`}
-            name={name}
+            {...props}
             helperText={`type the ${label} of the ${model}`}
             variant="standard"
         />

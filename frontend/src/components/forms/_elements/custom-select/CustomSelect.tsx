@@ -9,10 +9,10 @@ import {inputStyles} from "../styles";
 
 type Props = ISelectProps
 
-function CustomSelect({label, options, model, name, handleChange}: Props){
+function CustomSelect({label, options, model, name, onChange}: Props){
     const [selected, setSelected] = useState('')
     const select = (e: React.ChangeEvent<HTMLInputElement>) =>{
-        handleChange(e)
+        onChange(e)
         setSelected(e.target.value)
     }
     return(

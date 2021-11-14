@@ -11,8 +11,8 @@ interface IContactProps extends IFormProps {
 }
 type Props = IContactProps;
 
-function Contact({handleChange, model}: Props){
-    const props = {handleChange: handleChange, model: model}
+function Contact({onChange, model}: Props){
+    const props = {onChange: onChange, model: model}
     return(
         <section>
         <CustomText name="firstName" label={"first name"}  {...props} />
