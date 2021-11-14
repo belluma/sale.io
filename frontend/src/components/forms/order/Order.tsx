@@ -35,6 +35,11 @@ function Order(props: Props) {
     const productOptions = mapProductsToSelectData(products.filter(productsBySupplier, selectedSupplierId));
     const supplierOptions = mapSupplierToSelectData(suppliers);
     useEffect(() => {
+        const {supplier} = orderToSave
+        if (supplier?.id) setSelectedSupplierId(supplier.id)
+    }, []);
+
+    useEffect(() => {
         let product;
         if (selectedProductId) {
             product = products.filter(p => p.id === selectedProductId)[0];
