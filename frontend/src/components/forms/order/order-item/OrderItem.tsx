@@ -1,7 +1,8 @@
 import React from 'react'
 
 //component imports
-import {Grid, Toolbar} from "@mui/material";
+import {Grid, IconButton, Toolbar} from "@mui/material";
+import ClearIcon from "@mui/icons-material/Clear"
 
 //interface imports
 
@@ -19,7 +20,12 @@ function OrderItem({productName, quantity, total}: Props) {
     }
     return (
         <Toolbar>
-            <Grid item xs={7}>{productName}</Grid>
+            <Grid item xs={1}>
+            <IconButton>
+                <ClearIcon/>.
+            </IconButton>
+            </Grid>
+            <Grid item xs={6}>{productName}</Grid>
             <Grid item xs={2}>qty.: {quantity}</Grid>
             <Grid item xs={3}>€ {formatPrice()}</Grid>
         </Toolbar>

@@ -14,6 +14,7 @@ import {IOrderItem} from "../../../interfaces/IOrder";
 import {Button, Grid, Toolbar} from "@mui/material";
 import {getAllSuppliers, selectSuppliers} from "../../../slicer/supplierSlice";
 import {productsBySupplier} from "./helper";
+import Preview from "./preview/Preview";
 
 type Props = {};
 
@@ -58,18 +59,11 @@ function Order(props: Props) {
         setProductToAdd({});
         setQuantity(0);
     }
-    const renderOrderPreview = ({product, quantity: qty}: IOrderItem, index: number) => {
-        if (!product || !qty) return;
-        return <OrderItem key={index} productName={product.name} quantity={qty}
-            //@ts-ignore function returns before getting here in case either of the values is undefined
-                          total={product.purchasePrice * qty}/>
-    }
-    const orderItems = orderToSave && orderToSave.items.map(renderOrderPreview);
     return (
         <div>
             <Toolbar>
                 <CustomSelect label={'supplier'} value={selectedSupplierId} name={"supplier"} options={supplierOptions}
-                              onChange={selectSupplier} model="supplier" required disabled={orderItems.length > 0}/>
+                              onChange={selectSupplier} model="supplier" required disabled={orderToSave.items.length > 0}/>
             </Toolbar>
             <h2>Add items to your order</h2>
             <Grid container>
@@ -85,7 +79,7 @@ function Order(props: Props) {
                     <Button disabled={!validateProduct} onClick={addProduct}>Add</Button>
                 </Grid>
             </Grid>
-            {orderItems}
+          <Preview />
         </div>
     )
 }
