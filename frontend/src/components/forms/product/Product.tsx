@@ -19,6 +19,8 @@ function Product() {
         dispatch(getAllSuppliers())
     }, [dispatch]);
     const productToSave = useAppSelector(selectProductToSave);
+    const {name, purchasePrice, retailPrice, minAmount, maxAmount, unitSize, category} = productToSave;
+    const supplierId = productToSave.suppliers? productToSave.suppliers[0].id : undefined;
     const suppliers = useAppSelector(selectSuppliers);
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -35,27 +37,30 @@ function Product() {
             <div>
                 <Grid container>
                     <Grid item xs={12}>
-                        <CustomText name="name" label={"name"} required {...props} />
+                        <CustomText name="name" label={"name"} required value={name} {...props} />
                     </Grid>
                     <Grid item xs={6}>
-                        <CustomSelect name="supplier" label={"supplier"} options={supplierOptions}
+                        <CustomSelect name="supplier" label={"supplier"} value={supplierId} options={supplierOptions}
                                       onChange={handleSupplierChange} model={"product"} required/>
                     </Grid>
-                    <Grid item xs={6}><CustomSelect name="category" label={"category"}
-                                                    options={[{id: '1', name: `vegetables`}]} {...props}  />
+                    <Grid item xs={6}>
+                        <CustomSelect name="category" label={"category"} value={category}
+                                      options={[{id: '1', name: `vegetables`}]} {...props}  />
                     </Grid>
                     <Grid item xs={6}>
-                        <CustomNumber currency name="purchasePrice" label={"purchase price"}  {...props} required />
-                    </Grid>
-                    <Grid item xs={6}><CustomNumber currency name="retailPrice" label={"retail price"}  {...props} />
+                        <CustomNumber currency name="purchasePrice" label={"purchase price"} value={purchasePrice} {...props} required/>
                     </Grid>
                     <Grid item xs={6}>
-                        <CustomNumber name="minAmount" label={"min amount"}  {...props} />
-                    </Grid>
-                    <Grid item xs={6}><CustomNumber name="maxAmount" label={"max amount"}  {...props} />
+                        <CustomNumber currency name="retailPrice" label={"retail price"} value={retailPrice} {...props} />
                     </Grid>
                     <Grid item xs={6}>
-                        <CustomNumber name={"unitSize"} label={"Unit size"} {...props} required />
+                        <CustomNumber name="minAmount" label={"min amount"} value={minAmount} {...props} />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <CustomNumber name="maxAmount" label={"max amount"} value={maxAmount} {...props} />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <CustomNumber name={"unitSize"} label={"Unit size"} value={unitSize} {...props} required/>
                     </Grid>
                 </Grid>
             </div>
