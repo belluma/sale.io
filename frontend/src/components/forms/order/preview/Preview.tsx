@@ -9,20 +9,15 @@ import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 
 //interface imports
-import {IOrderItem} from "../../../../interfaces/IOrder";
+import {getSubTotal} from "../helper";
 
 type Props = {};
 
 function Preview(props: Props) {
     const order = useAppSelector(selectOrderToSave);
     const {items, supplier} = order;
-    const getSubTotal = ({product, quantity}: IOrderItem) => {
-        return (!product?.purchasePrice || !quantity) ? 0 : product.purchasePrice * quantity;
-    }
-    const list = items.map(({product, quantity}, i) => {
-        const subTotal = getSubTotal({product, quantity})
-        return <OrderItem key={i} productName={product?.name} quantity={quantity} index={i}
-                          total={subTotal}/>
+    const list = items.map((item, i) => {
+        return <OrderItem key={i} item={item} index={i}/>
     })
     const total = items.reduce((sum, {product, quantity}) => {
         const subTotal = getSubTotal({product, quantity})

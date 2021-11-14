@@ -72,8 +72,7 @@ function Order(props: Props) {
                               onChange={selectProduct} model="product" required disabled={!orderToSave.supplier}/>
             </Grid>
             <Grid item xs={2}>
-                <CustomNumber label={'quantity'} value={quantity} name="quantity" onChange={changeQuantity}
-                              model="order" required/>
+                <CustomNumber label={'quantity'} value={quantity} name="quantity" onChange={changeQuantity} required/>
             </Grid>
             <Grid item xs={2}>
                 <Button disabled={!validateProduct} onClick={addProduct}>Add</Button>

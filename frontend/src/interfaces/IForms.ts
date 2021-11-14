@@ -7,7 +7,7 @@ export interface IFormProps {
 interface IFormFieldProps extends IFormProps {
     name: string,
     label: string,
-    model: string,
+    model?: string,
     required?: boolean,
     disabled?: boolean,
 }

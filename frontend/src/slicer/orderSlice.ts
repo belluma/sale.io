@@ -9,7 +9,7 @@ import {
     edit as apiEdit,
     del as apiDelete
 } from '../services/apiService'
-import {IOrder, IOrderItem} from "../interfaces/IOrder";
+import {IEditOrderItem, IOrder, IOrderItem} from "../interfaces/IOrder";
 import {handleError, invalidDataError} from "./helper";
 import {ISupplier} from "../interfaces/ISupplier";
 
@@ -23,14 +23,14 @@ const initialState: IOrdersState = {
     },
 }
 const route = "orders_suppliers";
-export const validateOrder = (order: IOrder):boolean => {
-    if(!order.items.length || !order.supplier) return false;
+export const validateOrder = (order: IOrder): boolean => {
+    if (!order.items.length || !order.supplier) return false;
     return order.items.every(i => {
         return i.product &&
             i.product.id === order.supplier?.id
     });
 }
-const validateBeforeSendingToBackend = ({order}: RootState):boolean => {
+const validateBeforeSendingToBackend = ({order}: RootState): boolean => {
     const {orderToSave} = order;
     return validateOrder(orderToSave);
 }
@@ -97,13 +97,13 @@ export const orderSlice = createSlice({
         chooseCurrentOrder: (state, {payload}: PayloadAction<string>) => {
             state.currentOrder = state.orders.filter(p => p.id === payload)[0];
         },
-        chooseSupplier: ({orderToSave}, {payload}:PayloadAction<ISupplier>) => {
+        chooseSupplier: ({orderToSave}, {payload}: PayloadAction<ISupplier>) => {
             orderToSave.supplier = payload;
         },
         addProductToOrder: ({orderToSave}, {payload}: PayloadAction<IOrderItem>) => {
             const {items} = orderToSave;
             const index = items.map(i => i.product?.id).indexOf(payload.product?.id);
-            if(index >= 0){
+            if (index >= 0) {
                 //@ts-ignore items[index] can't be undefined through line above, quantity can't be undefined through form validation
                 const itemWithNewQty = {...items[index], quantity: items[index].quantity + payload?.quantity}
                 items.splice(index, 1, itemWithNewQty)
@@ -111,7 +111,11 @@ export const orderSlice = createSlice({
             }
             orderToSave.items = [...items, payload]
         },
-        removeOrderItem:({orderToSave}, {payload}:PayloadAction<number>) => {
+        editItemQty: ({orderToSave}, {payload}: PayloadAction<IEditOrderItem>) => {
+            orderToSave.items[payload.index].quantity = payload.quantity;
+        }
+        ,
+        removeOrderItem: ({orderToSave}, {payload}: PayloadAction<number>) => {
             orderToSave.items.splice(payload, 1);
         },
         handleOrderFormInput: (state, {payload}: PayloadAction<IOrder>) => {
@@ -151,7 +155,14 @@ export const orderSlice = createSlice({
     })
 })
 
-export const {chooseCurrentOrder, handleOrderFormInput, addProductToOrder, chooseSupplier, removeOrderItem} = orderSlice.actions;
+export const {
+    chooseCurrentOrder,
+    handleOrderFormInput,
+    addProductToOrder,
+    chooseSupplier,
+    removeOrderItem,
+    editItemQty
+} = orderSlice.actions;
 
 export const selectOrders = (state: RootState) => state.order.orders;
 export const selectCurrentOrder = (state: RootState) => state.order.currentOrder;
