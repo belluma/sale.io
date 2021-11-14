@@ -58,18 +58,18 @@ function Order(props: Props) {
         setProductToAdd({});
         setQuantity(0);
     }
-    const addOrderToList = ({product, quantity}: IOrderItem, index: number) => {
-        if (!product || !quantity) return;
-        return <OrderItem key={index} productName={product.name} quantity={quantity}
+    const renderOrderPreview = ({product, quantity: qty}: IOrderItem, index: number) => {
+        if (!product || !qty) return;
+        return <OrderItem key={index} productName={product.name} quantity={qty}
             //@ts-ignore function returns before getting here in case either of the values is undefined
-                          total={product.purchasePrice * quantity}/>
+                          total={product.purchasePrice * qty}/>
     }
-    const orderItems = orderToSave ? orderToSave.items.map(addOrderToList) : <></>;
+    const orderItems = orderToSave && orderToSave.items.map(renderOrderPreview);
     return (
         <div>
             <Toolbar>
                 <CustomSelect label={'supplier'} value={selectedSupplierId} name={"supplier"} options={supplierOptions}
-                              onChange={selectSupplier} model="supplier" required/>
+                              onChange={selectSupplier} model="supplier" required disabled={orderItems.length > 0}/>
             </Toolbar>
             <h2>Add items to your order</h2>
             <Grid container>
