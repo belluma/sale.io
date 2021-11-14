@@ -11,7 +11,7 @@ function Supplier(){
     const dispatch = useAppDispatch();
     const supplierToSave = useAppSelector(selectSupplierToSave);
     const {firstName, lastName, email, phone, orderDay} = supplierToSave;
-    const contactProps = {firstName, lastName, email, phone, orderDay};
+    const contactProps = {firstName, lastName, email, phone};
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         dispatch(handleSupplierFormInput({...supplierToSave, [e.target.name]: value}));
