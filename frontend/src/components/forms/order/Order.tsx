@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useEffect, useState} from 'react'
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {addProductToOrder, getAllOrders, selectOrderToSave} from "../../../slicer/orderSlice";
+import {addProductToOrder, chooseSupplier, getAllOrders, selectOrderToSave} from "../../../slicer/orderSlice";
 import {getAllProducts, selectProducts} from "../../../slicer/productSlice";
 import {mapProductsToSelectData, mapSupplierToSelectData} from "../helper";
 
@@ -25,12 +25,12 @@ function Order(props: Props) {
         dispatch(getAllOrders());
     }, [dispatch]);
     const orderToSave = useAppSelector(selectOrderToSave);
+    const products = useAppSelector(selectProducts);
+    const suppliers = useAppSelector(selectSuppliers);
     const [productToAdd, setProductToAdd] = useState<IOrderItem>();
     const [selectedProductId, setSelectedProductId] = useState<string>();
     const [selectedSupplierId, setSelectedSupplierId] = useState<string>();
     const [quantity, setQuantity] = useState<number>(0);
-    const products = useAppSelector(selectProducts);
-    const suppliers = useAppSelector(selectSuppliers);
     const productOptions = mapProductsToSelectData(products.filter(productsBySupplier, selectedSupplierId));
     const supplierOptions = mapSupplierToSelectData(suppliers);
     useEffect(() => {
@@ -44,6 +44,8 @@ function Order(props: Props) {
         setSelectedProductId(e.target.value);
     }
     const selectSupplier = (e: ChangeEvent<HTMLInputElement>) => {
+        const supplier = suppliers.find(s => s.id === e.target.value);
+        supplier && dispatch(chooseSupplier(supplier));
         setSelectedSupplierId(e.target.value);
     }
     const changeQuantity = (e: ChangeEvent<HTMLInputElement>) => {
@@ -67,18 +69,18 @@ function Order(props: Props) {
         <div>
             <Toolbar>
                 <CustomSelect label={'supplier'} value={selectedSupplierId} name={"supplier"} options={supplierOptions}
-                              onChange={selectSupplier} model="supplier"/>
+                              onChange={selectSupplier} model="supplier" required/>
             </Toolbar>
             <h2>Add items to your order</h2>
             <Grid container>
                 <Grid item xs={8}>
                     <CustomSelect label={'product'} value={selectedProductId} name="product" options={productOptions}
-                                  onChange={selectProduct}
-                                  model="product"/>
+                                  onChange={selectProduct}model="product" required disabled={!orderToSave.supplier}/>
                 </Grid>
                 <Grid item xs={2}>
                     <CustomNumber label={'quantity'} value={quantity} name="quantity" onChange={changeQuantity}
-                                  model="order"/></Grid>
+                                  model="order" required/>
+                </Grid>
                 <Grid item xs={2}>
                     <Button disabled={!validateProduct} onClick={addProduct}>Add</Button>
                 </Grid>

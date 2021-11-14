@@ -9,7 +9,7 @@ import {inputStyles} from "../styles";
 
 type Props = ISelectProps
 
-function CustomSelect({label, options, model, name, onChange}: Props){
+function CustomSelect({label, options, model, onChange, ...props}: Props){
     const [selected, setSelected] = useState('')
     const select = (e: React.ChangeEvent<HTMLInputElement>) =>{
         onChange(e)
@@ -21,10 +21,10 @@ function CustomSelect({label, options, model, name, onChange}: Props){
             id={`Select ${label}`}
             select
             label={`Select ${label}`}
-            name={name}
             value={selected}
             onChange={select}
             helperText={`Please select the ${model}`}
+            {...props}
         >
             {options.map(({id, name: option}:Option) => (
                 <MenuItem key={id} value={id}>

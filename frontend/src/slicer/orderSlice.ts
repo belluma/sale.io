@@ -11,6 +11,7 @@ import {
 } from '../services/apiService'
 import {IOrder, IOrderItem} from "../interfaces/IOrder";
 import {handleError, invalidDataError} from "./helper";
+import {ISupplier} from "../interfaces/ISupplier";
 
 
 const initialState: IOrdersState = {
@@ -96,6 +97,9 @@ export const orderSlice = createSlice({
         chooseCurrentOrder: (state, {payload}: PayloadAction<string>) => {
             state.currentOrder = state.orders.filter(p => p.id === payload)[0];
         },
+        chooseSupplier: ({orderToSave}, {payload}:PayloadAction<ISupplier>) => {
+            orderToSave.supplier = payload;
+        },
         addProductToOrder: ({orderToSave}, {payload}: PayloadAction<IOrderItem>) => {
             orderToSave.items = [...orderToSave.items, payload]
         },
@@ -136,7 +140,7 @@ export const orderSlice = createSlice({
     })
 })
 
-export const {chooseCurrentOrder, handleOrderFormInput, addProductToOrder} = orderSlice.actions;
+export const {chooseCurrentOrder, handleOrderFormInput, addProductToOrder, chooseSupplier} = orderSlice.actions;
 
 export const selectOrders = (state: RootState) => state.order.orders;
 export const selectCurrentOrder = (state: RootState) => state.order.currentOrder;

@@ -35,17 +35,17 @@ function Product() {
             <div>
                 <Grid container>
                     <Grid item xs={12}>
-                        <CustomText name="name" label={"name"}  {...props} />
+                        <CustomText name="name" label={"name"} required {...props} />
                     </Grid>
                     <Grid item xs={6}>
                         <CustomSelect name="supplier" label={"supplier"} options={supplierOptions}
-                                      onChange={handleSupplierChange} model={"product"}/>
+                                      onChange={handleSupplierChange} model={"product"} required/>
                     </Grid>
                     <Grid item xs={6}><CustomSelect name="category" label={"category"}
                                                     options={[{id: '1', name: `vegetables`}]} {...props}  />
                     </Grid>
                     <Grid item xs={6}>
-                        <CustomNumber currency name="purchasePrice" label={"purchase price"}  {...props} />
+                        <CustomNumber currency name="purchasePrice" label={"purchase price"}  {...props} required />
                     </Grid>
                     <Grid item xs={6}><CustomNumber currency name="retailPrice" label={"retail price"}  {...props} />
                     </Grid>
@@ -55,7 +55,7 @@ function Product() {
                     <Grid item xs={6}><CustomNumber name="maxAmount" label={"max amount"}  {...props} />
                     </Grid>
                     <Grid item xs={6}>
-                        <CustomNumber name={"unitSize"} label={"Unit size"} {...props} />
+                        <CustomNumber name={"unitSize"} label={"Unit size"} {...props} required />
                     </Grid>
                 </Grid>
             </div>
