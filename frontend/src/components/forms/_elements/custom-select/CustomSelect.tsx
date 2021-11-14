@@ -10,11 +10,11 @@ import {inputStyles} from "../styles";
 type Props = ISelectProps
 
 function CustomSelect({label, options, model, onChange,value, ...props}: Props){
-    const [selected, setSelected] = useState(value)
-    const select = (e: React.ChangeEvent<HTMLInputElement>) =>{
-        onChange(e)
-        setSelected(e.target.value)
-    }
+    const [selected, setSelected] = useState(value);
+    const select = (e: React.ChangeEvent<HTMLInputElement>) => {
+        onChange(e);
+        setSelected(e.target.value);
+    };
     return(
         <TextField
             sx={inputStyles}

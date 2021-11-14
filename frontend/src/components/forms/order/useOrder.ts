@@ -11,7 +11,7 @@ export const useOrders = (orderToSave: IOrder, products: IProduct[]) => {
     useEffect(() => {
         const {supplier} = orderToSave
         if (supplier?.id) setSelectedSupplierId(supplier.id)
-    }, []);
+    }, [orderToSave]);
 
     useEffect(() => {
         let product;

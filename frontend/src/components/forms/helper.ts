@@ -12,8 +12,8 @@ export const mapSupplierToSelectData = (supplier:ISupplier[]):Option[] =>{
     });
 }
 export const mapWeekdaysToSelectData = ():Option[] =>{
-    return Object.keys(Weekdays).map((d,i) => {
-        return {id: i.toString(), name: d};
+    return Object.values(Weekdays).map((d,i) => {
+        return {id: d, name: d};
     });
 }
 
