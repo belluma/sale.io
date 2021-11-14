@@ -101,7 +101,15 @@ export const orderSlice = createSlice({
             orderToSave.supplier = payload;
         },
         addProductToOrder: ({orderToSave}, {payload}: PayloadAction<IOrderItem>) => {
-            orderToSave.items = [...orderToSave.items, payload]
+            const {items} = orderToSave;
+            const index = items.map(i => i.product?.id).indexOf(payload.product?.id);
+            if(index >= 0){
+                //@ts-ignore items[index] can't be undefined through line above, quantity can't be undefined through form validation
+                const itemWithNewQty = {...items[index], quantity: items[index].quantity + payload?.quantity}
+                items.splice(index, 1, itemWithNewQty)
+                return
+            }
+            orderToSave.items = [...items, payload]
         },
         handleOrderFormInput: (state, {payload}: PayloadAction<IOrder>) => {
             state.orderToSave = payload;
