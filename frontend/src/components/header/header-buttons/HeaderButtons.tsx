@@ -13,6 +13,7 @@ import Drawer from "../../drawer/Drawer";
 //interface imports
 import {Views} from "../../../interfaces/IThumbnailData";
 import ChangeView from "./change-view/ChangeView";
+import {hideDetails} from "../../../slicer/detailsSlice";
 
 type Props = {
     appBarHeight: number,
@@ -24,14 +25,13 @@ function HeaderButtons({appBarHeight}: Props) {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const toggleDrawer = () => setDrawerOpen(!drawerOpen);
     const history = useHistory()
-
-
     const dispatch = useAppDispatch();
     const loggedIn = useAppSelector(selectLoggedIn);
     const handleLogout = () => dispatch(logout());
     const reroute = (e: React.MouseEvent<HTMLButtonElement>) => {
         //@ts-ignore check happens on buttons
         history.push(Views[e.currentTarget.name])
+        dispatch(hideDetails());
         setDrawerOpen(false);
     }
     const buttons = views.map((view) => <Button key={view} name={view} onClick={reroute}>{view}S</Button>);
