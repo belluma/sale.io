@@ -21,7 +21,7 @@ function Preview(props: Props) {
     }
     const list = items.map(({product, quantity}, i) => {
         const subTotal = getSubTotal({product, quantity})
-        return <OrderItem key={i} productName={product?.name} quantity={quantity}
+        return <OrderItem key={i} productName={product?.name} quantity={quantity} index={i}
                           total={subTotal}/>
     })
     const total = items.reduce((sum, {product, quantity}) => {

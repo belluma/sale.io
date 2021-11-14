@@ -111,6 +111,9 @@ export const orderSlice = createSlice({
             }
             orderToSave.items = [...items, payload]
         },
+        removeOrderItem:({orderToSave}, {payload}:PayloadAction<number>) => {
+            orderToSave.items.splice(payload, 1);
+        },
         handleOrderFormInput: (state, {payload}: PayloadAction<IOrder>) => {
             state.orderToSave = payload;
         },
@@ -148,7 +151,7 @@ export const orderSlice = createSlice({
     })
 })
 
-export const {chooseCurrentOrder, handleOrderFormInput, addProductToOrder, chooseSupplier} = orderSlice.actions;
+export const {chooseCurrentOrder, handleOrderFormInput, addProductToOrder, chooseSupplier, removeOrderItem} = orderSlice.actions;
 
 export const selectOrders = (state: RootState) => state.order.orders;
 export const selectCurrentOrder = (state: RootState) => state.order.currentOrder;
