@@ -15,6 +15,7 @@ import {Button, Grid, Toolbar} from "@mui/material";
 import {getAllSuppliers, selectSuppliers} from "../../../slicer/supplierSlice";
 import {productsBySupplier} from "./helper";
 import Preview from "./preview/Preview";
+import {useOrders} from "./useOrder";
 
 type Props = {};
 
@@ -28,24 +29,18 @@ function Order(props: Props) {
     const orderToSave = useAppSelector(selectOrderToSave);
     const products = useAppSelector(selectProducts);
     const suppliers = useAppSelector(selectSuppliers);
-    const [productToAdd, setProductToAdd] = useState<IOrderItem>();
-    const [selectedProductId, setSelectedProductId] = useState<string>();
-    const [selectedSupplierId, setSelectedSupplierId] = useState<string>();
-    const [quantity, setQuantity] = useState<number>(0);
+    const {
+        productToAdd,
+        setProductToAdd,
+        selectedProductId,
+        setSelectedProductId,
+        selectedSupplierId,
+        setSelectedSupplierId,
+        quantity,
+        setQuantity
+    }= useOrders(orderToSave, products)
     const productOptions = mapProductsToSelectData(products.filter(productsBySupplier, selectedSupplierId));
     const supplierOptions = mapSupplierToSelectData(suppliers);
-    useEffect(() => {
-        const {supplier} = orderToSave
-        if (supplier?.id) setSelectedSupplierId(supplier.id)
-    }, []);
-
-    useEffect(() => {
-        let product;
-        if (selectedProductId) {
-            product = products.filter(p => p.id === selectedProductId)[0];
-        }
-        setProductToAdd({product, quantity})
-    }, [selectedProductId, quantity, products])
     const selectProduct = (e: ChangeEvent<HTMLInputElement>) => {
         setSelectedProductId(e.target.value);
     }
