@@ -1,7 +1,7 @@
 import {Dispatch} from "@reduxjs/toolkit";
-import { IError} from "./errorSlice";
 import {setDetailData, showDetails} from "./detailsSlice";
 import {IDetailsData, Views} from "../interfaces/IThumbnailData";
+import {IError} from "../interfaces/IError";
 
 export const handleError = (status:number, statusText: string, dispatch: Dispatch) => {
     if (status !== 200) {

@@ -1,9 +1,9 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
-import {getErrorMessage} from "./errorSlice";
 import {extractCredentials, getAllEmployees} from "../services/employeeService";
 import {IResponseGetAllEmployees} from "../interfaces/IApiResponse";
 import {IEmployeeState} from '../interfaces/IStates';
+import {handleError} from "./helper";
 
 
 const initialState: IEmployeeState = {
@@ -13,13 +13,11 @@ const initialState: IEmployeeState = {
     pending: false,
 }
 
-export const getEmployees = createAsyncThunk(
+export const getEmployees = createAsyncThunk<IResponseGetAllEmployees, void, { dispatch:Dispatch }>(
     'employees/getAll',
-    async (_, thunkAPI) => {
+    async (_, {dispatch}) => {
         const {data, status, statusText} = await getAllEmployees();
-        if (status !== 200) {
-            thunkAPI.dispatch(getErrorMessage({status, statusText}))
-        }
+        handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
 )
