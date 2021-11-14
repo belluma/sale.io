@@ -1,21 +1,19 @@
-import React, {ChangeEvent, useEffect, useState} from 'react'
+import React, {ChangeEvent, useEffect} from 'react'
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {addProductToOrder, chooseSupplier, getAllOrders, selectOrderToSave} from "../../../slicer/orderSlice";
 import {getAllProducts, selectProducts} from "../../../slicer/productSlice";
 import {mapProductsToSelectData, mapSupplierToSelectData} from "../helper";
-
-//component imports
-import CustomSelect from "../_elements/custom-select/CustomSelect";
-import OrderItem from "./order-item/OrderItem";
-import CustomNumber from "../_elements/custom-number/CustomNumber";
-
-//interface imports
-import {IOrderItem} from "../../../interfaces/IOrder";
-import {Button, Grid, Toolbar} from "@mui/material";
 import {getAllSuppliers, selectSuppliers} from "../../../slicer/supplierSlice";
 import {productsBySupplier} from "./helper";
-import Preview from "./preview/Preview";
 import {useOrders} from "./useOrder";
+//component imports
+import CustomSelect from "../_elements/custom-select/CustomSelect";
+import CustomNumber from "../_elements/custom-number/CustomNumber";
+
+import {Button, Grid, Toolbar} from "@mui/material";
+import Preview from "./preview/Preview";
+
+//interface imports
 
 type Props = {};
 
