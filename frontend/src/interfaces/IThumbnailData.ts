@@ -35,7 +35,7 @@ export interface IThumbnailData extends INewItem {
 }
 
 export interface IDetailsData extends IThumbnailData {
-
+error?:boolean
 }
 
 export const parseEmployeeToThumbnailData = ({firstName, lastName, username, picture}: IEmployee): IDetailsData => {

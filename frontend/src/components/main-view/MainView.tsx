@@ -6,7 +6,6 @@ import {views} from "./helpers";
 import Signup from "../security/signup/Signup";
 import {Container, Grid} from "@mui/material";
 import {Route, Switch} from "react-router";
-import ErrorMessage from "../error-message/ErrorMessage";
 import LoginView from "./views/login-view/LoginView";
 import StartRoute from "./start-route/StartRoute";
 import StartView from "./views/start-view/StartView";
@@ -42,7 +41,6 @@ function MainView(props: Props){
                     <Route path={"/"} exact component={StartRoute} />
                     {protectedRoutes}
                 </Switch>
-                <ErrorMessage/>
             </Grid>
         </Container>
     );

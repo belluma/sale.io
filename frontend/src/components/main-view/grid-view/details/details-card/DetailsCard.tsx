@@ -9,6 +9,7 @@ import Login from "../../../../security/login/Login";
 import {useLocation} from "react-router";
 import {Model} from "../../../../../interfaces/IThumbnailData";
 import FormWrapper from "../../../../forms/_elements/form-wrapper/FormWrapper";
+import ErrorMessage from "../error-message/ErrorMessage";
 
 //interface imports
 
@@ -19,12 +20,12 @@ type Props = {
 
 function DetailsCard({fullScreen, handleClose}: Props){
     const detailsData = useAppSelector(selectDetailsData);
-    const {title, subtitle, picture, alt, model} = detailsData;
+    const {title, subtitle, picture, alt, model, error} = detailsData;
     const path = useLocation().pathname.slice(1);
     const formSelector = Object.values(Model).includes(path as Model) ? path : "none";
     const cardContent = {
         //@ts-ignore check type in ternary statement at declaration of formSelector
-        new: <FormWrapper fullScreen={fullScreen} handleClose={handleClose}model={formSelector}/>,
+        new: <FormWrapper fullScreen={fullScreen} handleClose={handleClose} model={formSelector}/>,
         login: <Login/>,
         employee: (<div/>),
         product: (<div/>),
@@ -43,7 +44,7 @@ order: <div/>
                 alt={alt}
             />}
             <CardContent>
-                {cardContent[model]}
+                {error ? <ErrorMessage statusText={subtitle}/> : cardContent[model]}
             </CardContent>
         </Card>
     )

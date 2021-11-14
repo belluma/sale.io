@@ -4,11 +4,13 @@ import React from 'react'
 
 //interface imports
 
-type Props = {};
+type Props = {
+    statusText?: string,
+};
 
-function ErrorMessage(props: Props){
+function ErrorMessage({statusText}: Props){
     return(
-       <div></div>
+        <div>{statusText}</div>
     )
 }
 

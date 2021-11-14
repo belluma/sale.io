@@ -1,13 +1,13 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {IUserCredentials} from "../interfaces/IEmployee";
 import {RootState} from "../app/store";
-import {getErrorMessage} from "./errorSlice";
 import {registerAdmin as registerAsAdmin, sendLoginData} from "../services/authService";
 import {validateToken} from "../services/jwtService";
 import {IResponseData} from "../interfaces/IApiResponse";
 import {IAuthState} from "../interfaces/IStates";
 import history from "../services/history"
 import {hideDetails} from "./detailsSlice";
+import {handleError} from "./helper";
 
 const initialState: IAuthState = {
     loggedIn: false,
@@ -21,7 +21,7 @@ export const login = createAsyncThunk(
         const {data, status, statusText} = await sendLoginData(credentials);
         dispatch(hideDetails());
         if (status !== 200) {
-            dispatch(getErrorMessage({status, statusText}));
+            handleError(status, statusText, dispatch);
         }
         return {data, status, statusText};
     }
@@ -31,7 +31,7 @@ export const registerAdmin = createAsyncThunk(
     async (credentials: IUserCredentials, {dispatch}) => {
         const {data, status, statusText} = await registerAsAdmin(credentials);
         if (status !== 200) {
-            dispatch(getErrorMessage({status, statusText}));
+            handleError(status, statusText, dispatch);
         }
         return {data, status, statusText};
     }

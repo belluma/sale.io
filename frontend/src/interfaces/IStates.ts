@@ -28,7 +28,8 @@ export const initialDetailsData:IDetailsData = {
     picture: "",
     id: "",
     alt: "",
-    model: Views.NEW
+    model: Views.NEW,
+    error: false
 }
 
 interface IBaseState {
