@@ -5,7 +5,6 @@ import {
     selectSupplierToSave,
     validateSupplier
 } from "../../../../slicer/supplierSlice";
-import {hideDetails} from "../../../../slicer/detailsSlice";
 import {toBeReplaced} from "../../../../slicer/employeeSlice";
 import {createProduct, selectProductToSave, validateProduct} from "../../../../slicer/productSlice";
 import {createOrder, selectOrderToSave, validateOrder} from "../../../../slicer/orderSlice";
@@ -58,7 +57,6 @@ function FormWrapper({model, fullScreen, handleClose}: Props) {
         order: <Order/>,
     };
     const submitSelector = {
-        none: hideDetails,
         employee: toBeReplaced,
         product: createProduct,
         customer: toBeReplaced,
