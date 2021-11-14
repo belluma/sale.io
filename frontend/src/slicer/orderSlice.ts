@@ -27,12 +27,11 @@ export const validateOrder = (order: IOrder): boolean => {
     if (!order.items.length || !order.supplier) return false;
     return order.items.every(i => {
         return i.product &&
-            i.product.id === order.supplier?.id
+            i.product.suppliers?.some(s => s.id === order.supplier?.id)
     });
 }
 const validateBeforeSendingToBackend = ({order}: RootState): boolean => {
-    const {orderToSave} = order;
-    return validateOrder(orderToSave);
+    return validateOrder(order.orderToSave);
 }
 
 

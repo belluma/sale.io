@@ -1,22 +1,19 @@
 import React, {useState} from 'react'
 import {useAppDispatch} from "../../../../app/hooks";
 import {editItemQty, removeOrderItem} from "../../../../slicer/orderSlice";
+import {getSubTotal} from "../helper";
 //component imports
 import {Grid, IconButton, Toolbar} from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear"
 import EditIcon from "@mui/icons-material/Edit"
 import CheckIcon from "@mui/icons-material/Check"
-import {IOrderItem} from "../../../../interfaces/IOrder";
-import {getSubTotal} from "../helper";
 import CustomNumber from "../../_elements/custom-number/CustomNumber";
 
 
 //interface imports
+import {IOrderItem} from "../../../../interfaces/IOrder";
 
 type Props = {
-    productName?: string,
-    quantity?: number,
-    total?: number,
     item: IOrderItem,
     index: number
 };

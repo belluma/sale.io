@@ -29,7 +29,7 @@ export const validateProduct = (product:IProduct):boolean => {
 }
 
 const validateBeforeSendingToBackend = ({product}: RootState) => {
-   return validateProduct
+    return validateProduct(product.productToSave);
 }
 
 
