@@ -59,7 +59,6 @@ export const createOrder = createAsyncThunk<IResponseGetAllOrders, void, { state
     'orders/create',
     async (_, {getState, dispatch}) => {
         if (!validateBeforeSendingToBackend(getState())) {
-//handleError here
             return invalidDataError;
         }
         const token = getState().authentication.token
@@ -72,6 +71,9 @@ export const createOrder = createAsyncThunk<IResponseGetAllOrders, void, { state
 export const editOrder = createAsyncThunk<IResponseGetAllOrders, IOrder, { state: RootState, dispatch: Dispatch }>(
     'orders/edit',
     async (order, {getState, dispatch}) => {
+        if (!validateBeforeSendingToBackend(getState())) {
+            return invalidDataError;
+        }
         const token = getState().authentication.token
         const {data, status, statusText} = await apiEdit(route, token, order);
         handleError(status, statusText, dispatch);
