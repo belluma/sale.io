@@ -6,6 +6,7 @@ import capstone.backend.model.dto.order.OrderToSupplierDTO;
 import java.util.List;
 
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
+import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItemDTO;
 import static capstone.backend.utils.SupplierTestUtils.sampleSupplier;
 import static capstone.backend.utils.SupplierTestUtils.sampleSupplierDTO;
 
@@ -23,7 +24,7 @@ public static OrderToSupplierDTO sampleOrderDTO(){
         return OrderToSupplierDTO
                 .builder()
                 .id(123L)
-                .orderItems(List.of(sampleOrderItem()))
+                .orderItems(List.of(sampleOrderItemDTO()))
                 .supplier(sampleSupplierDTO())
                 .build();
     }

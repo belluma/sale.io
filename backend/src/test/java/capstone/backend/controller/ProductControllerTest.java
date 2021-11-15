@@ -1,18 +1,20 @@
 package capstone.backend.controller;
 
-import capstone.backend.exception.GlobalExceptionHandler;
 import capstone.backend.mapper.ProductMapper;
 import capstone.backend.model.db.Product;
+import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.repo.ProductRepo;
+import capstone.backend.repo.SupplierRepo;
 import capstone.backend.utils.ControllerTestUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -23,7 +25,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
+import static capstone.backend.mapper.SupplierMapper.mapSupplier;
 import static capstone.backend.utils.ProductTestUtils.*;
+import static capstone.backend.utils.SupplierTestUtils.sampleSupplier;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,17 +41,16 @@ class ProductControllerTest {
     @Autowired
     ProductController controller;
     @Autowired
-    GlobalExceptionHandler exceptionHandler;
+    ProductRepo productRepo;
     @Autowired
-    ProductRepo repo;
+    SupplierRepo supplierRepo;
     @Autowired
     TestRestTemplate restTemplate;
-    @Autowired
-    PasswordEncoder passwordEncoder;
     @Autowired
     ProductMapper mapper;
     @Autowired
     ControllerTestUtils utils;
+
     String BASEURL = "/api/products";
 
     @Container
@@ -64,8 +67,8 @@ class ProductControllerTest {
     }
 
     @BeforeEach
-    public void clearDB() {
-        repo.deleteAll();
+    void clearDB() {
+        productRepo.deleteAll();
     }
 
     @Test
@@ -76,7 +79,7 @@ class ProductControllerTest {
 
     @Test
     void getAllProductsWithDetails() {
-        Product product = repo.save(sampleProduct());
+        Product product = productRepo.save(sampleProduct());
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<ProductDTO[]> response = restTemplate.exchange(BASEURL, HttpMethod.GET, new HttpEntity<>(headers), ProductDTO[].class);
@@ -89,7 +92,7 @@ class ProductControllerTest {
     @Test
     void getProductDetails() {
         //GIVEN
-        Product product = repo.save(sampleProduct());
+        Product product = productRepo.save(sampleProduct());
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/" + product.getId(), HttpMethod.GET, new HttpEntity<>(headers), ProductDTO.class);
@@ -111,19 +114,21 @@ class ProductControllerTest {
     @Test
     void createProduct() {
         //GIVEN
+        Supplier supplier = supplierRepo.save(sampleSupplier());
         ProductDTO product = sampleProductDTOWithDetailsWithId();
+        product.setSuppliers(List.of(mapSupplier(supplier)));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(product, headers), ProductDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(repo.findAll().size(), is(1));
+        assertThat(productRepo.findAll().size(), is(1));
     }
 
     @Test
     void editProduct() {
         //GIVEN
-        Product product = repo.save(sampleProduct());
+        Product product = productRepo.save(sampleProduct());
         ProductDTO productToEdit = mapProductWithDetails(product);
         productToEdit.setRetailPrice(99.99F);
         HttpHeaders headers = utils.createHeadersWithJwtAuth();

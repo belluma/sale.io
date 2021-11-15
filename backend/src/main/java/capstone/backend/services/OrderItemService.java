@@ -2,7 +2,6 @@ package capstone.backend.services;
 
 import capstone.backend.exception.model.EntityNotFoundException;
 import capstone.backend.mapper.OrderItemMapper;
-import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.repo.OrderItemRepo;
 import org.springframework.stereotype.Service;
@@ -34,9 +33,9 @@ public class OrderItemService {
                 .map(OrderItemMapper::mapOrderItem)
                 .orElseThrow(() -> new EntityNotFoundException("Something went wrong while retrieving your data!"));
     }
-    public OrderItemDTO addOrderQuantity(OrderItemDTO orderQuantity) {
+    public OrderItemDTO addOrderItem(OrderItemDTO orderItem) {
 
-        return mapOrderItem(repo.save(mapOrderItem(orderQuantity)));
+        return mapOrderItem(repo.save(mapOrderItem(orderItem)));
     }
 
 }

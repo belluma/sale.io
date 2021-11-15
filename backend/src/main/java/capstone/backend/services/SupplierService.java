@@ -54,6 +54,9 @@ public class SupplierService {
                 .save(SupplierMapper.mapSupplier(supplier)));
     }
 
+    public boolean checkIfSupplierExists(Long id) {
+        return repo.existsById(id);
+    }
 }
 
 

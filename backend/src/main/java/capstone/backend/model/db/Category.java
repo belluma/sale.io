@@ -18,7 +18,7 @@ public class Category  {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
     private List<Product> products;
 

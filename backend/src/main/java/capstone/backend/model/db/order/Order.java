@@ -22,7 +22,7 @@ public abstract class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
     private List<OrderItem> orderItems;
 

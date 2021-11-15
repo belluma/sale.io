@@ -5,6 +5,9 @@ import capstone.backend.model.dto.ProductDTO;
 
 import java.util.List;
 
+import static capstone.backend.utils.SupplierTestUtils.sampleSupplier;
+import static capstone.backend.utils.SupplierTestUtils.sampleSupplierDTO;
+
 public class ProductTestUtils {
 
     public static ProductDTO sampleProductDTOWithDetailsWithId() {
@@ -19,7 +22,7 @@ public class ProductTestUtils {
                 .minAmount(5)
                 .maxAmount(20)
                 .unitSize(5)
-                .suppliers(List.of())
+                .suppliers(List.of(sampleSupplierDTO()))
                 .build();
     }
   public static Product sampleProductWithId() {
@@ -34,7 +37,7 @@ public class ProductTestUtils {
                 .minAmount(5)
                 .maxAmount(20)
                 .unitSize(5)
-                .suppliers(List.of())
+                .suppliers(List.of(sampleSupplier()))
                 .build();
     }
 public static ProductDTO sampleProductDTOWithDetails() {

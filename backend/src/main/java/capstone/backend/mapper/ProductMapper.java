@@ -28,7 +28,7 @@ public class ProductMapper {
                 .minAmount(product.getMinAmount())
                 .maxAmount(product.getMaxAmount())
                 .unitSize(product.getUnitSize())
-                .suppliers(mapProductList(product))
+                .suppliers(mapSupplierList(product))
                 .build();
     }
 
@@ -44,11 +44,11 @@ public class ProductMapper {
                 .minAmount(product.getMinAmount())
                 .maxAmount(product.getMaxAmount())
                 .unitSize(product.getUnitSize())
-                .suppliers(mapProductList(product))
+                .suppliers(mapSupplierList(product))
                 .build();
     }
 
-    private static List<Supplier> mapProductList(ProductDTO product) {
+    private static List<Supplier> mapSupplierList(ProductDTO product) {
         if (product.getSuppliers() == null) return List.of();
         return product
                 .getSuppliers()
@@ -57,7 +57,7 @@ public class ProductMapper {
                 .toList();
     }
 
-    private static List<SupplierDTO> mapProductList(Product product) {
+    private static List<SupplierDTO> mapSupplierList(Product product) {
         if (product.getSuppliers() == null) return List.of();
         return product
                 .getSuppliers()

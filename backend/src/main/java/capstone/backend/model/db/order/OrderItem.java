@@ -18,11 +18,17 @@ import java.util.Objects;
 @Entity
 public class OrderItem {
 
+    public OrderItem(Product product,int quantity ){
+        this.product = product;
+        this.quantity = quantity;
+    }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
     private Product product;
 
     private int quantity;
