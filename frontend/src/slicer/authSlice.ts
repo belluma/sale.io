@@ -7,7 +7,7 @@ import {IResponseData} from "../interfaces/IApiResponse";
 import {IAuthState} from "../interfaces/IStates";
 import history from "../services/history"
 import {hideDetails} from "./detailsSlice";
-import {handleError} from "./helper";
+import {handleError} from "./errorHelper";
 
 const initialState: IAuthState = {
     loggedIn: false,

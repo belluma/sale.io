@@ -3,7 +3,7 @@ import {RootState} from '../app/store';
 import {extractCredentials, getAllEmployees} from "../services/employeeService";
 import {IResponseGetAllEmployees} from "../interfaces/IApiResponse";
 import {IEmployeeState} from '../interfaces/IStates';
-import {handleError} from "./helper";
+import {handleError} from "./errorHelper";
 
 
 const initialState: IEmployeeState = {

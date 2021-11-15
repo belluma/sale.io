@@ -10,7 +10,7 @@ import {
     del as apiDelete
 } from '../services/apiService'
 import {IProduct} from "../interfaces/IProduct";
-import {handleError, invalidDataError} from "./helper";
+import {handleError, invalidDataError} from "./errorHelper";
 import {hideDetails} from "./detailsSlice";
 
 

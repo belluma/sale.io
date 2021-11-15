@@ -16,7 +16,7 @@ import Suppliers from "./views/suppliers/Suppliers";
 import Customers from "./views/customers/Customers";
 import Orders from "./views/orders/Orders";
 //interface imports
-import {Views} from "../../interfaces/IThumbnailData";
+import {Model, Views} from "../../interfaces/IThumbnailData";
 
 type Props = {};
 
@@ -30,7 +30,7 @@ function MainView(props: Props){
         CUSTOMER: Customers,
         ORDER: Orders
     };
-    const protectedRoutes = views.map((view) => <ProtectedRoute key={view} path={`/${Views[view]}`} component={protectedViews[view]} />)
+    const protectedRoutes = views.map((view) => <ProtectedRoute key={view} path={`/${Model[view]}`} component={protectedViews[view]} />)
     return (
         <Container sx={{pt: 15}} maxWidth={false}>
             <Grid container justifyContent="center" alignItems="center">

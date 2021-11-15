@@ -15,12 +15,12 @@ import ErrorMessage from "../error-message/ErrorMessage";
 
 type Props = {
     fullScreen: boolean,
-    handleClose:()=>void
+    handleClose: () => void
 };
 
-function DetailsCard({fullScreen, handleClose}: Props){
+function DetailsCard({fullScreen, handleClose}: Props) {
     const detailsData = useAppSelector(selectDetailsData);
-    const {title, subtitle, picture, alt, model, error} = detailsData;
+    const {title, subtitle, picture, alt, model} = detailsData;
     const path = useLocation().pathname.slice(1);
     const formSelector = Object.values(Model).includes(path as Model) ? path : "none";
     const cardContent = {
@@ -31,10 +31,11 @@ function DetailsCard({fullScreen, handleClose}: Props){
         product: (<div/>),
         customer: (<div/>),
         supplier: (<div/>),
-order: <div/>
+        order: <div/>,
+        error: <ErrorMessage statusText={subtitle}/>,
     }
-    return(
-        <Card sx={{width:{ sm: .99}, justifyContent: "center"}} >
+    return (
+        <Card sx={{width: {sm: .99}, justifyContent: "center"}}>
             <CardHeader title={title} subtitle={subtitle} align="center"/>
             <Divider/>
             {model !== "new" && <CardMedia
@@ -44,7 +45,7 @@ order: <div/>
                 alt={alt}
             />}
             <CardContent>
-                {error ? <ErrorMessage statusText={subtitle}/> : cardContent[model]}
+                {cardContent[model]}
             </CardContent>
         </Card>
     )

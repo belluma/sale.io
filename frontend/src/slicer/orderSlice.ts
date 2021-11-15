@@ -10,7 +10,7 @@ import {
     del as apiDelete
 } from '../services/apiService'
 import {IEditOrderItem, IOrder, IOrderItem} from "../interfaces/IOrder";
-import {handleError, invalidDataError} from "./helper";
+import {handleError, invalidDataError} from "./errorHelper";
 import {ISupplier} from "../interfaces/ISupplier";
 
 

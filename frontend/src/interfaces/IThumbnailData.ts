@@ -11,10 +11,10 @@ export enum Model {
 }
 
 
-
-export enum Views  {
+export enum Views {
     NEW = "new",
     LOGIN = "login",
+    ERROR = "error",
     EMPLOYEE = "employee",
     PRODUCT = "product",
     CUSTOMER = "customer",
@@ -35,7 +35,6 @@ export interface IThumbnailData extends INewItem {
 }
 
 export interface IDetailsData extends IThumbnailData {
-error?:boolean
 }
 
 export const parseEmployeeToThumbnailData = ({firstName, lastName, username, picture}: IEmployee): IDetailsData => {
@@ -45,7 +44,6 @@ export const parseEmployeeToThumbnailData = ({firstName, lastName, username, pic
         id: username,
         alt: "profile picture",
         model: Views.LOGIN
-
     }
 }
 export const parseSupplierToThumbnailData = ({firstName, lastName, id, picture}: ISupplier): IDetailsData => {
@@ -55,22 +53,9 @@ export const parseSupplierToThumbnailData = ({firstName, lastName, id, picture}:
         id: id,
         alt: "profile picture",
         model: Views.SUPPLIER
-
     }
 }
-export const parseProductToThumbnailData = ({
-                                                id,
-                                                name,
-                                                suppliers,
-                                                stockCodeSupplier,
-                                                category,
-                                                picture,
-                                                purchasePrice,
-                                                retailPrice,
-                                                minAmount,
-                                                maxAmount,
-                                                unitSize
-                                            }: IProduct): IDetailsData => {
+export const parseProductToThumbnailData = ({id, name, picture,}: IProduct): IDetailsData => {
     return {
         title: name,
         picture: picture,

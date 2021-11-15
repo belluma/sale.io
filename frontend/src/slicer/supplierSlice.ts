@@ -10,7 +10,7 @@ import {
     del as apiDelete
 } from '../services/apiService'
 import {ISupplier} from "../interfaces/ISupplier";
-import {handleError, invalidDataError} from './helper';
+import {handleError, invalidDataError} from './errorHelper';
 
 
 const initialState: ISuppliersState = {
