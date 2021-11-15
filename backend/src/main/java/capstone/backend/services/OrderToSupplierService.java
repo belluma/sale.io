@@ -73,7 +73,7 @@ public class OrderToSupplierService {
         if (!checkIfProductsExistent(order)) {
             throw new IllegalArgumentException("You tried to order a product that doesn't exist!");
         }
-        if (repo.findById(order.getId()).isPresent()) {
+        if (order.getId() != null && repo.findById(order.getId()).isPresent()) {
             throw new EntityWithThisIdAlreadyExistException("An Order with this id already exists!");
         }
         if (!supplierService.checkIfSupplierExists(order.getSupplier().getId())) {
