@@ -62,7 +62,7 @@ function Order(props: Props) {
             <Grid item xs={12}>
                 <CustomSelect label={'supplier'} value={selectedSupplierId} name={"supplier"} options={supplierOptions}
                               onChange={selectSupplier} model="supplier" required
-                              disabled={orderToSave.items.length > 0}/>
+                              disabled={orderToSave.orderItems.length > 0}/>
             </Grid>
             <Grid item xs={12}>
                 <h2>Add items to your order</h2>

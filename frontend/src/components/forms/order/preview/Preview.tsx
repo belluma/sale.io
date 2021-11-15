@@ -15,11 +15,11 @@ type Props = {};
 
 function Preview(props: Props) {
     const order = useAppSelector(selectOrderToSave);
-    const {items, supplier} = order;
-    const list = items.map((item, i) => {
+    const {orderItems, supplier} = order;
+    const list = orderItems.map((item, i) => {
         return <OrderItem key={i} item={item} index={i}/>
     })
-    const total = items.reduce((sum, {product, quantity}) => {
+    const total = orderItems.reduce((sum, {product, quantity}) => {
         const subTotal = getSubTotal({product, quantity})
         return sum + Math.ceil(subTotal * 100) / 100;
     }, 0)

@@ -19,13 +19,13 @@ const initialState: IOrdersState = {
     currentOrder: undefined,
     pending: false,
     orderToSave: {
-        items: []
+        orderItems: []
     },
 }
 const route = "orders_suppliers";
 export const validateOrder = (order: IOrder): boolean => {
-    if (!order.items.length || !order.supplier) return false;
-    return order.items.every(i => {
+    if (!order.orderItems.length || !order.supplier) return false;
+    return order.orderItems.every(i => {
         return i.product &&
             i.product.suppliers?.some(s => s.id === order.supplier?.id)
     });
@@ -102,22 +102,22 @@ export const orderSlice = createSlice({
             orderToSave.supplier = payload;
         },
         addProductToOrder: ({orderToSave}, {payload}: PayloadAction<IOrderItem>) => {
-            const {items} = orderToSave;
-            const index = items.map(i => i.product?.id).indexOf(payload.product?.id);
+            const {orderItems} = orderToSave;
+            const index = orderItems.map(i => i.product?.id).indexOf(payload.product?.id);
             if (index >= 0) {
-                //@ts-ignore items[index] can't be undefined through line above, quantity can't be undefined through form validation
-                const itemWithNewQty = {...items[index], quantity: items[index].quantity + payload?.quantity}
-                items.splice(index, 1, itemWithNewQty)
+                //@ts-ignore orderItems[index] can't be undefined through line above, quantity can't be undefined through form validation
+                const itemWithNewQty = {...orderItems[index], quantity: orderItems[index].quantity + payload?.quantity}
+                orderItems.splice(index, 1, itemWithNewQty)
                 return
             }
-            orderToSave.items = [...items, payload]
+            orderToSave.orderItems = [...orderItems, payload]
         },
         editItemQty: ({orderToSave}, {payload}: PayloadAction<IEditOrderItem>) => {
-            orderToSave.items[payload.index].quantity = payload.quantity;
+            orderToSave.orderItems[payload.index].quantity = payload.quantity;
         }
         ,
         removeOrderItem: ({orderToSave}, {payload}: PayloadAction<number>) => {
-            orderToSave.items.splice(payload, 1);
+            orderToSave.orderItems.splice(payload, 1);
         },
         handleOrderFormInput: (state, {payload}: PayloadAction<IOrder>) => {
             state.orderToSave = payload;
