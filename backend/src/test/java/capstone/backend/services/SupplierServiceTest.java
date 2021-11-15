@@ -78,8 +78,9 @@ class SupplierServiceTest {
     void createSupplierThrowsWhenProductIdAlreadyTaken() {
         //GIVEN
         Supplier supplier = sampleSupplier();
+        SupplierDTO supplierThatAlreadyExists = sampleSupplierDTO();
         when(repo.findById(123L)).thenReturn(Optional.of(supplier));
-        Exception ex = assertThrows(EntityWithThisIdAlreadyExistException.class, () -> service.createSupplier(sampleSupplierDTO()));
+        Exception ex = assertThrows(EntityWithThisIdAlreadyExistException.class, () -> service.createSupplier(supplierThatAlreadyExists));
         //THEN
         assertThat(ex.getMessage(), is(String.format("Supplier %s already has the id %d", supplier.getFirstName(), supplier.getId())));
         verify(repo).findById(123L);
@@ -107,8 +108,9 @@ class SupplierServiceTest {
     void editSupplierThrowsWhenProductNonExistent() {
         //GIVEN
         Supplier supplier = sampleSupplier();
+        SupplierDTO supplierThatDoesNotCarryProduct = sampleSupplierDTO();
         when(repo.findById(123L)).thenReturn(Optional.empty());
-        Exception ex = assertThrows(EntityNotFoundException.class, () -> service.editSupplier(sampleSupplierDTO()));
+        Exception ex = assertThrows(EntityNotFoundException.class, () -> service.editSupplier(supplierThatDoesNotCarryProduct));
         //THEN
         assertThat(ex.getMessage(), is(String.format("Couldn't find a supplier with the id %d", supplier.getId())));
         verify(repo).findById(123L);
