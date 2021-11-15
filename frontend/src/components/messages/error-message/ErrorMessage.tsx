@@ -1,6 +1,6 @@
 import React from 'react'
-import {useAppDispatch} from "../../../../../app/hooks";
-import {hideDetails} from "../../../../../slicer/detailsSlice";
+import {useAppDispatch} from "../../../app/hooks";
+import {hideDetails} from "../../../slicer/detailsSlice";
 
 //component imports
 import {Button, Typography} from "@mui/material";

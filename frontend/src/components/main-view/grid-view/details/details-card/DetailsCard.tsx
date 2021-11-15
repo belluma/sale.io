@@ -8,7 +8,7 @@ import {useLocation} from "react-router";
 import {Card, CardContent, CardHeader, CardMedia, Divider} from "@mui/material";
 import Login from "../security/login/Login";
 import FormWrapper from "../../../../forms/_elements/form-wrapper/FormWrapper";
-import ErrorMessage from "../error-message/ErrorMessage";
+import ErrorMessage from "../../../../messages/error-message/ErrorMessage";
 //interface imports
 
 import {Model} from "../../../../../interfaces/IThumbnailData";

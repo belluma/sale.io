@@ -15,7 +15,7 @@ import Products from "./views/products/Products";
 import Suppliers from "./views/suppliers/Suppliers";
 import Customers from "./views/customers/Customers";
 import Orders from "./views/orders/Orders";
-import Pending from "./grid-view/details/pending/Pending";
+import Pending from "../messages/pending/Pending";
 //interface imports
 import {Model} from "../../interfaces/IThumbnailData";
 
