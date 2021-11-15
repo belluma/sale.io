@@ -9,7 +9,7 @@ import {
     edit as apiEdit,
     del as apiDelete
 } from '../services/apiService'
-import {IProduct} from "../interfaces/IProduct";
+import {emptyProduct, IProduct} from "../interfaces/IProduct";
 import {handleError, invalidDataError} from "./errorHelper";
 import {hideDetails} from "./detailsSlice";
 
@@ -18,14 +18,14 @@ const initialState: IProductsState = {
     products: [],
     currentProduct: undefined,
     pending: false,
-    productToSave: {},
+    productToSave: emptyProduct,
 }
 const route = "products";
 
 export const validateProduct = (product:IProduct):boolean => {
     const necessaryValues = ['name', 'suppliers', 'purchasePrice', 'unitSize']
-    const setValues = Object.keys(product)
-    return necessaryValues.every(v => setValues.indexOf(v) >= 0);
+    //@ts-ignore values defined in line above must be keys of IProduct
+    return necessaryValues.every(v => !!product[v])
 }
 
 const validateBeforeSendingToBackend = ({product}: RootState) => {
