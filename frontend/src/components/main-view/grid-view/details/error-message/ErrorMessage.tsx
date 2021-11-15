@@ -14,7 +14,7 @@ type Props = {
 function ErrorMessage({statusText}: Props) {
     const dispatch = useAppDispatch();
     return (
-        <div>
+        <div style={{maxWidth: 400}}>
             <Typography variant="h3" component="h3" gutterBottom align='center'>  {statusText}</Typography>
             <Button color={"error"} fullWidth variant="contained" onClick={() => dispatch(hideDetails())}>Close</Button>
         </div>
