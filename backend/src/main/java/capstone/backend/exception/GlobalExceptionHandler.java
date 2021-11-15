@@ -41,7 +41,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({Throwable.class})
     public ResponseEntity<Object> handleAllTheRest(Exception ex) {
-        CustomError message = new CustomError(ex);
+        CustomError message = new CustomError(ex, "An unexcpected Error occured");
         return new ResponseEntity<>(message, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 }
