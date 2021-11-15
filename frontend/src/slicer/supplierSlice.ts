@@ -9,21 +9,20 @@ import {
     edit as apiEdit,
     del as apiDelete
 } from '../services/apiService'
-import {ISupplier} from "../interfaces/ISupplier";
+import {emptySupplier, ISupplier} from "../interfaces/ISupplier";
 import {handleError, invalidDataError} from './errorHelper';
 
 
 const initialState: ISuppliersState = {
     suppliers: [],
     currentSupplier: undefined,
-    supplierToSave: {},
+    supplierToSave: emptySupplier,
     pending: false,
 }
 const route = "suppliers";
 export const validateSupplier = (supplier: ISupplier): boolean => {
-    const supplierKeys = Object.keys(supplier);
-    const name = supplierKeys.includes("firstName") || supplierKeys.includes("lastName");
-    const contact = supplierKeys.includes("email") || supplierKeys.includes("phone");
+    const name = !!supplier.firstName?.length || !!supplier.lastName?.length;
+    const contact = !!supplier.email?.length || !!supplier.phone?.length;
     return name && contact;
 }
 const validateBeforeSendingToBackend = ({supplier}: RootState): boolean => {
