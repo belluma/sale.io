@@ -35,7 +35,7 @@ function DetailsCard({fullScreen, handleClose}: Props) {
         error: <ErrorMessage statusText={subtitle}/>,
     }
     return (
-        <Card sx={{width: {sm: .99}, justifyContent: "center"}}>
+        <Card sx={{width: {sm: .99}, height:{sm:0.5}}}>
             <CardHeader title={title} subtitle={subtitle} align="center"/>
             <Divider/>
             {model !== "new" && <CardMedia

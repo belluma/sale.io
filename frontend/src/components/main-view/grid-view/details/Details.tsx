@@ -35,7 +35,7 @@ function Details(props: Props) {
     return (
         <Dialog fullScreen={fullScreen} open={showDetails} onClose={handleClose} >
             <DialogContent dividers={scroll === 'paper'} sx={{padding:0, display:'flex', alignItems:alignItems}}>
-                <div ref={descriptionElementRef}>
+                <div ref={descriptionElementRef} style={{margin:"auto"}}>
                     <DetailsCard fullScreen={fullScreen} handleClose={handleClose}/>
                 </div>
             </DialogContent>
