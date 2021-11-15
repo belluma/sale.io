@@ -163,7 +163,7 @@ export const {
 export const selectOrders = (state: RootState) => state.order.orders;
 export const selectCurrentOrder = (state: RootState) => state.order.currentOrder;
 export const selectOrderToSave = (state: RootState) => state.order.orderToSave;
-export const selectPending = (state: RootState) => state.order.pending;
+export const selectOrderPending = (state: RootState) => state.order.pending;
 
 
 export default orderSlice.reducer;

@@ -15,6 +15,7 @@ import Products from "./views/products/Products";
 import Suppliers from "./views/suppliers/Suppliers";
 import Customers from "./views/customers/Customers";
 import Orders from "./views/orders/Orders";
+import Pending from "./grid-view/details/pending/Pending";
 //interface imports
 import {Model} from "../../interfaces/IThumbnailData";
 
@@ -33,6 +34,7 @@ function MainView(props: Props){
     const protectedRoutes = views.map((view) => <ProtectedRoute key={view} path={`/${Model[view]}`} component={protectedViews[view]} />)
     return (
         <Container sx={{pt: 15}} maxWidth={false}>
+            <Pending />
             <Grid container justifyContent="center" alignItems="center">
                 <Switch>
                     <Route path={"/login"} component={LoginView}/>

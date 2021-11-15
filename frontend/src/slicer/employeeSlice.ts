@@ -54,6 +54,6 @@ export const {chooseCurrentEmployee, toBeReplaced} = employeeSlice.actions;
 export const selectEmployees = (state: RootState) => state.employee.employees;
 export const selectCurrentEmployee = (state: RootState) => state.employee.currentEmployee;
 export const selectCurrentEmployeeCredentials = (state: RootState) => state.employee.currentEmployeeCredentials;
-export const selectPending = (state: RootState) => state.employee.pending;
+export const selectEmployeePending = (state: RootState) => state.employee.pending;
 
 export default employeeSlice.reducer;

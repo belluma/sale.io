@@ -128,7 +128,7 @@ export const {chooseCurrentSupplier, handleSupplierFormInput} = supplierSlice.ac
 export const selectSuppliers = (state: RootState) => state.supplier.suppliers;
 export const selectCurrentSupplier = (state: RootState) => state.supplier.currentSupplier;
 export const selectSupplierToSave = (state: RootState) => state.supplier.supplierToSave;
-export const selectPending = (state: RootState) => state.supplier.pending;
+export const selectSupplierPending = (state: RootState) => state.supplier.pending;
 
 
 export default supplierSlice.reducer;

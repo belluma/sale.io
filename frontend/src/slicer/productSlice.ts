@@ -134,7 +134,7 @@ export const {chooseCurrentProduct, handleProductFormInput} = productSlice.actio
 export const selectProducts = (state: RootState) => state.product.products;
 export const selectCurrentProduct = (state: RootState) => state.product.currentProduct;
 export const selectProductToSave = (state: RootState) => state.product.productToSave;
-export const selectPending = (state: RootState) => state.product.pending;
+export const selectProductPending = (state: RootState) => state.product.pending;
 
 
 export default productSlice.reducer;
