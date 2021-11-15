@@ -16,8 +16,8 @@ import {setPending, stopPendingAndHandleError} from "./helper";
 
 const initialState: ISuppliersState = {
     suppliers: [],
-    currentSupplier: undefined,
-    supplierToSave: emptySupplier,
+    current: undefined,
+    toSave: emptySupplier,
     pending: false,
 }
 const route = "suppliers";
@@ -27,7 +27,7 @@ export const validateSupplier = (supplier: ISupplier): boolean => {
     return name && contact;
 }
 const validateBeforeSendingToBackend = ({supplier}: RootState): boolean => {
-    return validateSupplier(supplier.supplierToSave);
+    return validateSupplier(supplier.toSave);
 }
 
 export const getAllSuppliers = createAsyncThunk<IResponseGetAllSuppliers, void, { state: RootState, dispatch: Dispatch }>(
@@ -57,7 +57,7 @@ export const createSupplier = createAsyncThunk<IResponseGetOneSupplier, void, { 
             return invalidDataError;
         }
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiCreate(route, token, getState().supplier.supplierToSave);
+        const {data, status, statusText} = await apiCreate(route, token, getState().supplier.toSave);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
@@ -91,10 +91,10 @@ export const supplierSlice = createSlice({
     initialState,
     reducers: {
         chooseCurrentSupplier: (state: ISuppliersState, action: PayloadAction<string>) => {
-            state.currentSupplier = state.suppliers.filter(p => p.id === action.payload)[0];
+            state.current = state.suppliers.filter(p => p.id === action.payload)[0];
         },
         handleSupplierFormInput: (state, {payload}: PayloadAction<ISupplier>) => {
-            state.supplierToSave = payload;
+            state.toSave = payload;
         },
     },
     extraReducers: (builder => {
@@ -105,20 +105,20 @@ export const supplierSlice = createSlice({
             .addCase(editSupplier.pending, setPending)
             .addCase(deleteSupplier.pending, setPending)
             .addCase(getAllSuppliers.fulfilled, (state: ISuppliersState, action: PayloadAction<IResponseGetAllSuppliers>) => {
-                if (stopPendingAndHandleError(state, action)) return;
+                if (stopPendingAndHandleError(state, action, emptySupplier)) return;
                 state.suppliers = action.payload.data;
             })
             .addCase(getOneSupplier.fulfilled, (state: ISuppliersState, action: PayloadAction<IResponseGetOneSupplier>) => {
-                stopPendingAndHandleError(state, action);
+                stopPendingAndHandleError(state, action, emptySupplier);
             })
             .addCase(createSupplier.fulfilled, (state: ISuppliersState, action: PayloadAction<IResponseGetOneSupplier>) => {
-                stopPendingAndHandleError(state, action);
+                stopPendingAndHandleError(state, action, emptySupplier);
             })
             .addCase(editSupplier.fulfilled, (state: ISuppliersState, action: PayloadAction<IResponseGetOneSupplier>) => {
-                stopPendingAndHandleError(state, action);
+                stopPendingAndHandleError(state, action, emptySupplier);
             })
             .addCase(deleteSupplier.fulfilled, (state: ISuppliersState, action: PayloadAction<IResponseGetOneSupplier>) => {
-                stopPendingAndHandleError(state, action);
+                stopPendingAndHandleError(state, action, emptySupplier);
             })
     })
 })
@@ -126,8 +126,8 @@ export const supplierSlice = createSlice({
 export const {chooseCurrentSupplier, handleSupplierFormInput} = supplierSlice.actions;
 
 export const selectSuppliers = (state: RootState) => state.supplier.suppliers;
-export const selectCurrentSupplier = (state: RootState) => state.supplier.currentSupplier;
-export const selectSupplierToSave = (state: RootState) => state.supplier.supplierToSave;
+export const selectCurrentSupplier = (state: RootState) => state.supplier.current;
+export const selectSupplierToSave = (state: RootState) => state.supplier.toSave;
 export const selectSupplierPending = (state: RootState) => state.supplier.pending;
 
 

@@ -17,9 +17,9 @@ import {setPending, stopPendingAndHandleError} from "./helper";
 
 const initialState: IProductsState = {
     products: [],
-    currentProduct: undefined,
+    current: undefined,
     pending: false,
-    productToSave: emptyProduct,
+    toSave: emptyProduct,
 }
 const route = "products";
 
@@ -30,7 +30,7 @@ export const validateProduct = (product: IProduct): boolean => {
 }
 
 const validateBeforeSendingToBackend = ({product}: RootState) => {
-    return validateProduct(product.productToSave);
+    return validateProduct(product.toSave);
 }
 
 
@@ -61,7 +61,7 @@ export const createProduct = createAsyncThunk<IResponseGetOneProduct, void, { st
             return invalidDataError;
         }
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiCreate(route, token, getState().product.productToSave);
+        const {data, status, statusText} = await apiCreate(route, token, getState().product.toSave);
         handleError(status, statusText, dispatch);
         dispatch(hideDetails());
         return {data, status, statusText}
@@ -96,10 +96,10 @@ export const productSlice = createSlice({
     initialState,
     reducers: {
         chooseCurrentProduct: (state, action: PayloadAction<string>) => {
-            state.currentProduct = state.products.filter(p => p.id === action.payload)[0];
+            state.current = state.products.filter(p => p.id === action.payload)[0];
         },
         handleProductFormInput: (state, {payload}: PayloadAction<IProduct>) => {
-            state.productToSave = payload;
+            state.toSave = payload;
 
         },
     },
@@ -111,20 +111,20 @@ export const productSlice = createSlice({
             .addCase(editProduct.pending, setPending)
             .addCase(deleteProduct.pending, setPending)
             .addCase(getAllProducts.fulfilled, (state, action: PayloadAction<IResponseGetAllProducts>) => {
-                if (stopPendingAndHandleError(state, action)) return;
+                if (stopPendingAndHandleError(state, action, emptyProduct)) return;
                 state.products = action.payload.data;
             })
             .addCase(getOneProduct.fulfilled, (state, action: PayloadAction<IResponseGetOneProduct>) => {
-                stopPendingAndHandleError(state, action);
+                stopPendingAndHandleError(state, action, emptyProduct);
             })
             .addCase(createProduct.fulfilled, (state, action: PayloadAction<IResponseGetOneProduct>) => {
-                stopPendingAndHandleError(state, action);
+                stopPendingAndHandleError(state, action, emptyProduct);
             })
             .addCase(editProduct.fulfilled, (state, action: PayloadAction<IResponseGetOneProduct>) => {
-                stopPendingAndHandleError(state, action);
+                stopPendingAndHandleError(state, action, emptyProduct);
             })
             .addCase(deleteProduct.fulfilled, (state, action: PayloadAction<IResponseGetOneProduct>) => {
-                stopPendingAndHandleError(state, action);
+                stopPendingAndHandleError(state, action, emptyProduct);
             })
     })
 })
@@ -132,8 +132,8 @@ export const productSlice = createSlice({
 export const {chooseCurrentProduct, handleProductFormInput} = productSlice.actions;
 
 export const selectProducts = (state: RootState) => state.product.products;
-export const selectCurrentProduct = (state: RootState) => state.product.currentProduct;
-export const selectProductToSave = (state: RootState) => state.product.productToSave;
+export const selectCurrentProduct = (state: RootState) => state.product.current;
+export const selectProductToSave = (state: RootState) => state.product.toSave;
 export const selectProductPending = (state: RootState) => state.product.pending;
 
 

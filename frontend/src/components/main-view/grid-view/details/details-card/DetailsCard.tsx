@@ -3,16 +3,15 @@ import {images} from "../../../helpers";
 import {useAppSelector} from "../../../../../app/hooks";
 import {selectDetailsData} from "../../../../../slicer/detailsSlice";
 
+import {useLocation} from "react-router";
 //component imports
 import {Card, CardContent, CardHeader, CardMedia, Divider} from "@mui/material";
 import Login from "../security/login/Login";
-import {useLocation} from "react-router";
-import {Model} from "../../../../../interfaces/IThumbnailData";
 import FormWrapper from "../../../../forms/_elements/form-wrapper/FormWrapper";
 import ErrorMessage from "../error-message/ErrorMessage";
-import Pending from "../pending/Pending";
-
 //interface imports
+
+import {Model} from "../../../../../interfaces/IThumbnailData";
 
 type Props = {
     fullScreen: boolean,

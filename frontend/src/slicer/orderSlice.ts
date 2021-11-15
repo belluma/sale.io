@@ -9,7 +9,7 @@ import {
     edit as apiEdit,
     del as apiDelete
 } from '../services/apiService'
-import {IEditOrderItem, IOrder, IOrderItem} from "../interfaces/IOrder";
+import {emptyOrder, IEditOrderItem, IOrder, IOrderItem} from "../interfaces/IOrder";
 import {handleError, invalidDataError} from "./errorHelper";
 import {ISupplier} from "../interfaces/ISupplier";
 import {setPending, stopPendingAndHandleError} from "./helper";
@@ -17,11 +17,9 @@ import {setPending, stopPendingAndHandleError} from "./helper";
 
 const initialState: IOrdersState = {
     orders: [],
-    currentOrder: undefined,
+    current: undefined,
     pending: false,
-    orderToSave: {
-        orderItems: []
-    },
+    toSave: emptyOrder,
 }
 const route = "orders_suppliers";
 export const validateOrder = (order: IOrder): boolean => {
@@ -32,7 +30,7 @@ export const validateOrder = (order: IOrder): boolean => {
     });
 }
 const validateBeforeSendingToBackend = ({order}: RootState): boolean => {
-    return validateOrder(order.orderToSave);
+    return validateOrder(order.toSave);
 }
 
 
@@ -63,7 +61,7 @@ export const createOrder = createAsyncThunk<IResponseGetOneOrder, void, { state:
             return invalidDataError;
         }
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiCreate(route, token, getState().order.orderToSave);
+        const {data, status, statusText} = await apiCreate(route, token, getState().order.toSave);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
@@ -97,13 +95,13 @@ export const orderSlice = createSlice({
     initialState,
     reducers: {
         chooseCurrentOrder: (state, {payload}: PayloadAction<string>) => {
-            state.currentOrder = state.orders.filter(p => p.id === payload)[0];
+            state.current = state.orders.filter(p => p.id === payload)[0];
         },
-        chooseSupplier: ({orderToSave}, {payload}: PayloadAction<ISupplier>) => {
-            orderToSave.supplier = payload;
+        chooseSupplier: ({toSave}, {payload}: PayloadAction<ISupplier>) => {
+            toSave.supplier = payload;
         },
-        addProductToOrder: ({orderToSave}, {payload}: PayloadAction<IOrderItem>) => {
-            const {orderItems} = orderToSave;
+        addProductToOrder: ({toSave}, {payload}: PayloadAction<IOrderItem>) => {
+            const {orderItems} = toSave;
             const index = orderItems.map(i => i.product?.id).indexOf(payload.product?.id);
             if (index >= 0) {
                 //@ts-ignore orderItems[index] can't be undefined through line above, quantity can't be undefined through form validation
@@ -111,17 +109,17 @@ export const orderSlice = createSlice({
                 orderItems.splice(index, 1, itemWithNewQty)
                 return
             }
-            orderToSave.orderItems = [...orderItems, payload]
+            toSave.orderItems = [...orderItems, payload]
         },
-        editItemQty: ({orderToSave}, {payload}: PayloadAction<IEditOrderItem>) => {
-            orderToSave.orderItems[payload.index].quantity = payload.quantity;
+        editItemQty: ({toSave}, {payload}: PayloadAction<IEditOrderItem>) => {
+            toSave.orderItems[payload.index].quantity = payload.quantity;
         }
         ,
-        removeOrderItem: ({orderToSave}, {payload}: PayloadAction<number>) => {
-            orderToSave.orderItems.splice(payload, 1);
+        removeOrderItem: ({toSave}, {payload}: PayloadAction<number>) => {
+            toSave.orderItems.splice(payload, 1);
         },
         handleOrderFormInput: (state, {payload}: PayloadAction<IOrder>) => {
-            state.orderToSave = payload;
+            state.toSave = payload;
         },
     },
     extraReducers: (builder => {
@@ -132,20 +130,20 @@ export const orderSlice = createSlice({
             .addCase(editOrder.pending, setPending)
             .addCase(deleteOrder.pending, setPending)
             .addCase(getAllOrders.fulfilled, (state, action: PayloadAction<IResponseGetAllOrders>) => {
-                if (stopPendingAndHandleError(state, action)) return;
+                if (stopPendingAndHandleError(state, action, emptyOrder)) return;
                 state.orders = action.payload.data;
             })
             .addCase(getOneOrder.fulfilled, (state, action: PayloadAction<IResponseGetOneOrder>) => {
-                stopPendingAndHandleError(state, action);
+                stopPendingAndHandleError(state, action, emptyOrder);
             })
             .addCase(createOrder.fulfilled, (state, action: PayloadAction<IResponseGetOneOrder>) => {
-                stopPendingAndHandleError(state, action);
+                stopPendingAndHandleError(state, action, emptyOrder);
             })
             .addCase(editOrder.fulfilled, (state, action: PayloadAction<IResponseGetOneOrder>) => {
-                stopPendingAndHandleError(state, action);
+                stopPendingAndHandleError(state, action, emptyOrder);
             })
             .addCase(deleteOrder.fulfilled, (state, action: PayloadAction<IResponseGetOneOrder>) => {
-                stopPendingAndHandleError(state, action);
+                stopPendingAndHandleError(state, action, emptyOrder);
             })
     })
 })
@@ -160,8 +158,8 @@ export const {
 } = orderSlice.actions;
 
 export const selectOrders = (state: RootState) => state.order.orders;
-export const selectCurrentOrder = (state: RootState) => state.order.currentOrder;
-export const selectOrderToSave = (state: RootState) => state.order.orderToSave;
+export const selectCurrentOrder = (state: RootState) => state.order.current;
+export const selectOrderToSave = (state: RootState) => state.order.toSave;
 export const selectOrderPending = (state: RootState) => state.order.pending;
 
 

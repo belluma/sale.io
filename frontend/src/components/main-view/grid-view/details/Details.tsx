@@ -5,7 +5,6 @@ import {hideDetails, resetDetails, selectShowDetails} from "../../../../slicer/d
 //component imports
 import {Dialog, DialogContent, DialogProps, useMediaQuery, useTheme} from "@mui/material";
 import DetailsCard from "./details-card/DetailsCard";
-import Pending from "./pending/Pending";
 
 //interface imports
 

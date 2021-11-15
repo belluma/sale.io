@@ -7,9 +7,10 @@ import {IOrder} from "./IOrder";
 
 export interface IEmployeeState {
     employees: IEmployee[],
-    currentEmployee: IEmployee | undefined,
+    current: IEmployee | undefined,
     currentEmployeeCredentials: IUserCredentials | undefined,
-    pending: boolean
+    pending: boolean,
+    toSave: IEmployee
 }
 
 export interface IAuthState {
@@ -37,20 +38,20 @@ interface IBaseState {
 
 export interface IProductsState extends IBaseState {
     products: IProduct[],
-    currentProduct: IProduct | undefined,
-    productToSave: IProduct,
+    current: IProduct | undefined,
+    toSave: IProduct,
 }
 
 export interface ISuppliersState extends IBaseState {
     suppliers: ISupplier[],
-    currentSupplier: ISupplier | undefined,
-    supplierToSave: ISupplier,
+    current: ISupplier | undefined,
+    toSave: ISupplier,
 }
 
 export interface IOrdersState extends IBaseState {
     orders: IOrder[],
-    currentOrder: IOrder | undefined,
-    orderToSave: IOrder,
+    current: IOrder | undefined,
+    toSave: IOrder,
 }
 
 export type States = IProductsState | ISuppliersState | IOrdersState | IEmployeeState

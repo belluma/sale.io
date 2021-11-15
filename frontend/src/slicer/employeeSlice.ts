@@ -4,13 +4,15 @@ import {extractCredentials, getAllEmployees} from "../services/employeeService";
 import {IResponseGetAllEmployees} from "../interfaces/IApiResponse";
 import {IEmployeeState} from '../interfaces/IStates';
 import {handleError} from "./errorHelper";
+import {emptyEmployee} from "../interfaces/IEmployee";
 
 
 const initialState: IEmployeeState = {
     employees: [],
-    currentEmployee: undefined,
+    current: undefined,
     currentEmployeeCredentials: undefined,
     pending: false,
+    toSave: emptyEmployee,
 }
 
 export const getEmployees = createAsyncThunk<IResponseGetAllEmployees, void, { dispatch:Dispatch }>(
@@ -29,7 +31,7 @@ export const employeeSlice = createSlice({
     reducers: {
         chooseCurrentEmployee: (state, action: PayloadAction<string>) => {
             const employee = state.employees.filter(e => e.username === action.payload)[0];
-            state.currentEmployee = employee
+            state.current = employee
             state.currentEmployeeCredentials = extractCredentials(employee);
         },
         toBeReplaced: (state) => {console.log("I have to stay here until all view are implemented")}
@@ -52,7 +54,7 @@ export const employeeSlice = createSlice({
 export const {chooseCurrentEmployee, toBeReplaced} = employeeSlice.actions;
 
 export const selectEmployees = (state: RootState) => state.employee.employees;
-export const selectCurrentEmployee = (state: RootState) => state.employee.currentEmployee;
+export const selectCurrentEmployee = (state: RootState) => state.employee.current;
 export const selectCurrentEmployeeCredentials = (state: RootState) => state.employee.currentEmployeeCredentials;
 export const selectEmployeePending = (state: RootState) => state.employee.pending;
 

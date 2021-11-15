@@ -16,3 +16,7 @@ export interface IEditOrderItem {
     quantity: number,
     index: number
 }
+
+export const emptyOrder:IOrder = {
+    orderItems: []
+}
