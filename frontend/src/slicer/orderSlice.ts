@@ -9,8 +9,9 @@ import {
     edit as apiEdit,
     del as apiDelete
 } from '../services/apiService'
-import {IOrder, IOrderItem} from "../interfaces/IOrder";
+import {IEditOrderItem, IOrder, IOrderItem} from "../interfaces/IOrder";
 import {handleError, invalidDataError} from "./helper";
+import {ISupplier} from "../interfaces/ISupplier";
 
 
 const initialState: IOrdersState = {
@@ -21,10 +22,16 @@ const initialState: IOrdersState = {
         items: []
     },
 }
-const validateOrder = (state: RootState) => {
-    const necessaryValues = ['name', 'suppliers', 'category', 'purchasePrice', 'unitSize']
-    const setValues = Object.keys(state.order.orderToSave)
-    return setValues.every(v => necessaryValues.indexOf(v) >= 0);
+const route = "orders_suppliers";
+export const validateOrder = (order: IOrder): boolean => {
+    if (!order.items.length || !order.supplier) return false;
+    return order.items.every(i => {
+        return i.product &&
+            i.product.suppliers?.some(s => s.id === order.supplier?.id)
+    });
+}
+const validateBeforeSendingToBackend = ({order}: RootState): boolean => {
+    return validateOrder(order.orderToSave);
 }
 
 
@@ -32,7 +39,7 @@ export const getAllOrders = createAsyncThunk<IResponseGetAllOrders, void, { stat
     'orders/getAll',
     async (_, {getState, dispatch}) => {
         const token = getState().authentication.token;
-        const {data, status, statusText} = await apiGetAll("order", token);
+        const {data, status, statusText} = await apiGetAll(route, token);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
@@ -42,7 +49,7 @@ export const getOneOrder = createAsyncThunk<IResponseGetAllOrders, string, { sta
     'orders/getOne',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiGetOne("order", token, id);
+        const {data, status, statusText} = await apiGetOne(route, token, id);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
@@ -51,12 +58,12 @@ export const getOneOrder = createAsyncThunk<IResponseGetAllOrders, string, { sta
 export const createOrder = createAsyncThunk<IResponseGetAllOrders, void, { state: RootState, dispatch: Dispatch }>(
     'orders/create',
     async (_, {getState, dispatch}) => {
-        if (!validateOrder(getState())) {
+        if (!validateBeforeSendingToBackend(getState())) {
 //handleError here
             return invalidDataError;
         }
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiCreate("order", token, getState().order.orderToSave);
+        const {data, status, statusText} = await apiCreate(route, token, getState().order.orderToSave);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
@@ -66,7 +73,7 @@ export const editOrder = createAsyncThunk<IResponseGetAllOrders, IOrder, { state
     'orders/edit',
     async (order, {getState, dispatch}) => {
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiEdit("order", token, order);
+        const {data, status, statusText} = await apiEdit(route, token, order);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
@@ -76,7 +83,7 @@ export const deleteOrder = createAsyncThunk<IResponseGetAllOrders, string, { sta
     'orders/delete',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiDelete("order", token, id);
+        const {data, status, statusText} = await apiDelete(route, token, id);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
@@ -89,8 +96,26 @@ export const orderSlice = createSlice({
         chooseCurrentOrder: (state, {payload}: PayloadAction<string>) => {
             state.currentOrder = state.orders.filter(p => p.id === payload)[0];
         },
+        chooseSupplier: ({orderToSave}, {payload}: PayloadAction<ISupplier>) => {
+            orderToSave.supplier = payload;
+        },
         addProductToOrder: ({orderToSave}, {payload}: PayloadAction<IOrderItem>) => {
-            orderToSave.items = [...orderToSave.items, payload]
+            const {items} = orderToSave;
+            const index = items.map(i => i.product?.id).indexOf(payload.product?.id);
+            if (index >= 0) {
+                //@ts-ignore items[index] can't be undefined through line above, quantity can't be undefined through form validation
+                const itemWithNewQty = {...items[index], quantity: items[index].quantity + payload?.quantity}
+                items.splice(index, 1, itemWithNewQty)
+                return
+            }
+            orderToSave.items = [...items, payload]
+        },
+        editItemQty: ({orderToSave}, {payload}: PayloadAction<IEditOrderItem>) => {
+            orderToSave.items[payload.index].quantity = payload.quantity;
+        }
+        ,
+        removeOrderItem: ({orderToSave}, {payload}: PayloadAction<number>) => {
+            orderToSave.items.splice(payload, 1);
         },
         handleOrderFormInput: (state, {payload}: PayloadAction<IOrder>) => {
             state.orderToSave = payload;
@@ -129,7 +154,14 @@ export const orderSlice = createSlice({
     })
 })
 
-export const {chooseCurrentOrder, handleOrderFormInput, addProductToOrder} = orderSlice.actions;
+export const {
+    chooseCurrentOrder,
+    handleOrderFormInput,
+    addProductToOrder,
+    chooseSupplier,
+    removeOrderItem,
+    editItemQty
+} = orderSlice.actions;
 
 export const selectOrders = (state: RootState) => state.order.orders;
 export const selectCurrentOrder = (state: RootState) => state.order.currentOrder;

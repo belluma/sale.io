@@ -5,25 +5,26 @@ import {MenuItem, TextField} from "@mui/material";
 
 //interface imports
 import {ISelectProps, Option} from "../../../../interfaces/IForms";
+import {inputStyles} from "../styles";
 
 type Props = ISelectProps
 
-function CustomSelect({label, options, model, name, handleChange}: Props){
-    const [selected, setSelected] = useState('')
-    const select = (e: React.ChangeEvent<HTMLInputElement>) =>{
-        handleChange(e)
-        setSelected(e.target.value)
-    }
+function CustomSelect({label, options, model, onChange,value, ...props}: Props){
+    const [selected, setSelected] = useState(value ? value : "");
+    const select = (e: React.ChangeEvent<HTMLInputElement>) => {
+        onChange(e);
+        setSelected(e.target.value);
+    };
     return(
         <TextField
-            sx={{width: '.8',}}
+            sx={inputStyles}
             id={`Select ${label}`}
             select
             label={`Select ${label}`}
-            name={name}
             value={selected}
             onChange={select}
             helperText={`Please select the ${model}`}
+            {...props}
         >
             {options.map(({id, name: option}:Option) => (
                 <MenuItem key={id} value={id}>

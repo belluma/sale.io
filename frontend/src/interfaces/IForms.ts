@@ -1,28 +1,30 @@
 import React from "react";
 
 export interface IFormProps {
-    handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
 }
-interface IFormFieldProps extends IFormProps{
+
+interface IFormFieldProps extends IFormProps {
     name: string,
     label: string,
-    model: string,
+    model?: string,
+    required?: boolean,
+    disabled?: boolean,
 }
 
 export interface ITextFieldProps extends IFormFieldProps {
-    value?:string
+    value?: string,
 }
 
 export interface INumberFieldProps extends IFormFieldProps {
     negative?: boolean,
     currency?: boolean,
-    value?:number,
-
+    value?: number,
 }
 
-export type Option = { id: string, name: string }
+export type Option = { id: string , name: string }
 
 export interface ISelectProps extends ITextFieldProps {
-    options:Option[]
+    options: Option[]
 }
 

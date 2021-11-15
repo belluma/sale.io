@@ -5,24 +5,23 @@ import {InputAdornment, TextField} from "@mui/material";
 //interface imports
 
 import {INumberFieldProps} from "../../../../interfaces/IForms";
+import {inputStyles} from "../styles";
 
 type Props = INumberFieldProps;
 
-function CustomNumber({label, handleChange, name, negative, currency, value}: Props){
+function CustomNumber({ negative, currency,...props}: Props){
     return(
         <TextField
-            onChange={handleChange}
-            id={label}
-            label={label}
-            name={name}
+            {...props}
+            id={props.label}
             type="number"
-            value={value}
             InputProps = {{
                 startAdornment: currency && <InputAdornment position="start">€</InputAdornment>,
                 inputProps: {min:!negative && 0}}}
             InputLabelProps={{
                 shrink: true,
             }}
+            sx={inputStyles}
             variant="standard"
         />
     )

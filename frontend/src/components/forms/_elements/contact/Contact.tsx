@@ -7,18 +7,21 @@ import CustomText from "../custom-text/CustomText";
 import {IFormProps} from "../../../../interfaces/IForms";
 
 interface IContactProps extends IFormProps {
-    model: string
+    model: string,
+    firstName?:string,
+    lastName?:string,
+    phone?:string,
+    email?:string,
 }
 type Props = IContactProps;
 
-function Contact({handleChange, model}: Props){
-    const props = {handleChange: handleChange, model: model}
+function Contact({firstName, lastName, phone, email, ...props}: Props){
     return(
         <section>
-        <CustomText name="firstName" label={"first name"}  {...props} />
-        <CustomText name="lastName" label={"last name"}  {...props} />
-        <CustomText name="phone" label={"phone"}  {...props} />
-        <CustomText name="email" label={"email"}  {...props} />
+        <CustomText name="firstName" label={"first name"} value={firstName}  {...props} />
+        <CustomText name="lastName" label={"last name"} value={lastName}  {...props} />
+        <CustomText name="phone" label={"phone"} value={phone}  {...props} />
+        <CustomText name="email" label={"email"} value={email}  {...props} />
 </section>
     )
 }
