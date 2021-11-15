@@ -10,6 +10,7 @@ import {useLocation} from "react-router";
 import {Model} from "../../../../../interfaces/IThumbnailData";
 import FormWrapper from "../../../../forms/_elements/form-wrapper/FormWrapper";
 import ErrorMessage from "../error-message/ErrorMessage";
+import Pending from "../pending/Pending";
 
 //interface imports
 
@@ -33,6 +34,7 @@ function DetailsCard({fullScreen, handleClose}: Props) {
         supplier: (<div/>),
         order: <div/>,
         error: <ErrorMessage statusText={subtitle}/>,
+        pending: <Pending/>
     }
     return (
         <Card sx={{width: {sm: .99}, height:{sm:0.5}}}>

@@ -12,6 +12,7 @@ import {
 import {emptyProduct, IProduct} from "../interfaces/IProduct";
 import {handleError, invalidDataError} from "./errorHelper";
 import {hideDetails} from "./detailsSlice";
+import {setPending, stopPendingAndHandleError} from "./helper";
 
 
 const initialState: IProductsState = {
@@ -22,7 +23,7 @@ const initialState: IProductsState = {
 }
 const route = "products";
 
-export const validateProduct = (product:IProduct):boolean => {
+export const validateProduct = (product: IProduct): boolean => {
     const necessaryValues = ['name', 'suppliers', 'purchasePrice', 'unitSize']
     //@ts-ignore values defined in line above must be keys of IProduct
     return necessaryValues.every(v => !!product[v])
@@ -103,13 +104,6 @@ export const productSlice = createSlice({
         },
     },
     extraReducers: (builder => {
-        const setPending = (state: IProductsState) => {
-            state.pending = true;
-        }
-        const stopPendingAndHandleError = (state: IProductsState, action: PayloadAction<IResponseGetAllProducts> | PayloadAction<IResponseGetOneProduct>) => {
-            state.pending = false;
-            return action.payload.status !== 200;
-        }
         builder
             .addCase(getAllProducts.pending, setPending)
             .addCase(getOneProduct.pending, setPending)

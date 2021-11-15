@@ -12,6 +12,7 @@ import {
 import {IEditOrderItem, IOrder, IOrderItem} from "../interfaces/IOrder";
 import {handleError, invalidDataError} from "./errorHelper";
 import {ISupplier} from "../interfaces/ISupplier";
+import {setPending, stopPendingAndHandleError} from "./helper";
 
 
 const initialState: IOrdersState = {
@@ -124,13 +125,6 @@ export const orderSlice = createSlice({
         },
     },
     extraReducers: (builder => {
-        const setPending = (state: IOrdersState) => {
-            state.pending = true;
-        }
-        const stopPendingAndHandleError = (state: IOrdersState, action: PayloadAction<IResponseGetAllOrders> | PayloadAction<IResponseGetOneOrder>) => {
-            state.pending = false;
-            return action.payload.status !== 200;
-        }
         builder
             .addCase(getAllOrders.pending, setPending)
             .addCase(getOneOrder.pending, setPending)

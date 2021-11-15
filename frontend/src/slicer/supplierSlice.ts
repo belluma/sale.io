@@ -11,6 +11,7 @@ import {
 } from '../services/apiService'
 import {emptySupplier, ISupplier} from "../interfaces/ISupplier";
 import {handleError, invalidDataError} from './errorHelper';
+import {setPending, stopPendingAndHandleError} from "./helper";
 
 
 const initialState: ISuppliersState = {
@@ -97,13 +98,6 @@ export const supplierSlice = createSlice({
         },
     },
     extraReducers: (builder => {
-        const setPending = (state: ISuppliersState) => {
-            state.pending = true;
-        }
-        const stopPendingAndHandleError = (state: ISuppliersState, action: PayloadAction<IResponseGetAllSuppliers> | PayloadAction<IResponseGetOneSupplier>) => {
-            state.pending = false;
-            return action.payload.status !== 200;
-        }
         builder
             .addCase(getAllSuppliers.pending, setPending)
             .addCase(getOneSupplier.pending, setPending)

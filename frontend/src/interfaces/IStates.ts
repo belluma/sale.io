@@ -53,6 +53,8 @@ export interface IOrdersState extends IBaseState {
     orderToSave: IOrder,
 }
 
+export type States = IProductsState | ISuppliersState | IOrdersState | IEmployeeState
+
 
 export interface IAPIState {
     customers: ICustomer[],
