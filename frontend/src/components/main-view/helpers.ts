@@ -1,6 +1,6 @@
 import {Model, Views} from "../../interfaces/IThumbnailData";
 
-export const views = (Object.keys(Model) as Array<keyof typeof Model>).slice(2)
+export const views = (Object.keys(Model) as Array<keyof typeof Model>)
 export const images = {
     new: '',
     login: '/images/profile.svg',
