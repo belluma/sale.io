@@ -56,6 +56,13 @@ function FormWrapper({model, fullScreen, handleClose}: Props) {
         supplier: <Supplier/>,
         order: <Order/>,
     };
+    // const submitSelector = {
+    //     employee: toBeReplaced,
+    //     product: createProduct,
+    //     customer: toBeReplaced,
+    //     supplier: createSupplier,
+    //     order: createOrder,
+    // };
     const submitSelector = {
         employee: toBeReplaced,
         product: createProduct,
@@ -64,6 +71,7 @@ function FormWrapper({model, fullScreen, handleClose}: Props) {
         order: createOrder,
     };
     const handleSubmit = () => {
+        //@ts-ignore
         dispatch(submitSelector[model]());
     }
     return (

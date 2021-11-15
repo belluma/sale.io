@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import {ISuppliersState} from '../interfaces/IStates';
-import {IResponseGetAllSuppliers} from "../interfaces/IApiResponse";
+import {IResponseGetAllSuppliers, IResponseGetOneSupplier} from "../interfaces/IApiResponse";
 import {
     getAll as apiGetAll,
     getOne as apiGetOne,
@@ -30,7 +30,7 @@ const validateBeforeSendingToBackend = ({supplier}: RootState): boolean => {
 }
 
 export const getAllSuppliers = createAsyncThunk<IResponseGetAllSuppliers, void, { state: RootState, dispatch: Dispatch }>(
-    'getAll/suppliers',
+    'suppliers/getAll',
     async (_, {getState, dispatch}) => {
         const token = getState().authentication.token;
         const {data, status, statusText} = await apiGetAll(route, token);
@@ -39,8 +39,8 @@ export const getAllSuppliers = createAsyncThunk<IResponseGetAllSuppliers, void, 
     }
 )
 
-export const getOneSupplier = createAsyncThunk<IResponseGetAllSuppliers, string, { state: RootState, dispatch: Dispatch }>(
-    'getOne/suppliers',
+export const getOneSupplier = createAsyncThunk<IResponseGetOneSupplier, string, { state: RootState, dispatch: Dispatch }>(
+    'suppliers/getOne',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
         const {data, status, statusText} = await apiGetOne(route, token, id);
@@ -49,8 +49,8 @@ export const getOneSupplier = createAsyncThunk<IResponseGetAllSuppliers, string,
     }
 )
 
-export const createSupplier = createAsyncThunk<IResponseGetAllSuppliers, void, { state: RootState, dispatch: Dispatch }>(
-    'create/suppliers',
+export const createSupplier = createAsyncThunk<IResponseGetOneSupplier, void, { state: RootState, dispatch: Dispatch }>(
+    'suppliers/create',
     async (_, {getState, dispatch}) => {
         if (!validateBeforeSendingToBackend(getState())) {
             return invalidDataError;
@@ -62,8 +62,8 @@ export const createSupplier = createAsyncThunk<IResponseGetAllSuppliers, void, {
     }
 )
 
-export const editSupplier = createAsyncThunk<IResponseGetAllSuppliers, ISupplier, { state: RootState, dispatch: Dispatch }>(
-    'edit/suppliers',
+export const editSupplier = createAsyncThunk<IResponseGetOneSupplier, ISupplier, { state: RootState, dispatch: Dispatch }>(
+    'suppliers/edit',
     async (supplier, {getState, dispatch}) => {
         if (!validateBeforeSendingToBackend(getState())) {
             return invalidDataError;
@@ -75,8 +75,8 @@ export const editSupplier = createAsyncThunk<IResponseGetAllSuppliers, ISupplier
     }
 )
 
-export const deleteSupplier = createAsyncThunk<IResponseGetAllSuppliers, string, { state: RootState, dispatch: Dispatch }>(
-    'delete/suppliers',
+export const deleteSupplier = createAsyncThunk<IResponseGetOneSupplier, string, { state: RootState, dispatch: Dispatch }>(
+    'suppliers/delete',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
         const {data, status, statusText} = await apiDelete(route, token, id);
@@ -100,7 +100,7 @@ export const supplierSlice = createSlice({
         const setPending = (state: ISuppliersState) => {
             state.pending = true;
         }
-        const stopPendingAndHandleError = (state: ISuppliersState, action: PayloadAction<IResponseGetAllSuppliers>) => {
+        const stopPendingAndHandleError = (state: ISuppliersState, action: PayloadAction<IResponseGetAllSuppliers> | PayloadAction<IResponseGetOneSupplier>) => {
             state.pending = false;
             return action.payload.status !== 200;
         }
@@ -114,16 +114,16 @@ export const supplierSlice = createSlice({
                 if (stopPendingAndHandleError(state, action)) return;
                 state.suppliers = action.payload.data;
             })
-            .addCase(getOneSupplier.fulfilled, (state: ISuppliersState, action: PayloadAction<IResponseGetAllSuppliers>) => {
+            .addCase(getOneSupplier.fulfilled, (state: ISuppliersState, action: PayloadAction<IResponseGetOneSupplier>) => {
                 stopPendingAndHandleError(state, action);
             })
-            .addCase(createSupplier.fulfilled, (state: ISuppliersState, action: PayloadAction<IResponseGetAllSuppliers>) => {
+            .addCase(createSupplier.fulfilled, (state: ISuppliersState, action: PayloadAction<IResponseGetOneSupplier>) => {
                 stopPendingAndHandleError(state, action);
             })
-            .addCase(editSupplier.fulfilled, (state: ISuppliersState, action: PayloadAction<IResponseGetAllSuppliers>) => {
+            .addCase(editSupplier.fulfilled, (state: ISuppliersState, action: PayloadAction<IResponseGetOneSupplier>) => {
                 stopPendingAndHandleError(state, action);
             })
-            .addCase(deleteSupplier.fulfilled, (state: ISuppliersState, action: PayloadAction<IResponseGetAllSuppliers>) => {
+            .addCase(deleteSupplier.fulfilled, (state: ISuppliersState, action: PayloadAction<IResponseGetOneSupplier>) => {
                 stopPendingAndHandleError(state, action);
             })
     })

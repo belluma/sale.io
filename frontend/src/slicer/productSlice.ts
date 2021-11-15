@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import {IProductsState} from '../interfaces/IStates';
-import {IResponseGetAllProducts} from "../interfaces/IApiResponse";
+import {IResponseGetAllProducts, IResponseGetOneProduct} from "../interfaces/IApiResponse";
 import {
     getAll as apiGetAll,
     getOne as apiGetOne,
@@ -43,7 +43,7 @@ export const getAllProducts = createAsyncThunk<IResponseGetAllProducts, void, { 
     }
 )
 
-export const getOneProduct = createAsyncThunk<IResponseGetAllProducts, string, { state: RootState, dispatch: Dispatch }>(
+export const getOneProduct = createAsyncThunk<IResponseGetOneProduct, string, { state: RootState, dispatch: Dispatch }>(
     'products/getOne',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
@@ -53,7 +53,7 @@ export const getOneProduct = createAsyncThunk<IResponseGetAllProducts, string, {
     }
 )
 
-export const createProduct = createAsyncThunk<IResponseGetAllProducts, void, { state: RootState, dispatch: Dispatch }>(
+export const createProduct = createAsyncThunk<IResponseGetOneProduct, void, { state: RootState, dispatch: Dispatch }>(
     'products/create',
     async (_, {getState, dispatch}) => {
         if (!validateBeforeSendingToBackend(getState())) {
@@ -67,7 +67,7 @@ export const createProduct = createAsyncThunk<IResponseGetAllProducts, void, { s
     }
 )
 
-export const editProduct = createAsyncThunk<IResponseGetAllProducts, IProduct, { state: RootState, dispatch: Dispatch }>(
+export const editProduct = createAsyncThunk<IResponseGetOneProduct, IProduct, { state: RootState, dispatch: Dispatch }>(
     'products/edit',
     async (product, {getState, dispatch}) => {
         if (!validateBeforeSendingToBackend(getState())) {
@@ -80,7 +80,7 @@ export const editProduct = createAsyncThunk<IResponseGetAllProducts, IProduct, {
     }
 )
 
-export const deleteProduct = createAsyncThunk<IResponseGetAllProducts, string, { state: RootState, dispatch: Dispatch }>(
+export const deleteProduct = createAsyncThunk<IResponseGetOneProduct, string, { state: RootState, dispatch: Dispatch }>(
     'products/delete',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
@@ -106,7 +106,7 @@ export const productSlice = createSlice({
         const setPending = (state: IProductsState) => {
             state.pending = true;
         }
-        const stopPendingAndHandleError = (state: IProductsState, action: PayloadAction<IResponseGetAllProducts>) => {
+        const stopPendingAndHandleError = (state: IProductsState, action: PayloadAction<IResponseGetAllProducts> | PayloadAction<IResponseGetOneProduct>) => {
             state.pending = false;
             return action.payload.status !== 200;
         }
@@ -120,16 +120,16 @@ export const productSlice = createSlice({
                 if (stopPendingAndHandleError(state, action)) return;
                 state.products = action.payload.data;
             })
-            .addCase(getOneProduct.fulfilled, (state, action: PayloadAction<IResponseGetAllProducts>) => {
+            .addCase(getOneProduct.fulfilled, (state, action: PayloadAction<IResponseGetOneProduct>) => {
                 stopPendingAndHandleError(state, action);
             })
-            .addCase(createProduct.fulfilled, (state, action: PayloadAction<IResponseGetAllProducts>) => {
+            .addCase(createProduct.fulfilled, (state, action: PayloadAction<IResponseGetOneProduct>) => {
                 stopPendingAndHandleError(state, action);
             })
-            .addCase(editProduct.fulfilled, (state, action: PayloadAction<IResponseGetAllProducts>) => {
+            .addCase(editProduct.fulfilled, (state, action: PayloadAction<IResponseGetOneProduct>) => {
                 stopPendingAndHandleError(state, action);
             })
-            .addCase(deleteProduct.fulfilled, (state, action: PayloadAction<IResponseGetAllProducts>) => {
+            .addCase(deleteProduct.fulfilled, (state, action: PayloadAction<IResponseGetOneProduct>) => {
                 stopPendingAndHandleError(state, action);
             })
     })

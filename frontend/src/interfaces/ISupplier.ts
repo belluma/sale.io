@@ -1,5 +1,4 @@
 import {IContact} from "./IContact";
-import {Weekdays} from "./weekdays";
 
 export interface ISupplier extends IContact{
     products?: string[],
@@ -11,5 +10,4 @@ export const emptySupplier:ISupplier = {
     phone: '',
     picture: '',
     products: [],
-    // orderDay?: string,
 }

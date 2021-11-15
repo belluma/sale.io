@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import {IOrdersState} from '../interfaces/IStates';
-import {IResponseGetAllOrders} from "../interfaces/IApiResponse";
+import {IResponseGetAllOrders, IResponseGetOneOrder} from "../interfaces/IApiResponse";
 import {
     getAll as apiGetAll,
     getOne as apiGetOne,
@@ -45,7 +45,7 @@ export const getAllOrders = createAsyncThunk<IResponseGetAllOrders, void, { stat
     }
 )
 
-export const getOneOrder = createAsyncThunk<IResponseGetAllOrders, string, { state: RootState, dispatch: Dispatch }>(
+export const getOneOrder = createAsyncThunk<IResponseGetOneOrder, string, { state: RootState, dispatch: Dispatch }>(
     'orders/getOne',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
@@ -55,7 +55,7 @@ export const getOneOrder = createAsyncThunk<IResponseGetAllOrders, string, { sta
     }
 )
 
-export const createOrder = createAsyncThunk<IResponseGetAllOrders, void, { state: RootState, dispatch: Dispatch }>(
+export const createOrder = createAsyncThunk<IResponseGetOneOrder, void, { state: RootState, dispatch: Dispatch }>(
     'orders/create',
     async (_, {getState, dispatch}) => {
         if (!validateBeforeSendingToBackend(getState())) {
@@ -68,7 +68,7 @@ export const createOrder = createAsyncThunk<IResponseGetAllOrders, void, { state
     }
 )
 
-export const editOrder = createAsyncThunk<IResponseGetAllOrders, IOrder, { state: RootState, dispatch: Dispatch }>(
+export const editOrder = createAsyncThunk<IResponseGetOneOrder, IOrder, { state: RootState, dispatch: Dispatch }>(
     'orders/edit',
     async (order, {getState, dispatch}) => {
         if (!validateBeforeSendingToBackend(getState())) {
@@ -81,7 +81,7 @@ export const editOrder = createAsyncThunk<IResponseGetAllOrders, IOrder, { state
     }
 )
 
-export const deleteOrder = createAsyncThunk<IResponseGetAllOrders, string, { state: RootState, dispatch: Dispatch }>(
+export const deleteOrder = createAsyncThunk<IResponseGetOneOrder, string, { state: RootState, dispatch: Dispatch }>(
     'orders/delete',
     async (id, {getState, dispatch}) => {
         const token = getState().authentication.token
@@ -127,7 +127,7 @@ export const orderSlice = createSlice({
         const setPending = (state: IOrdersState) => {
             state.pending = true;
         }
-        const stopPendingAndHandleError = (state: IOrdersState, action: PayloadAction<IResponseGetAllOrders>) => {
+        const stopPendingAndHandleError = (state: IOrdersState, action: PayloadAction<IResponseGetAllOrders> | PayloadAction<IResponseGetOneOrder>) => {
             state.pending = false;
             return action.payload.status !== 200;
         }
@@ -141,17 +141,17 @@ export const orderSlice = createSlice({
                 if (stopPendingAndHandleError(state, action)) return;
                 state.orders = action.payload.data;
             })
-            .addCase(getOneOrder.fulfilled, (state, action: PayloadAction<IResponseGetAllOrders>) => {
+            .addCase(getOneOrder.fulfilled, (state, action: PayloadAction<IResponseGetOneOrder>) => {
                 stopPendingAndHandleError(state, action);
             })
-            .addCase(createOrder.fulfilled, (state, action: PayloadAction<IResponseGetAllOrders>) => {
+            .addCase(createOrder.fulfilled, (state, action: PayloadAction<IResponseGetOneOrder>) => {
                 console.log(action)
                 stopPendingAndHandleError(state, action);
             })
-            .addCase(editOrder.fulfilled, (state, action: PayloadAction<IResponseGetAllOrders>) => {
+            .addCase(editOrder.fulfilled, (state, action: PayloadAction<IResponseGetOneOrder>) => {
                 stopPendingAndHandleError(state, action);
             })
-            .addCase(deleteOrder.fulfilled, (state, action: PayloadAction<IResponseGetAllOrders>) => {
+            .addCase(deleteOrder.fulfilled, (state, action: PayloadAction<IResponseGetOneOrder>) => {
                 stopPendingAndHandleError(state, action);
             })
     })
