@@ -3,23 +3,24 @@ import {setDetailData, showDetails} from "./detailsSlice";
 import {IDetailsData, Views} from "../interfaces/IThumbnailData";
 
 export interface IError {
-    status?: number;
-    statusText?: string;
-    data?:string
+    status: number;
+    statusText: string;
+    data: string
 }
-export const handleError = (status:number, statusText: string, dispatch: Dispatch) => {
+
+export const handleError = (status: number, statusText: string, dispatch: Dispatch) => {
     if (status !== 200) {
-        dispatch(setDetailData(parseErrorMessage({status, statusText})))
+        dispatch(setDetailData(parseErrorMessage({status, statusText, data:""})))
         dispatch(showDetails())
     }
 }
 
 
-const parseErrorMessage = ({ statusText}:IError):IDetailsData => {
+const parseErrorMessage = ({statusText}: IError): IDetailsData => {
     return {
-        title:"Something went wrong!",
-        subtitle:statusText,
-        model:Views.ERROR,
+        title: "Something went wrong!",
+        subtitle: statusText,
+        model: Views.ERROR,
     }
 }
 

@@ -12,7 +12,9 @@ export const getAll = (model: string, token: string) => {
     }).then(response => {
         return response
     })
-        .catch(err => parseError(err))
+        .catch(err => {
+            return parseError(err)
+        })
 }
 
 export const getOne = (model: string, token: string, id: string) => {
@@ -42,7 +44,7 @@ export const create = (model: string, token: string, data: IBody) => {
 export const edit = (model: string, token: string, data: IBody) => {
     return axios({
         method: 'put',
-        url: `/api/${model}fds/${data.id}`,
+        url: `/api/${model}/${data.id}`,
         headers: {...jsonHeaders(), ...authHeaders(token)},
         data
     }).then(response => {

@@ -16,7 +16,7 @@ import Suppliers from "./views/suppliers/Suppliers";
 import Customers from "./views/customers/Customers";
 import Orders from "./views/orders/Orders";
 //interface imports
-import {Model, Views} from "../../interfaces/IThumbnailData";
+import {Model} from "../../interfaces/IThumbnailData";
 
 type Props = {};
 
