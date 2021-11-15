@@ -5,7 +5,7 @@ import {selectDetailsData} from "../../../../../slicer/detailsSlice";
 
 //component imports
 import {Card, CardContent, CardHeader, CardMedia, Divider} from "@mui/material";
-import Login from "../../../../security/login/Login";
+import Login from "../security/login/Login";
 import {useLocation} from "react-router";
 import {Model} from "../../../../../interfaces/IThumbnailData";
 import FormWrapper from "../../../../forms/_elements/form-wrapper/FormWrapper";

@@ -4,9 +4,9 @@ import {Divider, TextField, CardHeader, FormGroup, Button, Card } from '@mui/mat
 
 //interface imports
 
-import { login } from '../../../slicer/authSlice';
-import {useAppDispatch, useAppSelector} from '../../../app/hooks';
-import { selectCurrentEmployeeCredentials} from "../../../slicer/employeeSlice";
+import { login } from '../../../../../../slicer/authSlice';
+import {useAppDispatch, useAppSelector} from '../../../../../../app/hooks';
+import { selectCurrentEmployeeCredentials} from "../../../../../../slicer/employeeSlice";
 
 type Props = {
 

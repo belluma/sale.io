@@ -42,7 +42,7 @@ export const create = (model: string, token: string, data: IBody) => {
 export const edit = (model: string, token: string, data: IBody) => {
     return axios({
         method: 'put',
-        url: `/api/${model}/${data.id}`,
+        url: `/api/${model}fds/${data.id}`,
         headers: {...jsonHeaders(), ...authHeaders(token)},
         data
     }).then(response => {
