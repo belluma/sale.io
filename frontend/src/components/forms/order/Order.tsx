@@ -45,7 +45,7 @@ function Order(props: Props) {
     const selectSupplier = (e: ChangeEvent<HTMLInputElement>) => {
         const supplier = suppliers.find(s => s.id === e.target.value);
         supplier && dispatch(chooseSupplier(supplier));
-        setSelectedSupplierId(e.target.value);
+        supplier && setSelectedSupplierId(supplier.id);
     }
     const changeQuantity = (e: ChangeEvent<HTMLInputElement>) => {
         setQuantity(+e.target.value);

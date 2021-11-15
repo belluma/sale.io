@@ -58,23 +58,20 @@ export const Authentication = createSlice({
 
     },
     extraReducers: builder => {
+        const handleLogin = (state:IAuthState, action: PayloadAction<IResponseData>) => {
+            if (action.payload.status !== 200) {
+                return;
+            }
+            state.loggedIn = true;
+            state.token = action.payload.data
+            localStorage.setItem('SaleioToken', action.payload.data);
+        }
         builder
-
             .addCase(login.fulfilled, (state, action: PayloadAction<IResponseData>) => {
-                if (action.payload.status !== 200) {
-                    return;
-                }
-                state.loggedIn = true;
-                state.token = action.payload.data
-                localStorage.setItem('SaleioToken', action.payload.data);
+              handleLogin(state, action)
             })
             .addCase(registerAdmin.fulfilled, (state, action: PayloadAction<IResponseData>) => {
-                if (action.payload.status !== 200) {
-                    return;
-                }
-                state.loggedIn = true;
-                state.token = action.payload.data
-                localStorage.setItem('SaleioToken', action.payload.data);
+                handleLogin(state, action)
             })
     }
 })

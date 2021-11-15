@@ -3,7 +3,7 @@ import {RootState} from '../app/store';
 import {extractCredentials, getAllEmployees} from "../services/employeeService";
 import {IResponseGetAllEmployees} from "../interfaces/IApiResponse";
 import {IEmployeeState} from '../interfaces/IStates';
-import {handleError} from "./errorHelper";
+import {handleError, setPending, stopPendingAndHandleError} from "./errorHelper";
 import {emptyEmployee} from "../interfaces/IEmployee";
 
 
@@ -37,14 +37,9 @@ export const employeeSlice = createSlice({
         toBeReplaced: (state) => {console.log("I have to stay here until all view are implemented")}
     },
     extraReducers: (builder => {
-        builder.addCase(getEmployees.pending, state => {
-            state.pending = true;
-        })
+        builder.addCase(getEmployees.pending,setPending)
         builder.addCase(getEmployees.fulfilled, (state, action: PayloadAction<IResponseGetAllEmployees>) => {
-            state.pending = false;
-            if (action.payload.status !== 200) {
-                return;
-            }
+            stopPendingAndHandleError(state, action, emptyEmployee);
             state.employees = action.payload.data;
         })
     })

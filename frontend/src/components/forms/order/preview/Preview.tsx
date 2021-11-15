@@ -16,7 +16,7 @@ type Props = {};
 function Preview(props: Props) {
     const order = useAppSelector(selectOrderToSave);
     const {orderItems, supplier} = order;
-    const list = orderItems.map((item, i) => {
+    const productsToOrder = orderItems.map((item, i) => {
         return <OrderItem key={i} item={item} index={i}/>
     })
     const total = orderItems.reduce((sum, {product, quantity}) => {
@@ -29,7 +29,7 @@ function Preview(props: Props) {
             <Divider/>
             <CardContent>
                 <Grid container>
-                    {list}
+                    {productsToOrder}
                 </Grid>
             </CardContent>
             <Divider/>

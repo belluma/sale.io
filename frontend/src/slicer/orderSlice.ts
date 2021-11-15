@@ -12,7 +12,7 @@ import {
 import {emptyOrder, IEditOrderItem, IOrder, IOrderItem} from "../interfaces/IOrder";
 import {handleError, invalidDataError} from "./errorHelper";
 import {ISupplier} from "../interfaces/ISupplier";
-import {setPending, stopPendingAndHandleError} from "./helper";
+import {setPending, stopPendingAndHandleError} from "./errorHelper";
 
 
 const initialState: IOrdersState = {
@@ -24,9 +24,9 @@ const initialState: IOrdersState = {
 const route = "orders_suppliers";
 export const validateOrder = (order: IOrder): boolean => {
     if (!order.orderItems.length || !order.supplier) return false;
-    return order.orderItems.every(i => {
-        return i.product &&
-            i.product.suppliers?.some(s => s.id === order.supplier?.id)
+    return order.orderItems.every(item => {
+        return item.product &&
+            item.product.suppliers?.some(s => s.id === order.supplier?.id)
     });
 }
 const validateBeforeSendingToBackend = ({order}: RootState): boolean => {
@@ -102,7 +102,7 @@ export const orderSlice = createSlice({
         },
         addProductToOrder: ({toSave}, {payload}: PayloadAction<IOrderItem>) => {
             const {orderItems} = toSave;
-            const index = orderItems.map(i => i.product?.id).indexOf(payload.product?.id);
+            const index = orderItems.map(item => item.product?.id).indexOf(payload.product?.id);
             if (index >= 0) {
                 //@ts-ignore orderItems[index] can't be undefined through line above, quantity can't be undefined through form validation
                 const itemWithNewQty = {...orderItems[index], quantity: orderItems[index].quantity + payload?.quantity}

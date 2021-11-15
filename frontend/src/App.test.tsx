@@ -6,7 +6,7 @@ import App from './App';
 import {BrowserRouter as Router} from 'react-router-dom'
 
 test('renders component', () => {
-    const { getByText } = render(
+    render(
         <Provider store={store}>
             <Router>
                 <App />

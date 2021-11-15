@@ -6,7 +6,7 @@ import {selectEmployeePending} from "../../../slicer/employeeSlice";
 import {selectProductPending} from "../../../slicer/productSlice";
 //component imports
 
-import {CircularProgress, Dialog, DialogContent} from "@mui/material";
+import {CircularProgress} from "@mui/material";
 
 //interface imports
 

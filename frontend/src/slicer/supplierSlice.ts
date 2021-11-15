@@ -11,7 +11,7 @@ import {
 } from '../services/apiService'
 import {emptySupplier, ISupplier} from "../interfaces/ISupplier";
 import {handleError, invalidDataError} from './errorHelper';
-import {setPending, stopPendingAndHandleError} from "./helper";
+import {setPending, stopPendingAndHandleError} from "./errorHelper";
 
 
 const initialState: ISuppliersState = {
@@ -91,7 +91,7 @@ export const supplierSlice = createSlice({
     initialState,
     reducers: {
         chooseCurrentSupplier: (state: ISuppliersState, action: PayloadAction<string>) => {
-            state.current = state.suppliers.filter(p => p.id === action.payload)[0];
+            state.current = state.suppliers.find(supplier => supplier.id === action.payload);
         },
         handleSupplierFormInput: (state, {payload}: PayloadAction<ISupplier>) => {
             state.toSave = payload;

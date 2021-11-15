@@ -12,7 +12,7 @@ import {
 import {emptyProduct, IProduct} from "../interfaces/IProduct";
 import {handleError, invalidDataError} from "./errorHelper";
 import {hideDetails} from "./detailsSlice";
-import {setPending, stopPendingAndHandleError} from "./helper";
+import {setPending, stopPendingAndHandleError} from "./errorHelper";
 
 
 const initialState: IProductsState = {
