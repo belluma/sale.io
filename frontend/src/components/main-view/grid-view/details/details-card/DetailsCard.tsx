@@ -34,7 +34,6 @@ function DetailsCard({fullScreen, handleClose}: Props) {
         supplier: (<div/>),
         order: <div/>,
         error: <ErrorMessage statusText={subtitle}/>,
-        pending: <Pending/>
     }
     return (
         <Card sx={{width: {sm: .99}, height:{sm:0.5}}}>

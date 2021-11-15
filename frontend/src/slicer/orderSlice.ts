@@ -139,7 +139,6 @@ export const orderSlice = createSlice({
                 stopPendingAndHandleError(state, action);
             })
             .addCase(createOrder.fulfilled, (state, action: PayloadAction<IResponseGetOneOrder>) => {
-                console.log(action)
                 stopPendingAndHandleError(state, action);
             })
             .addCase(editOrder.fulfilled, (state, action: PayloadAction<IResponseGetOneOrder>) => {
