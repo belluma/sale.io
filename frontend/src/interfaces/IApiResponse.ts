@@ -16,15 +16,26 @@ export interface IResponseData extends IResponseBase{
 export interface IResponseGetAllEmployees extends IResponseBase{
     data: IEmployee[];
 }
-
+export interface IResponseGetOneEmployee extends IResponseBase{
+    data: IEmployee;
+}
 export interface IResponseGetAllProducts extends IResponseBase{
     data: IProduct[];
+}
+export interface IResponseGetOneProduct extends IResponseBase{
+    data: IProduct;
 }
 export interface IResponseGetAllSuppliers extends IResponseBase{
     data: ISupplier[];
 }
+export interface IResponseGetOneSupplier extends IResponseBase{
+    data: ISupplier;
+}
 export interface IResponseGetAllOrders extends IResponseBase{
     data: IOrder[];
+}
+export interface IResponseGetOneOrder extends IResponseBase{
+    data: IOrder;
 }
 
 export interface IApiResponse {
