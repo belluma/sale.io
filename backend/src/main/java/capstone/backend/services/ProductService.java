@@ -2,6 +2,7 @@ package capstone.backend.services;
 
 
 import capstone.backend.mapper.ProductMapper;
+import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.repo.ProductRepo;
@@ -36,7 +37,7 @@ public class ProductService {
     }
 
     public ProductDTO createProduct(ProductDTO product) throws EntityWithThisIdAlreadyExistException {
-        if (product.getId() != null && repo.existsById(product.getId())) {
+        if (productExists(product)) {
             throw new EntityWithThisIdAlreadyExistException(String.format("Product %s already has the id %d", product.getName(), product.getId()));
         }
         return ProductMapper.mapProductWithDetails(repo.
@@ -44,14 +45,17 @@ public class ProductService {
     }
 
     public ProductDTO editProduct(ProductDTO product) {
-        if (product.getId() == null || !repo.existsById(product.getId())){
+        if (!productExists(product)){
             throw new EntityNotFoundException(String.format("Couldn't find a product with the id %d", product.getId()));
         }
         return ProductMapper.mapProductWithDetails(repo
                 .save(ProductMapper.mapProduct(product)));
     }
+    public void adjustAmountInStock(List<OrderItem> receivedOrder){
 
-    public boolean checkIfProductExists(Long id){
-        return repo.existsById(id);
+    }
+
+    public boolean productExists(ProductDTO product){
+        return (product.getId() != null && repo.existsById(product.getId()));
     }
 }

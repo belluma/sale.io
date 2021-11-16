@@ -75,7 +75,7 @@ public class OrderToSupplierService {
         return !order
                 .getOrderItems()
                 .stream()
-                .map(item -> productService.checkIfProductExists(item.getProduct().getId()))
+                .map(item -> productService.productExists(item.getProduct()))
                 .toList()
                 .contains(false);
     }
