@@ -86,7 +86,6 @@ class OrderToSupplierServiceTest {
         //WHEN - //THEN
         Exception ex = assertThrows(EntityWithThisIdAlreadyExistException.class, () -> orderService.createOrder(orderToSave));
         assertThat(ex.getMessage(), is("An Order with this id already exists!"));
-        verify(productService).checkIfProductExists(productId);
         verify(orderRepo).existsById(orderToSave.getId());
     }
     @Test
