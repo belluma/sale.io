@@ -136,6 +136,7 @@ export const selectProducts = (state: RootState) => state.product.products;
 export const selectCurrentProduct = (state: RootState) => state.product.current;
 export const selectProductToSave = (state: RootState) => state.product.toSave;
 export const selectProductPending = (state: RootState) => state.product.pending;
+export const selectProductSuccess = (state: RootState) => state.product.success;
 
 
 export default productSlice.reducer;

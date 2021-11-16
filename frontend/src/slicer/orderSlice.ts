@@ -19,8 +19,7 @@ const initialState: IOrdersState = {
     orders: [],
     current: undefined,
     pending: false,
-    success:false,
-    toSave: emptyOrder,
+    success:false,    toSave: emptyOrder,
 }
 const route = "orders_suppliers";
 export const validateOrder = (order: IOrder): boolean => {
@@ -162,6 +161,7 @@ export const selectOrders = (state: RootState) => state.order.orders;
 export const selectCurrentOrder = (state: RootState) => state.order.current;
 export const selectOrderToSave = (state: RootState) => state.order.toSave;
 export const selectOrderPending = (state: RootState) => state.order.pending;
+export const selectOrderSuccess = (state: RootState) => state.order.success;
 
 
 export default orderSlice.reducer;

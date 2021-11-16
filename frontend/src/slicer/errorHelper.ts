@@ -21,7 +21,6 @@ export const handleError = (status: number, statusText: string, dispatch: Dispat
     }
 }
 
-
 const parseErrorMessage = ({statusText}: IError): IDetailsData => {
     return {
         title: "Something went wrong!",
@@ -36,6 +35,7 @@ export const setPending = (state: States) => {
 }
 export const stopPendingAndHandleError = (state:States, action:Actions, emptyItem: ToSave) => {
     state.pending = false;
+    state.success = true;
     if(action.payload.status === 200) state.toSave = emptyItem;
     return action.payload.status !== 200;
 }

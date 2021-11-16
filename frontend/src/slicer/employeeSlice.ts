@@ -53,5 +53,6 @@ export const selectEmployees = (state: RootState) => state.employee.employees;
 export const selectCurrentEmployee = (state: RootState) => state.employee.current;
 export const selectCurrentEmployeeCredentials = (state: RootState) => state.employee.currentEmployeeCredentials;
 export const selectEmployeePending = (state: RootState) => state.employee.pending;
+export const selectEmployeeSuccess = (state: RootState) => state.employee.success;
 
 export default employeeSlice.reducer;

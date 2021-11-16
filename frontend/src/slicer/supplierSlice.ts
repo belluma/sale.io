@@ -130,6 +130,7 @@ export const selectSuppliers = (state: RootState) => state.supplier.suppliers;
 export const selectCurrentSupplier = (state: RootState) => state.supplier.current;
 export const selectSupplierToSave = (state: RootState) => state.supplier.toSave;
 export const selectSupplierPending = (state: RootState) => state.supplier.pending;
+export const selectSupplierSuccess = (state: RootState) => state.supplier.success;
 
 
 export default supplierSlice.reducer;

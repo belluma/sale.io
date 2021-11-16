@@ -18,6 +18,7 @@ import Orders from "./views/orders/Orders";
 import Pending from "../messages/pending/Pending";
 //interface imports
 import {Model} from "../../interfaces/IThumbnailData";
+import SuccessMessage from "../messages/success-message/SuccessMessage";
 
 type Props = {};
 
@@ -35,6 +36,7 @@ function MainView(props: Props){
     return (
         <Container sx={{pt: 15}} maxWidth={false}>
             <Pending />
+            <SuccessMessage />
             <Grid container justifyContent="center" alignItems="center">
                 <Switch>
                     <Route path={"/login"} component={LoginView}/>
