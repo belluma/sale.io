@@ -1,6 +1,6 @@
 import {ISupplier} from "../../interfaces/ISupplier";
 import {Option} from "../../interfaces/IForms";
-import {Weekdays} from "../../interfaces/weekdays";
+import {Weekday} from "../../interfaces/Weekday";
 import {IProduct} from "../../interfaces/IProduct";
 
 export const mapSupplierToSelectData = (supplier:ISupplier[]):Option[] =>{
@@ -12,7 +12,7 @@ export const mapSupplierToSelectData = (supplier:ISupplier[]):Option[] =>{
     });
 }
 export const mapWeekdaysToSelectData = ():Option[] =>{
-    return Object.keys(Weekdays).map((day) => {
+    return Object.keys(Weekday).map((day) => {
         return {id: day, name: day};
     });
 }
