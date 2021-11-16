@@ -2,6 +2,7 @@ package capstone.backend.services;
 
 
 import capstone.backend.mapper.ProductMapper;
+import capstone.backend.model.db.Product;
 import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -45,17 +47,22 @@ public class ProductService {
     }
 
     public ProductDTO editProduct(ProductDTO product) {
-        if (!productExists(product)){
+        if (!productExists(product)) {
             throw new EntityNotFoundException(String.format("Couldn't find a product with the id %d", product.getId()));
         }
         return ProductMapper.mapProductWithDetails(repo
                 .save(ProductMapper.mapProduct(product)));
     }
-    public void adjustAmountInStock(List<OrderItem> receivedOrder){
 
+    public void adjustAmountInStock(List<OrderItem> receivedOrder) {
+        receivedOrder
+                .forEach(item -> {
+                    Optional<Product> productToReceive = repo.findById(item.getProduct().getId());
+                    productToReceive.ifPresent(product -> product.setAmountInStock(product.getAmountInStock() + item.getProduct().getAmountInStock()));
+                });
     }
 
-    public boolean productExists(ProductDTO product){
+    public boolean productExists(ProductDTO product) {
         return (product.getId() != null && repo.existsById(product.getId()));
     }
 }

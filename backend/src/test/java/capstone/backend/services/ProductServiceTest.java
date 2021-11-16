@@ -1,6 +1,7 @@
 package capstone.backend.services;
 
 import capstone.backend.model.db.Product;
+import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.repo.ProductRepo;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
+import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
 import static capstone.backend.utils.ProductTestUtils.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -121,4 +123,26 @@ class ProductServiceTest {
         assertThat(ex.getMessage(), is((String.format("Couldn't find a product with the id %d", nonExistentProduct.getId()))));
         verify(repo).existsById(123L);
     }
+
+    @Test
+    void adjustAmountInStock(){
+        //GIVEN
+        List<OrderItem> receivedOrder = List.of(sampleOrderItem());
+        Long productId = receivedOrder.get(0).getProduct().getId();
+        //WHEN
+        service.adjustAmountInStock(receivedOrder);
+        //THEN
+        verify(repo).findById(productId);
+    }
+
+    @Test
+    void productExists(){
+        //GIVEN
+        ProductDTO product = sampleProductDTOWithDetailsWithId();
+        //WHEN
+        service.productExists(product);
+        //THEN
+        verify(repo).existsById(product.getId());
+    }
+
 }
