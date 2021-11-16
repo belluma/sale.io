@@ -49,7 +49,7 @@ class OrderToSupplierServiceTest {
         Long productId = orderToSave.getOrderItems().get(0).getProduct().getId();
         Long supplierId = orderToSave.getSupplier().getId();
         when(orderRepo.save(orderToSave)).thenReturn(orderToSave);
-        when(orderRepo.findById(orderToSave.getId())).thenReturn(Optional.empty());
+        when(orderRepo.existsById(orderToSave.getId())).thenReturn(false);
         when(productService.checkIfProductExists(productId)).thenReturn(true);
         when(orderItemService.addOrderItem(orderItem)).thenReturn(orderItem);
         when(supplierService.checkIfSupplierExists(supplierId)).thenReturn(true);
@@ -57,7 +57,7 @@ class OrderToSupplierServiceTest {
         OrderToSupplierDTO actual = orderService.createOrder(sampleOrderDTO());
         //THEN
         verify(orderRepo).save(orderToSave);
-        verify(orderRepo).findById(123L);
+        verify(orderRepo).existsById(123L);
         verify(productService).checkIfProductExists(productId);
         verify(supplierService).checkIfSupplierExists(supplierId);
         verify(orderItemService).addOrderItem(orderItem);
@@ -82,12 +82,12 @@ class OrderToSupplierServiceTest {
         OrderToSupplierDTO orderToSave = sampleOrderDTO();
         Long productId = orderToSave.getOrderItems().get(0).getProduct().getId();
         when(productService.checkIfProductExists(productId)).thenReturn(true);
-        when(orderRepo.findById(orderToSave.getId())).thenReturn(Optional.of(mapOrder(orderToSave)));
+        when(orderRepo.existsById(orderToSave.getId())).thenReturn(true);
         //WHEN - //THEN
         Exception ex = assertThrows(EntityWithThisIdAlreadyExistException.class, () -> orderService.createOrder(orderToSave));
         assertThat(ex.getMessage(), is("An Order with this id already exists!"));
         verify(productService).checkIfProductExists(productId);
-        verify(orderRepo).findById(orderToSave.getId());
+        verify(orderRepo).existsById(orderToSave.getId());
     }
     @Test
     void createOrderThrowsWhenSupplierNonExitent(){
@@ -96,13 +96,13 @@ class OrderToSupplierServiceTest {
         Long productId = orderToSave.getOrderItems().get(0).getProduct().getId();
         Long supplierId = orderToSave.getSupplier().getId();
         when(productService.checkIfProductExists(productId)).thenReturn(true);
-        when(orderRepo.findById(orderToSave.getId())).thenReturn(Optional.empty());
+        when(orderRepo.existsById(orderToSave.getId())).thenReturn(false);
         when(supplierService.checkIfSupplierExists(supplierId)).thenReturn(false);
         //WHEN - //THEN
         Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.createOrder(orderToSave));
         assertThat(ex.getMessage(), is("You tried to order from a supplier that doesn't exist!"));
         verify(productService).checkIfProductExists(productId);
-        verify(orderRepo).findById(orderToSave.getId());
+        verify(orderRepo).existsById(orderToSave.getId());
         verify(supplierService).checkIfSupplierExists(supplierId);
     }
     @Test
@@ -113,13 +113,13 @@ class OrderToSupplierServiceTest {
         Long supplierId = orderToSave.getSupplier().getId() + 1;
         orderToSave.getSupplier().setId(supplierId);
         when(productService.checkIfProductExists(productId)).thenReturn(true);
-        when(orderRepo.findById(orderToSave.getId())).thenReturn(Optional.empty());
+        when(orderRepo.existsById(orderToSave.getId())).thenReturn(false);
         when(supplierService.checkIfSupplierExists(supplierId)).thenReturn(true);
         //WHEN - //THEN
         Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.createOrder(orderToSave));
         assertThat(ex.getMessage(), is("The supplier doesn't carry one or several of the items you tried to order!"));
         verify(productService).checkIfProductExists(productId);
-        verify(orderRepo).findById(orderToSave.getId());
+        verify(orderRepo).existsById(orderToSave.getId());
         verify(supplierService).checkIfSupplierExists(supplierId);
     }
 }

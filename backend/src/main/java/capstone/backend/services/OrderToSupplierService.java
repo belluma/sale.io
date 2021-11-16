@@ -35,7 +35,7 @@ public class OrderToSupplierService {
                 .toList();
     }
 
-    public OrderToSupplierDTO createOrder(OrderToSupplierDTO order) throws EntityNotFoundException {
+    public OrderToSupplierDTO createOrder(OrderToSupplierDTO order) throws EntityNotFoundException, EntityWithThisIdAlreadyExistException {
         validateOrder(order);
         order.setOrderItems(order
                 .getOrderItems()
@@ -44,6 +44,8 @@ public class OrderToSupplierService {
                 .toList());
         return mapOrder(repo.save(mapOrder(order)));
     }
+
+//    public OrderToSupplierDTO receiveOrder(OrderToSupplierDTO order) throws EntityNotFoundException, IllegalArgumentException {}
 
     private boolean checkIfProductsExistent(OrderToSupplierDTO order) {
         return !order
@@ -73,7 +75,7 @@ public class OrderToSupplierService {
         if (!checkIfProductsExistent(order)) {
             throw new IllegalArgumentException("You tried to order a product that doesn't exist!");
         }
-        if (order.getId() != null && repo.findById(order.getId()).isPresent()) {
+        if (order.getId() != null && repo.existsById(order.getId())) {
             throw new EntityWithThisIdAlreadyExistException("An Order with this id already exists!");
         }
         if (!supplierService.checkIfSupplierExists(order.getSupplier().getId())) {
