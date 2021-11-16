@@ -111,6 +111,7 @@ class OrderToSupplierControllerTest {
         //WHEN
         ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(order, headers), OrderToSupplierDTO.class);
         order.setId(response.getBody().getId());
+        order.setStatus(PENDING);
         order.getOrderItems().get(0).setId(response.getBody().getOrderItems().get(0).getId());
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));

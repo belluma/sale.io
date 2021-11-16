@@ -15,6 +15,7 @@ public class ProductTestUtils {
                  .builder()
                 .id(123L)
                 .name("product")
+                .suppliers(List.of(sampleSupplierDTO()))
                 .stockCodeSupplier("12345")
 //                .category(sampleCategory())
                 .purchasePrice(9.99F)
@@ -22,7 +23,7 @@ public class ProductTestUtils {
                 .minAmount(5)
                 .maxAmount(20)
                 .unitSize(5)
-                .suppliers(List.of(sampleSupplierDTO()))
+                .amountInStock(0)
                 .build();
     }
   public static Product sampleProductWithId() {
@@ -30,6 +31,7 @@ public class ProductTestUtils {
                  .builder()
                 .id(123L)
                 .name("product")
+                .suppliers(List.of(sampleSupplier()))
                 .stockCodeSupplier("12345")
 //                .category(sampleCategory())
                 .purchasePrice(9.99F)
@@ -37,7 +39,7 @@ public class ProductTestUtils {
                 .minAmount(5)
                 .maxAmount(20)
                 .unitSize(5)
-                .suppliers(List.of(sampleSupplier()))
+                .amountInStock(0)
                 .build();
     }
 public static ProductDTO sampleProductDTOWithDetails() {

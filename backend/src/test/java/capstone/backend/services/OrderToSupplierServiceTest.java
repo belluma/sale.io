@@ -11,10 +11,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.List;
 import java.util.Optional;
 import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
+import static capstone.backend.utils.OrderToSupplierTestUtils.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static capstone.backend.utils.OrderToSupplierTestUtils.sampleOrderPending;
-import static capstone.backend.utils.OrderToSupplierTestUtils.sampleOrderDTO;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.mockito.Mockito.*;
@@ -33,7 +32,7 @@ class OrderToSupplierServiceTest {
     void getAllOrders() {
         //GIVEN
         when(orderRepo.findAll()).thenReturn(List.of(sampleOrderPending()));
-        List<OrderToSupplierDTO> expected = List.of(sampleOrderDTO());
+        List<OrderToSupplierDTO> expected = List.of(sampleOrderDTOWithStatusPending());
         //WHEN
         List<OrderToSupplierDTO> actual = orderService.getAllOrders();
         //THEN
@@ -45,7 +44,7 @@ class OrderToSupplierServiceTest {
     void createOrder() {
         //GIVEN
         OrderToSupplier orderToSave = sampleOrderPending();
-        OrderToSupplierDTO expected = sampleOrderDTO();
+        OrderToSupplierDTO expected = sampleOrderDTOWithStatusPending();
         OrderItemDTO orderItem = expected.getOrderItems().get(0);
         Long productId = orderToSave.getOrderItems().get(0).getProduct().getId();
         Long supplierId = orderToSave.getSupplier().getId();
