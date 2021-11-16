@@ -27,7 +27,11 @@ const route = "products";
 export const validateProduct = (product: IProduct): boolean => {
     const necessaryValues = ['name', 'suppliers', 'purchasePrice', 'unitSize']
     //@ts-ignore values defined in line above must be keys of IProduct
-    return necessaryValues.every(v => !!product[v])
+    if (necessaryValues.every(v => !!product[v])) {
+        //@ts-ignore line above checks that values are not undefined
+        return product.name.length > 0 && product.suppliers.length > 0 && product.purchasePrice > 0 && product.unitSize > 0
+    }
+    return false
 }
 
 const validateBeforeSendingToBackend = ({product}: RootState) => {
