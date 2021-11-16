@@ -6,6 +6,7 @@ import capstone.backend.model.db.Product;
 import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
+import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.repo.ProductRepo;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +55,7 @@ public class ProductService {
                 .save(ProductMapper.mapProduct(product)));
     }
 
-    public void adjustAmountInStock(List<OrderItem> receivedOrder) {
+    public void adjustAmountInStock(List<OrderItemDTO> receivedOrder) {
         receivedOrder
                 .forEach(item -> {
                     Optional<Product> productToReceive = repo.findById(item.getProduct().getId());

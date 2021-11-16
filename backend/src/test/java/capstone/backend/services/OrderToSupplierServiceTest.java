@@ -11,6 +11,9 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
+
+import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
 import static capstone.backend.utils.OrderToSupplierTestUtils.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -127,16 +130,14 @@ class OrderToSupplierServiceTest {
         //GIVEN
         OrderToSupplierDTO orderToReceive = sampleOrderDTOWithStatusPending();
         OrderToSupplierDTO expected = sampleOrderDTOWithStatusReceived();
-        ProductDTO productToReceive = expected.getOrderItems().get(0).getProduct();
-        Long supplierId = orderToReceive.getSupplier().getId();
         when(orderRepo.existsById(orderToReceive.getId())).thenReturn(true);
+        when(orderRepo.findById(orderToReceive.getId())).thenReturn(Optional.of(mapOrder(expected)));
         //WHEN
         OrderToSupplierDTO actual = orderService.receiveOrder(orderToReceive);
         //THEN
         verify(orderRepo).existsById(123L);
-        verify(productService).productExists(productToReceive);
-        verify(supplierService).checkIfSupplierExists(supplierId);
-        verify(productService).editProduct(productToReceive);
+        verify(orderRepo, times(2)).findById(123L);
+        verify(productService).adjustAmountInStock(orderToReceive.getOrderItems());
         assertThat(actual, is(expected));
     }
 

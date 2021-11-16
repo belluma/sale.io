@@ -12,6 +12,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
+import static capstone.backend.model.enums.OrderStatus.RECEIVED;
 
 @Service
 public class OrderToSupplierService {
@@ -52,7 +53,9 @@ public class OrderToSupplierService {
         if (!orderExists(order)) {
             throw new EntityNotFoundException("The order you're trying to receive doesn't exist");
         }
-        return new OrderToSupplierDTO();
+        productService.adjustAmountInStock(order.getOrderItems());
+        repo.findById(order.getId()).ifPresent(receivedOrder -> receivedOrder.setStatus(RECEIVED));
+        return mapOrder(repo.findById(order.getId()).orElseThrow());
     }
 
     private boolean orderExists(OrderToSupplierDTO order) {

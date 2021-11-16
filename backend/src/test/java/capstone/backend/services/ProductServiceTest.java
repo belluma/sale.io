@@ -4,6 +4,7 @@ import capstone.backend.model.db.Product;
 import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
+import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.repo.ProductRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
+import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItemDTO;
 import static capstone.backend.utils.ProductTestUtils.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -127,7 +129,7 @@ class ProductServiceTest {
     @Test
     void adjustAmountInStock(){
         //GIVEN
-        List<OrderItem> receivedOrder = List.of(sampleOrderItem());
+        List<OrderItemDTO> receivedOrder = List.of(sampleOrderItemDTO());
         Long productId = receivedOrder.get(0).getProduct().getId();
         //WHEN
         service.adjustAmountInStock(receivedOrder);
