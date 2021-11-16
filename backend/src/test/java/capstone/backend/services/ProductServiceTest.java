@@ -131,10 +131,12 @@ class ProductServiceTest {
         //GIVEN
         List<OrderItemDTO> receivedOrder = List.of(sampleOrderItemDTO());
         Long productId = receivedOrder.get(0).getProduct().getId();
+        when(repo.getById(productId)).thenReturn(sampleProductWithId());
         //WHEN
         service.adjustAmountInStock(receivedOrder);
         //THEN
-        verify(repo).findById(productId);
+        verify(repo).getById(productId);
+        verify(repo).save(sampleProductWithId().withAmountInStock(1));
     }
 
     @Test

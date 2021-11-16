@@ -51,13 +51,15 @@ public class OrderToSupplierService {
     }
 
     public OrderToSupplierDTO receiveOrder(OrderToSupplierDTO order, OrderStatus status) throws EntityNotFoundException, IllegalArgumentException {
-        if(status != RECEIVED){
+        if (status != RECEIVED) {
             throw new IllegalArgumentException("We couldn't process your request!");
         }
         if (!orderExists(order)) {
             throw new EntityNotFoundException("The order you're trying to receive doesn't exist");
         }
-        System.err.println(order);
+        if(order.getStatus() == RECEIVED){
+            throw new IllegalArgumentException("The order you're trying to receive has already been received");
+        }
         productService.adjustAmountInStock(order.getOrderItems());
         repo.findById(order.getId()).ifPresent(receivedOrder -> receivedOrder.setStatus(RECEIVED));
         return mapOrder(repo.findById(order.getId()).orElseThrow());
@@ -67,11 +69,15 @@ public class OrderToSupplierService {
         return (order.getId() != null && repo.existsById(order.getId()));
     }
 
-    private void validateNewOrder(OrderToSupplierDTO order) throws IllegalArgumentException, EntityWithThisIdAlreadyExistException {
-        if (!checkIfProductsExistent(order)) {
-            throw new IllegalArgumentException("You tried to order a product that doesn't exist!");
+    private void productsExist(OrderToSupplierDTO order, String message) {
+        if (!productsExist(order)) {
+            throw new IllegalArgumentException(message);
         }
-        if (!supplierService.checkIfSupplierExists(order.getSupplier().getId())) {
+    }
+
+    private void validateNewOrder(OrderToSupplierDTO order) throws IllegalArgumentException, EntityWithThisIdAlreadyExistException {
+        productsExist(order, "You tried to order a product that doesn't exist!");
+        if (!supplierService.supplierExists(order.getSupplier().getId())) {
             throw new IllegalArgumentException("You tried to order from a supplier that doesn't exist!");
         }
         if (supplierDoesNotCarryProduct(order)) {
@@ -79,7 +85,7 @@ public class OrderToSupplierService {
         }
     }
 
-    private boolean checkIfProductsExistent(OrderToSupplierDTO order) {
+    private boolean productsExist(OrderToSupplierDTO order) {
         return !order
                 .getOrderItems()
                 .stream()

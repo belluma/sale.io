@@ -58,14 +58,14 @@ class OrderToSupplierServiceTest {
         when(orderRepo.existsById(orderToSave.getId())).thenReturn(false);
         when(productService.productExists(product)).thenReturn(true);
         when(orderItemService.addOrderItem(orderItem)).thenReturn(orderItem);
-        when(supplierService.checkIfSupplierExists(supplierId)).thenReturn(true);
+        when(supplierService.supplierExists(supplierId)).thenReturn(true);
         //WHEN
         OrderToSupplierDTO actual = orderService.createOrder(sampleOrderDTO());
         //THEN
         verify(orderRepo).save(orderToSave);
         verify(orderRepo).existsById(123L);
         verify(productService).productExists(product);
-        verify(supplierService).checkIfSupplierExists(supplierId);
+        verify(supplierService).supplierExists(supplierId);
         verify(orderItemService).addOrderItem(orderItem);
         assertThat(actual, is(expected));
     }
@@ -101,13 +101,13 @@ class OrderToSupplierServiceTest {
         Long supplierId = orderToSave.getSupplier().getId();
         when(productService.productExists(product)).thenReturn(true);
         when(orderRepo.existsById(orderToSave.getId())).thenReturn(false);
-        when(supplierService.checkIfSupplierExists(supplierId)).thenReturn(false);
+        when(supplierService.supplierExists(supplierId)).thenReturn(false);
         //WHEN - //THEN
         Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.createOrder(orderToSave));
         assertThat(ex.getMessage(), is("You tried to order from a supplier that doesn't exist!"));
         verify(productService).productExists(product);
         verify(orderRepo).existsById(orderToSave.getId());
-        verify(supplierService).checkIfSupplierExists(supplierId);
+        verify(supplierService).supplierExists(supplierId);
     }
 
     @Test
@@ -119,13 +119,13 @@ class OrderToSupplierServiceTest {
         orderToSave.getSupplier().setId(supplierId);
         when(productService.productExists(product)).thenReturn(true);
         when(orderRepo.existsById(orderToSave.getId())).thenReturn(false);
-        when(supplierService.checkIfSupplierExists(supplierId)).thenReturn(true);
+        when(supplierService.supplierExists(supplierId)).thenReturn(true);
         //WHEN - //THEN
         Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.createOrder(orderToSave));
         assertThat(ex.getMessage(), is("The supplier doesn't carry one or several of the items you tried to order!"));
         verify(productService).productExists(product);
         verify(orderRepo).existsById(orderToSave.getId());
-        verify(supplierService).checkIfSupplierExists(supplierId);
+        verify(supplierService).supplierExists(supplierId);
     }
 
     @Test
