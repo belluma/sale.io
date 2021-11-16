@@ -9,11 +9,14 @@ import capstone.backend.repo.OrderToSupplierRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
+
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
 import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
+import static capstone.backend.model.enums.OrderStatus.PENDING;
+import static capstone.backend.model.enums.OrderStatus.RECEIVED;
 import static capstone.backend.utils.OrderToSupplierTestUtils.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -133,7 +136,7 @@ class OrderToSupplierServiceTest {
         when(orderRepo.existsById(orderToReceive.getId())).thenReturn(true);
         when(orderRepo.findById(orderToReceive.getId())).thenReturn(Optional.of(mapOrder(expected)));
         //WHEN
-        OrderToSupplierDTO actual = orderService.receiveOrder(orderToReceive);
+        OrderToSupplierDTO actual = orderService.receiveOrder(orderToReceive, RECEIVED);
         //THEN
         verify(orderRepo).existsById(123L);
         verify(orderRepo, times(2)).findById(123L);
@@ -147,8 +150,17 @@ class OrderToSupplierServiceTest {
         OrderToSupplierDTO nonExistentOrder = sampleOrderDTOWithStatusPending();
         when(orderRepo.existsById(nonExistentOrder.getId())).thenReturn(false);
         //WHEN - //THEN
-        Exception ex = assertThrows(EntityNotFoundException.class, () -> orderService.receiveOrder(nonExistentOrder));
+        Exception ex = assertThrows(EntityNotFoundException.class, () -> orderService.receiveOrder(nonExistentOrder, RECEIVED));
         assertThat(ex.getMessage(), is("The order you're trying to receive doesn't exist"));
         verify(orderRepo).existsById(nonExistentOrder.getId());
+    }
+
+    @Test
+    void receiveOrderThrowsWehnParamWrong() {
+        //GIVEN
+        OrderToSupplierDTO order = sampleOrderDTOWithStatusPending();
+        //WHEN - //THEN
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.receiveOrder(order, PENDING));
+        assertThat(ex.getMessage(), is("We couldn't process your request!"));
     }
 }

@@ -5,6 +5,7 @@ import capstone.backend.mapper.OrderToSupplierMapper;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.model.dto.contact.SupplierDTO;
 import capstone.backend.model.dto.order.OrderToSupplierDTO;
+import capstone.backend.model.enums.OrderStatus;
 import capstone.backend.repo.OrderToSupplierRepo;
 import org.springframework.stereotype.Service;
 
@@ -49,7 +50,10 @@ public class OrderToSupplierService {
         return mapOrder(repo.save(mapOrder(order)));
     }
 
-    public OrderToSupplierDTO receiveOrder(OrderToSupplierDTO order) throws EntityNotFoundException, IllegalArgumentException {
+    public OrderToSupplierDTO receiveOrder(OrderToSupplierDTO order, OrderStatus status) throws EntityNotFoundException, IllegalArgumentException {
+        if(status != RECEIVED){
+            throw new IllegalArgumentException("We couldn't process your request!");
+        }
         if (!orderExists(order)) {
             throw new EntityNotFoundException("The order you're trying to receive doesn't exist");
         }

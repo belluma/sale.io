@@ -30,6 +30,6 @@ public class OrderToSupplierController {
 
     @PutMapping
     public OrderToSupplierDTO receiveOrder(@RequestBody(required = false) OrderToSupplierDTO order, @RequestParam Long id, @RequestParam OrderStatus status) {
-        return service.receiveOrder(order);
+        return service.receiveOrder(order, status);
     }
 }
