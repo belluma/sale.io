@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
-import {IOrdersState} from '../interfaces/IStates';
+import { IOrdersState} from '../interfaces/IStates';
 import {IResponseGetAllOrders, IResponseGetOneOrder} from "../interfaces/IApiResponse";
 import {
     getAll as apiGetAll,
@@ -10,7 +10,7 @@ import {
     del as apiDelete
 } from '../services/apiService'
 import {emptyOrder, IEditOrderItem, IOrder, IOrderItem} from "../interfaces/IOrder";
-import {handleError, invalidDataError} from "./errorHelper";
+import {handleError, invalidDataError, showSuccessMessage} from "./errorHelper";
 import {ISupplier} from "../interfaces/ISupplier";
 import {setPending, stopPendingAndHandleError} from "./errorHelper";
 
@@ -97,10 +97,10 @@ export const orderSlice = createSlice({
         chooseCurrentOrder: (state, {payload}: PayloadAction<string>) => {
             state.current = state.orders.filter(p => p.id === payload)[0];
         },
-        chooseSupplier: ({toSave}, {payload}: PayloadAction<ISupplier>) => {
+        chooseSupplier: ({toSave}: IOrdersState, {payload}: PayloadAction<ISupplier>) => {
             toSave.supplier = payload;
         },
-        addProductToOrder: ({toSave}, {payload}: PayloadAction<IOrderItem>) => {
+        addProductToOrder: ({toSave}: IOrdersState, {payload}: PayloadAction<IOrderItem>) => {
             const {orderItems} = toSave;
             const index = orderItems.map(item => item.product?.id).indexOf(payload.product?.id);
             if (index >= 0) {
@@ -111,16 +111,17 @@ export const orderSlice = createSlice({
             }
             toSave.orderItems = [...orderItems, payload]
         },
-        editItemQty: ({toSave}, {payload}: PayloadAction<IEditOrderItem>) => {
+        editItemQty: ({toSave}: IOrdersState, {payload}: PayloadAction<IEditOrderItem>) => {
             toSave.orderItems[payload.index].quantity = payload.quantity;
         }
         ,
-        removeOrderItem: ({toSave}, {payload}: PayloadAction<number>) => {
+        removeOrderItem: ({toSave}: IOrdersState, {payload}: PayloadAction<number>) => {
             toSave.orderItems.splice(payload, 1);
         },
-        handleOrderFormInput: (state, {payload}: PayloadAction<IOrder>) => {
+        handleOrderFormInput: (state: IOrdersState, {payload}: PayloadAction<IOrder>) => {
             state.toSave = payload;
         },
+        closeSuccess: (state:IOrdersState) => {state.success = false}
     },
     extraReducers: (builder => {
         builder
@@ -138,12 +139,15 @@ export const orderSlice = createSlice({
             })
             .addCase(createOrder.fulfilled, (state, action: PayloadAction<IResponseGetOneOrder>) => {
                 stopPendingAndHandleError(state, action, emptyOrder);
+                showSuccessMessage(state);
             })
             .addCase(editOrder.fulfilled, (state, action: PayloadAction<IResponseGetOneOrder>) => {
                 stopPendingAndHandleError(state, action, emptyOrder);
+                showSuccessMessage(state);
             })
             .addCase(deleteOrder.fulfilled, (state, action: PayloadAction<IResponseGetOneOrder>) => {
                 stopPendingAndHandleError(state, action, emptyOrder);
+                showSuccessMessage(state);
             })
     })
 })
@@ -154,7 +158,8 @@ export const {
     addProductToOrder,
     chooseSupplier,
     removeOrderItem,
-    editItemQty
+    editItemQty,
+    closeSuccess
 } = orderSlice.actions;
 
 export const selectOrders = (state: RootState) => state.order.orders;

@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
-import {ISuppliersState} from '../interfaces/IStates';
+import { ISuppliersState} from '../interfaces/IStates';
 import {IResponseGetAllSuppliers, IResponseGetOneSupplier} from "../interfaces/IApiResponse";
 import {
     getAll as apiGetAll,
@@ -10,7 +10,7 @@ import {
     del as apiDelete
 } from '../services/apiService'
 import {emptySupplier, ISupplier} from "../interfaces/ISupplier";
-import {handleError, invalidDataError} from './errorHelper';
+import {handleError, invalidDataError, showSuccessMessage} from './errorHelper';
 import {setPending, stopPendingAndHandleError} from "./errorHelper";
 
 
@@ -97,6 +97,7 @@ export const supplierSlice = createSlice({
         handleSupplierFormInput: (state, {payload}: PayloadAction<ISupplier>) => {
             state.toSave = payload;
         },
+        closeSuccess: (state:ISuppliersState) => {state.success = false}
     },
     extraReducers: (builder => {
         builder
@@ -114,17 +115,20 @@ export const supplierSlice = createSlice({
             })
             .addCase(createSupplier.fulfilled, (state: ISuppliersState, action: PayloadAction<IResponseGetOneSupplier>) => {
                 stopPendingAndHandleError(state, action, emptySupplier);
+                showSuccessMessage(state);
             })
             .addCase(editSupplier.fulfilled, (state: ISuppliersState, action: PayloadAction<IResponseGetOneSupplier>) => {
                 stopPendingAndHandleError(state, action, emptySupplier);
+                showSuccessMessage(state);
             })
             .addCase(deleteSupplier.fulfilled, (state: ISuppliersState, action: PayloadAction<IResponseGetOneSupplier>) => {
                 stopPendingAndHandleError(state, action, emptySupplier);
+                showSuccessMessage(state);
             })
     })
 })
 
-export const {chooseCurrentSupplier, handleSupplierFormInput} = supplierSlice.actions;
+export const {chooseCurrentSupplier, handleSupplierFormInput, closeSuccess} = supplierSlice.actions;
 
 export const selectSuppliers = (state: RootState) => state.supplier.suppliers;
 export const selectCurrentSupplier = (state: RootState) => state.supplier.current;

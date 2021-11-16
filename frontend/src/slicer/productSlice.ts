@@ -10,9 +10,8 @@ import {
     del as apiDelete
 } from '../services/apiService'
 import {emptyProduct, IProduct} from "../interfaces/IProduct";
-import {handleError, invalidDataError} from "./errorHelper";
 import {hideDetails} from "./detailsSlice";
-import {setPending, stopPendingAndHandleError} from "./errorHelper";
+import {setPending, stopPendingAndHandleError, handleError, invalidDataError, showSuccessMessage} from "./errorHelper";
 
 
 const initialState: IProductsState = {
@@ -105,8 +104,8 @@ export const productSlice = createSlice({
         },
         handleProductFormInput: (state, {payload}: PayloadAction<IProduct>) => {
             state.toSave = payload;
-
         },
+        closeSuccess: (state:IProductsState) => {state.success = false}
     },
     extraReducers: (builder => {
         builder
@@ -124,17 +123,20 @@ export const productSlice = createSlice({
             })
             .addCase(createProduct.fulfilled, (state, action: PayloadAction<IResponseGetOneProduct>) => {
                 stopPendingAndHandleError(state, action, emptyProduct);
+                showSuccessMessage(state);
             })
             .addCase(editProduct.fulfilled, (state, action: PayloadAction<IResponseGetOneProduct>) => {
                 stopPendingAndHandleError(state, action, emptyProduct);
+                showSuccessMessage(state);
             })
             .addCase(deleteProduct.fulfilled, (state, action: PayloadAction<IResponseGetOneProduct>) => {
                 stopPendingAndHandleError(state, action, emptyProduct);
+                showSuccessMessage(state);
             })
     })
 })
 
-export const {chooseCurrentProduct, handleProductFormInput} = productSlice.actions;
+export const {chooseCurrentProduct, handleProductFormInput, closeSuccess} = productSlice.actions;
 
 export const selectProducts = (state: RootState) => state.product.products;
 export const selectCurrentProduct = (state: RootState) => state.product.current;

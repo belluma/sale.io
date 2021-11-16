@@ -16,7 +16,7 @@ export interface IError {
 
 export const handleError = (status: number, statusText: string, dispatch: Dispatch) => {
     if (status !== 200) {
-        dispatch(setDetailData(parseErrorMessage({status, statusText, data:""})))
+        dispatch(setDetailData(parseErrorMessage({status, statusText, data: ""})))
         dispatch(showDetails())
     }
 }
@@ -33,11 +33,13 @@ type ToSave = IOrder | IProduct | IEmployee | ISupplier;
 export const setPending = (state: States) => {
     state.pending = true;
 }
-export const stopPendingAndHandleError = (state:States, action:Actions, emptyItem: ToSave) => {
+export const stopPendingAndHandleError = (state: States, action: Actions, emptyItem: ToSave) => {
     state.pending = false;
-    state.success = true;
-    if(action.payload.status === 200) state.toSave = emptyItem;
+    if (action.payload.status === 200) state.toSave = emptyItem;
     return action.payload.status !== 200;
+}
+export const showSuccessMessage = (state: States) => {
+    state.success = true;
 }
 
 

@@ -35,7 +35,8 @@ export const employeeSlice = createSlice({
             state.current = employee
             state.currentEmployeeCredentials = extractCredentials(employee);
         },
-        toBeReplaced: (state) => {console.log("I have to stay here until all view are implemented")}
+        toBeReplaced: (state) => {console.log("I have to stay here until all view are implemented")},
+        closeSuccess: (state:IEmployeeState) => {state.success = false}
     },
     extraReducers: (builder => {
         builder.addCase(getEmployees.pending,setPending)
@@ -47,7 +48,7 @@ export const employeeSlice = createSlice({
 })
 
 
-export const {chooseCurrentEmployee, toBeReplaced} = employeeSlice.actions;
+export const {chooseCurrentEmployee, toBeReplaced, closeSuccess} = employeeSlice.actions;
 
 export const selectEmployees = (state: RootState) => state.employee.employees;
 export const selectCurrentEmployee = (state: RootState) => state.employee.current;
