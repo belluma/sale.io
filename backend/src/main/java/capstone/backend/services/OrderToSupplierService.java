@@ -57,6 +57,7 @@ public class OrderToSupplierService {
         if (!orderExists(order)) {
             throw new EntityNotFoundException("The order you're trying to receive doesn't exist");
         }
+        System.err.println(order);
         productService.adjustAmountInStock(order.getOrderItems());
         repo.findById(order.getId()).ifPresent(receivedOrder -> receivedOrder.setStatus(RECEIVED));
         return mapOrder(repo.findById(order.getId()).orElseThrow());

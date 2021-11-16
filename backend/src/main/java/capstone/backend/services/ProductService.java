@@ -58,8 +58,11 @@ public class ProductService {
     public void adjustAmountInStock(List<OrderItemDTO> receivedOrder) {
         receivedOrder
                 .forEach(item -> {
-                    Optional<Product> productToReceive = repo.findById(item.getProduct().getId());
-                    productToReceive.ifPresent(product -> product.setAmountInStock(product.getAmountInStock() + item.getProduct().getAmountInStock()));
+                    System.err.println(item);
+                    Product productToReceive = repo.getById(item.getProduct().getId());
+                    int newAmount = item.getQuantity() + productToReceive.getAmountInStock();
+                    productToReceive.setAmountInStock(newAmount);
+                    repo.save(productToReceive);
                 });
     }
 

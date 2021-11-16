@@ -15,6 +15,8 @@ import java.util.List;
 @Entity
 @SuperBuilder
 @NoArgsConstructor
+@AllArgsConstructor
+@With
 @Table(name = "supplier_orders")
 public class OrderToSupplier extends Order {
 
