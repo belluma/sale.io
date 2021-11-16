@@ -4,10 +4,10 @@ package capstone.backend.services;
 import capstone.backend.mapper.ProductMapper;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
-import capstone.backend.exception.model.EntityNotFoundException;
 import capstone.backend.repo.ProductRepo;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service

@@ -1,12 +1,12 @@
 package capstone.backend.services;
 
-import capstone.backend.exception.model.EntityNotFoundException;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.repo.OrderItemRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 

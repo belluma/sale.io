@@ -1,6 +1,5 @@
 package capstone.backend.services;
 
-import capstone.backend.exception.model.EntityNotFoundException;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.mapper.OrderToSupplierMapper;
 import capstone.backend.model.dto.ProductDTO;
@@ -9,6 +8,7 @@ import capstone.backend.model.dto.order.OrderToSupplierDTO;
 import capstone.backend.repo.OrderToSupplierRepo;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
@@ -36,10 +36,10 @@ public class OrderToSupplierService {
     }
 
     public OrderToSupplierDTO createOrder(OrderToSupplierDTO order) throws EntityNotFoundException, EntityWithThisIdAlreadyExistException {
-       if(orderExists(order)){
-           throw new EntityWithThisIdAlreadyExistException("An Order with this id already exists!");
-       }
-        validateOrder(order);
+        if (orderExists(order)) {
+            throw new EntityWithThisIdAlreadyExistException("An Order with this id already exists!");
+        }
+        validateNewOrder(order);
         order.setOrderItems(order
                 .getOrderItems()
                 .stream()
@@ -48,12 +48,18 @@ public class OrderToSupplierService {
         return mapOrder(repo.save(mapOrder(order)));
     }
 
-    //    public OrderToSupplierDTO receiveOrder(OrderToSupplierDTO order) throws EntityNotFoundException, IllegalArgumentException {}
+    public OrderToSupplierDTO receiveOrder(OrderToSupplierDTO order) throws EntityNotFoundException, IllegalArgumentException {
+        if (!orderExists(order)) {
+            throw new EntityNotFoundException("The order you're trying to receive doesn't exist");
+        }
+        return new OrderToSupplierDTO();
+    }
+
     private boolean orderExists(OrderToSupplierDTO order) {
         return (order.getId() != null && repo.existsById(order.getId()));
     }
 
-    private void validateOrder(OrderToSupplierDTO order) throws IllegalArgumentException, EntityWithThisIdAlreadyExistException {
+    private void validateNewOrder(OrderToSupplierDTO order) throws IllegalArgumentException, EntityWithThisIdAlreadyExistException {
         if (!checkIfProductsExistent(order)) {
             throw new IllegalArgumentException("You tried to order a product that doesn't exist!");
         }

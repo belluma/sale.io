@@ -1,7 +1,6 @@
 package capstone.backend.exception;
 
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
-import capstone.backend.exception.model.EntityNotFoundException;
 import capstone.backend.security.exceptions.UserAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +13,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.naming.AuthenticationException;
+import javax.persistence.EntityNotFoundException;
 import java.nio.file.AccessDeniedException;
 import java.util.NoSuchElementException;
 

@@ -3,12 +3,12 @@ package capstone.backend.services;
 import capstone.backend.model.db.Product;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
-import capstone.backend.exception.model.EntityNotFoundException;
 import capstone.backend.repo.ProductRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
