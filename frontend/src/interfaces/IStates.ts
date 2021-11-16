@@ -21,7 +21,7 @@ export const initialDetailsData:IDetailsData = {
     picture: "",
     id: "",
     alt: "",
-    model: Views.NEW,
+    model: Views.NONE,
 }
 
 interface IBaseState {

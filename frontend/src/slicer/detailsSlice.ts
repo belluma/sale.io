@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
-import {IDetailsData} from "../interfaces/IThumbnailData";
+import {IDetailsData, Model, Views} from "../interfaces/IThumbnailData";
 import {IDetailsState, initialDetailsData} from "../interfaces/IStates";
 
 
@@ -17,7 +17,7 @@ export const detailsSlice = createSlice({
         setDetailData: (state, action: PayloadAction<IDetailsData>) => {
             state.detailsData = action.payload
         },
-        resetDetails: (state) => {
+        resetDetails: (state, ) => {
             state.detailsData = initialDetailsData
         },
         showDetails: (state) => {

@@ -20,6 +20,7 @@ export enum Views {
     CUSTOMER = "customer",
     SUPPLIER = "supplier",
     ORDER = "order",
+    NONE = "none",
 }
 
 export interface INewItem {

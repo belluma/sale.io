@@ -12,7 +12,6 @@ import ErrorMessage from "../../../../messages/error-message/ErrorMessage";
 //interface imports
 
 import {Model} from "../../../../../interfaces/IThumbnailData";
-import SuccessMessage from "../../../../messages/success-message/SuccessMessage";
 
 type Props = {
     fullScreen: boolean,
@@ -34,10 +33,11 @@ function DetailsCard({fullScreen, handleClose}: Props) {
         supplier: (<div/>),
         order: <div/>,
         error: <ErrorMessage statusText={subtitle}/>,
-        success: <SuccessMessage />
+        none:(<></>),
     }
+
     return (
-        <Card sx={{width: {sm: .99}, height:{sm:0.5}}}>
+        <Card sx={{width: {sm: .99}, height: {sm: 0.5}}}>
             <CardHeader title={title} subtitle={subtitle} align="center"/>
             <Divider/>
             {model !== "new" && <CardMedia

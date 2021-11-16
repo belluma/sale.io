@@ -10,7 +10,8 @@ export const images = {
     supplier: '',
     order: '',
     error:'/images/error.svg',
-    success: ''
+    success: '',
+    none: ''
 }
 export const newItemData = {
     picture:"images/add.svg",
