@@ -19,6 +19,7 @@ const initialState: IOrdersState = {
     orders: [],
     current: undefined,
     pending: false,
+    success:false,
     toSave: emptyOrder,
 }
 const route = "orders_suppliers";

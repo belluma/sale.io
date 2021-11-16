@@ -5,14 +5,6 @@ import {ICustomer} from "./ICustomer";
 import {ISupplier} from "./ISupplier";
 import {IOrder} from "./IOrder";
 
-export interface IEmployeeState {
-    employees: IEmployee[],
-    current: IEmployee | undefined,
-    currentEmployeeCredentials: IUserCredentials | undefined,
-    pending: boolean,
-    toSave: IEmployee
-}
-
 export interface IAuthState {
     loggedIn: boolean,
     token: string,
@@ -33,7 +25,15 @@ export const initialDetailsData:IDetailsData = {
 }
 
 interface IBaseState {
-    pending:boolean
+    pending:boolean,
+    success: boolean,
+}
+
+export interface IEmployeeState extends IBaseState{
+    employees: IEmployee[],
+    current: IEmployee | undefined,
+    currentEmployeeCredentials: IUserCredentials | undefined,
+    toSave: IEmployee
 }
 
 export interface IProductsState extends IBaseState {

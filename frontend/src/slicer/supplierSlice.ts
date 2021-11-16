@@ -19,6 +19,7 @@ const initialState: ISuppliersState = {
     current: undefined,
     toSave: emptySupplier,
     pending: false,
+    success: false,
 }
 const route = "suppliers";
 export const validateSupplier = (supplier: ISupplier): boolean => {

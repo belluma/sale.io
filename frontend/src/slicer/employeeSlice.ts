@@ -12,6 +12,7 @@ const initialState: IEmployeeState = {
     current: undefined,
     currentEmployeeCredentials: undefined,
     pending: false,
+    success: false,
     toSave: emptyEmployee,
 }
 

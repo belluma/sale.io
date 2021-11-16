@@ -19,7 +19,8 @@ const initialState: IProductsState = {
     products: [],
     current: undefined,
     pending: false,
-    toSave: emptyProduct,
+    success: false,
+    toSave: emptyProduct
 }
 const route = "products";
 
