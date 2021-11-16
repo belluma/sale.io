@@ -44,7 +44,7 @@ public class ProductService {
     }
 
     public ProductDTO editProduct(ProductDTO product) {
-        if (product.getId() == null || repo.existsById(product.getId())){
+        if (product.getId() == null || !repo.existsById(product.getId())){
             throw new EntityNotFoundException(String.format("Couldn't find a product with the id %d", product.getId()));
         }
         return ProductMapper.mapProductWithDetails(repo

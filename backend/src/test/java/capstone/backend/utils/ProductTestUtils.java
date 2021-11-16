@@ -46,6 +46,7 @@ public static ProductDTO sampleProductDTOWithDetails() {
         return ProductDTO
                  .builder()
                 .name("product")
+                .suppliers(List.of(sampleSupplierDTO()))
                 .stockCodeSupplier("12345")
 //                .category(sampleCategory())
                 .purchasePrice(9.99F)
@@ -53,13 +54,13 @@ public static ProductDTO sampleProductDTOWithDetails() {
                 .minAmount(5)
                 .maxAmount(20)
                 .unitSize(5)
-//                .suppliers(List.of(sampleSupplier()))
                 .build();
     }
   public static Product sampleProduct() {
         return Product
                  .builder()
                 .name("product")
+                .suppliers(List.of(sampleSupplier()))
                 .stockCodeSupplier("12345")
 //                .category(sampleCategory())
                 .purchasePrice(9.99F)
@@ -67,7 +68,6 @@ public static ProductDTO sampleProductDTOWithDetails() {
                 .minAmount(5)
                 .maxAmount(20)
                 .unitSize(5)
-//                .suppliers(List.of(sampleSupplier()))
                 .build();
     }
 }
