@@ -36,9 +36,7 @@ public class ProductService {
     }
 
     public ProductDTO createProduct(ProductDTO product) throws EntityWithThisIdAlreadyExistException {
-        if (product.getId() != null && repo
-                .findById(product.getId())
-                .isPresent()) {
+        if (product.getId() != null && repo.existsById(product.getId())) {
             throw new EntityWithThisIdAlreadyExistException(String.format("Product %s already has the id %d", product.getName(), product.getId()));
         }
         return ProductMapper.mapProductWithDetails(repo.
@@ -46,9 +44,7 @@ public class ProductService {
     }
 
     public ProductDTO editProduct(ProductDTO product) {
-        if (repo
-                .findById(product.getId())
-                .isEmpty()) {
+        if (product.getId() == null || repo.existsById(product.getId())){
             throw new EntityNotFoundException(String.format("Couldn't find a product with the id %d", product.getId()));
         }
         return ProductMapper.mapProductWithDetails(repo
