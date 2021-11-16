@@ -1,6 +1,7 @@
 package capstone.backend.model.db.order;
 
 import capstone.backend.model.db.contact.Supplier;
+import capstone.backend.model.enums.OrderStatus;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -17,8 +18,8 @@ import java.util.List;
 @Table(name = "supplier_orders")
 public class OrderToSupplier extends Order {
 
-    public OrderToSupplier(Long id, List<OrderItem> orderItems, Supplier supplier) {
-        super(id, orderItems);
+    public OrderToSupplier(Long id, List<OrderItem> orderItems, OrderStatus status, Supplier supplier) {
+        super(id, orderItems, status);
         this.supplier = supplier;
     }
 

@@ -15,6 +15,11 @@ import java.util.List;
 @AllArgsConstructor
 public abstract class OrderDTO {
 
+    public OrderDTO (Long id, List<OrderItemDTO> orderItems){
+        this.id = id;
+        this.orderItems = orderItems;
+    }
+
     private Long id;
     private List<OrderItemDTO> orderItems;
     private OrderStatus status;

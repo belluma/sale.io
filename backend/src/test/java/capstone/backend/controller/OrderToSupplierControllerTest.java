@@ -1,11 +1,9 @@
 package capstone.backend.controller;
 
-import capstone.backend.exception.GlobalExceptionHandler;
 import capstone.backend.model.db.Product;
 import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.db.order.OrderToSupplier;
-import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToSupplierDTO;
 import capstone.backend.repo.OrderItemRepo;
 import capstone.backend.repo.OrderToSupplierRepo;
@@ -26,14 +24,12 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
 import static capstone.backend.mapper.SupplierMapper.mapSupplier;
+import static capstone.backend.model.enums.OrderStatus.PENDING;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
-import static capstone.backend.utils.OrderToSupplierTestUtils.sampleOrder;
-import static capstone.backend.utils.OrderToSupplierTestUtils.sampleOrderDTO;
 import static capstone.backend.utils.ProductTestUtils.sampleProduct;
 import static capstone.backend.utils.ProductTestUtils.sampleProductWithId;
 import static capstone.backend.utils.SupplierTestUtils.sampleSupplier;
@@ -94,7 +90,7 @@ class OrderToSupplierControllerTest {
         Supplier supplier = supplierRepo.save(sampleSupplier());
         Product product = productRepo.save(sampleProduct().withSuppliers(List.of(supplier)));
         OrderItem orderItem = orderItemRepo.save(sampleOrderItem().withProduct(product));
-        OrderToSupplier order = orderRepo.save(new OrderToSupplier(1L, List.of(orderItem), supplier));
+        OrderToSupplier order = orderRepo.save(new OrderToSupplier(1L, List.of(orderItem), PENDING,supplier ));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<OrderToSupplierDTO[]> response = restTemplate.exchange(BASEURL, HttpMethod.GET, new HttpEntity<>(headers), OrderToSupplierDTO[].class);
@@ -161,7 +157,7 @@ class OrderToSupplierControllerTest {
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
         OrderItem firstOrderItem = orderItemRepo.save(new OrderItem(product, 1));
         OrderItem orderItem = new OrderItem(product, 1);
-        OrderToSupplier firstOrder = orderRepo.save(new OrderToSupplier((1L), List.of(firstOrderItem), sampleSupplier));
+        OrderToSupplier firstOrder = orderRepo.save(new OrderToSupplier((1L), List.of(firstOrderItem),PENDING, sampleSupplier));
         OrderToSupplierDTO order = new OrderToSupplierDTO(firstOrder.getId(), List.of(mapOrderItem(orderItem)),mapSupplier(sampleSupplier) );
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN

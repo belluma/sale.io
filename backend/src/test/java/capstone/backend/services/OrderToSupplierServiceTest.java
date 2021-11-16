@@ -13,7 +13,7 @@ import java.util.Optional;
 import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static capstone.backend.utils.OrderToSupplierTestUtils.sampleOrder;
+import static capstone.backend.utils.OrderToSupplierTestUtils.sampleOrderPending;
 import static capstone.backend.utils.OrderToSupplierTestUtils.sampleOrderDTO;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
@@ -32,7 +32,7 @@ class OrderToSupplierServiceTest {
     @Test
     void getAllOrders() {
         //GIVEN
-        when(orderRepo.findAll()).thenReturn(List.of(sampleOrder()));
+        when(orderRepo.findAll()).thenReturn(List.of(sampleOrderPending()));
         List<OrderToSupplierDTO> expected = List.of(sampleOrderDTO());
         //WHEN
         List<OrderToSupplierDTO> actual = orderService.getAllOrders();
@@ -44,7 +44,7 @@ class OrderToSupplierServiceTest {
     @Test
     void createOrder() {
         //GIVEN
-        OrderToSupplier orderToSave = sampleOrder();
+        OrderToSupplier orderToSave = sampleOrderPending();
         OrderToSupplierDTO expected = sampleOrderDTO();
         OrderItemDTO orderItem = expected.getOrderItems().get(0);
         Long productId = orderToSave.getOrderItems().get(0).getProduct().getId();
