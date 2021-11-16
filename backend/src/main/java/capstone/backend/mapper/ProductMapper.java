@@ -21,6 +21,7 @@ public class ProductMapper {
                 .builder()
                 .id(product.getId())
                 .name(product.getName())
+                .suppliers(mapSupplierList(product))
                 .stockCodeSupplier(product.getStockCodeSupplier())
                 .category(product.getCategory())
                 .purchasePrice(product.getPurchasePrice())
@@ -28,7 +29,7 @@ public class ProductMapper {
                 .minAmount(product.getMinAmount())
                 .maxAmount(product.getMaxAmount())
                 .unitSize(product.getUnitSize())
-                .suppliers(mapSupplierList(product))
+                .amountInStock(product.getAmountInStock())
                 .build();
     }
 
@@ -37,6 +38,7 @@ public class ProductMapper {
                 .builder()
                 .id(product.getId())
                 .name(product.getName())
+                .suppliers(mapSupplierList(product))
                 .stockCodeSupplier(product.getStockCodeSupplier())
                 .category(product.getCategory())
                 .purchasePrice(product.getPurchasePrice())
@@ -44,7 +46,7 @@ public class ProductMapper {
                 .minAmount(product.getMinAmount())
                 .maxAmount(product.getMaxAmount())
                 .unitSize(product.getUnitSize())
-                .suppliers(mapSupplierList(product))
+                .amountInStock(product.getAmountInStock())
                 .build();
     }
 

@@ -37,9 +37,7 @@ public class Product {
     private int minAmount;
     private int maxAmount;
     private int unitSize;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @ToString.Exclude
-    private Set<OrderItem> orderQuantity;
+    private int amountInStock;
 
 
     @Override
