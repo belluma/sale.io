@@ -87,9 +87,7 @@ public class OrderToSupplierService {
         return order
                 .getOrderItems()
                 .stream()
-                .map(item -> extractSupplierIds(item.getProduct()).contains(order.getSupplier().getId()))
-                .toList()
-                .contains(false);
+                .anyMatch(item -> !extractSupplierIds(item.getProduct()).contains(order.getSupplier().getId()));
     }
 
     private List<Long> extractSupplierIds(ProductDTO product) {

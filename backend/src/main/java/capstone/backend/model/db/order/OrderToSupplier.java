@@ -18,14 +18,14 @@ import java.util.List;
 @Table(name = "supplier_orders")
 public class OrderToSupplier extends Order {
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @ToString.Exclude
+    private Supplier supplier;
+
     public OrderToSupplier(Long id, List<OrderItem> orderItems, OrderStatus status, Supplier supplier) {
         super(id, orderItems, status);
         this.supplier = supplier;
     }
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @ToString.Exclude
-    private Supplier supplier;
 
     public Supplier getSupplier() {
         return this.supplier;
