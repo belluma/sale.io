@@ -9,7 +9,7 @@ import {chooseCurrentSupplier} from "../../../../slicer/supplierSlice";
 import {chooseCurrentOrder} from "../../../../slicer/orderSlice";
 //component imports
 
-import {Card, CardActions, CardContent, CardHeader, CardMedia} from "@mui/material";
+import {Card, CardActions, CardContent, CardHeader, CardMedia, Divider} from "@mui/material";
 //interface imports
 import {IThumbnailData, Views} from '../../../../interfaces/IThumbnailData';
 
@@ -35,7 +35,7 @@ function Thumbnail({data}: Props) {
         dispatch(showDetails());
         if (model !== Views.NEW && model !== Views.ERROR && id) dispatch(selectors[model](id))
     }
-
+console.log(picture)
     return (
         <Card onClick={onClick} sx={{height: 500, width: 345}}>
             <CardHeader title={title} subtitle={subtitle}/>
@@ -45,7 +45,10 @@ function Thumbnail({data}: Props) {
                 image={picture || images[model]}
                 alt={alt}
             />
+
+            {contentText && <Divider/>}
             {contentText && <CardContent>{contentText}</CardContent>}
+            {footerText && <Divider/>}
             {footerText && <CardActions>{footerText}</CardActions>}
         </Card>
     )

@@ -11,7 +11,7 @@ export interface IOrderItem {
 export interface IOrder extends IModel {
     orderItems: IOrderItem[],
     supplier?: ISupplier,
-    orderStatus?: OrderStatus
+    status?: OrderStatus
 }
 
 export interface IEditOrderItem {

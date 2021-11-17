@@ -3,6 +3,8 @@ import {IProduct} from "./IProduct";
 import {ISupplier} from "./ISupplier";
 import {IOrder} from "./IOrder";
 import {IContact} from "./IContact";
+import {getTotal} from "../components/forms/order/helper";
+import OrderPreview from "../components/forms/order/preview/OrderPreview";
 
 export enum Model {
     EMPLOYEE = "employee",
@@ -75,13 +77,13 @@ export const parseProductToThumbnailData = ({id, name, picture,}: IProduct): IDe
         model: Views.PRODUCT
     }}
 
-    export const parseOrderToThumbnailData = ({supplier, id, orderItems}:IOrder):IDetailsData => {
+    export const parseOrderToThumbnailData = ({supplier, id, orderItems, status}:IOrder):IDetailsData => {
         return{
             title: `order from ${supplier && parseName(supplier)}`,
-            picture: '',
+            picture: `/images/${status}.png`,
             id: id?.toString() || "",
             model: Views.ORDER,
             contentText: `${orderItems.length} items`,
-            footerText:''
+            footerText: `Total: €${orderItems.reduce(getTotal, 0).toFixed(2)}`
         }
 }

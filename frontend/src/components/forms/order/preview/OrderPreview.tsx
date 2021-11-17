@@ -13,8 +13,8 @@ import Grid from '@material-ui/core/Grid';
 
 type Props = {};
 
-function Preview(props: Props) {
-    const order = useAppSelector(selectOrderToSave);
+function OrderPreview(props: Props) {
+    const order =  useAppSelector(selectOrderToSave);
     const {orderItems, supplier} = order;
     const productsToOrder = orderItems.map((item, i) => {
         return <OrderItem key={i} item={item} index={i}/>
@@ -42,4 +42,4 @@ function Preview(props: Props) {
     )
 }
 
-export default Preview;
+export default OrderPreview;

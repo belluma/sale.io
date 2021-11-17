@@ -11,7 +11,7 @@ import CustomSelect from "../_elements/custom-select/CustomSelect";
 import CustomNumber from "../_elements/custom-number/CustomNumber";
 
 import {Button, Grid} from "@mui/material";
-import Preview from "./preview/Preview";
+import OrderPreview from "./preview/OrderPreview";
 
 //interface imports
 
@@ -77,7 +77,7 @@ function Order(props: Props) {
             <Grid item xs={2}>
                 <Button disabled={!validateProduct} onClick={addProduct}>Add</Button>
             </Grid>
-            {selectedSupplierId && <Preview/>}
+            {selectedSupplierId && <OrderPreview/>}
         </Grid>
     )
 }
