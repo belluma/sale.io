@@ -67,7 +67,6 @@ export const createProduct = createAsyncThunk<IResponseGetOneProduct, void, { st
         const token = getState().authentication.token
         const {data, status, statusText} = await apiCreate(route, token, getState().product.toSave);
         handleError(status, statusText, dispatch);
-        dispatch(hideDetails());
         return {data, status, statusText}
     }
 )

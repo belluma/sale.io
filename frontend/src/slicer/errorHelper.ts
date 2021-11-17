@@ -1,5 +1,5 @@
 import {Dispatch} from "@reduxjs/toolkit";
-import {setDetailData, showDetails} from "./detailsSlice";
+import {hideDetails, setDetailData, showDetails} from "./detailsSlice";
 import {IDetailsData, Views} from "../interfaces/IThumbnailData";
 import {IOrder} from "../interfaces/IOrder";
 import {IProduct} from "../interfaces/IProduct";
@@ -18,7 +18,7 @@ export const handleError = (status: number, statusText: string, dispatch: Dispat
     if (status !== 200) {
         dispatch(setDetailData(parseErrorMessage({status, statusText, data: ""})))
         dispatch(showDetails())
-    }
+    }else (dispatch(hideDetails()))
 }
 
 const parseErrorMessage = ({statusText}: IError): IDetailsData => {
