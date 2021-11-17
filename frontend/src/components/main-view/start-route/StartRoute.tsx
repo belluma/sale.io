@@ -1,5 +1,5 @@
 import React from 'react'
-import {selectEmployees, selectPending} from "../../../slicer/employeeSlice";
+import {selectEmployees} from "../../../slicer/employeeSlice";
 import {useAppSelector} from "../../../app/hooks";
 
 //component imports
@@ -11,10 +11,8 @@ type Props = {};
 
 function StartRoute(props: Props){
 
-const pending = useAppSelector(selectPending);
 const employees = useAppSelector(selectEmployees);
-const route = employees?.length ? <Redirect to={"/start"} />: <Redirect to={"/signup"}/>
-    return pending ? (<div>spinner</div>) : route
+    return employees?.length ? <Redirect to={"/start"} />: <Redirect to={"/signup"}/>
 }
 
 export default StartRoute;

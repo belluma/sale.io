@@ -1,6 +1,6 @@
-import {Views} from "../../interfaces/IThumbnailData";
+import {Model, Views} from "../../interfaces/IThumbnailData";
 
-export const views = (Object.keys(Views) as Array<keyof typeof Views>).slice(2)
+export const views = (Object.keys(Model) as Array<keyof typeof Model>)
 export const images = {
     new: '',
     login: '/images/profile.svg',
@@ -8,7 +8,9 @@ export const images = {
     product: '',
     customer: '',
     supplier: '',
-    order: ''
+    order: '',
+    error:'/images/error.svg',
+    success: ''
 }
 export const newItemData = {
     picture:"images/add.svg",

@@ -12,7 +12,9 @@ export const getAll = (model: string, token: string) => {
     }).then(response => {
         return response
     })
-        .catch(err => parseError(err))
+        .catch(err => {
+            return parseError(err)
+        })
 }
 
 export const getOne = (model: string, token: string, id: string) => {

@@ -4,23 +4,23 @@ import {Weekdays} from "../../interfaces/weekdays";
 import {IProduct} from "../../interfaces/IProduct";
 
 export const mapSupplierToSelectData = (supplier:ISupplier[]):Option[] =>{
-    return supplier.map(s => {
-        const id = s.id ? s.id : '';
-        const firstName = s.firstName ? s.firstName : '';
-        const lastName = s.lastName ? s.lastName : '';
+    return supplier.map(supplier => {
+        const id = supplier.id ? supplier.id : '';
+        const firstName = supplier.firstName ? supplier.firstName : '';
+        const lastName = supplier.lastName ? supplier.lastName : '';
         return {id, name: `${firstName} ${lastName}`};
     });
 }
 export const mapWeekdaysToSelectData = ():Option[] =>{
-    return Object.values(Weekdays).map((d,i) => {
-        return {id: d, name: d};
+    return Object.keys(Weekdays).map((day) => {
+        return {id: day, name: day};
     });
 }
 
 export const mapProductsToSelectData = (products: IProduct[]):Option[] => {
-    return products.map(p => {
-        const id = p.id ? p.id : '';
-        const name = p.name ? p.name : '';
+    return products.map(product => {
+        const id = product.id ? product.id : '';
+        const name = product.name ? product.name : '';
         return {id, name};
     })
 }

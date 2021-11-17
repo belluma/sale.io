@@ -2,6 +2,8 @@ import React, {useEffect, useState } from 'react'
 //component imports
 import { AppBar, Slide, Toolbar, Typography, useScrollTrigger } from '@mui/material';
 import HeaderButtons from "./header-buttons/HeaderButtons";
+import {selectShowDetails} from "../../slicer/detailsSlice";
+import {useAppSelector} from "../../app/hooks";
 
 //interface imports
 
@@ -13,6 +15,7 @@ type Props = {
 export default Header;
 
 function Header(props: Props){
+    const showDetails = useAppSelector(selectShowDetails);
     const [scrollTrigger, setScrollTrigger] = useState<boolean>(window.innerWidth < 900);
     const handleResize = () => {
         if (window.innerWidth < 900 && !scrollTrigger) setScrollTrigger(true)
@@ -23,8 +26,9 @@ function Header(props: Props){
     })
     function HideOnScroll({children}: Props) {
         const trigger = useScrollTrigger({});
+        const show = showDetails ? false : !trigger;
         return (
-            <Slide appear={false} direction="down" in={!scrollTrigger ? true : !trigger}>
+            <Slide appear={false} direction="down" in={!scrollTrigger ? true : show}>
                 {children}
             </Slide>
         );

@@ -25,3 +25,12 @@ export const initialCredentials: IUserCredentials = {
     password: "",
     username: ""
 }
+
+export const emptyEmployee:IEmployee = {
+    firstName: "",
+    lastName: "",
+    phone: "",
+    email: "",
+    password: "",
+    username: "",
+}

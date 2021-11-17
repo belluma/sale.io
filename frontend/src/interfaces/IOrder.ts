@@ -8,11 +8,15 @@ export interface IOrderItem {
 }
 
 export interface IOrder extends IModel {
-    items: IOrderItem[],
+    orderItems: IOrderItem[],
     supplier?: ISupplier
 }
 
 export interface IEditOrderItem {
     quantity: number,
     index: number
+}
+
+export const emptyOrder:IOrder = {
+    orderItems: []
 }

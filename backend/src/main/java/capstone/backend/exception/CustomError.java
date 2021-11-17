@@ -19,4 +19,9 @@ public class CustomError {
         this.message = errorMessage;
         log.error(this.message, ex);
     }
+    public CustomError(Exception ex, String message) {
+        this.timeStamp = LocalDateTime.now();
+        this.message = message;
+        log.error(this.message, ex);
+    }
 }

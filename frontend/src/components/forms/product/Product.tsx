@@ -20,7 +20,7 @@ function Product() {
     }, [dispatch]);
     const productToSave = useAppSelector(selectProductToSave);
     const {name, purchasePrice, retailPrice, minAmount, maxAmount, unitSize, category} = productToSave;
-    const supplierId = productToSave.suppliers? productToSave.suppliers[0].id : undefined;
+    const supplierId = productToSave.suppliers?.length ? productToSave.suppliers[0].id : undefined;
     const suppliers = useAppSelector(selectSuppliers);
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;

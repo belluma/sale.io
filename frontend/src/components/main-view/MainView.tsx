@@ -3,10 +3,9 @@ import {views} from "./helpers";
 
 
 //component imports
-import Signup from "../security/signup/Signup";
+import Signup from "./grid-view/details/security/signup/Signup";
 import {Container, Grid} from "@mui/material";
 import {Route, Switch} from "react-router";
-import ErrorMessage from "../error-message/ErrorMessage";
 import LoginView from "./views/login-view/LoginView";
 import StartRoute from "./start-route/StartRoute";
 import StartView from "./views/start-view/StartView";
@@ -16,8 +15,10 @@ import Products from "./views/products/Products";
 import Suppliers from "./views/suppliers/Suppliers";
 import Customers from "./views/customers/Customers";
 import Orders from "./views/orders/Orders";
+import Pending from "../messages/pending/Pending";
 //interface imports
-import {Views} from "../../interfaces/IThumbnailData";
+import {Model} from "../../interfaces/IThumbnailData";
+import SuccessMessage from "../messages/success-message/SuccessMessage";
 
 type Props = {};
 
@@ -31,9 +32,11 @@ function MainView(props: Props){
         CUSTOMER: Customers,
         ORDER: Orders
     };
-    const protectedRoutes = views.map((view) => <ProtectedRoute key={view} path={`/${Views[view]}`} component={protectedViews[view]} />)
+    const protectedRoutes = views.map((view) => <ProtectedRoute key={view} path={`/${Model[view]}`} component={protectedViews[view]} />)
     return (
         <Container sx={{pt: 15}} maxWidth={false}>
+            <Pending />
+            <SuccessMessage />
             <Grid container justifyContent="center" alignItems="center">
                 <Switch>
                     <Route path={"/login"} component={LoginView}/>
@@ -42,7 +45,6 @@ function MainView(props: Props){
                     <Route path={"/"} exact component={StartRoute} />
                     {protectedRoutes}
                 </Switch>
-                <ErrorMessage/>
             </Grid>
         </Container>
     );

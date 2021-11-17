@@ -5,13 +5,6 @@ import {ICustomer} from "./ICustomer";
 import {ISupplier} from "./ISupplier";
 import {IOrder} from "./IOrder";
 
-export interface IEmployeeState {
-    employees: IEmployee[],
-    currentEmployee: IEmployee | undefined,
-    currentEmployeeCredentials: IUserCredentials | undefined,
-    pending: boolean
-}
-
 export interface IAuthState {
     loggedIn: boolean,
     token: string,
@@ -28,30 +21,40 @@ export const initialDetailsData:IDetailsData = {
     picture: "",
     id: "",
     alt: "",
-    model: Views.NEW
+    model: Views.NEW,
 }
 
 interface IBaseState {
-    pending:boolean
+    pending:boolean,
+    success: boolean,
+}
+
+export interface IEmployeeState extends IBaseState{
+    employees: IEmployee[],
+    current: IEmployee | undefined,
+    currentEmployeeCredentials: IUserCredentials | undefined,
+    toSave: IEmployee
 }
 
 export interface IProductsState extends IBaseState {
     products: IProduct[],
-    currentProduct: IProduct | undefined,
-    productToSave: IProduct,
+    current: IProduct | undefined,
+    toSave: IProduct,
 }
 
 export interface ISuppliersState extends IBaseState {
     suppliers: ISupplier[],
-    currentSupplier: ISupplier | undefined,
-    supplierToSave: ISupplier,
+    current: ISupplier | undefined,
+    toSave: ISupplier,
 }
 
 export interface IOrdersState extends IBaseState {
     orders: IOrder[],
-    currentOrder: IOrder | undefined,
-    orderToSave: IOrder,
+    current: IOrder | undefined,
+    toSave: IOrder,
 }
+
+export type States = IProductsState | ISuppliersState | IOrdersState | IEmployeeState
 
 
 export interface IAPIState {
