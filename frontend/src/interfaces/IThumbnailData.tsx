@@ -63,17 +63,18 @@ export const parseSupplierToThumbnailData = ({firstName, lastName, id, picture}:
         title: `${parseName({firstName, lastName})}`,
         picture: picture,
         id: id?.toString(),
-        alt: "profile picture",
+        alt: "company logo",
         model: Views.SUPPLIER
     }
 }
-export const parseProductToThumbnailData = ({id, name, picture,}: IProduct): IDetailsData => {
+export const parseProductToThumbnailData = ({id, name, picture, amountInStock}: IProduct): IDetailsData => {
     return {
         title: name,
         picture: picture,
         id: id?.toString() || "",
         alt: "product picture",
-        model: Views.PRODUCT
+        model: Views.PRODUCT,
+        contentText: `in stock: ${amountInStock}`
     }}
 
     export const parseOrderToThumbnailData = ({supplier, id, orderItems, status}:IOrder):IDetailsData => {

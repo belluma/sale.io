@@ -5,7 +5,7 @@ export const images = {
     new: '',
     login: '/images/profile.svg',
     employee: '/images/profile.svg',
-    product: '',
+    product: 'images/beer.jpg',
     customer: '',
     supplier: '',
     order: '',
