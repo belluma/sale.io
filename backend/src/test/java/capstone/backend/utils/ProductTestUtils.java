@@ -3,7 +3,7 @@ package capstone.backend.utils;
 import capstone.backend.model.db.Product;
 import capstone.backend.model.dto.ProductDTO;
 
-import java.util.List;
+import java.util.Set;
 
 import static capstone.backend.utils.SupplierTestUtils.sampleSupplier;
 import static capstone.backend.utils.SupplierTestUtils.sampleSupplierDTO;
@@ -15,7 +15,7 @@ public class ProductTestUtils {
                  .builder()
                 .id(123L)
                 .name("product")
-                .suppliers(List.of(sampleSupplierDTO()))
+                .suppliers(Set.of(sampleSupplierDTO()))
                 .stockCodeSupplier("12345")
 //                .category(sampleCategory())
                 .purchasePrice(9.99F)
@@ -31,7 +31,7 @@ public class ProductTestUtils {
                  .builder()
                 .id(123L)
                 .name("product")
-                .suppliers(List.of(sampleSupplier()))
+                .suppliers(Set.of(sampleSupplier()))
                 .stockCodeSupplier("12345")
 //                .category(sampleCategory())
                 .purchasePrice(9.99F)
@@ -46,7 +46,7 @@ public static ProductDTO sampleProductDTOWithDetails() {
         return ProductDTO
                  .builder()
                 .name("product")
-                .suppliers(List.of(sampleSupplierDTO()))
+                .suppliers(Set.of(sampleSupplierDTO()))
                 .stockCodeSupplier("12345")
 //                .category(sampleCategory())
                 .purchasePrice(9.99F)
@@ -60,7 +60,7 @@ public static ProductDTO sampleProductDTOWithDetails() {
         return Product
                  .builder()
                 .name("product")
-                .suppliers(List.of(sampleSupplier()))
+                .suppliers(Set.of(sampleSupplier()))
                 .stockCodeSupplier("12345")
 //                .category(sampleCategory())
                 .purchasePrice(9.99F)

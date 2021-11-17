@@ -27,7 +27,7 @@ public class Product {
     private String name;
     @ManyToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
-    private List<Supplier> suppliers;
+    private Set<Supplier> suppliers;
     private String stockCodeSupplier;
     @ManyToOne(fetch = FetchType.EAGER)
     @ToString.Exclude

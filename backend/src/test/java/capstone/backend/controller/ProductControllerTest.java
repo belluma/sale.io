@@ -23,6 +23,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
 import static capstone.backend.mapper.SupplierMapper.mapSupplier;
@@ -80,7 +81,7 @@ class ProductControllerTest {
     @Test
     void getAllProductsWithDetails() {
         Supplier supplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(supplier)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(supplier)));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<ProductDTO[]> response = restTemplate.exchange(BASEURL, HttpMethod.GET, new HttpEntity<>(headers), ProductDTO[].class);
@@ -94,7 +95,7 @@ class ProductControllerTest {
     void getProductDetails() {
         //GIVEN
         Supplier supplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(supplier)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(supplier)));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/" + product.getId(), HttpMethod.GET, new HttpEntity<>(headers), ProductDTO.class);
@@ -118,7 +119,7 @@ class ProductControllerTest {
         //GIVEN
         Supplier supplier = supplierRepo.save(sampleSupplier());
         ProductDTO product = sampleProductDTOWithDetailsWithId();
-        product.setSuppliers(List.of(mapSupplier(supplier)));
+        product.setSuppliers(Set.of(mapSupplier(supplier)));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(product, headers), ProductDTO.class);
@@ -131,7 +132,7 @@ class ProductControllerTest {
     void editProduct() {
         //GIVEN
         Supplier supplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(supplier)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(supplier)));
         ProductDTO productToEdit = mapProductWithDetails(product);
         productToEdit.setRetailPrice(99.99F);
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
