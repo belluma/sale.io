@@ -4,6 +4,7 @@ import capstone.backend.exception.GlobalExceptionHandler;
 import capstone.backend.mapper.EmployeeMapper;
 import capstone.backend.repo.EmployeeRepo;
 import capstone.backend.security.model.EmployeeDTO;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,7 @@ class EmployeeControllerTest {
         registry.add("spring.datasource.username", container::getUsername);
     }
 
-    @BeforeEach
+    @AfterEach
     public void clearDB() {
         repo.deleteAll();
     }

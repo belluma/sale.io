@@ -11,6 +11,7 @@ import capstone.backend.repo.OrderToSupplierRepo;
 import capstone.backend.repo.ProductRepo;
 import capstone.backend.repo.SupplierRepo;
 import capstone.backend.utils.ControllerTestUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +74,7 @@ class OrderToSupplierControllerTest {
         registry.add("spring.datasource.username", container::getUsername);
     }
 
-    @BeforeEach
+    @AfterEach
     public void clearDB() {
         orderRepo.deleteAll();
         orderItemRepo.deleteAll();

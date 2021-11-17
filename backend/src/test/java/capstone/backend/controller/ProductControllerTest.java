@@ -67,7 +67,7 @@ class ProductControllerTest {
         registry.add("spring.datasource.username", container::getUsername);
     }
 
-    @BeforeEach
+    @AfterEach
     void clearDB() {
         productRepo.deleteAll();
     }
