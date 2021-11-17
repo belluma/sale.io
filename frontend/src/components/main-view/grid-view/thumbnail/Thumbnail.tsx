@@ -35,7 +35,6 @@ function Thumbnail({data}: Props) {
         dispatch(showDetails());
         if (model !== Views.NEW && model !== Views.ERROR && id) dispatch(selectors[model](id))
     }
-console.log(picture)
     return (
         <Card onClick={onClick} sx={{height: 500, width: 345}}>
             <CardHeader title={title} subtitle={subtitle}/>
@@ -49,7 +48,7 @@ console.log(picture)
             {contentText && <Divider/>}
             {contentText && <CardContent>{contentText}</CardContent>}
             {footerText && <Divider/>}
-            {footerText && <CardActions>{footerText}</CardActions>}
+            {footerText && <CardActions className="is-pulled-right">{footerText}</CardActions>}
         </Card>
     )
 }

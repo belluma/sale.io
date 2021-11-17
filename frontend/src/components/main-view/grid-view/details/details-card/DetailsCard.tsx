@@ -12,6 +12,8 @@ import ErrorMessage from "../../../../messages/error-message/ErrorMessage";
 //interface imports
 
 import {Model} from "../../../../../interfaces/IThumbnailData";
+import {Preview} from "@mui/icons-material";
+import OrderPreview from "../../../../forms/order/preview/OrderPreview";
 
 type Props = {
     fullScreen: boolean,
@@ -31,7 +33,7 @@ function DetailsCard({fullScreen, handleClose}: Props) {
         product: (<div/>),
         customer: (<div/>),
         supplier: (<div/>),
-        order: <div/>,
+        order: <OrderPreview/>,
         error: <ErrorMessage statusText={subtitle}/>,
         none:(<></>),
     }
@@ -40,7 +42,7 @@ function DetailsCard({fullScreen, handleClose}: Props) {
         <Card sx={{width: {sm: .99}, height: {sm: 0.5}}}>
             <CardHeader title={title} subtitle={subtitle} align="center"/>
             <Divider/>
-            {model !== "new" && <CardMedia
+            {(model !== "new" && model!="order") && <CardMedia
                 component="img"
                 sx={{width: .99}}
                 image={picture || images[model]}

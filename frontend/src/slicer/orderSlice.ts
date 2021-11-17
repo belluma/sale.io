@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
-import { IOrdersState} from '../interfaces/IStates';
+import {IOrdersState} from '../interfaces/IStates';
 import {IResponseGetAllOrders, IResponseGetOneOrder} from "../interfaces/IApiResponse";
 import {
     getAll as apiGetAll,
@@ -17,9 +17,9 @@ import {setPending, stopPendingAndHandleError} from "./errorHelper";
 
 const initialState: IOrdersState = {
     orders: [],
-    current: undefined,
+    current: emptyOrder,
     pending: false,
-    success:false,    toSave: emptyOrder,
+    success: false, toSave: emptyOrder,
 }
 const route = "orders_suppliers";
 export const validateOrder = (order: IOrder): boolean => {
@@ -95,7 +95,7 @@ export const orderSlice = createSlice({
     initialState,
     reducers: {
         chooseCurrentOrder: (state, {payload}: PayloadAction<string>) => {
-            state.current = state.orders.filter(p => p.id === payload)[0];
+            state.current = state.orders.find(order => order.id == payload) || emptyOrder;
         },
         chooseSupplier: ({toSave}: IOrdersState, {payload}: PayloadAction<ISupplier>) => {
             toSave.supplier = payload;
@@ -121,7 +121,9 @@ export const orderSlice = createSlice({
         handleOrderFormInput: (state: IOrdersState, {payload}: PayloadAction<IOrder>) => {
             state.toSave = payload;
         },
-        closeSuccess: (state:IOrdersState) => {state.success = false}
+        closeSuccess: (state: IOrdersState) => {
+            state.success = false
+        }
     },
     extraReducers: (builder => {
         builder

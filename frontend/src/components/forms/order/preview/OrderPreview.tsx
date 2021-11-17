@@ -1,5 +1,5 @@
 import React from 'react'
-import {selectOrderToSave} from "../../../../slicer/orderSlice";
+import {selectCurrentOrder, selectOrderToSave} from "../../../../slicer/orderSlice";
 import { getTotal} from "../helper";
 
 import {useAppSelector} from "../../../../app/hooks";
@@ -11,10 +11,14 @@ import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 //interface imports
 
-type Props = {};
+type Props = {
+    form?:boolean,
+};
 
-function OrderPreview(props: Props) {
-    const order =  useAppSelector(selectOrderToSave);
+function OrderPreview({form}: Props) {
+    const orderToSave = useAppSelector(selectOrderToSave)
+    const currentOrder = useAppSelector(selectCurrentOrder);
+    const order = form ? orderToSave : currentOrder;
     const {orderItems, supplier} = order;
     const productsToOrder = orderItems.map((item, i) => {
         return <OrderItem key={i} item={item} index={i}/>
@@ -22,8 +26,8 @@ function OrderPreview(props: Props) {
     const total = orderItems.reduce(getTotal, 0)
     return (
         <Card sx={{width: 0.99}}>
-            <CardHeader title={`order to ${supplier?.firstName} ${supplier?.lastName}`}/>
-            <Divider/>
+            {form && <CardHeader title={`order to ${supplier?.firstName} ${supplier?.lastName}`}/>}
+            {form && <Divider/>}
             <CardContent>
                 <Grid container>
                     {productsToOrder}

@@ -79,11 +79,11 @@ export const parseProductToThumbnailData = ({id, name, picture,}: IProduct): IDe
 
     export const parseOrderToThumbnailData = ({supplier, id, orderItems, status}:IOrder):IDetailsData => {
         return{
-            title: `order from ${supplier && parseName(supplier)}`,
+            title: `order to ${supplier && parseName(supplier)}`,
             picture: `/images/${status}.png`,
             id: id?.toString() || "",
             model: Views.ORDER,
-            contentText: `${orderItems.length} items`,
+            contentText: `${orderItems.length} item${orderItems.length > 1 ? "s" : ""}`,
             footerText: `Total: €${orderItems.reduce(getTotal, 0).toFixed(2)}`
         }
 }
