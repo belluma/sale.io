@@ -12,6 +12,8 @@ import {
 import {emptySupplier, ISupplier} from "../interfaces/ISupplier";
 import {handleError, invalidDataError, showSuccessMessage} from './errorHelper';
 import {setPending, stopPendingAndHandleError} from "./errorHelper";
+import {hideDetails} from "./detailsSlice";
+import {getAllProducts} from "./productSlice";
 
 
 const initialState: ISuppliersState = {
@@ -30,6 +32,12 @@ export const validateSupplier = (supplier: ISupplier): boolean => {
 const validateBeforeSendingToBackend = ({supplier}: RootState): boolean => {
     return validateSupplier(supplier.toSave);
 }
+const hideDetailsAndReloadList = (dispatch: Dispatch) => {
+    dispatch(hideDetails());
+    //@ts-ignore
+    dispatch(getAllProducts());
+}
+
 
 export const getAllSuppliers = createAsyncThunk<IResponseGetAllSuppliers, void, { state: RootState, dispatch: Dispatch }>(
     'suppliers/getAll',
@@ -60,6 +68,7 @@ export const createSupplier = createAsyncThunk<IResponseGetOneSupplier, void, { 
         const token = getState().authentication.token
         const {data, status, statusText} = await apiCreate(route, token, getState().supplier.toSave);
         handleError(status, statusText, dispatch);
+        if(status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
     }
 )
@@ -73,6 +82,7 @@ export const editSupplier = createAsyncThunk<IResponseGetOneSupplier, ISupplier,
         const token = getState().authentication.token
         const {data, status, statusText} = await apiEdit(route, token, supplier);
         handleError(status, statusText, dispatch);
+        if(status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
     }
 )
@@ -83,6 +93,7 @@ export const deleteSupplier = createAsyncThunk<IResponseGetOneSupplier, string, 
         const token = getState().authentication.token
         const {data, status, statusText} = await apiDelete(route, token, id);
         handleError(status, statusText, dispatch);
+        if(status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
     }
 )

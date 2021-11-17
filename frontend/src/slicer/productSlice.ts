@@ -1,4 +1,4 @@
-import {AnyAction, AsyncThunkAction, createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import {IProductsState} from '../interfaces/IStates';
 import {IResponseGetAllProducts, IResponseGetOneProduct} from "../interfaces/IApiResponse";
@@ -11,7 +11,13 @@ import {
 } from '../services/apiService'
 import {emptyProduct, IProduct} from "../interfaces/IProduct";
 import {hideDetails} from "./detailsSlice";
-import {setPending, stopPendingAndHandleError, handleError, invalidDataError, showSuccessMessage} from "./errorHelper";
+import {
+    setPending,
+    stopPendingAndHandleError,
+    handleError,
+    invalidDataError,
+    showSuccessMessage,
+} from "./errorHelper";
 
 
 const initialState: IProductsState = {
@@ -37,6 +43,11 @@ const validateBeforeSendingToBackend = ({product}: RootState) => {
     return validateProduct(product.toSave);
 }
 
+const hideDetailsAndReloadList = (dispatch: Dispatch) => {
+    dispatch(hideDetails());
+    //@ts-ignore
+    dispatch(getAllProducts());
+}
 
 export const getAllProducts = createAsyncThunk<IResponseGetAllProducts, void, { state: RootState, dispatch: Dispatch }>(
     'products/getAll',
@@ -67,8 +78,7 @@ export const createProduct = createAsyncThunk<IResponseGetOneProduct, void, { st
         const token = getState().authentication.token
         const {data, status, statusText} = await apiCreate(route, token, getState().product.toSave);
         handleError(status, statusText, dispatch);
-        //@ts-ignore
-        // if (status !== 200) dispatch(getAllProducts())
+        if(status === 200) hideDetailsAndReloadList(dispatch);
         return {data, status, statusText}
     }
 )
@@ -82,6 +92,7 @@ export const editProduct = createAsyncThunk<IResponseGetOneProduct, IProduct, { 
         const token = getState().authentication.token
         const {data, status, statusText} = await apiEdit(route, token, product);
         handleError(status, statusText, dispatch);
+        if(status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
     }
 )
@@ -92,6 +103,7 @@ export const deleteProduct = createAsyncThunk<IResponseGetOneProduct, string, { 
         const token = getState().authentication.token
         const {data, status, statusText} = await apiDelete(route, token, id);
         handleError(status, statusText, dispatch);
+        if(status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
     }
 )

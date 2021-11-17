@@ -13,6 +13,8 @@ import {emptyOrder, IEditOrderItem, IOrder, IOrderItem} from "../interfaces/IOrd
 import {handleError, invalidDataError, showSuccessMessage} from "./errorHelper";
 import {ISupplier} from "../interfaces/ISupplier";
 import {setPending, stopPendingAndHandleError} from "./errorHelper";
+import {hideDetails} from "./detailsSlice";
+import {getAllProducts} from "./productSlice";
 
 
 const initialState: IOrdersState = {
@@ -33,6 +35,11 @@ const validateBeforeSendingToBackend = ({order}: RootState): boolean => {
     return validateOrder(order.toSave);
 }
 
+const hideDetailsAndReloadList = (dispatch: Dispatch) => {
+    dispatch(hideDetails());
+    //@ts-ignore
+    dispatch(getAllProducts());
+}
 
 export const getAllOrders = createAsyncThunk<IResponseGetAllOrders, void, { state: RootState, dispatch: Dispatch }>(
     'orders/getAll',
@@ -63,6 +70,7 @@ export const createOrder = createAsyncThunk<IResponseGetOneOrder, void, { state:
         const token = getState().authentication.token
         const {data, status, statusText} = await apiCreate(route, token, getState().order.toSave);
         handleError(status, statusText, dispatch);
+        if(status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
     }
 )
@@ -76,6 +84,7 @@ export const editOrder = createAsyncThunk<IResponseGetOneOrder, IOrder, { state:
         const token = getState().authentication.token
         const {data, status, statusText} = await apiEdit(route, token, order);
         handleError(status, statusText, dispatch);
+        if(status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
     }
 )
@@ -86,6 +95,7 @@ export const deleteOrder = createAsyncThunk<IResponseGetOneOrder, string, { stat
         const token = getState().authentication.token
         const {data, status, statusText} = await apiDelete(route, token, id);
         handleError(status, statusText, dispatch);
+        if(status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
     }
 )
