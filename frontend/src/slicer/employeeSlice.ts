@@ -5,8 +5,6 @@ import {IResponseGetAllEmployees} from "../interfaces/IApiResponse";
 import {IEmployeeState} from '../interfaces/IStates';
 import {handleError, setPending, stopPendingAndHandleError} from "./errorHelper";
 import {emptyEmployee} from "../interfaces/IEmployee";
-import {hideDetails} from "./detailsSlice";
-import {getAllProducts} from "./productSlice";
 
 
 const initialState: IEmployeeState = {

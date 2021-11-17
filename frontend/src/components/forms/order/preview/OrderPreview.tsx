@@ -20,7 +20,6 @@ import CardContent from '@material-ui/core/CardContent';
 
 import Grid from '@material-ui/core/Grid';
 import {parseName} from "../../../../interfaces/IThumbnailData";
-import {green} from "@mui/material/colors";
 import {OrderStatus} from "../../../../interfaces/OrderStatus";
 //interface imports
 
@@ -45,7 +44,6 @@ function OrderPreview({form}: Props) {
             }
         })
     }
-    console.log(order.status, order);
     const total = orderItems.reduce(getTotal, 0)
     return (
         <Card sx={{width: 0.99, height: 0.99, display: 'flex', flexDirection: 'column'}}>

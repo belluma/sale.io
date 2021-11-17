@@ -32,7 +32,7 @@ export interface INewItem {
 export interface IThumbnailData extends INewItem {
     title?: string,
     subtitle?: string,
-    id?: string | undefined
+    id?: string |   undefined,
     alt?: string,
     picture?: string,
     model: Views,
@@ -62,7 +62,7 @@ export const parseSupplierToThumbnailData = ({firstName, lastName, id, picture}:
     return {
         title: `${parseName({firstName, lastName})}`,
         picture: picture,
-        id: id,
+        id: id?.toString(),
         alt: "profile picture",
         model: Views.SUPPLIER
     }

@@ -70,7 +70,7 @@ export const createOrder = createAsyncThunk<IResponseGetOneOrder, void, { state:
         const token = getState().authentication.token
         const {data, status, statusText} = await apiCreate(route, token, getState().order.toSave);
         handleError(status, statusText, dispatch);
-        if(status === 200) hideDetailsAndReloadList(dispatch)
+        if (status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
     }
 )
@@ -84,7 +84,7 @@ export const editOrder = createAsyncThunk<IResponseGetOneOrder, IOrder, { state:
         const token = getState().authentication.token
         const {data, status, statusText} = await apiEdit(route, token, order);
         handleError(status, statusText, dispatch);
-        if(status === 200) hideDetailsAndReloadList(dispatch)
+        if (status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
     }
 )
@@ -95,7 +95,7 @@ export const deleteOrder = createAsyncThunk<IResponseGetOneOrder, string, { stat
         const token = getState().authentication.token
         const {data, status, statusText} = await apiDelete(route, token, id);
         handleError(status, statusText, dispatch);
-        if(status === 200) hideDetailsAndReloadList(dispatch)
+        if (status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
     }
 )
@@ -105,7 +105,7 @@ export const orderSlice = createSlice({
     initialState,
     reducers: {
         chooseCurrentOrder: (state, {payload}: PayloadAction<string>) => {
-            state.current = state.orders.find(order => order.id == payload) || emptyOrder;
+            state.current = state.orders.find(order => order.id?.toString() === payload) || emptyOrder;
         },
         chooseSupplier: ({toSave}: IOrdersState, {payload}: PayloadAction<ISupplier>) => {
             toSave.supplier = payload;

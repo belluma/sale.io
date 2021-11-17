@@ -1,13 +1,12 @@
 import {Dispatch} from "@reduxjs/toolkit";
-import {hideDetails, setDetailData, showDetails} from "./detailsSlice";
-import {IDetailsData, Model, Views} from "../interfaces/IThumbnailData";
+import { setDetailData, showDetails} from "./detailsSlice";
+import {IDetailsData, Views} from "../interfaces/IThumbnailData";
 import {IOrder} from "../interfaces/IOrder";
 import {IProduct} from "../interfaces/IProduct";
 import {IEmployee} from "../interfaces/IEmployee";
 import {ISupplier} from "../interfaces/ISupplier";
 import {States} from "../interfaces/IStates";
 import {Actions} from "../interfaces/IApiResponse";
-import {getAllProducts} from "./productSlice";
 
 export interface IError {
     status: number;
