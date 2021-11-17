@@ -4,7 +4,6 @@ import {ISupplier} from "./ISupplier";
 import {IOrder} from "./IOrder";
 import {IContact} from "./IContact";
 import {getTotal} from "../components/forms/order/helper";
-import OrderPreview from "../components/forms/order/preview/OrderPreview";
 
 export enum Model {
     EMPLOYEE = "employee",
@@ -43,7 +42,7 @@ export interface IThumbnailData extends INewItem {
 
 export interface IDetailsData extends IThumbnailData {
 }
-const parseName = ({firstName, lastName}:IContact):string => {
+export const parseName = ({firstName="", lastName=""}:IContact):string => {
     let name = '';
     if(firstName) name = `${firstName} `;
     if(lastName) name = name + lastName;

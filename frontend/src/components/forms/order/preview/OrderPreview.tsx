@@ -9,6 +9,7 @@ import {Card, CardActions, CardHeader, Divider, Toolbar} from "@mui/material";
 import CardContent from '@material-ui/core/CardContent';
 
 import Grid from '@material-ui/core/Grid';
+import {parseName} from "../../../../interfaces/IThumbnailData";
 //interface imports
 
 type Props = {
@@ -21,12 +22,12 @@ function OrderPreview({form}: Props) {
     const order = form ? orderToSave : currentOrder;
     const {orderItems, supplier} = order;
     const productsToOrder = orderItems.map((item, i) => {
-        return <OrderItem key={i} item={item} index={i}/>
+        return <OrderItem form={form} key={i} item={item} index={i}/>
     })
     const total = orderItems.reduce(getTotal, 0)
     return (
         <Card sx={{width: 0.99}}>
-            {form && <CardHeader title={`order to ${supplier?.firstName} ${supplier?.lastName}`}/>}
+            {form && <CardHeader title={`order to ${supplier && parseName(supplier)}`}/>}
             {form && <Divider/>}
             <CardContent>
                 <Grid container>

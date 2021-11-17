@@ -15,10 +15,11 @@ import {IOrderItem} from "../../../../interfaces/IOrder";
 
 type Props = {
     item: IOrderItem,
-    index: number
+    index: number,
+    form?: boolean
 };
 
-function OrderItem({item, index}: Props) {
+function OrderItem({item, index, form}: Props) {
     const dispatch = useAppDispatch();
     const [edit, setEdit] = useState(false);
     const handleRemove = () => {
@@ -32,9 +33,9 @@ function OrderItem({item, index}: Props) {
     return (
         <Toolbar sx={{width: 0.99}} disableGutters>
             <Grid item xs={1}>
-                <IconButton sx={{display: "inline"}} onClick={handleRemove} color="warning">
+                {form && <IconButton sx={{display: "inline"}} onClick={handleRemove} color="warning">
                     <ClearIcon/>
-                </IconButton>
+                </IconButton>}
             </Grid>
             <Grid item xs={6} component="h1">{item.product?.name}</Grid>
             {edit ?
@@ -43,9 +44,9 @@ function OrderItem({item, index}: Props) {
                 </Grid>
                 : <Grid item xs={2} sx={{textAlign:"end", pr:1}}>{item.quantity}</Grid>}
             <Grid item xs={1}>
-                <IconButton sx={{display: "inline"}} onClick={() => setEdit(!edit)} edge='start'>
+                {form && <IconButton sx={{display: "inline"}} onClick={() => setEdit(!edit)} edge='start'>
                     {edit ? <CheckIcon/> : <EditIcon/>}
-                </IconButton>
+                </IconButton>}
             </Grid>
             <Grid item xs={2}>€ {total?.toFixed(2)}</Grid>
         </Toolbar>
