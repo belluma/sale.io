@@ -5,7 +5,7 @@ import { getTotal} from "../helper";
 import {useAppSelector} from "../../../../app/hooks";
 //component imports
 import OrderItem from "../order-item/OrderItem";
-import {Card, CardActions, CardHeader, Divider, Toolbar} from "@mui/material";
+import {Card, CardActions, CardHeader, Container, Divider, Toolbar} from "@mui/material";
 import CardContent from '@material-ui/core/CardContent';
 
 import Grid from '@material-ui/core/Grid';
@@ -24,9 +24,10 @@ function OrderPreview({form}: Props) {
     const productsToOrder = orderItems.map((item, i) => {
         return <OrderItem form={form} key={i} item={item} index={i}/>
     })
+
     const total = orderItems.reduce(getTotal, 0)
     return (
-        <Card sx={{width: 0.99}}>
+        <Card sx={{width: 0.99, height: 0.99, display:'flex', flexDirection: 'column'}} >
             {form && <CardHeader title={`order to ${supplier && parseName(supplier)}`}/>}
             {form && <Divider/>}
             <CardContent>
@@ -34,11 +35,12 @@ function OrderPreview({form}: Props) {
                     {productsToOrder}
                 </Grid>
             </CardContent>
+            <Container sx={{flexGrow:1}}/>
             <Divider/>
             <CardActions>
                 <Grid container direction="row-reverse">
                     <Grid item>
-                        <Toolbar>
+                        <Toolbar className={"is-pulled-right"}>
                             Total:€ {total.toFixed(2)}
                         </Toolbar>
                     </Grid></Grid>

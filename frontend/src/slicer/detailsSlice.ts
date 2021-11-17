@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
-import {IDetailsData, Model, Views} from "../interfaces/IThumbnailData";
+import {IDetailsData,} from "../interfaces/IThumbnailData";
 import {IDetailsState, initialDetailsData} from "../interfaces/IStates";
 
 

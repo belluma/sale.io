@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
-import {parseOrderToThumbnailData, parseSupplierToThumbnailData, Views} from "../../../../interfaces/IThumbnailData";
+import {parseOrderToThumbnailData, Views} from "../../../../interfaces/IThumbnailData";
 import {selectView} from "../../../../slicer/viewSlice";
 import GridView from "../../grid-view/GridView";
 import ListView from "../../list-view/ListView";
