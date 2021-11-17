@@ -37,7 +37,7 @@ function OrderItem({item, index, form}: Props) {
                     <ClearIcon/>
                 </IconButton>}
             </Grid>
-            <Grid item xs={6} component="h1">{item.product?.name}</Grid>
+            <Grid item xs={5} component="h1">{item.product?.name}</Grid>
             {edit ?
                 <Grid item xs={2}>
                     <CustomNumber name={"quantity"} label={"quantity"} onChange={changeQuantity} value={item.quantity}/>
@@ -48,7 +48,7 @@ function OrderItem({item, index, form}: Props) {
                     {edit ? <CheckIcon/> : <EditIcon/>}
                 </IconButton>}
             </Grid>
-            <Grid item xs={2}>€ {total?.toFixed(2)}</Grid>
+            <Grid item xs={3}>€ {total?.toFixed(2)}</Grid>
         </Toolbar>
     )
 }
