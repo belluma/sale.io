@@ -2,6 +2,7 @@ package capstone.backend.model.db.order;
 
 
 
+import capstone.backend.model.enums.OrderStatus;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
@@ -19,12 +20,14 @@ import java.util.Objects;
 @AllArgsConstructor
 public abstract class Order {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @OneToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
     private List<OrderItem> orderItems;
+    private OrderStatus status;
 
     @Override
     public boolean equals(Object o) {

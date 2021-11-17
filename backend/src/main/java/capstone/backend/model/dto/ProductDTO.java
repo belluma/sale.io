@@ -25,4 +25,5 @@ public class ProductDTO {
     private int minAmount;
     private int maxAmount;
     private int unitSize;
+    private int amountInStock;
 }

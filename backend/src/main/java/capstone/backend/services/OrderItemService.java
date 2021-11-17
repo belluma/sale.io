@@ -1,11 +1,11 @@
 package capstone.backend.services;
 
-import capstone.backend.exception.model.EntityNotFoundException;
 import capstone.backend.mapper.OrderItemMapper;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.repo.OrderItemRepo;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;

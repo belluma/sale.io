@@ -2,19 +2,24 @@ package capstone.backend.services;
 
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.model.db.order.OrderToSupplier;
+import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToSupplierDTO;
 import capstone.backend.repo.OrderToSupplierRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
+
 import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
+import static capstone.backend.model.enums.OrderStatus.PENDING;
+import static capstone.backend.model.enums.OrderStatus.RECEIVED;
+import static capstone.backend.utils.OrderToSupplierTestUtils.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static capstone.backend.utils.OrderToSupplierTestUtils.sampleOrder;
-import static capstone.backend.utils.OrderToSupplierTestUtils.sampleOrderDTO;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.mockito.Mockito.*;
@@ -32,8 +37,8 @@ class OrderToSupplierServiceTest {
     @Test
     void getAllOrders() {
         //GIVEN
-        when(orderRepo.findAll()).thenReturn(List.of(sampleOrder()));
-        List<OrderToSupplierDTO> expected = List.of(sampleOrderDTO());
+        when(orderRepo.findAll()).thenReturn(List.of(sampleOrderPending()));
+        List<OrderToSupplierDTO> expected = List.of(sampleOrderDTOWithStatusPending());
         //WHEN
         List<OrderToSupplierDTO> actual = orderService.getAllOrders();
         //THEN
@@ -44,23 +49,23 @@ class OrderToSupplierServiceTest {
     @Test
     void createOrder() {
         //GIVEN
-        OrderToSupplier orderToSave = sampleOrder();
-        OrderToSupplierDTO expected = sampleOrderDTO();
+        OrderToSupplier orderToSave = sampleOrderPending();
+        OrderToSupplierDTO expected = sampleOrderDTOWithStatusPending();
         OrderItemDTO orderItem = expected.getOrderItems().get(0);
-        Long productId = orderToSave.getOrderItems().get(0).getProduct().getId();
+        ProductDTO product = expected.getOrderItems().get(0).getProduct();
         Long supplierId = orderToSave.getSupplier().getId();
         when(orderRepo.save(orderToSave)).thenReturn(orderToSave);
-        when(orderRepo.findById(orderToSave.getId())).thenReturn(Optional.empty());
-        when(productService.checkIfProductExists(productId)).thenReturn(true);
+        when(orderRepo.existsById(orderToSave.getId())).thenReturn(false);
+        when(productService.productExists(product)).thenReturn(true);
         when(orderItemService.addOrderItem(orderItem)).thenReturn(orderItem);
-        when(supplierService.checkIfSupplierExists(supplierId)).thenReturn(true);
+        when(supplierService.supplierExists(supplierId)).thenReturn(true);
         //WHEN
         OrderToSupplierDTO actual = orderService.createOrder(sampleOrderDTO());
         //THEN
         verify(orderRepo).save(orderToSave);
-        verify(orderRepo).findById(123L);
-        verify(productService).checkIfProductExists(productId);
-        verify(supplierService).checkIfSupplierExists(supplierId);
+        verify(orderRepo).existsById(123L);
+        verify(productService).productExists(product);
+        verify(supplierService).supplierExists(supplierId);
         verify(orderItemService).addOrderItem(orderItem);
         assertThat(actual, is(expected));
     }
@@ -69,58 +74,93 @@ class OrderToSupplierServiceTest {
     void createOrderThrowsWhenProductNonExistent() {
         //GIVEN
         OrderToSupplierDTO orderToSave = sampleOrderDTO();
-        Long productId = orderToSave.getOrderItems().get(0).getProduct().getId();
-        when(productService.checkIfProductExists(productId)).thenReturn(false);
+        ProductDTO product = orderToSave.getOrderItems().get(0).getProduct();
+        when(productService.productExists(product)).thenReturn(false);
         //WHEN - //THEN
         Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.createOrder(orderToSave));
         assertThat(ex.getMessage(), is("You tried to order a product that doesn't exist!"));
-        verify(productService).checkIfProductExists(productId);
+        verify(productService).productExists(product);
     }
 
     @Test
     void createOrderThrowsWhenOrderAlreadyExists() {
         //GIVEN
         OrderToSupplierDTO orderToSave = sampleOrderDTO();
-        Long productId = orderToSave.getOrderItems().get(0).getProduct().getId();
-        when(productService.checkIfProductExists(productId)).thenReturn(true);
-        when(orderRepo.findById(orderToSave.getId())).thenReturn(Optional.of(mapOrder(orderToSave)));
+        when(orderRepo.existsById(orderToSave.getId())).thenReturn(true);
         //WHEN - //THEN
         Exception ex = assertThrows(EntityWithThisIdAlreadyExistException.class, () -> orderService.createOrder(orderToSave));
         assertThat(ex.getMessage(), is("An Order with this id already exists!"));
-        verify(productService).checkIfProductExists(productId);
-        verify(orderRepo).findById(orderToSave.getId());
+        verify(orderRepo).existsById(orderToSave.getId());
     }
+
     @Test
-    void createOrderThrowsWhenSupplierNonExitent(){
+    void createOrderThrowsWhenSupplierNonExitent() {
         //GIVEN
         OrderToSupplierDTO orderToSave = sampleOrderDTO();
-        Long productId = orderToSave.getOrderItems().get(0).getProduct().getId();
+        ProductDTO product = orderToSave.getOrderItems().get(0).getProduct();
         Long supplierId = orderToSave.getSupplier().getId();
-        when(productService.checkIfProductExists(productId)).thenReturn(true);
-        when(orderRepo.findById(orderToSave.getId())).thenReturn(Optional.empty());
-        when(supplierService.checkIfSupplierExists(supplierId)).thenReturn(false);
+        when(productService.productExists(product)).thenReturn(true);
+        when(orderRepo.existsById(orderToSave.getId())).thenReturn(false);
+        when(supplierService.supplierExists(supplierId)).thenReturn(false);
         //WHEN - //THEN
         Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.createOrder(orderToSave));
         assertThat(ex.getMessage(), is("You tried to order from a supplier that doesn't exist!"));
-        verify(productService).checkIfProductExists(productId);
-        verify(orderRepo).findById(orderToSave.getId());
-        verify(supplierService).checkIfSupplierExists(supplierId);
+        verify(productService).productExists(product);
+        verify(orderRepo).existsById(orderToSave.getId());
+        verify(supplierService).supplierExists(supplierId);
     }
+
     @Test
-    void createOrderThrowsWhenProductOrderedIsNotCarrriedBySupplier(){
+    void createOrderThrowsWhenProductOrderedIsNotCarrriedBySupplier() {
         //GIVEN
         OrderToSupplierDTO orderToSave = sampleOrderDTO();
-        Long productId = orderToSave.getOrderItems().get(0).getProduct().getId();
+        ProductDTO product = orderToSave.getOrderItems().get(0).getProduct();
         Long supplierId = orderToSave.getSupplier().getId() + 1;
         orderToSave.getSupplier().setId(supplierId);
-        when(productService.checkIfProductExists(productId)).thenReturn(true);
-        when(orderRepo.findById(orderToSave.getId())).thenReturn(Optional.empty());
-        when(supplierService.checkIfSupplierExists(supplierId)).thenReturn(true);
+        when(productService.productExists(product)).thenReturn(true);
+        when(orderRepo.existsById(orderToSave.getId())).thenReturn(false);
+        when(supplierService.supplierExists(supplierId)).thenReturn(true);
         //WHEN - //THEN
         Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.createOrder(orderToSave));
         assertThat(ex.getMessage(), is("The supplier doesn't carry one or several of the items you tried to order!"));
-        verify(productService).checkIfProductExists(productId);
-        verify(orderRepo).findById(orderToSave.getId());
-        verify(supplierService).checkIfSupplierExists(supplierId);
+        verify(productService).productExists(product);
+        verify(orderRepo).existsById(orderToSave.getId());
+        verify(supplierService).supplierExists(supplierId);
+    }
+
+    @Test
+    void receiveOrder() {
+        //GIVEN
+        OrderToSupplierDTO orderToReceive = sampleOrderDTOWithStatusPending();
+        OrderToSupplierDTO expected = sampleOrderDTOWithStatusReceived();
+        when(orderRepo.existsById(orderToReceive.getId())).thenReturn(true);
+        when(orderRepo.findById(orderToReceive.getId())).thenReturn(Optional.of(mapOrder(expected)));
+        //WHEN
+        OrderToSupplierDTO actual = orderService.receiveOrder(orderToReceive, RECEIVED);
+        //THEN
+        verify(orderRepo).existsById(123L);
+        verify(orderRepo, times(2)).findById(123L);
+        verify(productService).adjustAmountInStock(orderToReceive.getOrderItems());
+        assertThat(actual, is(expected));
+    }
+
+    @Test
+    void receiveOrderThrowsWhenOrderNonExistent() {
+        //GIVEN
+        OrderToSupplierDTO nonExistentOrder = sampleOrderDTOWithStatusPending();
+        when(orderRepo.existsById(nonExistentOrder.getId())).thenReturn(false);
+        //WHEN - //THEN
+        Exception ex = assertThrows(EntityNotFoundException.class, () -> orderService.receiveOrder(nonExistentOrder, RECEIVED));
+        assertThat(ex.getMessage(), is("The order you're trying to receive doesn't exist"));
+        verify(orderRepo).existsById(nonExistentOrder.getId());
+    }
+
+    @Test
+    void receiveOrderThrowsWehnParamWrong() {
+        //GIVEN
+        OrderToSupplierDTO order = sampleOrderDTOWithStatusPending();
+        //WHEN - //THEN
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.receiveOrder(order, PENDING));
+        assertThat(ex.getMessage(), is("We couldn't process your request!"));
     }
 }

@@ -4,6 +4,7 @@ import capstone.backend.model.db.order.OrderToSupplier;
 import capstone.backend.model.dto.order.OrderToSupplierDTO;
 
 import static capstone.backend.mapper.SupplierMapper.mapSupplier;
+import static capstone.backend.model.enums.OrderStatus.PENDING;
 
 public class OrderToSupplierMapper {
 
@@ -24,6 +25,11 @@ public class OrderToSupplierMapper {
         if (order.getId() != null) {
             mappedOrder.setId(order.getId());
         }
+        if (order.getStatus() == null){
+            mappedOrder.setStatus(PENDING);
+        }else {
+            mappedOrder.setStatus(order.getStatus());
+        }
         return mappedOrder;
     }
 
@@ -37,6 +43,7 @@ public class OrderToSupplierMapper {
                         .stream()
                         .map(OrderItemMapper::mapOrderItem)
                         .toList())
+                .status(order.getStatus())
                 .build();
         if (order.getId() != null) {
             mappedOrder.setId(order.getId());

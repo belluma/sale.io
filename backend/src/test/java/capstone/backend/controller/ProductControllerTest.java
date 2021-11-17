@@ -79,7 +79,8 @@ class ProductControllerTest {
 
     @Test
     void getAllProductsWithDetails() {
-        Product product = productRepo.save(sampleProduct());
+        Supplier supplier = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(supplier)));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<ProductDTO[]> response = restTemplate.exchange(BASEURL, HttpMethod.GET, new HttpEntity<>(headers), ProductDTO[].class);
@@ -92,7 +93,8 @@ class ProductControllerTest {
     @Test
     void getProductDetails() {
         //GIVEN
-        Product product = productRepo.save(sampleProduct());
+        Supplier supplier = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(supplier)));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/" + product.getId(), HttpMethod.GET, new HttpEntity<>(headers), ProductDTO.class);
@@ -128,7 +130,8 @@ class ProductControllerTest {
     @Test
     void editProduct() {
         //GIVEN
-        Product product = productRepo.save(sampleProduct());
+        Supplier supplier = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(supplier)));
         ProductDTO productToEdit = mapProductWithDetails(product);
         productToEdit.setRetailPrice(99.99F);
         HttpHeaders headers = utils.createHeadersWithJwtAuth();

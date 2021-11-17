@@ -1,12 +1,12 @@
 package capstone.backend.services;
 
-import capstone.backend.exception.model.EntityNotFoundException;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.mapper.SupplierMapper;
 import capstone.backend.model.dto.contact.SupplierDTO;
 import capstone.backend.repo.SupplierRepo;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -54,7 +54,7 @@ public class SupplierService {
                 .save(SupplierMapper.mapSupplier(supplier)));
     }
 
-    public boolean checkIfSupplierExists(Long id) {
+    public boolean supplierExists(Long id) {
         return repo.existsById(id);
     }
 }

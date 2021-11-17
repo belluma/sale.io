@@ -64,4 +64,4 @@ jobs:
       - name: Deploy docker container
         run: heroku container:release web -a saleio
       - name: Connect to postgres DB
-        run: heroku pg:psql postgresql-pointy-54122 --app saleio
+        run: heroku pg:psql postgresql-vertical-61863 --app saleio

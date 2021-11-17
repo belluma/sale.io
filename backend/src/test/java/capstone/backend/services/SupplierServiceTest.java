@@ -1,7 +1,6 @@
 package capstone.backend.services;
 
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
-import capstone.backend.exception.model.EntityNotFoundException;
 import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.dto.contact.SupplierDTO;
 import capstone.backend.model.enums.Weekday;
@@ -10,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
