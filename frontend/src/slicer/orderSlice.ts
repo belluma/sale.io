@@ -113,6 +113,7 @@ export const receiveOrder = createAsyncThunk<IResponseGetOneOrder, IOrder, { sta
         const {data, status, statusText} = await apiReceiveOrder(token, order);
         handleError(status, statusText, dispatch);
         if (status === 200) hideDetailsAndReloadList(dispatch)
+        console.log(data)
         return {data, status, statusText}
     }
 )

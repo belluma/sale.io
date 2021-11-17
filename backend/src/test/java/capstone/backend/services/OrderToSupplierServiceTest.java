@@ -89,7 +89,7 @@ class OrderToSupplierServiceTest {
         when(orderRepo.existsById(orderToSave.getId())).thenReturn(true);
         //WHEN - //THEN
         Exception ex = assertThrows(EntityWithThisIdAlreadyExistException.class, () -> orderService.createOrder(orderToSave));
-        assertThat(ex.getMessage(), is("An Order with this id already exists!"));
+        assertThat(ex.getMessage(), is("An order with this id already exists!"));
         verify(orderRepo).existsById(orderToSave.getId());
     }
 
@@ -156,7 +156,7 @@ class OrderToSupplierServiceTest {
     }
 
     @Test
-    void receiveOrderThrowsWehnParamWrong() {
+    void receiveOrderThrowsWhenParamWrong() {
         //GIVEN
         OrderToSupplierDTO order = sampleOrderDTOWithStatusPending();
         //WHEN - //THEN

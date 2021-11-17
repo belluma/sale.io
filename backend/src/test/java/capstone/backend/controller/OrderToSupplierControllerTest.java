@@ -204,6 +204,8 @@ class OrderToSupplierControllerTest {
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(receivedOrder));
+        assertThat(orderRepo.findById(receivedOrder.getId()).get().getStatus(), is(RECEIVED));
+        assertThat(orderRepo.findById(receivedOrder.getId()).get(), is(mapOrder(receivedOrder)));
         assertThat(productRepo.findById(product.getId()).get().getAmountInStock(), is(receivedOrder.getOrderItems().get(0).getQuantity()));
     }
     @Test
