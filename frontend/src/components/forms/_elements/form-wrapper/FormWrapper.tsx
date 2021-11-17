@@ -9,7 +9,7 @@ import {toBeReplaced} from "../../../../slicer/employeeSlice";
 import {createProduct, selectProductToSave, validateProduct} from "../../../../slicer/productSlice";
 import {createOrder, selectOrderToSave, validateOrder} from "../../../../slicer/orderSlice";
 //component imports
-import {Button} from "@mui/material";
+import {Button, Container} from "@mui/material";
 import Employee from "../../employee/Employee";
 import Customer from "../../customer/Customer";
 import Supplier from "../../supplier/Supplier";
@@ -65,17 +65,20 @@ function FormWrapper({model, fullScreen, handleClose}: Props) {
         order: createOrder,
     };
     const handleSubmit = () => {
-        //@ts-ignore
         dispatch(submitSelector[model]());
         handleClose();
     }
     return (
-        <form>{formSelector[model]}
-            <section>
+        <Container sx={{display:"flex", flexDirection:"column", height: 0.99}}>
+            <Container sx={{flexGrow:1}}>
+
+            {formSelector[model]}
+            </Container>
+            <section >
                 <Button onClick={handleSubmit} disabled={disableButton()}>save</Button>
                 {fullScreen && <Button onClick={handleClose}>Close</Button>}
             </section>
-        </form>
+        </Container>
     )
 }
 

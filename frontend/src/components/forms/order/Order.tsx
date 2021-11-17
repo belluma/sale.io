@@ -43,7 +43,7 @@ function Order(props: Props) {
         setSelectedProductId(e.target.value);
     }
     const selectSupplier = (e: ChangeEvent<HTMLInputElement>) => {
-        const supplier = suppliers.find(s => s.id === e.target.value);
+        const supplier = suppliers.find(supplier => supplier.id === e.target.value);
         supplier && dispatch(chooseSupplier(supplier));
         supplier && setSelectedSupplierId(supplier.id);
     }
