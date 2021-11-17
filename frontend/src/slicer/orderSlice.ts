@@ -20,7 +20,6 @@ import {
     handleApiResponse
 } from "./errorHelper";
 import {hideDetails} from "./detailsSlice";
-import {getAllProducts} from "./productSlice";
 
 
 const initialState: IOrdersState = {

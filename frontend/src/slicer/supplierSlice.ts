@@ -12,7 +12,6 @@ import {
 import {emptySupplier, ISupplier} from "../interfaces/ISupplier";
 import {handleApiResponse, handleError, invalidDataError,setPending, stopPendingAndHandleError} from "./errorHelper";
 import {hideDetails} from "./detailsSlice";
-import {getAllProducts} from "./productSlice";
 
 
 const initialState: ISuppliersState = {
