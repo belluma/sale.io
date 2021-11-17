@@ -2,15 +2,15 @@ import React, {useEffect} from 'react'
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
 import {parseOrderToThumbnailData, Views} from "../../../../interfaces/IThumbnailData";
 import {selectView} from "../../../../slicer/viewSlice";
-import GridView from "../../grid-view/GridView";
-import ListView from "../../list-view/ListView";
 import {supplierColumns} from "../../list-view/columnDefinition";
 import {getAllOrders, selectOrders} from "../../../../slicer/orderSlice";
-import {IOrder} from "../../../../interfaces/IOrder";
 
 //component imports
-
+import GridView from "../../grid-view/GridView";
+import ListView from "../../list-view/ListView";
 //interface imports
+
+import {IOrder} from "../../../../interfaces/IOrder";
 
 type Props = {};
 
