@@ -1,6 +1,6 @@
 import React from 'react'
-import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
-import {hideDetails, resetDetails, selectShowDetails} from "../../../../slicer/detailsSlice";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import {hideDetails, resetDetails, selectShowDetails} from "../../../slicer/detailsSlice";
 
 //component imports
 import {Container, Dialog, DialogContent, DialogProps, useMediaQuery, useTheme} from "@mui/material";

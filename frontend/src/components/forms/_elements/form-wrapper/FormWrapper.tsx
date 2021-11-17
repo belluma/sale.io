@@ -66,6 +66,7 @@ function FormWrapper({model, fullScreen, handleClose}: Props) {
     };
     const handleSubmit = () => {
         console.log(model)
+
         if (Object.keys(submitSelector).includes(model)) dispatch(submitSelector[model]());
         handleClose();
     }

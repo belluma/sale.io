@@ -1,18 +1,19 @@
 import React from 'react'
-import {images} from "../../../helpers";
-import {useAppSelector} from "../../../../../app/hooks";
-import {selectDetailsData} from "../../../../../slicer/detailsSlice";
+import {images} from "../../helpers";
+import {useAppSelector} from "../../../../app/hooks";
+import {selectDetailsData} from "../../../../slicer/detailsSlice";
 
 import {useLocation} from "react-router";
 //component imports
 import {Card, CardContent, CardHeader, CardMedia, Divider} from "@mui/material";
 import Login from "../security/login/Login";
-import FormWrapper from "../../../../forms/_elements/form-wrapper/FormWrapper";
-import ErrorMessage from "../../../../messages/error-message/ErrorMessage";
+import FormWrapper from "../../../forms/_elements/form-wrapper/FormWrapper";
+import ErrorMessage from "../../../messages/error-message/ErrorMessage";
 //interface imports
 
-import {Model} from "../../../../../interfaces/IThumbnailData";
-import OrderPreview from "../../../../forms/order/preview/OrderPreview";
+import {Model} from "../../../../interfaces/IThumbnailData";
+import OrderPreview from "../../../forms/order/preview/OrderPreview";
+import ProductDetails from "../product-details/ProductDetails";
 
 type Props = {
     fullScreen: boolean,
@@ -29,24 +30,25 @@ function DetailsCard({fullScreen, handleClose}: Props) {
         new: <FormWrapper fullScreen={fullScreen} handleClose={handleClose} model={formSelector}/>,
         login: <Login/>,
         employee: (<div/>),
-        product: (<div/>),
+        product: (<ProductDetails/>),
         customer: (<div/>),
         supplier: (<div/>),
         order: <OrderPreview/>,
         error: <ErrorMessage statusText={subtitle}/>,
         none: (<></>),
     }
-
+    const showPic = (model !== "new" && model !== "order");
     return (
         <Card sx={{width: {sm: .99, md: 500}, height: {sm: 0.99, md: 800}, display: "flex", flexDirection: "column"}}>
             <CardHeader title={title} subtitle={subtitle} align="center"/>
             <Divider/>
-            {(model !== "new" && model !== "order") && <CardMedia
+            {showPic && <CardMedia
                 component="img"
                 sx={{width: .99}}
                 image={picture || images[model]}
                 alt={alt}
             />}
+            {showPic && <Divider/>}
             <CardContent sx={{flexGrow: 1}}>
                 {cardContent[model]}
             </CardContent>

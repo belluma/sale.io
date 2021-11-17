@@ -1,17 +1,17 @@
 import React from 'react'
-import {useAppDispatch} from '../../../../app/hooks';
-import {images} from '../../helpers'
+import {useAppDispatch} from '../../../app/hooks';
+import {images} from '../helpers'
 
-import {setDetailData, showDetails} from "../../../../slicer/detailsSlice";
-import {chooseCurrentEmployee, toBeReplaced} from "../../../../slicer/employeeSlice";
-import {chooseCurrentProduct} from "../../../../slicer/productSlice";
-import {chooseCurrentSupplier} from "../../../../slicer/supplierSlice";
-import {chooseCurrentOrder} from "../../../../slicer/orderSlice";
+import {setDetailData, showDetails} from "../../../slicer/detailsSlice";
+import {chooseCurrentEmployee, toBeReplaced} from "../../../slicer/employeeSlice";
+import {chooseCurrentProduct} from "../../../slicer/productSlice";
+import {chooseCurrentSupplier} from "../../../slicer/supplierSlice";
+import {chooseCurrentOrder} from "../../../slicer/orderSlice";
 //component imports
 
 import {Card, CardActions, CardContent, CardHeader, CardMedia, Divider} from "@mui/material";
 //interface imports
-import {IThumbnailData, Views} from '../../../../interfaces/IThumbnailData';
+import {IThumbnailData, Views} from '../../../interfaces/IThumbnailData';
 
 type Props = {
     data: IThumbnailData

@@ -3,7 +3,7 @@ import {views} from "./helpers";
 
 
 //component imports
-import Signup from "./grid-view/details/security/signup/Signup";
+import Signup from "./details/security/signup/Signup";
 import {Container, Grid} from "@mui/material";
 import {Route, Switch} from "react-router";
 import LoginView from "./views/login-view/LoginView";

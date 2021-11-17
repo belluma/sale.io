@@ -38,7 +38,7 @@ export interface IEmployeeState extends IBaseState{
 
 export interface IProductsState extends IBaseState {
     products: IProduct[],
-    current: IProduct | undefined,
+    current: IProduct ,
     toSave: IProduct,
 }
 

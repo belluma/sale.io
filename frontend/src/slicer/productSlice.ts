@@ -22,7 +22,7 @@ import {
 
 const initialState: IProductsState = {
     products: [],
-    current: undefined,
+    current: emptyProduct,
     pending: false,
     success: false,
     toSave: emptyProduct
@@ -113,7 +113,7 @@ export const productSlice = createSlice({
     initialState,
     reducers: {
         chooseCurrentProduct: (state, action: PayloadAction<string>) => {
-            state.current = state.products.filter(p => p.id === action.payload)[0];
+            state.current = state.products.find(product => product.id?.toString() === action.payload) || emptyProduct;
         },
         handleProductFormInput: (state, {payload}: PayloadAction<IProduct>) => {
             state.toSave = payload;
