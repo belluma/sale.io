@@ -35,6 +35,8 @@ export interface IThumbnailData extends INewItem {
     alt?: string,
     picture?: string,
     model: Views,
+    contentText?:string,
+    footerText?:string,
 }
 
 export interface IDetailsData extends IThumbnailData {
@@ -73,12 +75,13 @@ export const parseProductToThumbnailData = ({id, name, picture,}: IProduct): IDe
         model: Views.PRODUCT
     }}
 
-    export const parseOrderToThumbnailData = ({supplier, id}:IOrder):IDetailsData => {
+    export const parseOrderToThumbnailData = ({supplier, id, orderItems}:IOrder):IDetailsData => {
         return{
             title: `order from ${supplier && parseName(supplier)}`,
             picture: '',
             id: id?.toString() || "",
-            alt: "product picture",
-            model: Views.ORDER
+            model: Views.ORDER,
+            contentText: `${orderItems.length} items`,
+            footerText:''
         }
 }

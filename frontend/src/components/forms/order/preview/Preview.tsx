@@ -1,15 +1,15 @@
 import React from 'react'
 import {selectOrderToSave} from "../../../../slicer/orderSlice";
-import {useAppSelector} from "../../../../app/hooks";
+import { getTotal} from "../helper";
 
+import {useAppSelector} from "../../../../app/hooks";
 //component imports
 import OrderItem from "../order-item/OrderItem";
 import {Card, CardActions, CardHeader, Divider, Toolbar} from "@mui/material";
 import CardContent from '@material-ui/core/CardContent';
-import Grid from '@material-ui/core/Grid';
 
+import Grid from '@material-ui/core/Grid';
 //interface imports
-import {getSubTotal} from "../helper";
 
 type Props = {};
 
@@ -19,10 +19,7 @@ function Preview(props: Props) {
     const productsToOrder = orderItems.map((item, i) => {
         return <OrderItem key={i} item={item} index={i}/>
     })
-    const total = orderItems.reduce((sum, {product, quantity}) => {
-        const subTotal = getSubTotal({product, quantity})
-        return sum + Math.ceil(subTotal * 100) / 100;
-    }, 0)
+    const total = orderItems.reduce(getTotal, 0)
     return (
         <Card sx={{width: 0.99}}>
             <CardHeader title={`order to ${supplier?.firstName} ${supplier?.lastName}`}/>
