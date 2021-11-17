@@ -13,7 +13,7 @@ import GridView from "../../grid-view/GridView";
 
 type Props = {};
 
-function Products(props: Props) {
+function ProductsView(props: Props) {
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(getAllProducts());
@@ -27,4 +27,4 @@ function Products(props: Props) {
         <ListView rows={products} columns={productColumns}/>
 }
 
-export default Products;
+export default ProductsView;

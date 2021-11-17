@@ -13,7 +13,7 @@ import {mapSupplierToSelectData} from "../helper";
 import {handleProductFormInput, selectProductToSave} from "../../../slicer/productSlice";
 
 
-function Product() {
+function ProductForm() {
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(getAllSuppliers())
@@ -67,4 +67,4 @@ function Product() {
     )
 }
 
-export default Product;
+export default ProductForm;

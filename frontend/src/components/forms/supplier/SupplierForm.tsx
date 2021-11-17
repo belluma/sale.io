@@ -7,7 +7,7 @@ import CustomSelect from "../_elements/custom-select/CustomSelect";
 import Contact from "../_elements/contact/Contact";
 //interface imports
 
-function Supplier(){
+function SupplierForm(){
     const dispatch = useAppDispatch();
     const supplierToSave = useAppSelector(selectSupplierToSave);
     const {firstName, lastName, email, phone, orderDay} = supplierToSave;
@@ -28,4 +28,4 @@ function Supplier(){
     )
 }
 
-export default Supplier;
+export default SupplierForm;

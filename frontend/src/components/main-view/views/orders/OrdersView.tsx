@@ -13,7 +13,7 @@ import {getAllOrders, selectOrders} from "../../../../slicer/orderSlice";
 
 type Props = {};
 
-function Orders(props: Props){
+function OrdersView(props: Props){
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(getAllOrders());
@@ -30,4 +30,4 @@ function Orders(props: Props){
     )
 }
 
-export default Orders;
+export default OrdersView;

@@ -17,7 +17,7 @@ import OrderPreview from "./preview/OrderPreview";
 
 type Props = {};
 
-function Order(props: Props) {
+function OrderForm(props: Props) {
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(getAllProducts());
@@ -82,4 +82,4 @@ function Order(props: Props) {
     )
 }
 
-export default Order;
+export default OrderForm;

@@ -13,7 +13,7 @@ import ListView from "../../list-view/ListView";
 
 type Props = {};
 
-function Employees(props: Props) {
+function EmployeesView(props: Props) {
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(getEmployees());
@@ -27,4 +27,4 @@ function Employees(props: Props) {
         <ListView rows={employees} columns={employeeColumns}/>
 }
 
-export default Employees;
+export default EmployeesView;

@@ -10,11 +10,11 @@ import {createProduct, selectProductToSave, validateProduct} from "../../../../s
 import {createOrder, selectOrderToSave, validateOrder} from "../../../../slicer/orderSlice";
 //component imports
 import {Button, Container} from "@mui/material";
-import Employee from "../../employee/Employee";
+import EmployeeForm from "../../employee/EmployeeForm";
 import Customer from "../../customer/Customer";
-import Supplier from "../../supplier/Supplier";
-import Product from "../../product/Product";
-import Order from "../../order/Order";
+import SupplierForm from "../../supplier/SupplierForm";
+import ProductForm from "../../product/ProductForm";
+import OrderForm from "../../order/OrderForm";
 
 //interface imports
 import {Model} from "../../../../interfaces/IThumbnailData";
@@ -50,11 +50,11 @@ function FormWrapper({model, fullScreen, handleClose}: Props) {
     };
     const formSelector = {
         none: "couldn't find the right form",
-        employee: <Employee/>,
-        product: <Product/>,
+        employee: <EmployeeForm/>,
+        product: <ProductForm/>,
         customer: <Customer/>,
-        supplier: <Supplier/>,
-        order: <Order/>,
+        supplier: <SupplierForm/>,
+        order: <OrderForm/>,
     };
 
     const submitSelector = {

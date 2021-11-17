@@ -6,9 +6,9 @@ import React from 'react'
 
 type Props = {};
 
-function Customers(props: Props){
+function CustomersView(props: Props){
     return(
 <div></div>    )
 }
 
-export default Customers;
+export default CustomersView;
