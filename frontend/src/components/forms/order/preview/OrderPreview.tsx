@@ -20,7 +20,8 @@ import CardContent from '@material-ui/core/CardContent';
 
 import Grid from '@material-ui/core/Grid';
 import {parseName} from "../../../../interfaces/IThumbnailData";
-import {green, lightGreen} from "@mui/material/colors";
+import {green} from "@mui/material/colors";
+import {OrderStatus} from "../../../../interfaces/OrderStatus";
 //interface imports
 
 type Props = {
@@ -44,7 +45,7 @@ function OrderPreview({form}: Props) {
             }
         })
     }
-
+    console.log(order.status, order);
     const total = orderItems.reduce(getTotal, 0)
     return (
         <Card sx={{width: 0.99, height: 0.99, display: 'flex', flexDirection: 'column'}}>
@@ -57,11 +58,11 @@ function OrderPreview({form}: Props) {
             </CardContent>
             <Container sx={{flexGrow: 1}}/>
             <Divider/>
-            <CardActions sx={{display: "flex", justifyContent: "space-between"}}>
+            <CardActions sx={{display: "flex", justifyContent: "space-between", flexDirection:"row-reverse"}}>
+                <Typography >Total:€ {total.toFixed(2)}</Typography>
                 <ThemeProvider theme={greenButton()}>
-                    <Button sx={{bgcolor: green[700]}} variant="contained">Receive</Button>
+                    {!form && order.status === OrderStatus.PENDING &&  <Button  variant="contained">Receive</Button>}
                 </ThemeProvider>
-                <Typography>Total:€ {total.toFixed(2)}</Typography>
             </CardActions>
         </Card>
     )
