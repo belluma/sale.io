@@ -33,7 +33,7 @@ function FormWrapper({model, fullScreen, handleClose}: Props) {
     const order = useAppSelector(selectOrderToSave)
 
     const disableButton = () => {
-        switch(model){
+        switch (model) {
             case Model.EMPLOYEE:
                 break;
             case Model.CUSTOMER:
@@ -65,16 +65,17 @@ function FormWrapper({model, fullScreen, handleClose}: Props) {
         order: createOrder,
     };
     const handleSubmit = () => {
-        dispatch(submitSelector[model]());
+        console.log(model)
+        if (Object.keys(submitSelector).includes(model)) dispatch(submitSelector[model]());
         handleClose();
     }
     return (
-        <Container sx={{display:"flex", flexDirection:"column", height: 0.99}}>
-            <Container sx={{flexGrow:1}}>
+        <Container sx={{display: "flex", flexDirection: "column", height: 0.99}}>
+            <Container sx={{flexGrow: 1}}>
 
-            {formSelector[model]}
+                {formSelector[model]}
             </Container>
-            <section >
+            <section>
                 <Button onClick={handleSubmit} disabled={disableButton()}>save</Button>
                 {fullScreen && <Button onClick={handleClose}>Close</Button>}
             </section>

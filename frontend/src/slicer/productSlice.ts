@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import {IProductsState} from '../interfaces/IStates';
 import {IResponseGetAllProducts, IResponseGetOneProduct} from "../interfaces/IApiResponse";
@@ -16,7 +16,7 @@ import {
     stopPendingAndHandleError,
     handleError,
     invalidDataError,
-    showSuccessMessage,
+    handleApiResponse,
 } from "./errorHelper";
 
 
@@ -78,7 +78,7 @@ export const createProduct = createAsyncThunk<IResponseGetOneProduct, void, { st
         const token = getState().authentication.token
         const {data, status, statusText} = await apiCreate(route, token, getState().product.toSave);
         handleError(status, statusText, dispatch);
-        if(status === 200) hideDetailsAndReloadList(dispatch);
+        if (status === 200) hideDetailsAndReloadList(dispatch);
         return {data, status, statusText}
     }
 )
@@ -92,7 +92,7 @@ export const editProduct = createAsyncThunk<IResponseGetOneProduct, IProduct, { 
         const token = getState().authentication.token
         const {data, status, statusText} = await apiEdit(route, token, product);
         handleError(status, statusText, dispatch);
-        if(status === 200) hideDetailsAndReloadList(dispatch)
+        if (status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
     }
 )
@@ -103,7 +103,7 @@ export const deleteProduct = createAsyncThunk<IResponseGetOneProduct, string, { 
         const token = getState().authentication.token
         const {data, status, statusText} = await apiDelete(route, token, id);
         handleError(status, statusText, dispatch);
-        if(status === 200) hideDetailsAndReloadList(dispatch)
+        if (status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
     }
 )
@@ -137,16 +137,13 @@ export const productSlice = createSlice({
                 stopPendingAndHandleError(state, action, emptyProduct);
             })
             .addCase(createProduct.fulfilled, (state, action: PayloadAction<IResponseGetOneProduct>) => {
-                stopPendingAndHandleError(state, action, emptyProduct);
-                showSuccessMessage(state);
+                handleApiResponse(state, action, emptyProduct)
             })
             .addCase(editProduct.fulfilled, (state, action: PayloadAction<IResponseGetOneProduct>) => {
-                stopPendingAndHandleError(state, action, emptyProduct);
-                showSuccessMessage(state);
+                handleApiResponse(state, action, emptyProduct)
             })
             .addCase(deleteProduct.fulfilled, (state, action: PayloadAction<IResponseGetOneProduct>) => {
-                stopPendingAndHandleError(state, action, emptyProduct);
-                showSuccessMessage(state);
+                handleApiResponse(state, action, emptyProduct)
             })
     })
 })

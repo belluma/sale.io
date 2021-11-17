@@ -68,7 +68,7 @@ export const del = (model: string, token: string, id: string) => {
 export const receiveOrder = (token: string, data: IOrder) => {
     return axios({
         method: 'put',
-        url: `/api/orders_suppliers/?id=${data.id}&?status=RECEIVE/`,
+        url: `/api/orders_suppliers/?id=${data.id}&status=RECEIVED`,
         headers: {...jsonHeaders(), ...authHeaders(token)},
         data
     }).then(response => {

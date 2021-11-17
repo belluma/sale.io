@@ -1,8 +1,8 @@
 import React from 'react'
-import {selectCurrentOrder, selectOrderToSave} from "../../../../slicer/orderSlice";
+import {receiveOrder, selectCurrentOrder, selectOrderToSave} from "../../../../slicer/orderSlice";
 import {getTotal} from "../helper";
 
-import {useAppSelector} from "../../../../app/hooks";
+import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
 //component imports
 import OrderItem from "../order-item/OrderItem";
 import {
@@ -13,7 +13,8 @@ import {
     Container,
     createTheme,
     Divider,
-    ThemeOptions, ThemeProvider,
+    ThemeOptions,
+    ThemeProvider,
     Typography
 } from "@mui/material";
 import CardContent from '@material-ui/core/CardContent';
@@ -21,6 +22,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Grid from '@material-ui/core/Grid';
 import {parseName} from "../../../../interfaces/IThumbnailData";
 import {OrderStatus} from "../../../../interfaces/OrderStatus";
+import {IOrder} from "../../../../interfaces/IOrder";
 //interface imports
 
 type Props = {
@@ -28,13 +30,17 @@ type Props = {
 };
 
 function OrderPreview({form}: Props) {
+    const dispatch = useAppDispatch();
     const orderToSave = useAppSelector(selectOrderToSave)
     const currentOrder = useAppSelector(selectCurrentOrder);
-    const order = form ? orderToSave : currentOrder;
+    const order:IOrder = form ? orderToSave : currentOrder;
     const {orderItems, supplier} = order;
     const productsToOrder = orderItems.map((item, i) => {
         return <OrderItem form={form} key={i} item={item} index={i}/>
     })
+    const handleReceive = () => {
+        if(order.status === OrderStatus.PENDING)dispatch(receiveOrder(order));
+    }
     const greenButton = (): ThemeOptions => {
         return createTheme({
             palette: {
@@ -59,7 +65,7 @@ function OrderPreview({form}: Props) {
             <CardActions sx={{display: "flex", justifyContent: "space-between", flexDirection:"row-reverse"}}>
                 <Typography >Total:€ {total.toFixed(2)}</Typography>
                 <ThemeProvider theme={greenButton()}>
-                    {!form && order.status === OrderStatus.PENDING &&  <Button  variant="contained">Receive</Button>}
+                    {!form && order.status === OrderStatus.PENDING &&  <Button onClick={handleReceive} variant="contained">Receive</Button>}
                 </ThemeProvider>
             </CardActions>
         </Card>
