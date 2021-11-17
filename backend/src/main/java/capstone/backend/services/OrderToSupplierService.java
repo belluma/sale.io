@@ -40,7 +40,7 @@ public class OrderToSupplierService {
 
     public OrderToSupplierDTO createOrder(OrderToSupplierDTO order) throws  EntityWithThisIdAlreadyExistException {
         if (orderExists(order)) {
-            throw new EntityWithThisIdAlreadyExistException(String.format("An Order with id %d already exists!", order.getId()));
+            throw new EntityWithThisIdAlreadyExistException(String.format("An order with id %d already exists!", order.getId()));
         }
         validateNewOrder(order);
         order.setOrderItems(order
