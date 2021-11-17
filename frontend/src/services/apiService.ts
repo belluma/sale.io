@@ -2,6 +2,7 @@ import axios from "axios";
 import {parseError} from './errorService';
 import {authHeaders, jsonHeaders} from "./serviceUtils";
 import {IBody} from "../interfaces/IApi";
+import {IOrder} from "../interfaces/IOrder";
 
 
 export const getAll = (model: string, token: string) => {
@@ -52,11 +53,24 @@ export const edit = (model: string, token: string, data: IBody) => {
     })
         .catch(err => parseError(err))
 }
+
 export const del = (model: string, token: string, id: string) => {
     return axios({
         method: 'delete',
         url: `/api/${model}/${id}`,
         headers: {...jsonHeaders(), ...authHeaders(token)},
+    }).then(response => {
+        return response
+    })
+        .catch(err => parseError(err))
+}
+
+export const receiveOrder = (token: string, data: IOrder) => {
+    return axios({
+        method: 'put',
+        url: `/api/orders_suppliers/?id=${data.id}&?status=RECEIVE/`,
+        headers: {...jsonHeaders(), ...authHeaders(token)},
+        data
     }).then(response => {
         return response
     })
