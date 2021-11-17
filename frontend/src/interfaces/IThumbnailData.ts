@@ -1,6 +1,8 @@
 import {IEmployee} from "./IEmployee";
 import {IProduct} from "./IProduct";
 import {ISupplier} from "./ISupplier";
+import {IOrder} from "./IOrder";
+import {IContact} from "./IContact";
 
 export enum Model {
     EMPLOYEE = "employee",
@@ -37,10 +39,16 @@ export interface IThumbnailData extends INewItem {
 
 export interface IDetailsData extends IThumbnailData {
 }
+const parseName = ({firstName, lastName}:IContact):string => {
+    let name = '';
+    if(firstName) name = `${firstName} `;
+    if(lastName) name = name + lastName;
+    return name;
+}
 
 export const parseEmployeeToThumbnailData = ({firstName, lastName, username, picture}: IEmployee): IDetailsData => {
     return {
-        title: `${firstName} ${lastName}`,
+        title: `${parseName({firstName, lastName})}`,
         picture: picture,
         id: username,
         alt: "profile picture",
@@ -49,7 +57,7 @@ export const parseEmployeeToThumbnailData = ({firstName, lastName, username, pic
 }
 export const parseSupplierToThumbnailData = ({firstName, lastName, id, picture}: ISupplier): IDetailsData => {
     return {
-        title: `${firstName} ${lastName}`,
+        title: `${parseName({firstName, lastName})}`,
         picture: picture,
         id: id,
         alt: "profile picture",
@@ -63,5 +71,14 @@ export const parseProductToThumbnailData = ({id, name, picture,}: IProduct): IDe
         id: id?.toString() || "",
         alt: "product picture",
         model: Views.PRODUCT
-    }
+    }}
+
+    export const parseOrderToThumbnailData = ({supplier, id}:IOrder):IDetailsData => {
+        return{
+            title: `order from ${supplier && parseName(supplier)}`,
+            picture: '',
+            id: id?.toString() || "",
+            alt: "product picture",
+            model: Views.ORDER
+        }
 }

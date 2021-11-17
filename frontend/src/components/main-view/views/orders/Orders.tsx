@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
-import {parseSupplierToThumbnailData, Views} from "../../../../interfaces/IThumbnailData";
+import {parseOrderToThumbnailData, parseSupplierToThumbnailData, Views} from "../../../../interfaces/IThumbnailData";
 import {selectView} from "../../../../slicer/viewSlice";
 import GridView from "../../grid-view/GridView";
 import ListView from "../../list-view/ListView";
@@ -20,7 +20,7 @@ function Orders(props: Props){
     }, [dispatch]);
 
     const orders = useAppSelector(selectOrders)
-    const thumbnails = orders.map(order => parseSupplierToThumbnailData(order));
+    const thumbnails = orders.map(order => parseOrderToThumbnailData(order));
 
     return (
         useAppSelector(selectView) ?
