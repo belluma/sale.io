@@ -18,7 +18,7 @@ export const handleError = (status: number, statusText: string, dispatch: Dispat
     if (status !== 200) {
         dispatch(setDetailData(parseErrorMessage({status, statusText, data: ""})))
         dispatch(showDetails())
-    }else (dispatch(hideDetails()))
+    }
 }
 
 const parseErrorMessage = ({statusText}: IError): IDetailsData => {

@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
+import {AnyAction, AsyncThunkAction, createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import {IProductsState} from '../interfaces/IStates';
 import {IResponseGetAllProducts, IResponseGetOneProduct} from "../interfaces/IApiResponse";
@@ -67,6 +67,8 @@ export const createProduct = createAsyncThunk<IResponseGetOneProduct, void, { st
         const token = getState().authentication.token
         const {data, status, statusText} = await apiCreate(route, token, getState().product.toSave);
         handleError(status, statusText, dispatch);
+        //@ts-ignore
+        // if (status !== 200) dispatch(getAllProducts())
         return {data, status, statusText}
     }
 )
@@ -104,7 +106,9 @@ export const productSlice = createSlice({
         handleProductFormInput: (state, {payload}: PayloadAction<IProduct>) => {
             state.toSave = payload;
         },
-        closeSuccess: (state:IProductsState) => {state.success = false}
+        closeSuccess: (state: IProductsState) => {
+            state.success = false
+        }
     },
     extraReducers: (builder => {
         builder
