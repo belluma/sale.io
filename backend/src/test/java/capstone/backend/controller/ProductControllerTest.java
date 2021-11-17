@@ -1,5 +1,6 @@
 package capstone.backend.controller;
 
+import capstone.backend.CombinedTestContainer;
 import capstone.backend.mapper.ProductMapper;
 import capstone.backend.model.db.Product;
 import capstone.backend.model.db.contact.Supplier;
@@ -55,21 +56,12 @@ class ProductControllerTest {
     String BASEURL = "/api/products";
 
     @Container
-    public static PostgreSQLContainer container = new PostgreSQLContainer()
-            .withDatabaseName("pos")
-            .withUsername("pos")
-            .withPassword("pos");
-
-    @DynamicPropertySource
-    static void postgresqlProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", container::getJdbcUrl);
-        registry.add("spring.datasource.password", container::getPassword);
-        registry.add("spring.datasource.username", container::getUsername);
-    }
+    public static PostgreSQLContainer<CombinedTestContainer> container = CombinedTestContainer.getInstance();
 
     @AfterEach
     void clearDB() {
         productRepo.deleteAll();
+        supplierRepo.deleteAll();
     }
 
     @Test
