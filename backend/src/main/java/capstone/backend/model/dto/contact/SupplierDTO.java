@@ -17,7 +17,7 @@ import java.util.List;
 public class SupplierDTO extends ContactDTO{
 
     private Long id;
-    private List<ProductDTO> products;
+//    private List<ProductDTO> products;
     private List<OrderToSupplier> orders;
     private Weekday orderDay;
 

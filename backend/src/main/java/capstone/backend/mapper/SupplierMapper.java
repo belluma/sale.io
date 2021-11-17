@@ -24,7 +24,7 @@ public class SupplierMapper {
                 .lastName(supplier.getLastName())
                 .phone(supplier.getPhone())
                 .email(supplier.getEmail())
-                .products(mapProductList(supplier))
+//                .products(mapProductList(supplier))
                 .orders(Set.of())
                 .orderDay(supplier.getOrderDay())
                 .build();
@@ -38,27 +38,27 @@ public class SupplierMapper {
                 .lastName(supplier.getLastName())
                 .phone(supplier.getPhone())
                 .email(supplier.getEmail())
-                .products(mapProductList(supplier))
+//                .products(mapProductList(supplier))
                 .orders(List.of())
                 .orderDay(supplier.getOrderDay())
                 .build();
     }
 
-    private static List<Product> mapProductList(SupplierDTO supplier) {
-        if (supplier.getProducts() == null) return List.of();
-        return supplier
-                .getProducts()
-                .stream()
-                .map(ProductMapper::mapProduct)
-                .toList();
-    }
-
-    private static List<ProductDTO> mapProductList(Supplier supplier) {
-        if (supplier.getProducts() == null) return List.of();
-        return supplier
-                .getProducts()
-                .stream()
-                .map(ProductMapper::mapProductWithDetails)
-                .toList();
-    }
+//    private static List<Product> mapProductList(SupplierDTO supplier) {
+//        if (supplier.getProducts() == null) return List.of();
+//        return supplier
+//                .getProducts()
+//                .stream()
+//                .map(ProductMapper::mapProduct)
+//                .toList();
+//    }
+//
+//    private static List<ProductDTO> mapProductList(Supplier supplier) {
+//        if (supplier.getProducts() == null) return List.of();
+//        return supplier
+//                .getProducts()
+//                .stream()
+//                .map(ProductMapper::mapProductWithDetails)
+//                .toList();
+//    }
 }

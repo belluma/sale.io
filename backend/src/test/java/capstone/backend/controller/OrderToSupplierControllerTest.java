@@ -25,6 +25,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
@@ -90,7 +91,7 @@ class OrderToSupplierControllerTest {
     void getAllOrders() {
         //GIVEN
         Supplier supplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(supplier)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(supplier)));
         OrderItem orderItem = orderItemRepo.save(sampleOrderItem().withProduct(product));
         OrderToSupplier order = orderRepo.save(new OrderToSupplier(1L, List.of(orderItem), PENDING, supplier));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
@@ -106,7 +107,7 @@ class OrderToSupplierControllerTest {
     void createOrder() {
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(sampleSupplier)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
         OrderItem orderItem = new OrderItem(product, 1);
         OrderToSupplierDTO order = new OrderToSupplierDTO(1L, List.of(mapOrderItem(orderItem)), mapSupplier(sampleSupplier));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
@@ -126,7 +127,7 @@ class OrderToSupplierControllerTest {
     void createOrderSavesOrderItem() {
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(sampleSupplier)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
         OrderItem orderItem = new OrderItem(product, 1);
         OrderToSupplierDTO order = new OrderToSupplierDTO(1L, List.of(mapOrderItem(orderItem)), mapSupplier(sampleSupplier));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
@@ -158,7 +159,7 @@ class OrderToSupplierControllerTest {
     void createOrderReturnsNotAcceptableWhenOrderIdAlreadyExists() {
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(sampleSupplier)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
         OrderItem firstOrderItem = orderItemRepo.save(new OrderItem(product, 1));
         OrderItem orderItem = new OrderItem(product, 1);
         OrderToSupplier firstOrder = orderRepo.save(new OrderToSupplier((1L), List.of(firstOrderItem), PENDING, sampleSupplier));
@@ -175,7 +176,7 @@ class OrderToSupplierControllerTest {
         //GIVEN
         Supplier supplierToOrderFrom = supplierRepo.save(sampleSupplier());
         Supplier supplierToAssociateProductWith = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(supplierToAssociateProductWith)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(supplierToAssociateProductWith)));
         OrderItem orderItem = new OrderItem(product, 1);
         OrderToSupplierDTO order = new OrderToSupplierDTO(1L, List.of(mapOrderItem(orderItem)), mapSupplier(supplierToOrderFrom));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
@@ -189,7 +190,7 @@ class OrderToSupplierControllerTest {
     void receiveOrder() {
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(sampleSupplier)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
         OrderItem orderItem = orderItemRepo.save(sampleOrderItem().withProduct(product));
         OrderToSupplier pendingOrder = orderRepo.save(new OrderToSupplier(1L, List.of(orderItem), PENDING, sampleSupplier));
         OrderToSupplierDTO orderToReceive = mapOrder(pendingOrder);
@@ -212,7 +213,7 @@ class OrderToSupplierControllerTest {
     void receiveOrderAbortsWhenOrderAlreadyReceived(){
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(sampleSupplier)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
         OrderItem orderItem = orderItemRepo.save(sampleOrderItem().withProduct(product));
         OrderToSupplier receivedOrder = orderRepo.save(new OrderToSupplier(1L, List.of(orderItem), RECEIVED, sampleSupplier));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
@@ -227,7 +228,7 @@ class OrderToSupplierControllerTest {
     void receiveOrderAbortsWhenOrderDoesNotExist(){
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(sampleSupplier)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
         OrderItem orderItem = orderItemRepo.save(sampleOrderItem().withProduct(product));
         OrderToSupplier nonExistentOrder = new OrderToSupplier(1L, List.of(orderItem), RECEIVED, sampleSupplier);
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
@@ -242,7 +243,7 @@ class OrderToSupplierControllerTest {
     void receiveOrderAbortsWithWrongParameters() {
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(sampleSupplier)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
         OrderItem orderItem = orderItemRepo.save(sampleOrderItem().withProduct(product));
         OrderToSupplier receivedOrder = orderRepo.save(new OrderToSupplier(1L, List.of(orderItem), RECEIVED, sampleSupplier));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
