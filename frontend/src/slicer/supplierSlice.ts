@@ -34,7 +34,7 @@ const validateBeforeSendingToBackend = ({supplier}: RootState): boolean => {
 const hideDetailsAndReloadList = (dispatch: Dispatch) => {
     dispatch(hideDetails());
     //@ts-ignore
-    dispatch(getAllProducts());
+    dispatch(getAllSuppliers());
 }
 
 export const getAllSuppliers = createAsyncThunk<IResponseGetAllSuppliers, void, { state: RootState, dispatch: Dispatch }>(
