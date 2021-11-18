@@ -1,7 +1,7 @@
 import {GridColDef} from "@mui/x-data-grid";
 
 export const productColumns: GridColDef[] = [
-    {field: 'name', headerName: 'Product Name', flex: 0.125},
+    {field: 'name', headerName: 'ProductForm Name', flex: 0.125},
     {field: 'category', headerName: 'Category', flex: 0.125},
     {field: 'suppliers', headerName: 'Suppliers', flex: 0.125},
     {field: 'stockCodeSupplier', headerName: 'Stock Code', flex: 0.125},
@@ -25,6 +25,6 @@ export const supplierColumns: GridColDef[] = [
     {field: "email", headerName: "Email", flex: 0.1},
     {field: "phone", headerName: "Phone", flex: 0.1},
     {field: "products", headerName: "Products", flex: 0.1},
-    {field: "orderDay", headerName: "Order Day", flex: 0.1},
+    {field: "orderDay", headerName: "OrderForm Day", flex: 0.1},
 ]
 

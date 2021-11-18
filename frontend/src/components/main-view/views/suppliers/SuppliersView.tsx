@@ -13,7 +13,7 @@ import ListView from "../../list-view/ListView";
 
 type Props = {};
 
-function Suppliers(props: Props) {
+function SuppliersView(props: Props) {
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(getAllSuppliers());
@@ -30,4 +30,4 @@ function Suppliers(props: Props) {
     )
 }
 
-export default Suppliers;
+export default SuppliersView;

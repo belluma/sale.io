@@ -89,7 +89,7 @@ class OrderToSupplierServiceTest {
         when(orderRepo.existsById(orderToSave.getId())).thenReturn(true);
         //WHEN - //THEN
         Exception ex = assertThrows(EntityWithThisIdAlreadyExistException.class, () -> orderService.createOrder(orderToSave));
-        assertThat(ex.getMessage(), is("An Order with this id already exists!"));
+        assertThat(ex.getMessage(), is(String.format("An order with id %d already exists!", orderToSave.getId())));
         verify(orderRepo).existsById(orderToSave.getId());
     }
 
@@ -133,14 +133,16 @@ class OrderToSupplierServiceTest {
         //GIVEN
         OrderToSupplierDTO orderToReceive = sampleOrderDTOWithStatusPending();
         OrderToSupplierDTO expected = sampleOrderDTOWithStatusReceived();
+        expected.setStatus(RECEIVED);
         when(orderRepo.existsById(orderToReceive.getId())).thenReturn(true);
-        when(orderRepo.findById(orderToReceive.getId())).thenReturn(Optional.of(mapOrder(expected)));
+        when(orderRepo.getById(orderToReceive.getId())).thenReturn(mapOrder(orderToReceive));
+        when(orderRepo.save(mapOrder(orderToReceive))).thenReturn(mapOrder(expected));
         //WHEN
         OrderToSupplierDTO actual = orderService.receiveOrder(orderToReceive, RECEIVED);
         //THEN
         verify(orderRepo).existsById(123L);
-        verify(orderRepo, times(2)).findById(123L);
         verify(productService).adjustAmountInStock(orderToReceive.getOrderItems());
+        verify(orderRepo).getById(123L);
         assertThat(actual, is(expected));
     }
 
@@ -156,11 +158,11 @@ class OrderToSupplierServiceTest {
     }
 
     @Test
-    void receiveOrderThrowsWehnParamWrong() {
+    void receiveOrderThrowsWhenParamWrong() {
         //GIVEN
         OrderToSupplierDTO order = sampleOrderDTOWithStatusPending();
         //WHEN - //THEN
         Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.receiveOrder(order, PENDING));
-        assertThat(ex.getMessage(), is("We couldn't process your request!"));
+        assertThat(ex.getMessage(), is("Your request couldn't be processed!"));
     }
 }

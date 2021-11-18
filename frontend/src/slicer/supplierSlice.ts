@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
-import { ISuppliersState} from '../interfaces/IStates';
+import {ISuppliersState} from '../interfaces/IStates';
 import {IResponseGetAllSuppliers, IResponseGetOneSupplier} from "../interfaces/IApiResponse";
 import {
     getAll as apiGetAll,
@@ -10,8 +10,8 @@ import {
     del as apiDelete
 } from '../services/apiService'
 import {emptySupplier, ISupplier} from "../interfaces/ISupplier";
-import {handleError, invalidDataError, showSuccessMessage} from './errorHelper';
-import {setPending, stopPendingAndHandleError} from "./errorHelper";
+import {handleApiResponse, handleError, invalidDataError,setPending, stopPendingAndHandleError} from "./errorHelper";
+import {hideDetails} from "./detailsSlice";
 
 
 const initialState: ISuppliersState = {
@@ -29,6 +29,11 @@ export const validateSupplier = (supplier: ISupplier): boolean => {
 }
 const validateBeforeSendingToBackend = ({supplier}: RootState): boolean => {
     return validateSupplier(supplier.toSave);
+}
+const hideDetailsAndReloadList = (dispatch: Dispatch) => {
+    dispatch(hideDetails());
+    //@ts-ignore
+    dispatch(getAllSuppliers());
 }
 
 export const getAllSuppliers = createAsyncThunk<IResponseGetAllSuppliers, void, { state: RootState, dispatch: Dispatch }>(
@@ -60,6 +65,7 @@ export const createSupplier = createAsyncThunk<IResponseGetOneSupplier, void, { 
         const token = getState().authentication.token
         const {data, status, statusText} = await apiCreate(route, token, getState().supplier.toSave);
         handleError(status, statusText, dispatch);
+        if (status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
     }
 )
@@ -73,6 +79,7 @@ export const editSupplier = createAsyncThunk<IResponseGetOneSupplier, ISupplier,
         const token = getState().authentication.token
         const {data, status, statusText} = await apiEdit(route, token, supplier);
         handleError(status, statusText, dispatch);
+        if (status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
     }
 )
@@ -83,6 +90,7 @@ export const deleteSupplier = createAsyncThunk<IResponseGetOneSupplier, string, 
         const token = getState().authentication.token
         const {data, status, statusText} = await apiDelete(route, token, id);
         handleError(status, statusText, dispatch);
+        if (status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
     }
 )
@@ -97,7 +105,9 @@ export const supplierSlice = createSlice({
         handleSupplierFormInput: (state, {payload}: PayloadAction<ISupplier>) => {
             state.toSave = payload;
         },
-        closeSuccess: (state:ISuppliersState) => {state.success = false}
+        closeSuccess: (state: ISuppliersState) => {
+            state.success = false
+        }
     },
     extraReducers: (builder => {
         builder
@@ -114,16 +124,13 @@ export const supplierSlice = createSlice({
                 stopPendingAndHandleError(state, action, emptySupplier);
             })
             .addCase(createSupplier.fulfilled, (state: ISuppliersState, action: PayloadAction<IResponseGetOneSupplier>) => {
-                stopPendingAndHandleError(state, action, emptySupplier);
-                showSuccessMessage(state);
+                handleApiResponse(state, action, emptySupplier);
             })
             .addCase(editSupplier.fulfilled, (state: ISuppliersState, action: PayloadAction<IResponseGetOneSupplier>) => {
-                stopPendingAndHandleError(state, action, emptySupplier);
-                showSuccessMessage(state);
+                handleApiResponse(state, action, emptySupplier);
             })
             .addCase(deleteSupplier.fulfilled, (state: ISuppliersState, action: PayloadAction<IResponseGetOneSupplier>) => {
-                stopPendingAndHandleError(state, action, emptySupplier);
-                showSuccessMessage(state);
+                handleApiResponse(state, action, emptySupplier);
             })
     })
 })

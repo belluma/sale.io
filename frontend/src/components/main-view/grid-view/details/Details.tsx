@@ -3,7 +3,7 @@ import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
 import {hideDetails, resetDetails, selectShowDetails} from "../../../../slicer/detailsSlice";
 
 //component imports
-import {Dialog, DialogContent, DialogProps, useMediaQuery, useTheme} from "@mui/material";
+import {Container, Dialog, DialogContent, DialogProps, useMediaQuery, useTheme} from "@mui/material";
 import DetailsCard from "./details-card/DetailsCard";
 
 //interface imports
@@ -27,17 +27,18 @@ function Details(props: Props) {
             }
         }
     }, [showDetails]);
+    const transitionDuration = 200
     const handleClose = () => {
-        dispatch(resetDetails());
+        setTimeout(() => {dispatch(resetDetails())}, transitionDuration);
         dispatch(hideDetails());
     }
 
     return (
-        <Dialog fullScreen={fullScreen} open={showDetails} onClose={handleClose} >
+        <Dialog fullScreen={fullScreen} open={showDetails} onClose={handleClose} transitionDuration={transitionDuration}>
             <DialogContent dividers={scroll === 'paper'} sx={{padding:0, display:'flex', alignItems:alignItems}}>
-                <div ref={descriptionElementRef} style={{margin:"auto"}}>
+                <Container ref={descriptionElementRef} style={{margin:"auto"}}>
                     <DetailsCard fullScreen={fullScreen} handleClose={handleClose}/>
-                </div>
+                </Container>
             </DialogContent>
         </Dialog>
     )

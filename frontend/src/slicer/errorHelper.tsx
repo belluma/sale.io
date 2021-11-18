@@ -33,12 +33,17 @@ type ToSave = IOrder | IProduct | IEmployee | ISupplier;
 export const setPending = (state: States) => {
     state.pending = true;
 }
+export const handleApiResponse = (state: States, action: Actions, emptyItem: ToSave) => {
+    stopPendingAndHandleError(state, action, emptyItem);
+    if (action.payload.status === 200) showSuccessMessage(state);
+}
+
 export const stopPendingAndHandleError = (state: States, action: Actions, emptyItem: ToSave) => {
     state.pending = false;
     if (action.payload.status === 200) state.toSave = emptyItem;
     return action.payload.status !== 200;
 }
-export const showSuccessMessage = (state: States) => {
+const showSuccessMessage = (state: States) => {
     state.success = true;
 }
 

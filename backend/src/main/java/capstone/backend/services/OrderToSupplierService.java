@@ -2,6 +2,7 @@ package capstone.backend.services;
 
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.mapper.OrderToSupplierMapper;
+import capstone.backend.model.db.order.OrderToSupplier;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.model.dto.contact.SupplierDTO;
 import capstone.backend.model.dto.order.OrderToSupplierDTO;
@@ -37,9 +38,9 @@ public class OrderToSupplierService {
                 .toList();
     }
 
-    public OrderToSupplierDTO createOrder(OrderToSupplierDTO order) throws EntityNotFoundException, EntityWithThisIdAlreadyExistException {
+    public OrderToSupplierDTO createOrder(OrderToSupplierDTO order) throws  EntityWithThisIdAlreadyExistException {
         if (orderExists(order)) {
-            throw new EntityWithThisIdAlreadyExistException("An Order with this id already exists!");
+            throw new EntityWithThisIdAlreadyExistException(String.format("An order with id %d already exists!", order.getId()));
         }
         validateNewOrder(order);
         order.setOrderItems(order
@@ -52,7 +53,7 @@ public class OrderToSupplierService {
 
     public OrderToSupplierDTO receiveOrder(OrderToSupplierDTO order, OrderStatus status) throws EntityNotFoundException, IllegalArgumentException {
         if (status != RECEIVED) {
-            throw new IllegalArgumentException("We couldn't process your request!");
+            throw new IllegalArgumentException("Your request couldn't be processed!");
         }
         if (!orderExists(order)) {
             throw new EntityNotFoundException("The order you're trying to receive doesn't exist");
@@ -61,8 +62,9 @@ public class OrderToSupplierService {
             throw new IllegalArgumentException("The order you're trying to receive has already been received");
         }
         productService.adjustAmountInStock(order.getOrderItems());
-        repo.findById(order.getId()).ifPresent(receivedOrder -> receivedOrder.setStatus(RECEIVED));
-        return mapOrder(repo.findById(order.getId()).orElseThrow());
+        OrderToSupplier orderToReceive = repo.getById(order.getId());
+        orderToReceive.setStatus(RECEIVED);
+        return mapOrder(repo.save(orderToReceive));
     }
 
     private boolean orderExists(OrderToSupplierDTO order) {
@@ -75,7 +77,7 @@ public class OrderToSupplierService {
         }
     }
 
-    private void validateNewOrder(OrderToSupplierDTO order) throws IllegalArgumentException, EntityWithThisIdAlreadyExistException {
+    private void validateNewOrder(OrderToSupplierDTO order) throws IllegalArgumentException {
         productsExist(order, "You tried to order a product that doesn't exist!");
         if (!supplierService.supplierExists(order.getSupplier().getId())) {
             throw new IllegalArgumentException("You tried to order from a supplier that doesn't exist!");

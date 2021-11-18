@@ -11,13 +11,13 @@ import CustomSelect from "../_elements/custom-select/CustomSelect";
 import CustomNumber from "../_elements/custom-number/CustomNumber";
 
 import {Button, Grid} from "@mui/material";
-import Preview from "./preview/Preview";
+import OrderPreview from "./preview/OrderPreview";
 
 //interface imports
 
 type Props = {};
 
-function Order(props: Props) {
+function OrderForm(props: Props) {
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(getAllProducts());
@@ -43,7 +43,7 @@ function Order(props: Props) {
         setSelectedProductId(e.target.value);
     }
     const selectSupplier = (e: ChangeEvent<HTMLInputElement>) => {
-        const supplier = suppliers.find(s => s.id === e.target.value);
+        const supplier = suppliers.find(supplier => supplier.id === e.target.value);
         supplier && dispatch(chooseSupplier(supplier));
         supplier && setSelectedSupplierId(supplier.id);
     }
@@ -77,9 +77,9 @@ function Order(props: Props) {
             <Grid item xs={2}>
                 <Button disabled={!validateProduct} onClick={addProduct}>Add</Button>
             </Grid>
-            {selectedSupplierId && <Preview/>}
+            {selectedSupplierId && <OrderPreview form={true}/>}
         </Grid>
     )
 }
 
-export default Order;
+export default OrderForm;

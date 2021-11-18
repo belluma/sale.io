@@ -12,7 +12,7 @@ import ErrorMessage from "../../../../messages/error-message/ErrorMessage";
 //interface imports
 
 import {Model} from "../../../../../interfaces/IThumbnailData";
-import SuccessMessage from "../../../../messages/success-message/SuccessMessage";
+import OrderPreview from "../../../../forms/order/preview/OrderPreview";
 
 type Props = {
     fullScreen: boolean,
@@ -32,21 +32,22 @@ function DetailsCard({fullScreen, handleClose}: Props) {
         product: (<div/>),
         customer: (<div/>),
         supplier: (<div/>),
-        order: <div/>,
+        order: <OrderPreview/>,
         error: <ErrorMessage statusText={subtitle}/>,
-        success: <SuccessMessage />
+        none: (<></>),
     }
+
     return (
-        <Card sx={{width: {sm: .99}, height:{sm:0.5}}}>
+        <Card sx={{width: {sm: .99, md: 500}, height: {sm: 0.99, md: 800}, display: "flex", flexDirection: "column"}}>
             <CardHeader title={title} subtitle={subtitle} align="center"/>
             <Divider/>
-            {model !== "new" && <CardMedia
+            {(model !== "new" && model !== "order") && <CardMedia
                 component="img"
                 sx={{width: .99}}
                 image={picture || images[model]}
                 alt={alt}
             />}
-            <CardContent>
+            <CardContent sx={{flexGrow: 1}}>
                 {cardContent[model]}
             </CardContent>
         </Card>

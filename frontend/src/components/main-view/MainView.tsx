@@ -10,11 +10,11 @@ import LoginView from "./views/login-view/LoginView";
 import StartRoute from "./start-route/StartRoute";
 import StartView from "./views/start-view/StartView";
 import ProtectedRoute from "./protected-route/ProtectedRoute";
-import Employees from "./views/employees/Employees";
-import Products from "./views/products/Products";
-import Suppliers from "./views/suppliers/Suppliers";
-import Customers from "./views/customers/Customers";
-import Orders from "./views/orders/Orders";
+import EmployeesView from "./views/employees/EmployeesView";
+import ProductsView from "./views/products/ProductsView";
+import SuppliersView from "./views/suppliers/SuppliersView";
+import CustomersView from "./views/customers/CustomersView";
+import OrdersView from "./views/orders/OrdersView";
 import Pending from "../messages/pending/Pending";
 //interface imports
 import {Model} from "../../interfaces/IThumbnailData";
@@ -26,11 +26,11 @@ function MainView(props: Props){
     const protectedViews = {
         NEW:StartView,
         LOGIN: StartView,
-        EMPLOYEE: Employees,
-        PRODUCT: Products,
-        SUPPLIER: Suppliers,
-        CUSTOMER: Customers,
-        ORDER: Orders
+        EMPLOYEE: EmployeesView,
+        PRODUCT: ProductsView,
+        SUPPLIER: SuppliersView,
+        CUSTOMER: CustomersView,
+        ORDER: OrdersView
     };
     const protectedRoutes = views.map((view) => <ProtectedRoute key={view} path={`/${Model[view]}`} component={protectedViews[view]} />)
     return (

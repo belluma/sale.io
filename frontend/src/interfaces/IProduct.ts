@@ -16,6 +16,7 @@ export interface IProduct {
     minAmount?: number,
     maxAmount?: number,
     unitSize?: number,
+    amountInStock?:number,
 }
 
 export const emptyProduct: IProduct = {

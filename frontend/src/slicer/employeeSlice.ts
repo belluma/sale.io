@@ -25,7 +25,6 @@ export const getEmployees = createAsyncThunk<IResponseGetAllEmployees, void, { d
     }
 )
 
-
 export const employeeSlice = createSlice({
     name: 'employee',
     initialState,

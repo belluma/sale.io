@@ -1,25 +1,32 @@
 import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
-import { IOrdersState} from '../interfaces/IStates';
+import {IOrdersState} from '../interfaces/IStates';
 import {IResponseGetAllOrders, IResponseGetOneOrder} from "../interfaces/IApiResponse";
 import {
     getAll as apiGetAll,
     getOne as apiGetOne,
     create as apiCreate,
     edit as apiEdit,
-    del as apiDelete
+    del as apiDelete,
+    receiveOrder as apiReceiveOrder
 } from '../services/apiService'
 import {emptyOrder, IEditOrderItem, IOrder, IOrderItem} from "../interfaces/IOrder";
-import {handleError, invalidDataError, showSuccessMessage} from "./errorHelper";
 import {ISupplier} from "../interfaces/ISupplier";
-import {setPending, stopPendingAndHandleError} from "./errorHelper";
+import {
+    handleError,
+    invalidDataError,
+    setPending,
+    stopPendingAndHandleError,
+    handleApiResponse
+} from "./errorHelper";
+import {hideDetails} from "./detailsSlice";
 
 
 const initialState: IOrdersState = {
     orders: [],
-    current: undefined,
+    current: emptyOrder,
     pending: false,
-    success:false,    toSave: emptyOrder,
+    success: false, toSave: emptyOrder,
 }
 const route = "orders_suppliers";
 export const validateOrder = (order: IOrder): boolean => {
@@ -33,6 +40,11 @@ const validateBeforeSendingToBackend = ({order}: RootState): boolean => {
     return validateOrder(order.toSave);
 }
 
+const hideDetailsAndReloadList = (dispatch: Dispatch) => {
+    dispatch(hideDetails());
+    //@ts-ignore
+    dispatch(getAllOrders());
+}
 
 export const getAllOrders = createAsyncThunk<IResponseGetAllOrders, void, { state: RootState, dispatch: Dispatch }>(
     'orders/getAll',
@@ -63,6 +75,7 @@ export const createOrder = createAsyncThunk<IResponseGetOneOrder, void, { state:
         const token = getState().authentication.token
         const {data, status, statusText} = await apiCreate(route, token, getState().order.toSave);
         handleError(status, statusText, dispatch);
+        if (status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
     }
 )
@@ -76,6 +89,7 @@ export const editOrder = createAsyncThunk<IResponseGetOneOrder, IOrder, { state:
         const token = getState().authentication.token
         const {data, status, statusText} = await apiEdit(route, token, order);
         handleError(status, statusText, dispatch);
+        if (status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
     }
 )
@@ -83,9 +97,22 @@ export const editOrder = createAsyncThunk<IResponseGetOneOrder, IOrder, { state:
 export const deleteOrder = createAsyncThunk<IResponseGetOneOrder, string, { state: RootState, dispatch: Dispatch }>(
     'orders/delete',
     async (id, {getState, dispatch}) => {
-        const token = getState().authentication.token
+        const token = getState().authentication.token;
         const {data, status, statusText} = await apiDelete(route, token, id);
         handleError(status, statusText, dispatch);
+        if (status === 200) hideDetailsAndReloadList(dispatch)
+        return {data, status, statusText}
+    }
+)
+
+export const receiveOrder = createAsyncThunk<IResponseGetOneOrder, IOrder, { state: RootState, dispatch: Dispatch }>(
+    'orders/receive',
+    async (order, {getState, dispatch}) => {
+        const token = getState().authentication.token;
+        const {data, status, statusText} = await apiReceiveOrder(token, order);
+        handleError(status, statusText, dispatch);
+        if (status === 200) hideDetailsAndReloadList(dispatch)
+        console.log(data)
         return {data, status, statusText}
     }
 )
@@ -95,7 +122,7 @@ export const orderSlice = createSlice({
     initialState,
     reducers: {
         chooseCurrentOrder: (state, {payload}: PayloadAction<string>) => {
-            state.current = state.orders.filter(p => p.id === payload)[0];
+            state.current = state.orders.find(order => order.id?.toString() === payload) || emptyOrder;
         },
         chooseSupplier: ({toSave}: IOrdersState, {payload}: PayloadAction<ISupplier>) => {
             toSave.supplier = payload;
@@ -121,7 +148,9 @@ export const orderSlice = createSlice({
         handleOrderFormInput: (state: IOrdersState, {payload}: PayloadAction<IOrder>) => {
             state.toSave = payload;
         },
-        closeSuccess: (state:IOrdersState) => {state.success = false}
+        closeSuccess: (state: IOrdersState) => {
+            state.success = false
+        }
     },
     extraReducers: (builder => {
         builder
@@ -130,6 +159,7 @@ export const orderSlice = createSlice({
             .addCase(createOrder.pending, setPending)
             .addCase(editOrder.pending, setPending)
             .addCase(deleteOrder.pending, setPending)
+            .addCase(receiveOrder.pending, setPending)
             .addCase(getAllOrders.fulfilled, (state, action: PayloadAction<IResponseGetAllOrders>) => {
                 if (stopPendingAndHandleError(state, action, emptyOrder)) return;
                 state.orders = action.payload.data;
@@ -138,16 +168,16 @@ export const orderSlice = createSlice({
                 stopPendingAndHandleError(state, action, emptyOrder);
             })
             .addCase(createOrder.fulfilled, (state, action: PayloadAction<IResponseGetOneOrder>) => {
-                stopPendingAndHandleError(state, action, emptyOrder);
-                showSuccessMessage(state);
+                handleApiResponse(state, action, emptyOrder);
             })
             .addCase(editOrder.fulfilled, (state, action: PayloadAction<IResponseGetOneOrder>) => {
-                stopPendingAndHandleError(state, action, emptyOrder);
-                showSuccessMessage(state);
+                handleApiResponse(state, action, emptyOrder);
             })
             .addCase(deleteOrder.fulfilled, (state, action: PayloadAction<IResponseGetOneOrder>) => {
-                stopPendingAndHandleError(state, action, emptyOrder);
-                showSuccessMessage(state);
+                handleApiResponse(state, action, emptyOrder);
+            })
+            .addCase(receiveOrder.fulfilled, (state, action: PayloadAction<IResponseGetOneOrder>) => {
+                handleApiResponse(state, action, emptyOrder);
             })
     })
 })

@@ -21,7 +21,7 @@ export const initialDetailsData:IDetailsData = {
     picture: "",
     id: "",
     alt: "",
-    model: Views.NEW,
+    model: Views.NONE,
 }
 
 interface IBaseState {
@@ -50,7 +50,7 @@ export interface ISuppliersState extends IBaseState {
 
 export interface IOrdersState extends IBaseState {
     orders: IOrder[],
-    current: IOrder | undefined,
+    current: IOrder ,
     toSave: IOrder,
 }
 

@@ -6,10 +6,10 @@ import React from 'react'
 
 type Props = {};
 
-function Employee(props: Props){
+function EmployeeForm(props: Props){
     return(
        <div>Employee</div>
     )
 }
 
-export default Employee;
+export default EmployeeForm;

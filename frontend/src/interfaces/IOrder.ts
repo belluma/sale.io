@@ -1,6 +1,7 @@
 import {ISupplier} from "./ISupplier";
 import {IProduct} from "./IProduct";
 import {IModel} from "./IModel";
+import {OrderStatus} from "./OrderStatus";
 
 export interface IOrderItem {
     product?: IProduct,
@@ -9,7 +10,8 @@ export interface IOrderItem {
 
 export interface IOrder extends IModel {
     orderItems: IOrderItem[],
-    supplier?: ISupplier
+    supplier?: ISupplier,
+    status?: OrderStatus
 }
 
 export interface IEditOrderItem {

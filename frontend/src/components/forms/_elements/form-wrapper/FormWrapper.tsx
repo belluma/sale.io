@@ -9,12 +9,12 @@ import {toBeReplaced} from "../../../../slicer/employeeSlice";
 import {createProduct, selectProductToSave, validateProduct} from "../../../../slicer/productSlice";
 import {createOrder, selectOrderToSave, validateOrder} from "../../../../slicer/orderSlice";
 //component imports
-import {Button} from "@mui/material";
-import Employee from "../../employee/Employee";
+import {Button, Container} from "@mui/material";
+import EmployeeForm from "../../employee/EmployeeForm";
 import Customer from "../../customer/Customer";
-import Supplier from "../../supplier/Supplier";
-import Product from "../../product/Product";
-import Order from "../../order/Order";
+import SupplierForm from "../../supplier/SupplierForm";
+import ProductForm from "../../product/ProductForm";
+import OrderForm from "../../order/OrderForm";
 
 //interface imports
 import {Model} from "../../../../interfaces/IThumbnailData";
@@ -33,7 +33,7 @@ function FormWrapper({model, fullScreen, handleClose}: Props) {
     const order = useAppSelector(selectOrderToSave)
 
     const disableButton = () => {
-        switch(model){
+        switch (model) {
             case Model.EMPLOYEE:
                 break;
             case Model.CUSTOMER:
@@ -50,11 +50,11 @@ function FormWrapper({model, fullScreen, handleClose}: Props) {
     };
     const formSelector = {
         none: "couldn't find the right form",
-        employee: <Employee/>,
-        product: <Product/>,
+        employee: <EmployeeForm/>,
+        product: <ProductForm/>,
         customer: <Customer/>,
-        supplier: <Supplier/>,
-        order: <Order/>,
+        supplier: <SupplierForm/>,
+        order: <OrderForm/>,
     };
 
     const submitSelector = {
@@ -65,17 +65,21 @@ function FormWrapper({model, fullScreen, handleClose}: Props) {
         order: createOrder,
     };
     const handleSubmit = () => {
-        //@ts-ignore
-        dispatch(submitSelector[model]());
+        console.log(model)
+        if (Object.keys(submitSelector).includes(model)) dispatch(submitSelector[model]());
         handleClose();
     }
     return (
-        <form>{formSelector[model]}
+        <Container sx={{display: "flex", flexDirection: "column", height: 0.99}}>
+            <Container sx={{flexGrow: 1}}>
+
+                {formSelector[model]}
+            </Container>
             <section>
                 <Button onClick={handleSubmit} disabled={disableButton()}>save</Button>
                 {fullScreen && <Button onClick={handleClose}>Close</Button>}
             </section>
-        </form>
+        </Container>
     )
 }
 

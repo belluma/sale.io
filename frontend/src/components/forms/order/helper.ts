@@ -8,3 +8,7 @@ export function productsBySupplier (this: string, product:IProduct):boolean {
 export const getSubTotal = ({product, quantity}: IOrderItem) => {
     return (!product?.purchasePrice || !quantity) ? 0 : product.purchasePrice * quantity;
 }
+export const getTotal = (sum:number, {product, quantity}:IOrderItem):number => {
+    const subTotal = getSubTotal({product, quantity})
+    return sum + Math.ceil(subTotal * 100) / 100;
+}
