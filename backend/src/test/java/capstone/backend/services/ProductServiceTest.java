@@ -159,6 +159,19 @@ class ProductServiceTest {
     }
 
     @Test
+    void sellGoods(){
+        //GIVEN
+
+
+        //WHEN
+
+
+        //THEN
+
+
+    }
+
+    @Test
     void productExists() {
         //GIVEN
         ProductDTO product = sampleProductDTOWithDetailsWithId();

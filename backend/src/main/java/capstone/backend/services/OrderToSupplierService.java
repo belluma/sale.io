@@ -47,15 +47,7 @@ public class OrderToSupplierService {
     }
 
     public OrderToSupplierDTO receiveOrder(OrderToSupplierDTO order, OrderStatus status) throws EntityNotFoundException, IllegalArgumentException {
-        if (status != RECEIVED) {
-            throw new IllegalArgumentException("Your request couldn't be processed!");
-        }
-        if (!orderExists(order)) {
-            throw new EntityNotFoundException("The order you're trying to receive doesn't exist");
-        }
-        if(order.getStatus() == RECEIVED){
-            throw new IllegalArgumentException("The order you're trying to receive has already been received");
-        }
+        validateOrderToReceive(order, status);
         productService.receiveGoods(order.getOrderItems());
         OrderToSupplier orderToReceive = repo.getById(order.getId());
         orderToReceive.setStatus(RECEIVED);
@@ -80,6 +72,18 @@ public class OrderToSupplierService {
         if (supplierDoesNotCarryProduct(order)) {
             throw new IllegalArgumentException("The supplier doesn't carry one or several of the items you tried to order!");
         }
+    }
+    private void validateOrderToReceive(OrderToSupplierDTO order, OrderStatus status){
+        if (status != RECEIVED) {
+            throw new IllegalArgumentException("Your request couldn't be processed!");
+        }
+        if (!orderExists(order)) {
+            throw new EntityNotFoundException("The order you're trying to receive doesn't exist");
+        }
+        if(order.getStatus() == RECEIVED){
+            throw new IllegalArgumentException("The order you're trying to receive has already been received");
+        }
+        productsExist(order, "Your order contains products that don't exist in your database");
     }
 
     private boolean productsExist(OrderToSupplierDTO order) {
