@@ -40,7 +40,7 @@ function DetailsCard({fullScreen, handleClose}: Props) {
     }
     const showPic = (model !== "new" && model !== "order");
     return (
-        <Card sx={{width: {sm: .99, md: 500}, height: {sm: 0.99}, display: "flex", flexDirection: "column"}}>
+        <Card sx={{width: {sm: .99, md: 500}, height: 0.99, display: "flex", flexDirection: "column"}}>
             <CardHeader title={title} subtitle={subtitle} align="center"/>
             <Divider/>
             {showPic && <CardMedia
