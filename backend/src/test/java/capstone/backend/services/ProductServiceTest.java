@@ -125,7 +125,7 @@ class ProductServiceTest {
     }
 
     @Test
-    void adjustAmountInStock(){
+    void receiveGoods() {
         //GIVEN
         List<OrderItemDTO> receivedOrder = List.of(sampleOrderItemDTO());
         Long productId = receivedOrder.get(0).getProduct().getId();
@@ -138,7 +138,28 @@ class ProductServiceTest {
     }
 
     @Test
-    void productExists(){
+    void receiveGoodsFailsWithNegativeAmount() {
+        //GIVEN
+        List<OrderItemDTO> receivedOrder = List.of(sampleOrderItemDTO());
+        receivedOrder.get(0).setQuantity(-1);
+        //WHEN - //THEN
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> service.receiveGoods(receivedOrder));
+        assertThat(ex.getMessage(), is("You can't receive orders with negative quantity count"));
+    }
+
+    @Test
+    void receiveGoodsFailsWhenOneOfItemsHasNegativeAmount() {
+        //GIVEN
+        OrderItemDTO orderItemWithNegativeAmount = sampleOrderItemDTO();
+        orderItemWithNegativeAmount.setQuantity(-1);
+        List<OrderItemDTO> receivedOrder = List.of(sampleOrderItemDTO(), sampleOrderItemDTO(), sampleOrderItemDTO(), orderItemWithNegativeAmount);
+        //WHEN - //THEN
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> service.receiveGoods(receivedOrder));
+        assertThat(ex.getMessage(), is("You can't receive orders with negative quantity count"));
+    }
+
+    @Test
+    void productExists() {
         //GIVEN
         ProductDTO product = sampleProductDTOWithDetailsWithId();
         //WHEN

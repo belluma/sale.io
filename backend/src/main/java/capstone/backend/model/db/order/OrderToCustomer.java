@@ -11,7 +11,6 @@ import javax.persistence.Table;
 @Entity
 @SuperBuilder
 @With
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "customer_orders")
 public class OrderToCustomer extends Order {

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -52,7 +51,12 @@ public class ProductService {
                 .save(ProductMapper.mapProduct(product)));
     }
 
-    public void receiveGoods(List<OrderItemDTO> receivedOrder) {
+    public void receiveGoods(List<OrderItemDTO> receivedOrder)throws IllegalArgumentException {
+        receivedOrder.forEach(item -> {
+            if(item.getQuantity() < 0){
+                throw new IllegalArgumentException("You can't receive orders with negative quantity count");
+            }
+        });
         receivedOrder
                 .forEach(item -> {
                     Product productToReceive = repo.getById(item.getProduct().getId());
