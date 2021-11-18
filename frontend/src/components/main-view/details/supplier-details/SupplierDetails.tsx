@@ -3,44 +3,42 @@ import {selectCurrentSupplier} from "../../../../slicer/supplierSlice";
 import {useAppSelector} from "../../../../app/hooks";
 import {selectOrders} from "../../../../slicer/orderSlice";
 import {selectProducts} from "../../../../slicer/productSlice";
-import {Accordion, AccordionDetails, AccordionSummary, Container} from "@mui/material";
-
 //component imports
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+import {Button, Container} from "@mui/material";
+import Accordion from "./accordion/Accordion";
+import LogoAccordion from "./accordion/logo-accordion/LogoAccordion";
+import ListAccordion from "./accordion/list-accordion/ListAccordion";
 //interface imports
 
 type Props = {};
+export type Panel = "picture" | "products" | "orders"
 
 function SupplierDetails(props: Props) {
     const supplier = useAppSelector(selectCurrentSupplier);
     const orders = useAppSelector(selectOrders);
     const products = useAppSelector(selectProducts);
-    const supplierOrders = orders.filter(order => order.supplier?.id?.toString() === supplier.id)
-    const supplierProducts = products.filter(product => product.suppliers?.some(sup => sup.id?.toString() === supplier.id));
-
-    const [expanded, setExpanded] = React.useState<string>('picture')
-    const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    const supplierOrders = orders.filter(order => order.supplier?.id === supplier.id)
+    const supplierProducts = products.filter(product => product.suppliers?.some(sup => sup.id === supplier.id));
+    console.log(products, supplierOrders, supplierProducts, supplier.id);
+    const [expanded, setExpanded] = React.useState<Panel>('picture')
+    const handleChange = (panel: Panel) => (event: React.SyntheticEvent) => {
         setExpanded(panel)
     }
 
+
     return (
         <Container>
-            <Accordion expanded={expanded === 'picture'} onChange={handleChange("picture")}>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon/>}
-                    aria-controls="panel1bh-content"
-                    id="panel1bh-header"
-                >text</AccordionSummary>
-                <AccordionDetails>moretesxt</AccordionDetails>
-            </Accordion>
-        <Accordion expanded={expanded === 'products'} onChange={handleChange("products")}>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon/>}
-                    aria-controls="products"
-                    id="supplier-products"
-                >text</AccordionSummary>
-                <AccordionDetails>moretesxt</AccordionDetails>
-            </Accordion>
+            <Accordion expanded={expanded} handleChange={handleChange} summary={"Company Logo"}
+                       content={<LogoAccordion/>}
+                       panel="picture"/>
+            <Accordion expanded={expanded} handleChange={handleChange} summary={"Company Logo"}
+                       content={<ListAccordion items={supplierOrders}/>}
+                       panel="products"/>
+            <Accordion expanded={expanded} handleChange={handleChange} summary={"Company Logo"}
+                       content={<ListAccordion items={supplierProducts}/>} panel="orders"/>
+
+
         </Container>
     )
 }

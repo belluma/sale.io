@@ -1,26 +1,28 @@
 import React from 'react'
-import {Accordion, AccordionDetails, AccordionSummary} from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
 
 //component imports
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import {Accordion, AccordionDetails, AccordionSummary} from "@mui/material";
+import {Panel} from "../SupplierDetails";
 
 //interface imports
 
 type Props = {
-    expanded: boolean,
-    handleChange: (panel: string) => (e: React.SyntheticEvent) => void,
+    expanded:  Panel,
+    handleChange: (panel: Panel) => (e: React.SyntheticEvent) => void,
     summary: string,
     content: JSX.Element,
-    panel: string
+    panel:  Panel,
 };
 
 function CustomAccordion({expanded, handleChange, summary, content, panel}: Props) {
     return (
-        <Accordion expanded={expanded} onChange={handleChange(panel)}>
+        <Accordion expanded={expanded === panel} onChange={handleChange(panel)}>
             <AccordionSummary
                 expandIcon={<ExpandMoreIcon/>}
-                aria-controls="panel1bh-content"
-                id="panel1bh-header"
+                aria-controls={`${panel}-content`}
+                id={`${panel}-header`}
             >{summary}</AccordionSummary>
             <AccordionDetails>{content}</AccordionDetails>
         </Accordion>
