@@ -6,7 +6,7 @@ import {hideDetails, resetDetails, selectShowDetails} from "../../../slicer/deta
 import {
     Container,
     Dialog,
-    DialogContent,
+    DialogContent, DialogContentText,
     DialogProps, Fab,
     IconButton,
     useMediaQuery,
@@ -43,9 +43,10 @@ function Details(props: Props) {
     }
 
     return (
-        <Dialog fullScreen={fullScreen} open={showDetails} onClose={handleClose} transitionDuration={transitionDuration}>
-            <DialogContent dividers={scroll === 'paper'} sx={{padding:0, display:'flex', alignItems:alignItems}}>
-                <Container ref={descriptionElementRef} style={{margin:"auto"}}>
+        <Dialog fullScreen={fullScreen} open={showDetails} onClose={handleClose} transitionDuration={transitionDuration} scroll='paper'>
+            <DialogContent dividers sx={{padding:0, display:'flex', alignItems:alignItems, height:{md:800}}}>
+
+                <Container ref={descriptionElementRef} sx={{margin:"auto"}}>
                     <Fab variant='circular' size='small' color="primary" sx={{position:"absolute", top:15, right:25}} onClick={handleClose}>
                         <ClearIcon />
                     </Fab>
