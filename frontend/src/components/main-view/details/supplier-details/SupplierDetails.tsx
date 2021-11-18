@@ -32,10 +32,10 @@ function SupplierDetails(props: Props) {
                        content={<LogoAccordion/>}
                        panel="picture"/>
             <Accordion expanded={expanded} handleChange={handleChange} summary={"Products"}
-                       content={<ListAccordion items={supplierOrders}/>}
+                       content={<ListAccordion items={supplierProducts}/>}
                        panel="products"/>
             <Accordion expanded={expanded} handleChange={handleChange} summary={"Orders"}
-                       content={<ListAccordion items={supplierProducts}/>} panel="orders"/>
+                       content={<ListAccordion items={supplierOrders}/>} panel="orders"/>
 
 
         </Container>

@@ -21,12 +21,15 @@ function SupplierListItem({item}: Props) {
         //@ts-ignore type check with instanceOfProduct function
         return instanceOfProduct(item) ?  item.name : `order to ${parseName(item.supplier)}`
     }
+    const checkStock = (product: IProduct):string => {
+        return product.amountInStock ? 'in stock' : 'out of stock';
+    }
     const label = (): string => {
-        return instanceOfProduct(item) ? 'in stock' : 'total';
+        return instanceOfProduct(item) ? checkStock(item): 'total';
     }
     const quickInfo = ():string => {
         //@ts-ignore type check with instanceOfProduct function
-        return instanceOfProduct(item) ? `${item.amountInStock}` : `€${item.orderItems.reduce(getTotal, 0).toFixed(2)}`;
+        return instanceOfProduct(item) ? item.amountInStock || "" : `€${item.orderItems.reduce(getTotal, 0).toFixed(2)}`;
     }
     return (
         <ListItemButton component="a">
