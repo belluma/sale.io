@@ -1,16 +1,23 @@
 import React from 'react'
-import {Grid, ListItemButton} from "@mui/material";
-import {IOrder} from "../../../../../../../interfaces/IOrder";
-import {IProduct} from "../../../../../../../interfaces/IProduct";
-import {parseName} from "../../../../../../../interfaces/IThumbnailData";
+import {
+    parseName,
+    parseOrderToThumbnailData,
+    parseProductToThumbnailData
+} from "../../../../../../../interfaces/IThumbnailData";
 import {getTotal} from "../../../../../../forms/order/helper";
 import { useHistory } from 'react-router';
 import { useAppDispatch } from '../../../../../../../app/hooks';
+import {chooseCurrentProduct} from "../../../../../../../slicer/productSlice";
+import {chooseCurrentSupplier} from "../../../../../../../slicer/supplierSlice";
 
 //component imports
+import {Grid, ListItemButton} from "@mui/material";
 
 //interface imports
-
+import {IOrder} from "../../../../../../../interfaces/IOrder";
+import {IProduct} from "../../../../../../../interfaces/IProduct";
+import {setDetailData} from "../../../../../../../slicer/detailsSlice";
+import {chooseCurrentOrder} from "../../../../../../../slicer/orderSlice";
 type Props = {
     item: IOrder | IProduct,
 };
@@ -34,11 +41,13 @@ function SupplierListItem({item}: Props) {
         return isProduct ? item.amountInStock || "" : `€${item.orderItems.reduce(getTotal, 0).toFixed(2)}`;
     }
     const showItemDetails = () => {
-        history.push(isProduct ? 'product' : 'supplier')
-
+        if(!item.id) return;
+        dispatch(isProduct ? chooseCurrentProduct(item.id.toString()) : chooseCurrentOrder(item.id.toString()));
+        //@ts-ignore check done by isProduct
+        dispatch(isProduct ? setDetailData(parseProductToThumbnailData(item)) : setDetailData(parseOrderToThumbnailData(item)));
     }
     return (
-        <ListItemButton component="div">
+        <ListItemButton component="a" onClick={showItemDetails}>
             <Grid container sx={{width:0.99}} >
                 <Grid item xs={7} >{extractName()}</Grid>
                 <Grid item xs={5} container justifyContent={"space-between"}>
