@@ -4,6 +4,7 @@ import {IOrder} from "../../../../../../../interfaces/IOrder";
 import {IProduct} from "../../../../../../../interfaces/IProduct";
 import {parseName} from "../../../../../../../interfaces/IThumbnailData";
 import {getTotal} from "../../../../../../forms/order/helper";
+import { useHistory } from 'react-router';
 
 //component imports
 
@@ -14,25 +15,29 @@ type Props = {
 };
 
 function SupplierListItem({item}: Props) {
-    const instanceOfProduct = (object: IProduct | IOrder): boolean => {
-        return 'name' in object;
+    const history = useHistory();
+    const instanceOfProduct = (): boolean => {
+        return 'name' in item;
     }
     const extractName = ():string => {
         //@ts-ignore type check with instanceOfProduct function
-        return instanceOfProduct(item) ?  item.name : `order to ${parseName(item.supplier)}`
+        return instanceOfProduct() ?  item.name : `order to ${parseName(item.supplier)}`
     }
     const checkStock = (product: IProduct):string => {
         return product.amountInStock ? 'in stock' : 'out of stock';
     }
     const label = (): string => {
-        return instanceOfProduct(item) ? checkStock(item): 'total';
+        return instanceOfProduct() ? checkStock(item): 'total';
     }
     const quickInfo = ():string => {
         //@ts-ignore type check with instanceOfProduct function
-        return instanceOfProduct(item) ? item.amountInStock || "" : `€${item.orderItems.reduce(getTotal, 0).toFixed(2)}`;
+        return instanceOfProduct() ? item.amountInStock || "" : `€${item.orderItems.reduce(getTotal, 0).toFixed(2)}`;
+    }
+    const showItemDetails = () => {
+
     }
     return (
-        <ListItemButton component="a">
+        <ListItemButton component="div">
             <Grid container sx={{width:0.99}} >
                 <Grid item xs={7} >{extractName()}</Grid>
                 <Grid item xs={5} container justifyContent={"space-between"}>
