@@ -1,6 +1,7 @@
 package capstone.backend.services;
 
 import capstone.backend.mapper.OrderItemMapper;
+import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.repo.OrderItemRepo;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +32,10 @@ public class OrderItemService {
                 .orElseThrow(() -> new EntityNotFoundException("Something went wrong while retrieving your data!"));
     }
     public OrderItemDTO addOrderItem(OrderItemDTO orderItem) {
-
         return mapOrderItem(repo.save(mapOrderItem(orderItem)));
     }
 
+
+    public OrderItem addItemsToExistingOrder(OrderItem orderItem) {
+    }
 }
