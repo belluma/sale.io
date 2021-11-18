@@ -31,7 +31,7 @@ interface IBaseState {
 
 export interface IEmployeeState extends IBaseState{
     employees: IEmployee[],
-    current: IEmployee | undefined,
+    current: IEmployee ,
     currentEmployeeCredentials: IUserCredentials | undefined,
     toSave: IEmployee
 }

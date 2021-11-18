@@ -14,6 +14,7 @@ import ErrorMessage from "../../../messages/error-message/ErrorMessage";
 import {Model} from "../../../../interfaces/IThumbnailData";
 import OrderPreview from "../../../forms/order/preview/OrderPreview";
 import ProductDetails from "../product-details/ProductDetails";
+import EmployeeDetails from "../employee-details/EmployeeDetails";
 
 type Props = {
     fullScreen: boolean,
@@ -29,10 +30,10 @@ function DetailsCard({fullScreen, handleClose}: Props) {
         //@ts-ignore check type in ternary statement at declaration of formSelector
         new: <FormWrapper fullScreen={fullScreen} handleClose={handleClose} model={formSelector}/>,
         login: <Login/>,
-        employee: (<div/>),
-        product: (<ProductDetails/>),
-        customer: (<div/>),
-        supplier: (<div/>),
+        employee: <EmployeeDetails/>,
+        product: <ProductDetails/>,
+        customer: <div/>,
+        supplier: <div/>,
         order: <OrderPreview/>,
         error: <ErrorMessage statusText={subtitle}/>,
         none: (<></>),

@@ -1,7 +1,7 @@
 import React from 'react'
 import {useAppSelector} from "../../../../app/hooks";
 import {selectCurrentProduct} from "../../../../slicer/productSlice";
-import {Container, Divider, Grid, Typography} from "@mui/material";
+import { Divider, Grid, Typography} from "@mui/material";
 import {parseName} from "../../../../interfaces/IThumbnailData";
 
 //component imports
@@ -26,7 +26,8 @@ function ProductDetails(props: Props) {
         <Grid container justifyContent="space-between" alignItems="center" direction="column" sx={{height:.8}}>
             <Grid item>
             <Typography variant="h5">current
-                supplier: {suppliers?.length ? parseName(suppliers[0]) : "no supplier found"}</Typography>
+                supplier: {suppliers?.length ? parseName(suppliers[0]) : "no supplier found"}
+            </Typography>
             <Divider/>
             </Grid>
             <Grid container item columnSpacing={6} rowSpacing={1}>

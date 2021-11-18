@@ -24,7 +24,7 @@ function Thumbnail({data}: Props) {
     const selectors = {
         none: toBeReplaced,
         login: chooseCurrentEmployee,
-        employee: toBeReplaced,
+        employee: chooseCurrentEmployee,
         product: chooseCurrentProduct,
         customer: toBeReplaced,
         supplier: chooseCurrentSupplier,
