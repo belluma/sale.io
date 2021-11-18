@@ -36,7 +36,7 @@ function Thumbnail({data}: Props) {
         if (model !== Views.NEW && model !== Views.ERROR && id) dispatch(selectors[model](id))
     }
     return (
-        <Card onClick={onClick} sx={{display: "flex", flexDirection: "column", height: 500, width: 345}}>
+        <Card onClick={onClick} sx={{display: "flex", flexDirection: "column", height: 500, width: 345, cursor:'pointer'}}>
             <CardHeader title={title} subtitle={subtitle}/>
             <CardMedia
                 sx={{flexGrow: 1}}
