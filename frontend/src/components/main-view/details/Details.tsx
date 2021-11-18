@@ -3,7 +3,16 @@ import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {hideDetails, resetDetails, selectShowDetails} from "../../../slicer/detailsSlice";
 
 //component imports
-import {Container, Dialog, DialogContent, DialogProps, useMediaQuery, useTheme} from "@mui/material";
+import {
+    Container,
+    Dialog,
+    DialogContent,
+    DialogProps, Fab,
+    IconButton,
+    useMediaQuery,
+    useTheme
+} from "@mui/material";
+import ClearIcon from '@mui/icons-material/Clear'
 import DetailsCard from "./details-card/DetailsCard";
 
 //interface imports
@@ -37,6 +46,9 @@ function Details(props: Props) {
         <Dialog fullScreen={fullScreen} open={showDetails} onClose={handleClose} transitionDuration={transitionDuration}>
             <DialogContent dividers={scroll === 'paper'} sx={{padding:0, display:'flex', alignItems:alignItems}}>
                 <Container ref={descriptionElementRef} style={{margin:"auto"}}>
+                    <Fab variant='circular' size='small' color="primary" sx={{position:"absolute", top:15, right:25}} onClick={handleClose}>
+                        <ClearIcon />
+                    </Fab>
                     <DetailsCard fullScreen={fullScreen} handleClose={handleClose}/>
                 </Container>
             </DialogContent>
