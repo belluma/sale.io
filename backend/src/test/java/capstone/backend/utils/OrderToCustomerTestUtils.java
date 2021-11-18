@@ -11,7 +11,50 @@ import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItemDTO;
 
 public class OrderToCustomerTestUtils {
-    public static OrderToCustomer sampleOrderOpen() {
+    public static OrderToCustomer emptyOrderOpen() {
+        return OrderToCustomer
+                .builder()
+                .id(123L)
+                .orderItems(List.of())
+                .status(OPEN)
+                .build();
+    }
+
+    public static OrderToCustomer emptyOrderPaid() {
+        return OrderToCustomer
+                .builder()
+                .id(123L)
+                .orderItems(List.of())
+                .status(PAID)
+                .build();
+    }
+
+    public static OrderToCustomerDTO emptyOrderDTO() {
+        return OrderToCustomerDTO
+                .builder()
+                .id(123L)
+                .orderItems(List.of())
+                .build();
+    }
+
+    public static OrderToCustomerDTO emptyOrderDTOWithStatusOpen() {
+        return OrderToCustomerDTO
+                .builder()
+                .id(123L)
+                .orderItems(List.of())
+                .status(OPEN)
+                .build();
+    }
+
+    public static OrderToCustomerDTO emptyOrderDTOWithStatusPaid() {
+        return OrderToCustomerDTO
+                .builder()
+                .id(123L)
+                .orderItems(List.of())
+                .status(PAID)
+                .build();
+    }
+ public static OrderToCustomer orderOpenWithOrderItem() {
         return OrderToCustomer
                 .builder()
                 .id(123L)
@@ -20,7 +63,7 @@ public class OrderToCustomerTestUtils {
                 .build();
     }
 
-    public static OrderToCustomer sampleOrderPaid() {
+    public static OrderToCustomer OrderPaidWithOrderItem() {
         return OrderToCustomer
                 .builder()
                 .id(123L)
@@ -29,7 +72,7 @@ public class OrderToCustomerTestUtils {
                 .build();
     }
 
-    public static OrderToCustomerDTO sampleOrderDTO() {
+    public static OrderToCustomerDTO OrderDTOWithOrderItem() {
         return OrderToCustomerDTO
                 .builder()
                 .id(123L)
@@ -37,7 +80,7 @@ public class OrderToCustomerTestUtils {
                 .build();
     }
 
-    public static OrderToCustomerDTO sampleOrderDTOWithStatusOpen() {
+    public static OrderToCustomerDTO OrderDTOWithStatusOpenWithOrderItem() {
         return OrderToCustomerDTO
                 .builder()
                 .id(123L)
@@ -46,7 +89,7 @@ public class OrderToCustomerTestUtils {
                 .build();
     }
 
-    public static OrderToCustomerDTO sampleOrderDTOWithStatusPaid() {
+    public static OrderToCustomerDTO OrderDTOWithStatusPaidWithOrderItem() {
         return OrderToCustomerDTO
                 .builder()
                 .id(123L)

@@ -1,6 +1,7 @@
 package capstone.backend.services;
 
 import capstone.backend.model.db.Product;
+import capstone.backend.model.db.order.OrderToCustomer;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.model.dto.order.OrderItemDTO;
@@ -159,9 +160,19 @@ class ProductServiceTest {
     }
 
     @Test
+    void createEmptyOrder(){
+        //GIVEN
+        OrderToCustomer expected = sampleOrderToCustomer();
+
+        //WHEN
+
+        //THEN
+    }
+
+    @Test
     void sellGoods(){
         //GIVEN
-
+OrderI
 
         //WHEN
 
