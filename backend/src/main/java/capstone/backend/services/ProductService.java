@@ -52,14 +52,21 @@ public class ProductService {
                 .save(ProductMapper.mapProduct(product)));
     }
 
-    public void adjustAmountInStock(List<OrderItemDTO> receivedOrder) {
+    public void receiveGoods(List<OrderItemDTO> receivedOrder) {
         receivedOrder
                 .forEach(item -> {
                     Product productToReceive = repo.getById(item.getProduct().getId());
-                    int newAmount = item.getQuantity() + productToReceive.getAmountInStock();
+                    int newAmount = productToReceive.getAmountInStock() + item.getQuantity();
                     productToReceive.setAmountInStock(newAmount);
                     repo.save(productToReceive);
                 });
+    }
+
+    public void sellGoods(OrderItem itemsToSell) {
+        Product productToReceive = repo.getById(itemsToSell.getProduct().getId());
+        int newAmount = productToReceive.getAmountInStock() - itemsToSell.getQuantity()  ;
+        productToReceive.setAmountInStock(newAmount);
+        repo.save(productToReceive);
     }
 
     public boolean productExists(ProductDTO product) {

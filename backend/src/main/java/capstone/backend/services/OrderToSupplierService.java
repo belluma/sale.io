@@ -56,7 +56,7 @@ public class OrderToSupplierService {
         if(order.getStatus() == RECEIVED){
             throw new IllegalArgumentException("The order you're trying to receive has already been received");
         }
-        productService.adjustAmountInStock(order.getOrderItems());
+        productService.receiveGoods(order.getOrderItems());
         OrderToSupplier orderToReceive = repo.getById(order.getId());
         orderToReceive.setStatus(RECEIVED);
         return mapOrder(repo.save(orderToReceive));

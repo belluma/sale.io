@@ -12,7 +12,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 
 import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
 import static capstone.backend.model.enums.OrderStatus.PENDING;
@@ -141,7 +140,7 @@ class OrderToSupplierServiceTest {
         OrderToSupplierDTO actual = orderService.receiveOrder(orderToReceive, RECEIVED);
         //THEN
         verify(orderRepo).existsById(123L);
-        verify(productService).adjustAmountInStock(orderToReceive.getOrderItems());
+        verify(productService).receiveGoods(orderToReceive.getOrderItems());
         verify(orderRepo).getById(123L);
         assertThat(actual, is(expected));
     }

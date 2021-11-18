@@ -37,5 +37,6 @@ public class OrderItemService {
 
 
     public OrderItem addItemsToExistingOrder(OrderItem orderItem) {
+        return new OrderItem();
     }
 }
