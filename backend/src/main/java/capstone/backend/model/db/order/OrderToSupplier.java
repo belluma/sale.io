@@ -17,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @With
+@Data
 @Table(name = "supplier_orders")
 public class OrderToSupplier extends Order {
 
