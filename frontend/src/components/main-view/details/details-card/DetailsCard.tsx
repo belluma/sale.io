@@ -9,12 +9,13 @@ import {Card, CardContent, CardHeader, CardMedia, Divider} from "@mui/material";
 import Login from "../security/login/Login";
 import FormWrapper from "../../../forms/_elements/form-wrapper/FormWrapper";
 import ErrorMessage from "../../../messages/error-message/ErrorMessage";
-//interface imports
-
-import {Model} from "../../../../interfaces/IThumbnailData";
 import OrderPreview from "../../../forms/order/preview/OrderPreview";
 import ProductDetails from "../product-details/ProductDetails";
 import EmployeeDetails from "../employee-details/EmployeeDetails";
+import SupplierDetails from "../supplier-details/SupplierDetails";
+
+//interface imports
+import {Model} from "../../../../interfaces/IThumbnailData";
 
 type Props = {
     fullScreen: boolean,
@@ -33,12 +34,12 @@ function DetailsCard({fullScreen, handleClose}: Props) {
         employee: <EmployeeDetails/>,
         product: <ProductDetails/>,
         customer: <div/>,
-        supplier: <div/>,
+        supplier: <SupplierDetails/>,
         order: <OrderPreview/>,
         error: <ErrorMessage statusText={subtitle}/>,
         none: (<></>),
     }
-    const showPic = (model !== "new" && model !== "order");
+    const showPic = (model !== "new" && model !== "order" && model !== "supplier");
     return (
         <Card sx={{width: {sm: .99, md: 500}, height: 0.99, display: "flex", flexDirection: "column"}}>
             <CardHeader title={title} subtitle={subtitle} align="center"/>

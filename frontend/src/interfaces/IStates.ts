@@ -44,7 +44,7 @@ export interface IProductsState extends IBaseState {
 
 export interface ISuppliersState extends IBaseState {
     suppliers: ISupplier[],
-    current: ISupplier | undefined,
+    current: ISupplier,
     toSave: ISupplier,
 }
 

@@ -6,9 +6,8 @@ import {hideDetails, resetDetails, selectShowDetails} from "../../../slicer/deta
 import {
     Container,
     Dialog,
-    DialogContent, DialogContentText,
-    DialogProps, Fab,
-    IconButton,
+    DialogContent,
+     Fab,
     useMediaQuery,
     useTheme
 } from "@mui/material";
@@ -21,7 +20,6 @@ type Props = {};
 
 
 function Details(props: Props) {
-    const [scroll] = React.useState<DialogProps['scroll']>('paper');
     const dispatch = useAppDispatch();
     const showDetails = useAppSelector(selectShowDetails);
     const descriptionElementRef = React.useRef<HTMLDivElement>(null);
@@ -45,7 +43,6 @@ function Details(props: Props) {
     return (
         <Dialog fullScreen={fullScreen} open={showDetails} onClose={handleClose} transitionDuration={transitionDuration} scroll='paper'>
             <DialogContent dividers sx={{padding:0, display:'flex', alignItems:alignItems, height:{md:800}}}>
-
                 <Container ref={descriptionElementRef} sx={{margin:"auto", height: 0.99}}>
                     <Fab variant='circular' size='small' color="primary" sx={{position:"absolute", top:15, right:25}} onClick={handleClose}>
                         <ClearIcon />
