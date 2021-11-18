@@ -77,7 +77,7 @@ function OrderForm(props: Props) {
             <Grid item xs={2}>
                 <Button disabled={!validateProduct} onClick={addProduct}>Add</Button>
             </Grid>
-            {selectedSupplierId && <OrderPreview form={true}/>}
+            {selectedSupplierId && <OrderPreview isFormEnabled={true}/>}
         </Grid>
     )
 }

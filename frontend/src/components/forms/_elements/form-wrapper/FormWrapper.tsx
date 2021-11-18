@@ -26,7 +26,7 @@ type Props = {
     handleClose: () => void
 };
 
-function FormWrapper({model, fullScreen, handleClose}: Props) {
+function FormWrapper({model, handleClose}: Props) {
     const dispatch = useAppDispatch();
     const product = useAppSelector(selectProductToSave)
     const supplier = useAppSelector(selectSupplierToSave)
