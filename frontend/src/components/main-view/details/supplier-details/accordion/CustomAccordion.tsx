@@ -10,7 +10,7 @@ import {Panel} from "../SupplierDetails";
 
 type Props = {
     expanded:  Panel,
-    handleChange: (panel: Panel) => (e: React.SyntheticEvent) => void,
+    handleChange: (panel: Panel) => () => void,
     summary: string,
     content: JSX.Element,
     panel:  Panel,

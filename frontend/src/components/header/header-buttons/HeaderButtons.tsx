@@ -2,18 +2,17 @@ import React, {useState} from 'react'
 
 import {useHistory} from "react-router";
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-
 import {views} from "../../main-view/helpers";
 import {logout, selectLoggedIn} from "../../../slicer/authSlice";
+import {hideDetails} from "../../../slicer/detailsSlice";
 //component imports
 import {Button, IconButton, Toolbar, useMediaQuery, useTheme} from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import Drawer from "../../drawer/Drawer";
+import ChangeView from "./change-view/ChangeView";
 //interface imports
 import {Views} from "../../../interfaces/IThumbnailData";
-import ChangeView from "./change-view/ChangeView";
-import {hideDetails} from "../../../slicer/detailsSlice";
 
 type Props = {
     appBarHeight: number,

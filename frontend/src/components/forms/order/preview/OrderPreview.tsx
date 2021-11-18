@@ -1,8 +1,9 @@
 import React from 'react'
 import {receiveOrder, selectCurrentOrder, selectOrderToSave} from "../../../../slicer/orderSlice";
+import {parseName} from "../../../../interfaces/IThumbnailData";
 import {getTotal} from "../helper";
-
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
+
 //component imports
 import OrderItem from "../order-item/OrderItem";
 import {
@@ -18,12 +19,11 @@ import {
     Typography
 } from "@mui/material";
 import CardContent from '@material-ui/core/CardContent';
-
 import Grid from '@material-ui/core/Grid';
-import {parseName} from "../../../../interfaces/IThumbnailData";
+
+//interface imports
 import {OrderStatus} from "../../../../interfaces/OrderStatus";
 import {IOrder} from "../../../../interfaces/IOrder";
-//interface imports
 
 type Props = {
     isFormEnabled?: boolean,

@@ -6,7 +6,7 @@ import {selectProducts} from "../../../../slicer/productSlice";
 //component imports
 
 import { Container} from "@mui/material";
-import Accordion from "./accordion/Accordion";
+import Accordion from "./accordion/CustomAccordion";
 import LogoAccordion from "./accordion/logo-accordion/LogoAccordion";
 import ListAccordion from "./accordion/list-accordion/ListAccordion";
 //interface imports
@@ -21,7 +21,7 @@ function SupplierDetails(props: Props) {
     const supplierOrders = orders.filter(order => order.supplier?.id === supplier.id)
     const supplierProducts = products.filter(product => product.suppliers?.some(sup => sup.id === supplier.id));
     const [expanded, setExpanded] = React.useState<Panel>('picture')
-    const handleChange = (panel: Panel) => (event: React.SyntheticEvent) => {
+    const handleChange = (panel: Panel) => () => {
         setExpanded(panel)
     }
 

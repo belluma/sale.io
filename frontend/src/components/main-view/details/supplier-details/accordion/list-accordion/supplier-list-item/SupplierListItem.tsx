@@ -5,25 +5,22 @@ import {
     parseProductToThumbnailData
 } from "../../../../../../../interfaces/IThumbnailData";
 import {getTotal} from "../../../../../../forms/order/helper";
-import { useHistory } from 'react-router';
 import { useAppDispatch } from '../../../../../../../app/hooks';
 import {chooseCurrentProduct} from "../../../../../../../slicer/productSlice";
-import {chooseCurrentSupplier} from "../../../../../../../slicer/supplierSlice";
-
+import {setDetailData, setGoBack} from "../../../../../../../slicer/detailsSlice";
+import {chooseCurrentOrder} from "../../../../../../../slicer/orderSlice";
 //component imports
 import {Grid, ListItemButton} from "@mui/material";
 
 //interface imports
 import {IOrder} from "../../../../../../../interfaces/IOrder";
 import {IProduct} from "../../../../../../../interfaces/IProduct";
-import {setDetailData, setGoBack} from "../../../../../../../slicer/detailsSlice";
-import {chooseCurrentOrder} from "../../../../../../../slicer/orderSlice";
+
 type Props = {
     item: IOrder | IProduct,
 };
 
 function SupplierListItem({item}: Props) {
-    const history = useHistory();
     const dispatch = useAppDispatch();
     const isProduct = 'name' in item;
     const extractName = ():string => {
