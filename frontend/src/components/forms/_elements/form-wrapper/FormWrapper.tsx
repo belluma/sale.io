@@ -78,7 +78,6 @@ function FormWrapper({model, fullScreen, handleClose}: Props) {
             </Container>
             <section>
                 <Button onClick={handleSubmit} disabled={disableButton()}>save</Button>
-                {fullScreen && <Button onClick={handleClose}>Close</Button>}
             </section>
         </Container>
     )
