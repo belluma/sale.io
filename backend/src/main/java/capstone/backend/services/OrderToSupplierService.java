@@ -8,6 +8,7 @@ import capstone.backend.model.dto.contact.SupplierDTO;
 import capstone.backend.model.dto.order.OrderToSupplierDTO;
 import capstone.backend.model.enums.OrderStatus;
 import capstone.backend.repo.OrderToSupplierRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -17,19 +18,13 @@ import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
 import static capstone.backend.model.enums.OrderStatus.RECEIVED;
 
 @Service
+@RequiredArgsConstructor
 public class OrderToSupplierService {
 
     private final OrderToSupplierRepo repo;
     private final ProductService productService;
     private final OrderItemService orderItemService;
     private final SupplierService supplierService;
-
-    public OrderToSupplierService(OrderToSupplierRepo repo, ProductService productService, OrderItemService orderItemService, SupplierService supplierService) {
-        this.repo = repo;
-        this.productService = productService;
-        this.orderItemService = orderItemService;
-        this.supplierService = supplierService;
-    }
 
     public List<OrderToSupplierDTO> getAllOrders() {
         return repo.findAll()

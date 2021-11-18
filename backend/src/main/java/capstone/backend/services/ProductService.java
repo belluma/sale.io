@@ -8,21 +8,18 @@ import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.repo.ProductRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class ProductService {
 
     private final ProductRepo repo;
-
-    public ProductService(ProductRepo repo) {
-        this.repo = repo;
-    }
-
 
     public List<ProductDTO> getAllProductsWithDetails() {
         return repo
