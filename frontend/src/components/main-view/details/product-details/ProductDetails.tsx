@@ -21,36 +21,37 @@ function ProductDetails(props: Props) {
         unitSize,
         amountInStock
     } = product;
-    //@ts-ignore
-    console.log(suppliers)
+
     return (
-        <>
+        <Grid container justifyContent="space-between" alignItems="center" direction="column" sx={{height:.8}}>
+            <Grid item>
             <Typography variant="h5">current
                 supplier: {suppliers?.length ? parseName(suppliers[0]) : "no supplier found"}</Typography>
             <Divider/>
-            <Grid container columnSpacing={12}>
+            </Grid>
+            <Grid container item columnSpacing={6} rowSpacing={1}>
                 <Grid item xs={6}>
-                    <Typography variant="h6">purchase
+                    <Typography variant="body1">purchase
                         price: {purchasePrice ? '€' : ''}{purchasePrice?.toFixed(2)}</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                    <Typography variant="h6">retail
-                        price: {retailPrice ? '€' : ''}{retailPrice?.toFixed(2)}</Typography>
+                    <Typography variant="body1">retail
+                        price: €{retailPrice?.toFixed(2) || "0.00"}</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                    <Typography variant="h6">min. Amount: {minAmount}</Typography>
+                    <Typography variant="body1">min. Amount: {minAmount}</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                    <Typography variant="h6">max. Amount: {maxAmount}</Typography>
+                    <Typography variant="body1">max. Amount: {maxAmount}</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                    <Typography variant="h6">unit Size: {unitSize}</Typography>
+                    <Typography variant="body1">unit Size: {unitSize}</Typography>
                 </Grid>
                 <Grid item xs={6}>
-                    <Typography variant="h6">amount in stock: {amountInStock}</Typography>
+                    <Typography variant="body1">amount in stock: {amountInStock}</Typography>
                 </Grid>
             </Grid>
-        </>
+        </Grid>
     )
 }
 
