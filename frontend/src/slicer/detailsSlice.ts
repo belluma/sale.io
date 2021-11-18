@@ -7,6 +7,7 @@ import {IDetailsState, initialDetailsData} from "../interfaces/IStates";
 const initialState: IDetailsState = {
     showDetails: false,
     detailsData: initialDetailsData,
+    goBack: false,
 }
 
 
@@ -25,13 +26,21 @@ export const detailsSlice = createSlice({
         },
         hideDetails: (state) => {
             state.showDetails = false;
-        }
+        },
+        setGoBack: (state) => {
+         state.goBack = true;
+        },
+        resetGoBack: (state) => {
+         state.goBack = false;
+        },
+
     },
 
 })
 
-export const {showDetails, hideDetails, setDetailData, resetDetails} = detailsSlice.actions;
+export const {showDetails, hideDetails, setDetailData, resetDetails, setGoBack, resetGoBack} = detailsSlice.actions;
 
 export const selectShowDetails = (state: RootState) => state.details.showDetails;
 export const selectDetailsData = (state: RootState) => state.details.detailsData;
+export const selectGoBack = (state:RootState) => state.details.goBack;
 export default detailsSlice.reducer;

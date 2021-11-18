@@ -13,6 +13,7 @@ export interface IAuthState {
 export interface IDetailsState {
     showDetails:boolean,
     detailsData: IDetailsData ,
+    goBack: boolean,
 }
 
 export const initialDetailsData:IDetailsData = {

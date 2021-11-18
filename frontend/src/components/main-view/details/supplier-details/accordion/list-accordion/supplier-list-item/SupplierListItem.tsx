@@ -16,7 +16,7 @@ import {Grid, ListItemButton} from "@mui/material";
 //interface imports
 import {IOrder} from "../../../../../../../interfaces/IOrder";
 import {IProduct} from "../../../../../../../interfaces/IProduct";
-import {setDetailData} from "../../../../../../../slicer/detailsSlice";
+import {setDetailData, setGoBack} from "../../../../../../../slicer/detailsSlice";
 import {chooseCurrentOrder} from "../../../../../../../slicer/orderSlice";
 type Props = {
     item: IOrder | IProduct,
@@ -45,6 +45,7 @@ function SupplierListItem({item}: Props) {
         dispatch(isProduct ? chooseCurrentProduct(item.id.toString()) : chooseCurrentOrder(item.id.toString()));
         //@ts-ignore check done by isProduct
         dispatch(isProduct ? setDetailData(parseProductToThumbnailData(item)) : setDetailData(parseOrderToThumbnailData(item)));
+        dispatch(setGoBack());
     }
     return (
         <ListItemButton component="a" onClick={showItemDetails}>
