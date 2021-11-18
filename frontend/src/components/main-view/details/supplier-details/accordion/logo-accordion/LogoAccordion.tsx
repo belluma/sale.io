@@ -1,18 +1,17 @@
 import React from 'react'
-import {ISupplier} from "../../../../../../interfaces/ISupplier";
 import {images} from "../../../../helpers";
-import {Card, CardMedia} from "@mui/material";
 import {selectCurrentSupplier} from "../../../../../../slicer/supplierSlice";
 import {useAppSelector} from "../../../../../../app/hooks";
 
 //component imports
+import {Card, CardMedia} from "@mui/material";
 
 //interface imports
 
 type Props = {
 };
 
-function LogoAccordion({}: Props){
+function LogoAccordion(props: Props){
     const supplier = useAppSelector(selectCurrentSupplier);
     return(
       <Card>
