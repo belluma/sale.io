@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 import static capstone.backend.mapper.OrderToCustomerMapper.mapOrder;
@@ -55,7 +56,23 @@ public class OrderToCustomerService {
         return mapOrder(repo.save(openOrder));
     }
 
-    public OrderToCustomerDTO removeItemsFromOrder(Long orderId, OrderItemDTO orderItem, OrderToCustomerDTO orderToCustomer) throws IllegalArgumentException, EntityNotFoundException {
+    public OrderToCustomerDTO removeItemsFromOrder(Long orderId, OrderItemDTO orderItem, OrderToCustomerDTO order) throws IllegalArgumentException, EntityNotFoundException {
+       OrderToCustomer openOrder = validateOrderWhenRemoveItems(orderItem, order);
+        OrderItemDTO orderItemWithItemsRemoved = orderItemService.reduceQuantityOfOrderItem(orderItem, order);
+        productService.resetAmountInStockWhenRemovingFromBill(mapOrderItem(orderItem));
+        openOrder.setOrderItems(
+                openOrder
+                        .getOrderItems()
+                        .stream()
+                        .map(oldOrderItem -> {
+                            if(Objects.equals(oldOrderItem.getId(), orderItemWithItemsRemoved.getId())){
+                                return orderItemWithItemsRemoved.getQuantity() > 0 ? mapOrderItem(orderItemWithItemsRemoved) : null;
+                            }
+                            return oldOrderItem;
+                        })
+                        .filter(Objects::nonNull)
+                        .toList());
+        return mapOrder(repo.save(openOrder));
 
     }
 

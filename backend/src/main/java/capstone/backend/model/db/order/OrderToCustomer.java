@@ -15,7 +15,6 @@ import javax.persistence.Table;
 @Table(name = "customer_orders")
 public class OrderToCustomer extends Order {
 
-
     public OrderToCustomer(){}
 
     public OrderToCustomer(OrderStatus status){
