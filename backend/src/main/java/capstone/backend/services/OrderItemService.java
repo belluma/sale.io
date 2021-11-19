@@ -47,7 +47,7 @@ public class OrderItemService {
         return orderItem.get();
     }
 
-    private Optional<OrderItemDTO> itemAlreadyOnOrder(OrderItemDTO itemToAdd, OrderToCustomerDTO order) {
+    public Optional<OrderItemDTO> itemAlreadyOnOrder(OrderItemDTO itemToAdd, OrderToCustomerDTO order) {
         return order
                 .getOrderItems()
                 .stream()

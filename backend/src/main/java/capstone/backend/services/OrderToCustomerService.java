@@ -43,7 +43,7 @@ public class OrderToCustomerService {
     }
 
     public OrderToCustomerDTO addItemsToOrder(Long orderId, OrderItemDTO orderItem, OrderToCustomerDTO orderToCustomer) throws IllegalArgumentException {
-        OrderToCustomer openOrder = validateOrder(orderId, orderItem);
+        OrderToCustomer openOrder = validateOrderWhenAddItems(orderId, orderItem);
         OrderItemDTO orderItemWithUpdatedAmount = orderItemService.addItemToOrderOrUpdateQuantity(orderItem, orderToCustomer);
         productService.substractStockWhenAddingItemToBill(mapOrderItem(orderItem));
         openOrder.setOrderItems(
@@ -55,6 +55,10 @@ public class OrderToCustomerService {
         return mapOrder(repo.save(openOrder));
     }
 
+    public OrderToCustomerDTO removeItemsFromOrder(Long orderId, OrderItemDTO orderItem, OrderToCustomerDTO orderToCustomer) throws IllegalArgumentException, EntityNotFoundException {
+
+    }
+
     public OrderToCustomerDTO cashoutOrder(OrderToCustomerDTO orderToCustomer) {
         OrderToCustomer openOrder = repo.findById(orderToCustomer.getId()).orElseThrow(EntityNotFoundException::new);
         if (orderAlreadyPaid(openOrder)) {
@@ -64,10 +68,10 @@ public class OrderToCustomerService {
         return mapOrder(repo.save(openOrder));
     }
 
-    private OrderToCustomer validateOrder(Long orderId, OrderItemDTO orderItem) {
-       if(!orderExists(orderId)){
-           throw new EntityNotFoundException("You're trying to add to an order that doesn't exist");
-       }
+    private OrderToCustomer validateOrderWhenAddItems(Long orderId, OrderItemDTO orderItem) {
+        if (!orderExists(orderId)) {
+            throw new EntityNotFoundException("You're trying to add to an order that doesn't exist");
+        }
         if (orderAlreadyPaid(orderId)) {
             throw new IllegalArgumentException("This order has already been cashed out!");
         }
@@ -75,6 +79,22 @@ public class OrderToCustomerService {
             throw new IllegalArgumentException("You're trying to add a product that doesn't exist");
         }
         return repo.findById(orderId).orElseThrow(EntityNotFoundException::new);
+    }
+
+    private OrderToCustomer validateOrderWhenRemoveItems(OrderItemDTO orderItem, OrderToCustomerDTO order) {
+        if (!orderExists(order)) {
+            throw new EntityNotFoundException("You're trying to remove from an order that doesn't exist");
+        }
+        if (orderAlreadyPaid(order)) {
+            throw new IllegalArgumentException("This order has already been cashed out!");
+        }
+        if (orderItemService.itemAlreadyOnOrder(orderItem, order).isEmpty()) {
+            throw new IllegalArgumentException("The item you're trying to remove is not on the order");
+        }
+        if (!productService.productExists(orderItem.getProduct())) {
+            throw new IllegalArgumentException("You're trying to remove a product that doesn't exist");
+        }
+        return repo.findById(order.getId()).orElseThrow(EntityNotFoundException::new);
     }
 
     private boolean orderExists(OrderToCustomerDTO order) {
