@@ -16,7 +16,7 @@ import {hideDetails} from "./detailsSlice";
 
 const initialState: ISuppliersState = {
     suppliers: [],
-    current: undefined,
+    current: emptySupplier,
     toSave: emptySupplier,
     pending: false,
     success: false,
@@ -100,7 +100,7 @@ export const supplierSlice = createSlice({
     initialState,
     reducers: {
         chooseCurrentSupplier: (state: ISuppliersState, action: PayloadAction<string>) => {
-            state.current = state.suppliers.find(supplier => supplier.id === action.payload);
+            state.current = state.suppliers.find(supplier => supplier.id?.toString() === action.payload) || emptySupplier;
         },
         handleSupplierFormInput: (state, {payload}: PayloadAction<ISupplier>) => {
             state.toSave = payload;

@@ -1,17 +1,17 @@
 import React from 'react'
-import {useAppDispatch} from '../../../../app/hooks';
-import {images} from '../../helpers'
+import {useAppDispatch} from '../../../app/hooks';
+import {images} from '../helpers'
 
-import {setDetailData, showDetails} from "../../../../slicer/detailsSlice";
-import {chooseCurrentEmployee, toBeReplaced} from "../../../../slicer/employeeSlice";
-import {chooseCurrentProduct} from "../../../../slicer/productSlice";
-import {chooseCurrentSupplier} from "../../../../slicer/supplierSlice";
-import {chooseCurrentOrder} from "../../../../slicer/orderSlice";
+import {setDetailData, showDetails} from "../../../slicer/detailsSlice";
+import {chooseCurrentEmployee, toBeReplaced} from "../../../slicer/employeeSlice";
+import {chooseCurrentProduct} from "../../../slicer/productSlice";
+import {chooseCurrentSupplier} from "../../../slicer/supplierSlice";
+import {chooseCurrentOrder} from "../../../slicer/orderSlice";
 //component imports
 
 import {Card, CardActions, CardContent, CardHeader, CardMedia, Divider} from "@mui/material";
 //interface imports
-import {IThumbnailData, Views} from '../../../../interfaces/IThumbnailData';
+import {IThumbnailData, Views} from '../../../interfaces/IThumbnailData';
 
 type Props = {
     data: IThumbnailData
@@ -24,7 +24,7 @@ function Thumbnail({data}: Props) {
     const selectors = {
         none: toBeReplaced,
         login: chooseCurrentEmployee,
-        employee: toBeReplaced,
+        employee: chooseCurrentEmployee,
         product: chooseCurrentProduct,
         customer: toBeReplaced,
         supplier: chooseCurrentSupplier,
@@ -36,7 +36,7 @@ function Thumbnail({data}: Props) {
         if (model !== Views.NEW && model !== Views.ERROR && id) dispatch(selectors[model](id))
     }
     return (
-        <Card onClick={onClick} sx={{display: "flex", flexDirection: "column", height: 500, width: 345}}>
+        <Card onClick={onClick} sx={{display: "flex", flexDirection: "column", height: 500, width: 345, cursor:'pointer'}}>
             <CardHeader title={title} subtitle={subtitle}/>
             <CardMedia
                 sx={{flexGrow: 1}}

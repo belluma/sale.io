@@ -8,6 +8,8 @@ import {selectView} from "../../../../slicer/viewSlice";
 //component imports
 import GridView from "../../grid-view/GridView";
 import ListView from "../../list-view/ListView";
+import {getAllProducts} from "../../../../slicer/productSlice";
+import {getAllOrders} from "../../../../slicer/orderSlice";
 
 //interface imports
 
@@ -17,6 +19,8 @@ function SuppliersView(props: Props) {
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(getAllSuppliers());
+        dispatch(getAllOrders());
+        dispatch(getAllProducts());
     }, [dispatch]);
 
     const suppliers = useAppSelector(selectSuppliers)

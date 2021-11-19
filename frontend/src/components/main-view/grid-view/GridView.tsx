@@ -3,9 +3,9 @@ import {newItemData} from "../helpers";
 import 'bulma/css/bulma.css';
 
 //component imports
-import Details from "./details/Details";
+import Details from "../details/Details";
 import {Grid} from "@mui/material";
-import Thumbnail from "./thumbnail/Thumbnail";
+import Thumbnail from "../thumbnail/Thumbnail";
 //interface imports
 
 import {IThumbnailData, Views} from "../../../interfaces/IThumbnailData";

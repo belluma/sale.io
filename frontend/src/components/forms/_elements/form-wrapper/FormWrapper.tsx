@@ -26,7 +26,7 @@ type Props = {
     handleClose: () => void
 };
 
-function FormWrapper({model, fullScreen, handleClose}: Props) {
+function FormWrapper({model, handleClose}: Props) {
     const dispatch = useAppDispatch();
     const product = useAppSelector(selectProductToSave)
     const supplier = useAppSelector(selectSupplierToSave)
@@ -66,6 +66,7 @@ function FormWrapper({model, fullScreen, handleClose}: Props) {
     };
     const handleSubmit = () => {
         console.log(model)
+
         if (Object.keys(submitSelector).includes(model)) dispatch(submitSelector[model]());
         handleClose();
     }
@@ -77,7 +78,6 @@ function FormWrapper({model, fullScreen, handleClose}: Props) {
             </Container>
             <section>
                 <Button onClick={handleSubmit} disabled={disableButton()}>save</Button>
-                {fullScreen && <Button onClick={handleClose}>Close</Button>}
             </section>
         </Container>
     )

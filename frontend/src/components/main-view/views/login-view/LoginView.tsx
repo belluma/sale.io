@@ -1,7 +1,10 @@
 import React from 'react'
 import {useAppSelector} from '../../../../app/hooks';
 import {selectEmployees} from '../../../../slicer/employeeSlice';
-import {parseEmployeeToThumbnailData, Views} from "../../../../interfaces/IThumbnailData";
+import {
+    parseEmployeeToLoginThumbnailData,
+    Views
+} from "../../../../interfaces/IThumbnailData";
 
 //component imports
 import GridView from "../../grid-view/GridView";
@@ -14,7 +17,7 @@ type Props = {};
 
 function LoginView(props: Props){
     const loggedIn = useAppSelector(selectLoggedIn);
-    const employees = useAppSelector(selectEmployees).map(employee => parseEmployeeToThumbnailData(employee));
+    const employees = useAppSelector(selectEmployees).map(employee => parseEmployeeToLoginThumbnailData(employee));
     return(
      loggedIn ? <Redirect to={'/start'} /> :  <GridView gridItems={employees} view={Views.LOGIN}/>
     )

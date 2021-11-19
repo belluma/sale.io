@@ -1,8 +1,9 @@
 import React from 'react'
 import {receiveOrder, selectCurrentOrder, selectOrderToSave} from "../../../../slicer/orderSlice";
+import {parseName} from "../../../../interfaces/IThumbnailData";
 import {getTotal} from "../helper";
-
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
+
 //component imports
 import OrderItem from "../order-item/OrderItem";
 import {
@@ -18,25 +19,24 @@ import {
     Typography
 } from "@mui/material";
 import CardContent from '@material-ui/core/CardContent';
-
 import Grid from '@material-ui/core/Grid';
-import {parseName} from "../../../../interfaces/IThumbnailData";
+
+//interface imports
 import {OrderStatus} from "../../../../interfaces/OrderStatus";
 import {IOrder} from "../../../../interfaces/IOrder";
-//interface imports
 
 type Props = {
-    form?: boolean,
+    isFormEnabled?: boolean,
 };
 
-function OrderPreview({form}: Props) {
+function OrderPreview({isFormEnabled}: Props) {
     const dispatch = useAppDispatch();
     const orderToSave = useAppSelector(selectOrderToSave)
     const currentOrder = useAppSelector(selectCurrentOrder);
-    const order:IOrder = form ? orderToSave : currentOrder;
+    const order:IOrder = isFormEnabled ? orderToSave : currentOrder;
     const {orderItems, supplier} = order;
     const productsToOrder = orderItems.map((item, i) => {
-        return <OrderItem form={form} key={i} item={item} index={i}/>
+        return <OrderItem form={isFormEnabled} key={i} item={item} index={i}/>
     })
     const handleReceive = () => {
         if(order.status === OrderStatus.PENDING)dispatch(receiveOrder(order));
@@ -53,8 +53,8 @@ function OrderPreview({form}: Props) {
     const total = orderItems.reduce(getTotal, 0)
     return (
         <Card sx={{width: 0.99, height: 0.99, display: 'flex', flexDirection: 'column'}}>
-            {form && <CardHeader title={`order to ${supplier && parseName(supplier)}`}/>}
-            {form && <Divider/>}
+            {isFormEnabled && <CardHeader title={`order to ${supplier && parseName(supplier)}`}/>}
+            {isFormEnabled && <Divider/>}
             <CardContent>
                 <Grid container>
                     {productsToOrder}
@@ -65,7 +65,7 @@ function OrderPreview({form}: Props) {
             <CardActions sx={{display: "flex", justifyContent: "space-between", flexDirection:"row-reverse"}}>
                 <Typography >Total:€ {total.toFixed(2)}</Typography>
                 <ThemeProvider theme={greenButton()}>
-                    {!form && order.status === OrderStatus.PENDING &&  <Button onClick={handleReceive} variant="contained">Receive</Button>}
+                    {!isFormEnabled && order.status === OrderStatus.PENDING &&  <Button onClick={handleReceive} variant="contained">Receive</Button>}
                 </ThemeProvider>
             </CardActions>
         </Card>

@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useState} from 'react'
-import {useAppDispatch, useAppSelector} from '../../../../../../app/hooks';
-import {registerAdmin} from '../../../../../../slicer/authSlice';
-import {selectEmployees} from "../../../../../../slicer/employeeSlice";
+import {useAppDispatch, useAppSelector} from '../../../../../app/hooks';
+import {registerAdmin} from '../../../../../slicer/authSlice';
+import {selectEmployees} from "../../../../../slicer/employeeSlice";
 
 
 //component imports
@@ -9,7 +9,7 @@ import {Card, CardHeader, Button, Divider, FormGroup, TextField} from '@mui/mate
 import {Redirect} from "react-router";
 
 //interface imports
-import {IUserCredentials, initialCredentials} from '../../../../../../interfaces/IEmployee';
+import {IUserCredentials, initialCredentials} from '../../../../../interfaces/IEmployee';
 
 type Props = {};
 

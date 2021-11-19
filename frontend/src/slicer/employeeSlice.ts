@@ -9,7 +9,7 @@ import {emptyEmployee} from "../interfaces/IEmployee";
 
 const initialState: IEmployeeState = {
     employees: [],
-    current: undefined,
+    current: emptyEmployee,
     currentEmployeeCredentials: undefined,
     pending: false,
     success: false,
@@ -30,7 +30,7 @@ export const employeeSlice = createSlice({
     initialState,
     reducers: {
         chooseCurrentEmployee: (state, action: PayloadAction<string>) => {
-            const employee = state.employees.filter(e => e.username === action.payload)[0];
+            const employee = state.employees.find(e => e.username === action.payload) || emptyEmployee;
             state.current = employee
             state.currentEmployeeCredentials = extractCredentials(employee);
         },

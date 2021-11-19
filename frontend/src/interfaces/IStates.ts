@@ -13,6 +13,7 @@ export interface IAuthState {
 export interface IDetailsState {
     showDetails:boolean,
     detailsData: IDetailsData ,
+    goBack: boolean,
 }
 
 export const initialDetailsData:IDetailsData = {
@@ -31,20 +32,20 @@ interface IBaseState {
 
 export interface IEmployeeState extends IBaseState{
     employees: IEmployee[],
-    current: IEmployee | undefined,
+    current: IEmployee ,
     currentEmployeeCredentials: IUserCredentials | undefined,
     toSave: IEmployee
 }
 
 export interface IProductsState extends IBaseState {
     products: IProduct[],
-    current: IProduct | undefined,
+    current: IProduct ,
     toSave: IProduct,
 }
 
 export interface ISuppliersState extends IBaseState {
     suppliers: ISupplier[],
-    current: ISupplier | undefined,
+    current: ISupplier,
     toSave: ISupplier,
 }
 
