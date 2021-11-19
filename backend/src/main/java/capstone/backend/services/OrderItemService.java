@@ -1,14 +1,16 @@
 package capstone.backend.services;
 
 import capstone.backend.mapper.OrderItemMapper;
-import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.dto.order.OrderItemDTO;
+import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.repo.OrderItemRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 
@@ -36,9 +38,20 @@ public class OrderItemService {
         return mapOrderItem(repo.save(mapOrderItem(orderItem)));
     }
 
-    public OrderItem addQuantityToItemAlreadyOnOrder(OrderItem itemToAdd) {
-        OrderItem itemOnBill = repo.getById(itemToAdd.getId());
-        return repo.save(itemOnBill.withQuantity(itemOnBill.getQuantity() + itemToAdd.getQuantity()));
+    public OrderItemDTO addItemToOrderOrUpdateQuantity(OrderItemDTO itemToAdd, OrderToCustomerDTO order) {
+        AtomicReference<OrderItemDTO> orderItem = new AtomicReference<>();
+        itemAlreadyOnOrder(itemToAdd, order).ifPresentOrElse(
+                itemOnOrder -> orderItem.set(mapOrderItem(repo.save(mapOrderItem(itemOnOrder.withQuantity(itemOnOrder.getQuantity() + itemToAdd.getQuantity()))))),
+                () -> orderItem.set(mapOrderItem(repo.save(mapOrderItem(itemToAdd))))
+        );
+        return orderItem.get();
     }
 
+    private Optional<OrderItemDTO> itemAlreadyOnOrder(OrderItemDTO itemToAdd, OrderToCustomerDTO order) {
+        return order
+                .getOrderItems()
+                .stream()
+                .filter(orderItem -> orderItem.getProduct().equals(itemToAdd.getProduct()))
+                .findFirst();
+    }
 }

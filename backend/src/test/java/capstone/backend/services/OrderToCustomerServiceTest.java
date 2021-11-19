@@ -74,7 +74,7 @@ class OrderToCustomerServiceTest {
         when(orderRepo.findById(expected.getId())).thenReturn(Optional.of(emptyOrderOpen()));
         when(orderRepo.existsById(expected.getId())).thenReturn(true);
         when(productService.productExists(itemToAdd.getProduct())).thenReturn(true);
-        when(orderItemService.addQuantityToItemAlreadyOnOrder(mapOrderItem(itemToAdd))).thenReturn(mapOrderItem(itemToAdd));
+        when(orderItemService.addItemToOrderOrUpdateQuantity(itemToAdd, initialOrder)).thenReturn(itemToAdd);
         when(orderRepo.save(orderWithItemAdded)).thenReturn(orderWithItemAdded);
         //WHEN
         OrderToCustomerDTO actual = orderService.addItemsToOrder(expected.getId(), itemToAdd, initialOrder);
@@ -82,7 +82,7 @@ class OrderToCustomerServiceTest {
         verify(orderRepo, times(2)).findById(expected.getId());
         verify(orderRepo).existsById(expected.getId());
         verify(productService).productExists(itemToAdd.getProduct());
-        verify(orderItemService).addQuantityToItemAlreadyOnOrder(mapOrderItem(itemToAdd));
+        verify(orderItemService).addItemToOrderOrUpdateQuantity(itemToAdd, initialOrder);
         verify(orderRepo).save(orderWithItemAdded);
         assertThat(actual, is(expected));
     }

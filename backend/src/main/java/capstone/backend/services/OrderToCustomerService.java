@@ -1,7 +1,6 @@
 package capstone.backend.services;
 
 import capstone.backend.mapper.OrderToCustomerMapper;
-import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.db.order.OrderToCustomer;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
@@ -45,13 +44,13 @@ public class OrderToCustomerService {
 
     public OrderToCustomerDTO addItemsToOrder(Long orderId, OrderItemDTO orderItem, OrderToCustomerDTO orderToCustomer) throws IllegalArgumentException {
         OrderToCustomer openOrder = validateOrder(orderId, orderItem);
-        OrderItem orderItemWithUpdatedAmount = orderItemService.addQuantityToItemAlreadyOnOrder(mapOrderItem(orderItem));
+        OrderItemDTO orderItemWithUpdatedAmount = orderItemService.addItemToOrderOrUpdateQuantity(orderItem, orderToCustomer);
         productService.substractStockWhenAddingItemToBill(mapOrderItem(orderItem));
         openOrder.setOrderItems(
                 openOrder
                         .getOrderItems()
                         .stream()
-                        .map(oldOrderItem -> Objects.equals(oldOrderItem.getId(), orderItemWithUpdatedAmount.getId()) ? orderItemWithUpdatedAmount : oldOrderItem)
+                        .map(oldOrderItem -> Objects.equals(oldOrderItem.getId(), orderItemWithUpdatedAmount.getId()) ? mapOrderItem(orderItemWithUpdatedAmount) : oldOrderItem)
                         .toList());
         return mapOrder(repo.save(openOrder));
     }

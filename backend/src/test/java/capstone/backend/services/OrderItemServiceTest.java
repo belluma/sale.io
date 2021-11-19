@@ -2,6 +2,7 @@ package capstone.backend.services;
 
 import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.dto.order.OrderItemDTO;
+import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.repo.OrderItemRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,8 @@ import java.util.Optional;
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItemDTO;
+import static capstone.backend.utils.OrderToCustomerTestUtils.*;
+import static capstone.backend.utils.ProductTestUtils.sampleProductDTOWithDetailsWithId;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
@@ -73,17 +76,53 @@ class OrderItemServiceTest {
     }
 
     @Test
-    void addItemsToExistingOrderWhenProductAlreadyOnBill(){
+    void addItemToOrderOrUpdateQuantityAddsWhenItemAlreadyOnOrder(){
         //GIVEN
-        OrderItem itemToAdd = sampleOrderItem();
-        when(repo.existsById(itemToAdd.getId())).thenReturn(true);
-        when(repo.getById())
-        when(repo.save())
+        OrderToCustomerDTO order = orderDTOWithStatusOpenWithOrderItem();
+        OrderItemDTO itemToAdd = sampleOrderItemDTO();
+        OrderItemDTO expected = sampleOrderItemDTO().withQuantity(2);
+        when(repo.save(mapOrderItem(expected))).thenReturn(mapOrderItem(expected));
         //WHEN
-
-
+        OrderItemDTO actual = service.addItemToOrderOrUpdateQuantity(itemToAdd, order);
         //THEN
-
-
+        assertThat(actual, is(expected));
+        verify(repo).save(mapOrderItem(expected));
+    }
+@Test
+    void addItemToOrderOrUpdateQuantityAddsWhenItemOneOfSeveralAlreadyOnOrder(){
+        //GIVEN
+        OrderToCustomerDTO order = orderDTOWithSeveralItemsAndStatusOpen();
+        OrderItemDTO itemToAdd = sampleOrderItemDTO();
+        OrderItemDTO expected = sampleOrderItemDTO().withQuantity(2);
+        when(repo.save(mapOrderItem(expected))).thenReturn(mapOrderItem(expected));
+        //WHEN
+        OrderItemDTO actual = service.addItemToOrderOrUpdateQuantity(itemToAdd, order);
+        //THEN
+        assertThat(actual, is(expected));
+        verify(repo).save(mapOrderItem(expected));
+    }
+    @Test
+    void addItemToOrderOrUpdateQuantityAddsNewProductToEmptyOrder(){
+        //GIVEN
+        OrderToCustomerDTO emptyOrder = emptyOrderDTOWithStatusOpen();
+        OrderItemDTO expected = sampleOrderItemDTO();
+        when(repo.save(mapOrderItem(expected))).thenReturn(mapOrderItem(expected));
+        //WHEN
+        OrderItemDTO actual = service.addItemToOrderOrUpdateQuantity(expected, emptyOrder);
+        //THEN
+        assertThat(actual, is(expected));
+        verify(repo).save(mapOrderItem(expected));
+    }
+    @Test
+    void addItemToOrderOrUpdateQuantityAddsNewProductToOrderThatAlreadyHasProductsOnIt(){
+        //GIVEN
+        OrderToCustomerDTO order = orderDTOWithSeveralItemsAndStatusOpen();
+        OrderItemDTO expected = sampleOrderItemDTO().withProduct(sampleProductDTOWithDetailsWithId().withId(1000L));
+        when(repo.save(mapOrderItem(expected))).thenReturn(mapOrderItem(expected));
+        //WHEN
+        OrderItemDTO actual = service.addItemToOrderOrUpdateQuantity(expected, order);
+        //THEN
+        assertThat(actual, is(expected));
+        verify(repo).save(mapOrderItem(expected));
     }
 }
