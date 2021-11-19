@@ -124,4 +124,17 @@ class OrderItemServiceTest {
         assertThat(actual, is(expected));
         verify(repo).save(mapOrderItem(expected));
     }
+    @Test
+    void reduceQuantityOfOrderItem(){
+        //GIVEN
+        OrderItemDTO orderItemToReduce = sampleOrderItemDTO();
+//        OrderToCustomerDTO order =
+
+        //WHEN
+
+
+        //THEN
+
+
+    }
 }

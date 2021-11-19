@@ -298,4 +298,25 @@ class OrderToCustomerServiceTest {
         verify(orderItemService).itemAlreadyOnOrder(orderItem, order);
         verify(productService).productExists(orderItem.getProduct());
     }
+
+    @Test
+    void removeItemsFailsWhenTryingToRemoveMoreItemsThanOnList() {
+        //GIVEN
+        OrderItemDTO orderItem = sampleOrderItemDTO().withQuantity(2);
+        OrderToCustomerDTO order = orderDTOWithStatusOpenWithOrderItem();
+        OrderToCustomerDTO expected = emptyOrderDTOWithStatusOpen();
+        Long orderId = order.getId();
+        when(orderRepo.existsById(orderId)).thenReturn(true);
+        when(orderRepo.findById(orderId)).thenReturn(Optional.of(mapOrder(order)));
+        when(orderRepo.save(mapOrder(expected))).thenReturn(mapOrder(expected));
+        when(orderItemService.itemAlreadyOnOrder(orderItem, order)).thenReturn(Optional.of(orderItem));
+        when(productService.productExists(orderItem.getProduct())).thenReturn(true);
+        //WHEN - //THEN
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.removeItemsFromOrder(orderId, orderItem, order));
+        assertThat(ex.getMessage(), is("It's not possible to remove more items than are on the order"));
+        verify(orderRepo).existsById(orderId);
+        verify(orderRepo).findById(orderId);
+        verify(orderItemService).itemAlreadyOnOrder(orderItem, order);
+        verify(productService).productExists(orderItem.getProduct());
+    }
 }

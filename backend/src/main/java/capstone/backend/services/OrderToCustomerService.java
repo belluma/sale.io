@@ -118,6 +118,7 @@ public class OrderToCustomerService {
         if (!productService.productExists(orderItem.getProduct())) {
             throw new IllegalArgumentException("You're trying to remove a product that doesn't exist");
         }
+        orderHasLessItemsThanTryingToReduce(orderItem, order);
         return repo.findById(order.getId()).orElseThrow(EntityNotFoundException::new);
     }
 
@@ -144,4 +145,16 @@ public class OrderToCustomerService {
         return existingOrder.getStatus() == PAID;
     }
 
+    private void orderHasLessItemsThanTryingToReduce(OrderItemDTO orderItem, OrderToCustomerDTO order) {
+        order.getOrderItems().forEach(itemOnOrder -> {
+            if (itemOnOrder.equals(orderItem) && itemOnOrder.getQuantity() < orderItem.getQuantity()) {
+                throw new IllegalArgumentException("It's not possible to remove more items than are on the order");
+            }
+        });
+
+    }
+
 }
+
+
+
