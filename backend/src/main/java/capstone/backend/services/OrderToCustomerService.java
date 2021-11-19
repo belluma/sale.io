@@ -47,7 +47,7 @@ public class OrderToCustomerService {
         OrderToCustomer openOrder = validateOrderWhenAddItems(orderId, orderItem);
         OrderItemDTO orderItemWithUpdatedAmount = orderItemService.addItemToOrderOrUpdateQuantity(orderItem, orderToCustomer);
         productService.substractStockWhenAddingItemToBill(mapOrderItem(orderItem));
-
+        updateAmountOnBill(openOrder, orderItemWithUpdatedAmount);
         return mapOrder(repo.save(openOrder));
     }
 
