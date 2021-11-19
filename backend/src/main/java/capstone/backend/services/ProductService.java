@@ -66,7 +66,7 @@ public class ProductService {
                 });
     }
 
-    public void sellGoods(OrderItem itemsToSell) {
+    public void substractStockWhenAddingItemToBill(OrderItem itemsToSell) {
         Product productToReceive = repo.getById(itemsToSell.getProduct().getId());
         int newAmount = productToReceive.getAmountInStock() - itemsToSell.getQuantity()  ;
         productToReceive.setAmountInStock(newAmount);

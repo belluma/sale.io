@@ -31,12 +31,14 @@ public class OrderItemService {
                 .map(OrderItemMapper::mapOrderItem)
                 .orElseThrow(() -> new EntityNotFoundException("Something went wrong while retrieving your data!"));
     }
+
     public OrderItemDTO addOrderItem(OrderItemDTO orderItem) {
         return mapOrderItem(repo.save(mapOrderItem(orderItem)));
     }
 
-
-    public OrderItem addItemsToExistingOrder(OrderItem orderItem) {
-        return new OrderItem();
+    public OrderItem addQuantityToItemAlreadyOnOrder(OrderItem itemToAdd) {
+        OrderItem itemOnBill = repo.getById(itemToAdd.getId());
+        return repo.save(itemOnBill.withQuantity(itemOnBill.getQuantity() + itemToAdd.getQuantity()));
     }
+
 }

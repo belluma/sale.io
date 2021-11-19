@@ -1,12 +1,10 @@
 package capstone.backend.services;
 
-import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.mapper.OrderToCustomerMapper;
 import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.db.order.OrderToCustomer;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
-import capstone.backend.model.dto.order.OrderToSupplierDTO;
 import capstone.backend.repo.OrderToCustomerRepo;
 import lombok.RequiredArgsConstructor;
 
@@ -45,9 +43,10 @@ public class OrderToCustomerService {
         return mapOrder(repo.save(new OrderToCustomer(OPEN)));
     }
 
-    public OrderToCustomerDTO addItemsToOrder(Long orderId, OrderItemDTO orderItem) throws IllegalArgumentException {
+    public OrderToCustomerDTO addItemsToOrder(Long orderId, OrderItemDTO orderItem, OrderToCustomerDTO orderToCustomer) throws IllegalArgumentException {
         OrderToCustomer openOrder = validateOrder(orderId, orderItem);
-        OrderItem orderItemWithUpdatedAmount = orderItemService.addItemsToExistingOrder(mapOrderItem(orderItem));
+        OrderItem orderItemWithUpdatedAmount = orderItemService.addQuantityToItemAlreadyOnOrder(mapOrderItem(orderItem));
+        productService.substractStockWhenAddingItemToBill(mapOrderItem(orderItem));
         openOrder.setOrderItems(
                 openOrder
                         .getOrderItems()

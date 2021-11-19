@@ -67,21 +67,22 @@ class OrderToCustomerServiceTest {
     @Test
     void addItemsToOrder() {
         //GIVEN
+        OrderToCustomerDTO initialOrder = emptyOrderDTOWithStatusOpen();
         OrderToCustomerDTO expected = orderDTOWithStatusOpenWithOrderItem();
         OrderToCustomer orderWithItemAdded = orderOpenWithOrderItem();
         OrderItemDTO itemToAdd = sampleOrderItemDTO();
         when(orderRepo.findById(expected.getId())).thenReturn(Optional.of(emptyOrderOpen()));
         when(orderRepo.existsById(expected.getId())).thenReturn(true);
         when(productService.productExists(itemToAdd.getProduct())).thenReturn(true);
-        when(orderItemService.addItemsToExistingOrder(mapOrderItem(itemToAdd))).thenReturn(mapOrderItem(itemToAdd));
+        when(orderItemService.addQuantityToItemAlreadyOnOrder(mapOrderItem(itemToAdd))).thenReturn(mapOrderItem(itemToAdd));
         when(orderRepo.save(orderWithItemAdded)).thenReturn(orderWithItemAdded);
         //WHEN
-        OrderToCustomerDTO actual = orderService.addItemsToOrder(expected.getId(), itemToAdd);
+        OrderToCustomerDTO actual = orderService.addItemsToOrder(expected.getId(), itemToAdd, initialOrder);
         //THEN
         verify(orderRepo, times(2)).findById(expected.getId());
         verify(orderRepo).existsById(expected.getId());
         verify(productService).productExists(itemToAdd.getProduct());
-        verify(orderItemService).addItemsToExistingOrder(mapOrderItem(itemToAdd));
+        verify(orderItemService).addQuantityToItemAlreadyOnOrder(mapOrderItem(itemToAdd));
         verify(orderRepo).save(orderWithItemAdded);
         assertThat(actual, is(expected));
     }
@@ -90,10 +91,12 @@ class OrderToCustomerServiceTest {
     void addItemsToOrderFailsWhenOrderDoesNotExist() {
         //GIVEN
         OrderToCustomer nonExistentOrder = emptyOrderOpen();
+        OrderToCustomerDTO toOrder = mapOrder(nonExistentOrder);
+        Long orderId = nonExistentOrder.getId();
         OrderItemDTO item = sampleOrderItemDTO();
         when(orderRepo.existsById(nonExistentOrder.getId())).thenReturn(false);
         //WHEN - //THEN
-        Exception ex = assertThrows(EntityNotFoundException.class, () -> orderService.addItemsToOrder(nonExistentOrder.getId(), item));
+        Exception ex = assertThrows(EntityNotFoundException.class, () -> orderService.addItemsToOrder(orderId, item, toOrder));
         assertThat(ex.getMessage(), is("You're trying to add to an order that doesn't exist"));
         verify(orderRepo).existsById(nonExistentOrder.getId());
     }
@@ -102,11 +105,13 @@ class OrderToCustomerServiceTest {
     void addItemsToOrderFailsWhenOrderAlreadyPaid() {
         //GIVEN
         OrderToCustomer paidOrder = orderPaidWithOrderItem();
+        OrderToCustomerDTO toOrder = mapOrder(paidOrder);
+        Long orderId = paidOrder.getId();
         OrderItemDTO item = sampleOrderItemDTO();
         when(orderRepo.findById(paidOrder.getId())).thenReturn(Optional.of(paidOrder));
         when(orderRepo.existsById(paidOrder.getId())).thenReturn(true);
         //WHEN - //THEN
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.addItemsToOrder(paidOrder.getId(), item));
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.addItemsToOrder(orderId, item, toOrder));
         assertThat(ex.getMessage(), is("This order has already been cashed out!"));
         verify(orderRepo).existsById(paidOrder.getId());
         verify(orderRepo).findById(paidOrder.getId());
@@ -117,11 +122,12 @@ class OrderToCustomerServiceTest {
         //GIVEN
         OrderToCustomerDTO openOrder = orderDTOWithStatusOpenWithOrderItem();
         OrderItemDTO itemWithNonExistentProduct = sampleOrderItemDTO();
+        Long orderId = openOrder.getId();
         when(orderRepo.findById(openOrder.getId())).thenReturn(Optional.of(emptyOrderOpen()));
         when(productService.productExists(itemWithNonExistentProduct.getProduct())).thenReturn(false);
         when(orderRepo.existsById(openOrder.getId())).thenReturn(true);
         //WHEN - //THEN
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.addItemsToOrder(openOrder.getId(), itemWithNonExistentProduct));
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.addItemsToOrder(orderId, itemWithNonExistentProduct, openOrder));
         assertThat(ex.getMessage(), is("You're trying to add a product that doesn't exist"));
         verify(orderRepo).existsById(openOrder.getId());
         verify(orderRepo).findById(openOrder.getId());
@@ -148,7 +154,7 @@ class OrderToCustomerServiceTest {
         OrderToCustomerDTO orderToCashout = orderDTOWithStatusOpenWithOrderItem();
         when(orderRepo.findById(orderToCashout.getId())).thenReturn(Optional.empty());
         //WHEN - //THEN
-        Exception ex = assertThrows(EntityNotFoundException.class, () -> orderService.cashoutOrder(orderToCashout));
+        assertThrows(EntityNotFoundException.class, () -> orderService.cashoutOrder(orderToCashout));
     }
     @Test
     void cashoutOrderFailsWhenOrderAlreadyPaid(){

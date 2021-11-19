@@ -1,5 +1,6 @@
 package capstone.backend.services;
 
+import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.repo.OrderItemRepo;
 import org.junit.jupiter.api.Test;
@@ -69,5 +70,20 @@ class OrderItemServiceTest {
         //THEN
         verify(repo).save(mapOrderItem(expected));
         assertThat(actual, is(expected));
+    }
+
+    @Test
+    void addItemsToExistingOrderWhenProductAlreadyOnBill(){
+        //GIVEN
+        OrderItem itemToAdd = sampleOrderItem();
+        when(repo.existsById(itemToAdd.getId())).thenReturn(true);
+        when(repo.getById())
+        when(repo.save())
+        //WHEN
+
+
+        //THEN
+
+
     }
 }
