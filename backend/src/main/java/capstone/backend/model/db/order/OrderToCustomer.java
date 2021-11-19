@@ -23,6 +23,7 @@ public class OrderToCustomer extends Order {
     }
 
     public OrderToCustomer(OrderToCustomerStatus status) {
+        super(List.of());
         this.status = status;
     }
 

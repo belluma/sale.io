@@ -8,6 +8,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
@@ -16,4 +18,14 @@ import lombok.experimental.SuperBuilder;
 public class OrderToCustomerDTO extends OrderDTO {
 
     private OrderToCustomerStatus status;
+
+    public OrderToCustomerDTO(Long id, List<OrderItemDTO> orderItems) {
+        super(id, orderItems);
+        this.status = OrderToCustomerStatus.OPEN;
+    }
+
+    public OrderToCustomerDTO(Long id, List<OrderItemDTO> orderItems, OrderToCustomerStatus status) {
+        super(id, orderItems);
+        this.status = status;
+    }
 }

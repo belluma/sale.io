@@ -28,6 +28,10 @@ public abstract class Order {
     @ToString.Exclude
     private List<OrderItem> orderItems;
 
+    public Order(List<OrderItem> orderItems){
+        this.orderItems = orderItems;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

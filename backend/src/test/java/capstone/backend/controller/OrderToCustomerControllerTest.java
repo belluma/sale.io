@@ -5,6 +5,7 @@ import capstone.backend.model.db.Product;
 import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.db.order.OrderToCustomer;
+import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.repo.*;
 import capstone.backend.utils.ControllerTestUtils;
@@ -24,10 +25,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 import static capstone.backend.mapper.OrderToCustomerMapper.mapOrder;
 import static capstone.backend.model.enums.OrderToCustomerStatus.OPEN;
 import static capstone.backend.model.enums.OrderToCustomerStatus.PAID;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
+import static capstone.backend.utils.OrderToCustomerTestUtils.emptyOrderDTOWithStatusOpen;
 import static capstone.backend.utils.ProductTestUtils.sampleProduct;
 import static capstone.backend.utils.SupplierTestUtils.sampleSupplier;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -112,10 +115,36 @@ class OrderToCustomerControllerTest {
 
     @Test
     void createOrder() {
+        //GIVEN
+        Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
+        OrderItem orderItem = orderItemRepo.save(sampleOrderItem().withProduct(product));
+        OrderToCustomerDTO expected = emptyOrderDTOWithStatusOpen();
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        //WHEN
+        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(headers), OrderToCustomerDTO.class);
+        expected.setId(Objects.requireNonNull(response.getBody()).getId());
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody(), is(expected));
+        assertThat(orderRepo.findAll().size(), is(1));
     }
 
     @Test
-    void addItemsToOrder() {
+    void addItemsToEmptyOrder() {
+        //GIVEN
+        Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
+        OrderItem orderItem = orderItemRepo.save(sampleOrderItem().withProduct(product));
+        OrderToCustomer order1 = orderRepo.save(new OrderToCustomer( OPEN));
+        OrderToCustomerDTO expected = new OrderToCustomerDTO(order1.getId(), List.of(mapOrderItem(orderItem)));
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        String URL = BASEURL + "/add/?id=" + order1.getId();
+        //WHEN
+        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItem), headers), OrderToCustomerDTO.class);
+        //THEN
+        assertThat(response.getBody(), is(expected));
+        assertThat(orderRepo.getById(order1.getId()), is(expected));
     }
 
     @Test
