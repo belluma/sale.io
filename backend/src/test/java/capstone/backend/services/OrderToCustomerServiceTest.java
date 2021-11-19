@@ -12,6 +12,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.List;
 
 import static capstone.backend.mapper.OrderToCustomerMapper.mapOrder;
+import static capstone.backend.model.enums.OrderStatus.OPEN;
 import static capstone.backend.utils.OrderToCustomerTestUtils.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -40,10 +41,21 @@ class OrderToCustomerServiceTest {
     }
 
     @Test
+    void getAllOpenOrders(){
+        //GIVEN
+        List<OrderToCustomerDTO> expected = List.of(emptyOrderDTOWithStatusOpen());
+        when(orderRepo.findAllByStatus(OPEN)).thenReturn(List.of(emptyOrderOpen()));
+        //WHEN
+        List<OrderToCustomerDTO> actual = orderService.getAllOpenOrders();
+        //THEN
+        assertIterableEquals(expected, actual);
+    }
+
+    @Test
     void createEmptyOrder(){
         //GIVEN
         OrderToCustomerDTO expected = emptyOrderDTOWithStatusOpen();
-        when(orderRepo.save(new OrderToCustomer(OrderStatus.OPEN))).thenReturn(emptyOrderOpen());
+        when(orderRepo.save(new OrderToCustomer(OPEN))).thenReturn(emptyOrderOpen());
         //WHEN
         OrderToCustomerDTO actual = orderService.createEmptyOrder();
         // THEN

@@ -32,14 +32,24 @@ public class OrderToCustomerService {
                 .toList();
     }
 
+    public List<OrderToCustomerDTO> getAllOpenOrders() {
+        return repo.findAllByStatus(OPEN)
+                .stream()
+                .map(OrderToCustomerMapper::mapOrder)
+                .toList();
+    }
+
     public OrderToCustomerDTO createEmptyOrder() {
-                return mapOrder(repo.save(new OrderToCustomer(OPEN)));
+        return mapOrder(repo.save(new OrderToCustomer(OPEN)));
     }
 
     public OrderToCustomerDTO addItemsToOrder(Long orderId, OrderItem orderItem) throws EntityNotFoundException {
         OrderToCustomer openOrder = repo.findById(orderId).orElseThrow(EntityNotFoundException::new);
-        if(orderAlreadyPaid(openOrder)){
+        if (orderAlreadyPaid(openOrder)) {
             throw new IllegalArgumentException("This order has already been cashed out!");
+        }
+        if(!orderExists( orderId)){
+            throw new IllegalArgumentException("The order you're trying to add items to does not exist");
         }
         OrderItem orderItemWithUpdatedAmount = orderItemService.addItemsToExistingOrder(orderItem);
         openOrder.setOrderItems(
@@ -51,9 +61,9 @@ public class OrderToCustomerService {
         return mapOrder(repo.save(openOrder));
     }
 
-    public OrderToCustomerDTO cashoutOrder(OrderToCustomerDTO orderToCustomer){
+    public OrderToCustomerDTO cashoutOrder(OrderToCustomerDTO orderToCustomer) {
         OrderToCustomer openOrder = repo.findById(orderToCustomer.getId()).orElseThrow(EntityNotFoundException::new);
-        if(orderAlreadyPaid(openOrder)){
+        if (orderAlreadyPaid(openOrder)) {
             throw new IllegalArgumentException("This order has already been cashed out!");
         }
         openOrder.setStatus(PAID);
@@ -63,11 +73,17 @@ public class OrderToCustomerService {
     private boolean orderExists(OrderToCustomerDTO order) {
         return (order.getId() != null && repo.existsById(order.getId()));
     }
-    private boolean orderAlreadyPaid(OrderToCustomerDTO order){
+
+    private boolean orderExists(Long orderId) {
+        return (orderId != null && repo.existsById(orderId));
+    }
+
+    private boolean orderAlreadyPaid(OrderToCustomerDTO order) {
         OrderToCustomer existingOrder = repo.findById(order.getId()).orElseThrow(EntityNotFoundException::new);
         return existingOrder.getStatus() == PAID;
     }
-  private boolean orderAlreadyPaid(OrderToCustomer order){
+
+    private boolean orderAlreadyPaid(OrderToCustomer order) {
         OrderToCustomer existingOrder = repo.findById(order.getId()).orElseThrow(EntityNotFoundException::new);
         return existingOrder.getStatus() == PAID;
     }
