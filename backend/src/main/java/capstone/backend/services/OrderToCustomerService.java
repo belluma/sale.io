@@ -45,7 +45,7 @@ public class OrderToCustomerService {
         return mapOrder(repo.save(new OrderToCustomer(OPEN)));
     }
 
-    public OrderToCustomerDTO addItemsToOrder(Long orderId, OrderItemDTO orderItem) throws EntityNotFoundException {
+    public OrderToCustomerDTO addItemsToOrder(Long orderId, OrderItemDTO orderItem) throws IllegalArgumentException {
         OrderToCustomer openOrder = validateOrder(orderId, orderItem);
         OrderItem orderItemWithUpdatedAmount = orderItemService.addItemsToExistingOrder(mapOrderItem(orderItem));
         openOrder.setOrderItems(
@@ -67,6 +67,9 @@ public class OrderToCustomerService {
     }
 
     private OrderToCustomer validateOrder(Long orderId, OrderItemDTO orderItem) {
+       if(!orderExists(orderId)){
+           throw new EntityNotFoundException("You're trying to add to an order that doesn't exist");
+       }
         if (orderAlreadyPaid(orderId)) {
             throw new IllegalArgumentException("This order has already been cashed out!");
         }
