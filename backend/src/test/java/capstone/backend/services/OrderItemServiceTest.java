@@ -1,6 +1,5 @@
 package capstone.backend.services;
 
-import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.repo.OrderItemRepo;
@@ -91,7 +90,7 @@ class OrderItemServiceTest {
 @Test
     void addItemToOrderOrUpdateQuantityAddsWhenItemOneOfSeveralAlreadyOnOrder(){
         //GIVEN
-        OrderToCustomerDTO order = orderDTOWithSeveralItemsAndStatusOpen();
+        OrderToCustomerDTO order = orderDTOWithThreeItemsAndStatusOpen();
         OrderItemDTO itemToAdd = sampleOrderItemDTO();
         OrderItemDTO expected = sampleOrderItemDTO().withQuantity(2);
         when(repo.save(mapOrderItem(expected))).thenReturn(mapOrderItem(expected));
@@ -116,7 +115,7 @@ class OrderItemServiceTest {
     @Test
     void addItemToOrderOrUpdateQuantityAddsNewProductToOrderThatAlreadyHasProductsOnIt(){
         //GIVEN
-        OrderToCustomerDTO order = orderDTOWithSeveralItemsAndStatusOpen();
+        OrderToCustomerDTO order = orderDTOWithThreeItemsAndStatusOpen();
         OrderItemDTO expected = sampleOrderItemDTO().withProduct(sampleProductDTOWithDetailsWithId().withId(1000L));
         when(repo.save(mapOrderItem(expected))).thenReturn(mapOrderItem(expected));
         //WHEN

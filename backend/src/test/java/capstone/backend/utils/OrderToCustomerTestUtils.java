@@ -102,12 +102,21 @@ public class OrderToCustomerTestUtils {
                 .build();
     }
 
-    public static OrderToCustomerDTO orderDTOWithSeveralItemsAndStatusOpen(){
+    public static OrderToCustomerDTO orderDTOWithThreeItemsAndStatusOpen(){
         return OrderToCustomerDTO
                 .builder()
                 .id(123L)
                 .orderItems(List.of(new OrderItemDTO(1L, sampleProductDTOWithDetailsWithId().withId(1L), 1),
                         sampleOrderItemDTO(),
+                        new OrderItemDTO(3L, sampleProductDTOWithDetailsWithId().withId(3L), 1)))
+                .status(OPEN)
+                .build();
+    }
+public static OrderToCustomerDTO orderDTOWithTwoItemsAndStatusOpen(){
+        return OrderToCustomerDTO
+                .builder()
+                .id(123L)
+                .orderItems(List.of(new OrderItemDTO(1L, sampleProductDTOWithDetailsWithId().withId(1L), 1),
                         new OrderItemDTO(3L, sampleProductDTOWithDetailsWithId().withId(3L), 1)))
                 .status(OPEN)
                 .build();
