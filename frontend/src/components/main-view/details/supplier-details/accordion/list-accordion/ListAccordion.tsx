@@ -2,7 +2,7 @@ import React from 'react'
 //component imports
 
 import SupplierListItem from "./supplier-list-item/SupplierListItem";
-import {List,} from "@mui/material";
+import {List} from "@mui/material";
 //interface imports
 import {IOrder} from "../../../../../../interfaces/IOrder";
 import {IProduct} from "../../../../../../interfaces/IProduct";
