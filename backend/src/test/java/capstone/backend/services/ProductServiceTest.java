@@ -1,10 +1,12 @@
 package capstone.backend.services;
 
 import capstone.backend.model.db.Product;
+import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.db.order.OrderToCustomer;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.model.dto.order.OrderItemDTO;
+import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.repo.ProductRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +18,8 @@ import java.util.Optional;
 
 import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItemDTO;
+import static capstone.backend.utils.OrderToCustomerTestUtils.emptyOrderDTOWithStatusOpen;
+import static capstone.backend.utils.OrderToCustomerTestUtils.emptyOrderOpen;
 import static capstone.backend.utils.ProductTestUtils.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -157,29 +161,6 @@ class ProductServiceTest {
         //WHEN - //THEN
         Exception ex = assertThrows(IllegalArgumentException.class, () -> service.receiveGoods(receivedOrder));
         assertThat(ex.getMessage(), is("You can't receive orders with negative quantity count"));
-    }
-
-    @Test
-    void createEmptyOrder(){
-        //GIVEN
-        OrderToCustomer expected = sampleOrderToCustomer();
-
-        //WHEN
-
-        //THEN
-    }
-
-    @Test
-    void sellGoods(){
-        //GIVEN
-OrderI
-
-        //WHEN
-
-
-        //THEN
-
-
     }
 
     @Test

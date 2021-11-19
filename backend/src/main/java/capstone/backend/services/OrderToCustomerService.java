@@ -11,8 +11,10 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Objects;
 
 import static capstone.backend.mapper.OrderToCustomerMapper.mapOrder;
+import static capstone.backend.model.enums.OrderStatus.OPEN;
 import static capstone.backend.model.enums.OrderStatus.PAID;
 
 
@@ -31,7 +33,7 @@ public class OrderToCustomerService {
     }
 
     public OrderToCustomerDTO createEmptyOrder() {
-        return mapOrder(repo.save(new OrderToCustomer()));
+                return mapOrder(repo.save(new OrderToCustomer(OPEN)));
     }
 
     public OrderToCustomerDTO addItemsToOrder(Long orderId, OrderItem orderItem) throws EntityNotFoundException {
@@ -44,7 +46,7 @@ public class OrderToCustomerService {
                 openOrder
                         .getOrderItems()
                         .stream()
-                        .map(oldOrderItem -> oldOrderItem.getId() == orderItemWithUpdatedAmount.getId() ? orderItemWithUpdatedAmount : oldOrderItem)
+                        .map(oldOrderItem -> Objects.equals(oldOrderItem.getId(), orderItemWithUpdatedAmount.getId()) ? orderItemWithUpdatedAmount : oldOrderItem)
                         .toList());
         return mapOrder(repo.save(openOrder));
     }
