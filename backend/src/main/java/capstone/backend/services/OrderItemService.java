@@ -59,7 +59,7 @@ public class OrderItemService {
         order
                 .getOrderItems()
                 .stream()
-                .filter(orderItem -> orderItem.equals(mapOrderItem(orderItemToReduce)))
+                .filter(orderItem -> orderItem.equals(orderItemToReduce))
                 .findFirst()
                 .ifPresent(item -> {
                     if (item.getQuantity() == orderItemToReduce.getQuantity()) {
