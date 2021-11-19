@@ -63,7 +63,7 @@ public class OrderToCustomerTestUtils {
                 .build();
     }
 
-    public static OrderToCustomer OrderPaidWithOrderItem() {
+    public static OrderToCustomer orderPaidWithOrderItem() {
         return OrderToCustomer
                 .builder()
                 .id(123L)
@@ -72,7 +72,7 @@ public class OrderToCustomerTestUtils {
                 .build();
     }
 
-    public static OrderToCustomerDTO OrderDTOWithOrderItem() {
+    public static OrderToCustomerDTO orderDTOWithOrderItem() {
         return OrderToCustomerDTO
                 .builder()
                 .id(123L)
@@ -80,7 +80,7 @@ public class OrderToCustomerTestUtils {
                 .build();
     }
 
-    public static OrderToCustomerDTO OrderDTOWithStatusOpenWithOrderItem() {
+    public static OrderToCustomerDTO orderDTOWithStatusOpenWithOrderItem() {
         return OrderToCustomerDTO
                 .builder()
                 .id(123L)
@@ -89,7 +89,7 @@ public class OrderToCustomerTestUtils {
                 .build();
     }
 
-    public static OrderToCustomerDTO OrderDTOWithStatusPaidWithOrderItem() {
+    public static OrderToCustomerDTO orderDTOWithStatusPaidWithOrderItem() {
         return OrderToCustomerDTO
                 .builder()
                 .id(123L)

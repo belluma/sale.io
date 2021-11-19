@@ -1,10 +1,8 @@
 package capstone.backend.services;
 
 import capstone.backend.model.db.order.OrderToCustomer;
-import capstone.backend.model.db.order.OrderToSupplier;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
-import capstone.backend.model.enums.OrderStatus;
 import capstone.backend.repo.OrderToCustomerRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -36,8 +34,8 @@ class OrderToCustomerServiceTest {
     @Test
     void getAllOrders() {
         //GIVEN
-        List<OrderToCustomerDTO> expected = List.of(emptyOrderDTOWithStatusOpen(), OrderDTOWithStatusPaidWithOrderItem());
-        when(orderRepo.findAll()).thenReturn(List.of(emptyOrderOpen(), OrderPaidWithOrderItem()));
+        List<OrderToCustomerDTO> expected = List.of(emptyOrderDTOWithStatusOpen(), orderDTOWithStatusPaidWithOrderItem());
+        when(orderRepo.findAll()).thenReturn(List.of(emptyOrderOpen(), orderPaidWithOrderItem()));
         //WHEN
         List<OrderToCustomerDTO> actual = orderService.getAllOrders();
         //THEN
@@ -69,7 +67,7 @@ class OrderToCustomerServiceTest {
     @Test
     void addItemsToOrder() {
         //GIVEN
-        OrderToCustomerDTO expected = OrderDTOWithStatusOpenWithOrderItem();
+        OrderToCustomerDTO expected = orderDTOWithStatusOpenWithOrderItem();
         OrderToCustomer orderWithItemAdded = orderOpenWithOrderItem();
         OrderItemDTO itemToAdd = sampleOrderItemDTO();
         when(orderRepo.findById(expected.getId())).thenReturn(Optional.of(emptyOrderOpen()));
@@ -103,7 +101,7 @@ class OrderToCustomerServiceTest {
     @Test
     void addItemsToOrderFailsWhenOrderAlreadyPaid() {
         //GIVEN
-        OrderToCustomer paidOrder = OrderPaidWithOrderItem();
+        OrderToCustomer paidOrder = orderPaidWithOrderItem();
         OrderItemDTO item = sampleOrderItemDTO();
         when(orderRepo.findById(paidOrder.getId())).thenReturn(Optional.of(paidOrder));
         when(orderRepo.existsById(paidOrder.getId())).thenReturn(true);
@@ -117,7 +115,7 @@ class OrderToCustomerServiceTest {
     @Test
     void addItemsToOrderFailsWhenProductDoesNotExist() {
         //GIVEN
-        OrderToCustomerDTO openOrder = OrderDTOWithStatusOpenWithOrderItem();
+        OrderToCustomerDTO openOrder = orderDTOWithStatusOpenWithOrderItem();
         OrderItemDTO itemWithNonExistentProduct = sampleOrderItemDTO();
         when(orderRepo.findById(openOrder.getId())).thenReturn(Optional.of(emptyOrderOpen()));
         when(productService.productExists(itemWithNonExistentProduct.getProduct())).thenReturn(false);
@@ -132,7 +130,34 @@ class OrderToCustomerServiceTest {
 
     @Test
     void cashoutOrder() {
+        //GIVEN
+        OrderToCustomerDTO orderToCashout = orderDTOWithStatusOpenWithOrderItem();
+        OrderToCustomerDTO expected = orderDTOWithStatusPaidWithOrderItem();
+        when(orderRepo.findById(orderToCashout.getId())).thenReturn(Optional.of(mapOrder(orderToCashout)));
+        when(orderRepo.save(orderPaidWithOrderItem())).thenReturn(orderPaidWithOrderItem());
+        //WHEN
+        OrderToCustomerDTO actual = orderService.cashoutOrder(orderToCashout);
+        //THEN
+        assertThat(actual, is(expected));
+        verify(orderRepo, times(2)).findById(orderToCashout.getId());
+        verify(orderRepo).save(orderPaidWithOrderItem());
     }
-
+    @Test
+    void cashoutOrderFailsWhenOrderNonExistent(){
+        //GIVEN
+        OrderToCustomerDTO orderToCashout = orderDTOWithStatusOpenWithOrderItem();
+        when(orderRepo.findById(orderToCashout.getId())).thenReturn(Optional.empty());
+        //WHEN - //THEN
+        Exception ex = assertThrows(EntityNotFoundException.class, () -> orderService.cashoutOrder(orderToCashout));
+    }
+    @Test
+    void cashoutOrderFailsWhenOrderAlreadyPaid(){
+        //GIVEN
+        OrderToCustomerDTO orderToCashout = orderDTOWithStatusOpenWithOrderItem();
+        when(orderRepo.findById(orderToCashout.getId())).thenReturn(Optional.of(orderPaidWithOrderItem()));
+        //WHEN - //THEN
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.cashoutOrder(orderToCashout));
+        assertThat(ex.getMessage(), is("This order has already been cashed out!"));
+    }
 
 }
