@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
+import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItemDTO;
 import static capstone.backend.utils.OrderToCustomerTestUtils.emptyOrderDTOWithStatusOpen;
 import static capstone.backend.utils.OrderToCustomerTestUtils.emptyOrderOpen;
@@ -161,6 +162,20 @@ class ProductServiceTest {
         //WHEN - //THEN
         Exception ex = assertThrows(IllegalArgumentException.class, () -> service.receiveGoods(receivedOrder));
         assertThat(ex.getMessage(), is("You can't receive orders with negative quantity count"));
+    }
+
+    @Test
+    void substractStockWhenAddingItemToBill() {
+        //GIVEN
+        OrderItem itemToAddToBill = sampleOrderItem();
+        Product productOnBill = itemToAddToBill.getProduct();
+        when(repo.getById(productOnBill.getId())).thenReturn(productOnBill.withAmountInStock(0));
+        when(repo.save(productOnBill)).thenReturn(productOnBill);
+        //WHEN
+        service.substractStockWhenAddingItemToBill(itemToAddToBill);
+        //THEN
+        verify(repo).getById(productOnBill.getId());
+        verify(repo).save(productOnBill);
     }
 
     @Test
