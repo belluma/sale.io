@@ -1,11 +1,10 @@
 package capstone.backend.controller;
 
+import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.services.OrderToCustomerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,8 +15,28 @@ public class OrderToCustomerController {
 
     private final OrderToCustomerService service;
 
-    @GetMapping
+    @GetMapping("all")
     public List<OrderToCustomerDTO> getAllOrders() {
-        return List.of();
+        return service.getAllOrders();
     }
+
+    @GetMapping()
+    public List<OrderToCustomerDTO> getAllOpenOrders() {
+        return service.getAllOpenOrders();
+    }
+
+    @PostMapping
+    public OrderToCustomerDTO createOrder(){
+        return service.createEmptyOrder();
+    }
+
+    @PutMapping("add")
+    public OrderToCustomerDTO addItemsToOrder(@RequestParam Long id, @RequestBody OrderItemDTO itemsToAdd, @RequestBody OrderToCustomerDTO order){
+        return service.addItemsToOrder(id, itemsToAdd, order);
+    }
+    @PutMapping("remove")
+    public OrderToCustomerDTO removeItemsFromOrder(@RequestParam Long id, @RequestBody OrderItemDTO itemsToAdd, @RequestBody OrderToCustomerDTO order){
+        return service.removeItemsFromOrder(id, itemsToAdd, order);
+    }
+
 }
