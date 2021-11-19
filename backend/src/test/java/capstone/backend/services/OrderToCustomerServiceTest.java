@@ -1,5 +1,6 @@
 package capstone.backend.services;
 
+import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.db.order.OrderToCustomer;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
@@ -149,16 +150,18 @@ class OrderToCustomerServiceTest {
         verify(orderRepo, times(2)).findById(orderToCashout.getId());
         verify(orderRepo).save(orderPaidWithOrderItem());
     }
+
     @Test
-    void cashoutOrderFailsWhenOrderNonExistent(){
+    void cashoutOrderFailsWhenOrderNonExistent() {
         //GIVEN
         OrderToCustomerDTO orderToCashout = orderDTOWithStatusOpenWithOrderItem();
         when(orderRepo.findById(orderToCashout.getId())).thenReturn(Optional.empty());
         //WHEN - //THEN
         assertThrows(EntityNotFoundException.class, () -> orderService.cashoutOrder(orderToCashout));
     }
+
     @Test
-    void cashoutOrderFailsWhenOrderAlreadyPaid(){
+    void cashoutOrderFailsWhenOrderAlreadyPaid() {
         //GIVEN
         OrderToCustomerDTO orderToCashout = orderDTOWithStatusOpenWithOrderItem();
         when(orderRepo.findById(orderToCashout.getId())).thenReturn(Optional.of(orderPaidWithOrderItem()));
@@ -168,17 +171,38 @@ class OrderToCustomerServiceTest {
     }
 
     @Test
-    void removeItemEntirelyFromOrder(){
+    void removeItemEntirelyFromOrder() {
         //GIVEN
         OrderItemDTO orderItem = sampleOrderItemDTO();
-    OrderToCustomerDTO order = orderDTOWithStatusOpenWithOrderItem();
-
+        OrderToCustomerDTO order = orderDTOWithStatusOpenWithOrderItem();
+        OrderToCustomerDTO expected = emptyOrderDTOWithStatusOpen();
+        Long orderId = order.getId();
+        when(orderRepo.existsById(order.getId())).thenReturn(true);
+        when(orderRepo.findById(order.getId())).thenReturn(Optional.of(mapOrder(order)));
+        when(orderRepo.save(mapOrder(expected))).thenReturn(mapOrder(expected));
+        when(orderItemService.itemAlreadyOnOrder(orderItem, order)).thenReturn(Optional.of(orderItem));
+        when(productService.productExists(orderItem.getProduct())).thenReturn(true);
+        doAnswer(i -> {
+            OrderToCustomerDTO orderToReduceFrom = i.getArgument(1);
+            orderToReduceFrom.setOrderItems(List.of());
+            return null;
+        }).when(orderItemService).reduceQuantityOfOrderItem(orderItem, order);
+        doAnswer(i -> {
+            OrderItem orderItemThatHasBeenReduced = i.getArgument(0);
+            orderItemThatHasBeenReduced.getProduct().setAmountInStock(0);
+            return null;
+        }).when(productService).resetAmountInStockWhenRemovingFromBill(mapOrderItem(orderItem));
         //WHEN
-
-
+        OrderToCustomerDTO actual = orderService.removeItemsFromOrder(orderId, orderItem, order);
         //THEN
-
-
+        verify(orderRepo).existsById(orderId);
+        verify(orderRepo, times(2)).findById(orderId);
+        verify(orderItemService).itemAlreadyOnOrder(orderItem, order);
+        verify(productService).productExists(orderItem.getProduct());
+        verify(orderItemService).reduceQuantityOfOrderItem(orderItem, order);
+        verify(productService).resetAmountInStockWhenRemovingFromBill(mapOrderItem(orderItem));
+        assertThat(actual, is(expected));
+        assertThat(orderItem.getProduct().getAmountInStock(), is(0));
     }
 
 }

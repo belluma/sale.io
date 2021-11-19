@@ -77,6 +77,6 @@ public class ProductService {
         return (product.getId() != null && repo.existsById(product.getId()));
     }
 
-    public void resetAmountInStockWhenRemovingFromBill(OrderItem mapOrderItem) {
+    public void resetAmountInStockWhenRemovingFromBill(OrderItem orderItem) {
     }
 }
