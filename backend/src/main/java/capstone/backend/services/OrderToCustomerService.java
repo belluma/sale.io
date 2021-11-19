@@ -47,33 +47,40 @@ public class OrderToCustomerService {
         OrderToCustomer openOrder = validateOrderWhenAddItems(orderId, orderItem);
         OrderItemDTO orderItemWithUpdatedAmount = orderItemService.addItemToOrderOrUpdateQuantity(orderItem, orderToCustomer);
         productService.substractStockWhenAddingItemToBill(mapOrderItem(orderItem));
-        openOrder.setOrderItems(
-                openOrder
-                        .getOrderItems()
-                        .stream()
-                        .map(oldOrderItem -> Objects.equals(oldOrderItem.getId(), orderItemWithUpdatedAmount.getId()) ? mapOrderItem(orderItemWithUpdatedAmount) : oldOrderItem)
-                        .toList());
+
         return mapOrder(repo.save(openOrder));
     }
 
+    private void updateAmountOnBill(OrderToCustomer order, OrderItemDTO orderItem) {
+        order.setOrderItems(
+                order
+                        .getOrderItems()
+                        .stream()
+                        .map(oldOrderItem -> Objects.equals(oldOrderItem.getId(), orderItem.getId()) ? mapOrderItem(orderItem) : oldOrderItem)
+                        .toList());
+    }
+
     public OrderToCustomerDTO removeItemsFromOrder(Long orderId, OrderItemDTO orderItem, OrderToCustomerDTO order) throws IllegalArgumentException, EntityNotFoundException {
-       OrderToCustomer openOrder = validateOrderWhenRemoveItems(orderItem, order);
+        OrderToCustomer openOrder = validateOrderWhenRemoveItems(orderItem, order);
         OrderItemDTO orderItemWithItemsRemoved = orderItemService.reduceQuantityOfOrderItem(orderItem, order);
         productService.resetAmountInStockWhenRemovingFromBill(mapOrderItem(orderItem));
-        openOrder.setOrderItems(
-                openOrder
+        reduceAmountOnBillOrDeleteIfNull(openOrder, orderItemWithItemsRemoved);
+        return mapOrder(repo.save(openOrder));
+    }
+
+    private void reduceAmountOnBillOrDeleteIfNull(OrderToCustomer order, OrderItemDTO orderItem) {
+        order.setOrderItems(
+                order
                         .getOrderItems()
                         .stream()
                         .map(oldOrderItem -> {
-                            if(Objects.equals(oldOrderItem.getId(), orderItemWithItemsRemoved.getId())){
-                                return orderItemWithItemsRemoved.getQuantity() > 0 ? mapOrderItem(orderItemWithItemsRemoved) : null;
+                            if (Objects.equals(oldOrderItem.getId(), orderItem.getId())) {
+                                return orderItem.getQuantity() > 0 ? mapOrderItem(orderItem) : null;
                             }
                             return oldOrderItem;
                         })
                         .filter(Objects::nonNull)
                         .toList());
-        return mapOrder(repo.save(openOrder));
-
     }
 
     public OrderToCustomerDTO cashoutOrder(OrderToCustomerDTO orderToCustomer) {
