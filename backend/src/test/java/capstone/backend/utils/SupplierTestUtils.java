@@ -18,7 +18,6 @@ public class SupplierTestUtils {
                 .email("a@b.c")
                 .phone("01234")
                 .picture("img")
-                .products(List.of())
                 .orders(List.of())
                 .orderDay(Weekday.FRIDAY)
                 .build();
@@ -32,7 +31,6 @@ public class SupplierTestUtils {
                 .email("a@b.c")
                 .phone("01234")
                 .picture("img")
-                .products(List.of())
                 .orders(Set.of())
                 .orderDay(Weekday.FRIDAY)
                 .build();

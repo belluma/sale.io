@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -17,7 +17,7 @@ public class ProductDTO {
 
     private Long id;
     private String name;
-    private List<SupplierDTO> suppliers;
+    private Set<SupplierDTO> suppliers;
     private String stockCodeSupplier;
     private Category category;
     private Float purchasePrice;

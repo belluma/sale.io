@@ -1,5 +1,6 @@
 package capstone.backend.controller;
 
+import capstone.backend.CombinedTestContainer;
 import capstone.backend.model.db.Product;
 import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.db.order.OrderItem;
@@ -11,6 +12,7 @@ import capstone.backend.repo.OrderToSupplierRepo;
 import capstone.backend.repo.ProductRepo;
 import capstone.backend.repo.SupplierRepo;
 import capstone.backend.utils.ControllerTestUtils;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
@@ -60,19 +63,10 @@ class OrderToSupplierControllerTest {
     String BASEURL = "/api/orders_suppliers";
 
     @Container
-    public static PostgreSQLContainer container = new PostgreSQLContainer()
-            .withDatabaseName("pos")
-            .withUsername("pos")
-            .withPassword("pos");
+    public static PostgreSQLContainer<CombinedTestContainer> container = CombinedTestContainer.getInstance();
 
-    @DynamicPropertySource
-    static void postgresqlProperties(DynamicPropertyRegistry registry) {
-        registry.add("spring.datasource.url", container::getJdbcUrl);
-        registry.add("spring.datasource.password", container::getPassword);
-        registry.add("spring.datasource.username", container::getUsername);
-    }
 
-    @BeforeEach
+    @AfterEach
     public void clearDB() {
         orderRepo.deleteAll();
         orderItemRepo.deleteAll();
@@ -90,7 +84,7 @@ class OrderToSupplierControllerTest {
     void getAllOrders() {
         //GIVEN
         Supplier supplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(supplier)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(supplier)));
         OrderItem orderItem = orderItemRepo.save(sampleOrderItem().withProduct(product));
         OrderToSupplier order = orderRepo.save(new OrderToSupplier(1L, List.of(orderItem), PENDING, supplier));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
@@ -106,7 +100,7 @@ class OrderToSupplierControllerTest {
     void createOrder() {
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(sampleSupplier)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
         OrderItem orderItem = new OrderItem(product, 1);
         OrderToSupplierDTO order = new OrderToSupplierDTO(1L, List.of(mapOrderItem(orderItem)), mapSupplier(sampleSupplier));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
@@ -126,7 +120,7 @@ class OrderToSupplierControllerTest {
     void createOrderSavesOrderItem() {
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(sampleSupplier)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
         OrderItem orderItem = new OrderItem(product, 1);
         OrderToSupplierDTO order = new OrderToSupplierDTO(1L, List.of(mapOrderItem(orderItem)), mapSupplier(sampleSupplier));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
@@ -158,7 +152,7 @@ class OrderToSupplierControllerTest {
     void createOrderReturnsNotAcceptableWhenOrderIdAlreadyExists() {
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(sampleSupplier)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
         OrderItem firstOrderItem = orderItemRepo.save(new OrderItem(product, 1));
         OrderItem orderItem = new OrderItem(product, 1);
         OrderToSupplier firstOrder = orderRepo.save(new OrderToSupplier((1L), List.of(firstOrderItem), PENDING, sampleSupplier));
@@ -175,7 +169,7 @@ class OrderToSupplierControllerTest {
         //GIVEN
         Supplier supplierToOrderFrom = supplierRepo.save(sampleSupplier());
         Supplier supplierToAssociateProductWith = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(supplierToAssociateProductWith)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(supplierToAssociateProductWith)));
         OrderItem orderItem = new OrderItem(product, 1);
         OrderToSupplierDTO order = new OrderToSupplierDTO(1L, List.of(mapOrderItem(orderItem)), mapSupplier(supplierToOrderFrom));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
@@ -189,7 +183,7 @@ class OrderToSupplierControllerTest {
     void receiveOrder() {
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(sampleSupplier)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
         OrderItem orderItem = orderItemRepo.save(sampleOrderItem().withProduct(product));
         OrderToSupplier pendingOrder = orderRepo.save(new OrderToSupplier(1L, List.of(orderItem), PENDING, sampleSupplier));
         OrderToSupplierDTO orderToReceive = mapOrder(pendingOrder);
@@ -198,7 +192,7 @@ class OrderToSupplierControllerTest {
         receivedOrder.setStatus(RECEIVED);
         receivedOrder.setOrderItems(List.of(mapOrderItem(orderItem.withProduct(product))));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
-        String URL = BASEURL + String.format("/?id=%d&status=RECEIVED", pendingOrder.getId() );
+        String URL = BASEURL + String.format("/?id=%d&status=RECEIVED", pendingOrder.getId());
         //WHEN
         ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(orderToReceive, headers), OrderToSupplierDTO.class);
         //THEN
@@ -208,45 +202,48 @@ class OrderToSupplierControllerTest {
         assertThat(orderRepo.findById(receivedOrder.getId()).get(), is(mapOrder(receivedOrder)));
         assertThat(productRepo.findById(product.getId()).get().getAmountInStock(), is(receivedOrder.getOrderItems().get(0).getQuantity()));
     }
+
     @Test
-    void receiveOrderAbortsWhenOrderAlreadyReceived(){
+    void receiveOrderAbortsWhenOrderAlreadyReceived() {
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(sampleSupplier)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
         OrderItem orderItem = orderItemRepo.save(sampleOrderItem().withProduct(product));
         OrderToSupplier receivedOrder = orderRepo.save(new OrderToSupplier(1L, List.of(orderItem), RECEIVED, sampleSupplier));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
-        String URL = BASEURL + String.format("/?id=%d&status=RECEIVED", receivedOrder.getId() );
+        String URL = BASEURL + String.format("/?id=%d&status=RECEIVED", receivedOrder.getId());
         //WHEN
         ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(receivedOrder, headers), OrderToSupplierDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
         assertThat(productRepo.findById(product.getId()).get().getAmountInStock(), is(product.getAmountInStock()));
     }
+
     @Test
-    void receiveOrderAbortsWhenOrderDoesNotExist(){
+    void receiveOrderAbortsWhenOrderDoesNotExist() {
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(sampleSupplier)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
         OrderItem orderItem = orderItemRepo.save(sampleOrderItem().withProduct(product));
         OrderToSupplier nonExistentOrder = new OrderToSupplier(1L, List.of(orderItem), RECEIVED, sampleSupplier);
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
-        String URL = BASEURL + String.format("/?id=%d&status=RECEIVED", nonExistentOrder.getId() + 1 );
+        String URL = BASEURL + String.format("/?id=%d&status=RECEIVED", nonExistentOrder.getId() + 1);
         //WHEN
         ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(nonExistentOrder, headers), OrderToSupplierDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
         assertThat(productRepo.findById(product.getId()).get().getAmountInStock(), is(product.getAmountInStock()));
     }
+
     @Test
     void receiveOrderAbortsWithWrongParameters() {
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(List.of(sampleSupplier)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
         OrderItem orderItem = orderItemRepo.save(sampleOrderItem().withProduct(product));
         OrderToSupplier receivedOrder = orderRepo.save(new OrderToSupplier(1L, List.of(orderItem), RECEIVED, sampleSupplier));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
-        String URL = BASEURL + String.format("/?id=%d&status=PENDING", receivedOrder.getId() );
+        String URL = BASEURL + String.format("/?id=%d&status=PENDING", receivedOrder.getId());
         //WHEN
         ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(receivedOrder, headers), OrderToSupplierDTO.class);
         //THEN

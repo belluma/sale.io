@@ -21,7 +21,7 @@ function OrdersView(props: Props){
     }, [dispatch]);
 
     const orders = useAppSelector(selectOrders)
-    //@ts-ignore status can't be undefined becasue the backend automatically adds it to any order that gets created
+    //@ts-ignore status can't be undefined because the backend automatically adds it to any order that gets created
     const byStatus = (a:IOrder, b:IOrder) =>  a.status.localeCompare(b.status)
     const thumbnails = [...orders].sort(byStatus).map(parseOrderToThumbnailData);
 

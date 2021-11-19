@@ -7,6 +7,8 @@ import capstone.backend.model.dto.contact.SupplierDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -50,21 +52,21 @@ public class ProductMapper {
                 .build();
     }
 
-    private static List<Supplier> mapSupplierList(ProductDTO product) {
-        if (product.getSuppliers() == null) return List.of();
+    private static Set<Supplier> mapSupplierList(ProductDTO product) {
+        if (product.getSuppliers() == null) return Set.of();
         return product
                 .getSuppliers()
                 .stream()
                 .map(SupplierMapper::mapSupplier)
-                .toList();
+                .collect(Collectors.toSet());
     }
 
-    private static List<SupplierDTO> mapSupplierList(Product product) {
-        if (product.getSuppliers() == null) return List.of();
+    private static Set<SupplierDTO> mapSupplierList(Product product) {
+        if (product.getSuppliers() == null) return Set.of();
         return product
                 .getSuppliers()
                 .stream()
                 .map(SupplierMapper::mapSupplier)
-                .toList();
+                .collect(Collectors.toSet());
     }
 }

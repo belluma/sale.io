@@ -1,6 +1,5 @@
 package capstone.backend.model.db.contact;
 
-import capstone.backend.model.db.Product;
 import capstone.backend.model.db.order.OrderToSupplier;
 import capstone.backend.model.enums.Weekday;
 import lombok.AllArgsConstructor;
@@ -8,9 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
-
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -22,9 +19,6 @@ import java.util.Set;
 @Table(name = "suppliers")
 public class Supplier extends Contact {
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @ToString.Exclude
-    private List<Product> products;
     private Weekday orderDay;
     @OneToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
