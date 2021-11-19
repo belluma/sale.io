@@ -23,6 +23,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
@@ -89,7 +90,7 @@ class OrderToSupplierControllerTest {
         OrderToSupplierDTO expected = mapOrder(order);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertIterableEquals(Arrays.asList(response.getBody()), List.of(expected));
+        assertIterableEquals(Arrays.asList(Objects.requireNonNull(response.getBody())), List.of(expected));
     }
 
     @Test
@@ -102,7 +103,7 @@ class OrderToSupplierControllerTest {
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(order, headers), OrderToSupplierDTO.class);
-        order.setId(response.getBody().getId());
+        order.setId(Objects.requireNonNull(response.getBody()).getId());
         order.setStatus(PENDING);
         order.getOrderItems().get(0).setId(response.getBody().getOrderItems().get(0).getId());
         //THEN
@@ -122,7 +123,7 @@ class OrderToSupplierControllerTest {
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(order, headers), OrderToSupplierDTO.class);
-        Long orderItemId = response.getBody().getOrderItems().get(0).getId();
+        Long orderItemId = Objects.requireNonNull(response.getBody()).getOrderItems().get(0).getId();
         orderItem.setId(orderItemId);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));

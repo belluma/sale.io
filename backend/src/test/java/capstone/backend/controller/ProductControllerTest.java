@@ -9,21 +9,18 @@ import capstone.backend.repo.ProductRepo;
 import capstone.backend.repo.SupplierRepo;
 import capstone.backend.utils.ControllerTestUtils;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
-import org.springframework.test.context.DynamicPropertyRegistry;
-import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
@@ -80,7 +77,7 @@ class ProductControllerTest {
         ProductDTO expected = mapProductWithDetails(product);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertIterableEquals(Arrays.asList(response.getBody()), List.of(expected));
+        assertIterableEquals(Arrays.asList(Objects.requireNonNull(response.getBody())), List.of(expected));
     }
 
     @Test
