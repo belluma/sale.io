@@ -4,19 +4,17 @@ package capstone.backend.controller;
 import capstone.backend.model.dto.order.OrderToSupplierDTO;
 import capstone.backend.model.enums.OrderStatus;
 import capstone.backend.services.OrderToSupplierService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("api/orders_suppliers")
+@RequiredArgsConstructor
 public class OrderToSupplierController {
 
     private final OrderToSupplierService service;
-
-    public OrderToSupplierController(OrderToSupplierService service) {
-        this.service = service;
-    }
 
     @GetMapping
     public List<OrderToSupplierDTO> getAllOrders() {

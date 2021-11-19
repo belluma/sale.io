@@ -2,19 +2,17 @@ package capstone.backend.controller;
 
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.services.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("api/products")
+@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService service;
-
-    public ProductController(ProductService productService) {
-        this.service = productService;
-    }
 
     @GetMapping
     public List<ProductDTO> getAllProductsWithDetails() {
