@@ -4,6 +4,7 @@ import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.mapper.OrderToCustomerMapper;
 import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.db.order.OrderToCustomer;
+import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.model.dto.order.OrderToSupplierDTO;
 import capstone.backend.repo.OrderToCustomerRepo;
@@ -13,6 +14,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Objects;
 
+import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 import static capstone.backend.mapper.OrderToCustomerMapper.mapOrder;
 import static capstone.backend.model.enums.OrderStatus.OPEN;
 import static capstone.backend.model.enums.OrderStatus.PAID;
@@ -43,15 +45,9 @@ public class OrderToCustomerService {
         return mapOrder(repo.save(new OrderToCustomer(OPEN)));
     }
 
-    public OrderToCustomerDTO addItemsToOrder(Long orderId, OrderItem orderItem) throws EntityNotFoundException {
-        OrderToCustomer openOrder = repo.findById(orderId).orElseThrow(EntityNotFoundException::new);
-        if (orderAlreadyPaid(openOrder)) {
-            throw new IllegalArgumentException("This order has already been cashed out!");
-        }
-        if(!orderExists( orderId)){
-            throw new IllegalArgumentException("The order you're trying to add items to does not exist");
-        }
-        OrderItem orderItemWithUpdatedAmount = orderItemService.addItemsToExistingOrder(orderItem);
+    public OrderToCustomerDTO addItemsToOrder(Long orderId, OrderItemDTO orderItem) throws EntityNotFoundException {
+        OrderToCustomer openOrder = validateOrder(orderId, orderItem);
+        OrderItem orderItemWithUpdatedAmount = orderItemService.addItemsToExistingOrder(mapOrderItem(orderItem));
         openOrder.setOrderItems(
                 openOrder
                         .getOrderItems()
@@ -70,6 +66,16 @@ public class OrderToCustomerService {
         return mapOrder(repo.save(openOrder));
     }
 
+    private OrderToCustomer validateOrder(Long orderId, OrderItemDTO orderItem) {
+        if (orderAlreadyPaid(orderId)) {
+            throw new IllegalArgumentException("This order has already been cashed out!");
+        }
+        if (!productService.productExists(orderItem.getProduct())) {
+            throw new IllegalArgumentException("You're trying to add a product that doesn't exist");
+        }
+        return repo.findById(orderId).orElseThrow(EntityNotFoundException::new);
+    }
+
     private boolean orderExists(OrderToCustomerDTO order) {
         return (order.getId() != null && repo.existsById(order.getId()));
     }
@@ -85,6 +91,11 @@ public class OrderToCustomerService {
 
     private boolean orderAlreadyPaid(OrderToCustomer order) {
         OrderToCustomer existingOrder = repo.findById(order.getId()).orElseThrow(EntityNotFoundException::new);
+        return existingOrder.getStatus() == PAID;
+    }
+
+    private boolean orderAlreadyPaid(Long orderId) {
+        OrderToCustomer existingOrder = repo.findById(orderId).orElseThrow(EntityNotFoundException::new);
         return existingOrder.getStatus() == PAID;
     }
 
