@@ -5,8 +5,8 @@ import capstone.backend.model.dto.order.OrderToSupplierDTO;
 
 import java.util.List;
 
-import static capstone.backend.model.enums.OrderStatus.PENDING;
-import static capstone.backend.model.enums.OrderStatus.RECEIVED;
+import static capstone.backend.model.enums.OrderToSupplierStatus.PENDING;
+import static capstone.backend.model.enums.OrderToSupplierStatus.RECEIVED;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItemDTO;
 import static capstone.backend.utils.SupplierTestUtils.sampleSupplier;

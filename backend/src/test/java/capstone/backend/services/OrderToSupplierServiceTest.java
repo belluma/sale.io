@@ -14,8 +14,8 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
-import static capstone.backend.model.enums.OrderStatus.PENDING;
-import static capstone.backend.model.enums.OrderStatus.RECEIVED;
+import static capstone.backend.model.enums.OrderToSupplierStatus.PENDING;
+import static capstone.backend.model.enums.OrderToSupplierStatus.RECEIVED;
 import static capstone.backend.utils.OrderToSupplierTestUtils.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;

@@ -1,15 +1,13 @@
 package capstone.backend.utils;
 
-import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.db.order.OrderToCustomer;
-import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
 
 import java.util.List;
 
-import static capstone.backend.model.enums.OrderStatus.OPEN;
-import static capstone.backend.model.enums.OrderStatus.PAID;
+import static capstone.backend.model.enums.OrderToCustomerStatus.OPEN;
+import static capstone.backend.model.enums.OrderToCustomerStatus.PAID;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItemDTO;
 import static capstone.backend.utils.ProductTestUtils.sampleProductDTOWithDetailsWithId;

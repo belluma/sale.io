@@ -2,7 +2,7 @@ package capstone.backend.controller;
 
 
 import capstone.backend.model.dto.order.OrderToSupplierDTO;
-import capstone.backend.model.enums.OrderStatus;
+import capstone.backend.model.enums.OrderToSupplierStatus;
 import capstone.backend.services.OrderToSupplierService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +27,7 @@ public class OrderToSupplierController {
     }
 
     @PutMapping
-    public OrderToSupplierDTO receiveOrder(@RequestBody OrderToSupplierDTO order, @RequestParam Long id, @RequestParam OrderStatus status) {
+    public OrderToSupplierDTO receiveOrder(@RequestBody OrderToSupplierDTO order, @RequestParam Long id, @RequestParam OrderToSupplierStatus status) {
         return service.receiveOrder(order, status);
     }
 }

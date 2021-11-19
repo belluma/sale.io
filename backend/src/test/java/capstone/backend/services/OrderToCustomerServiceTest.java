@@ -2,7 +2,6 @@ package capstone.backend.services;
 
 import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.db.order.OrderToCustomer;
-import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.repo.OrderToCustomerRepo;
@@ -16,7 +15,7 @@ import java.util.Optional;
 
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 import static capstone.backend.mapper.OrderToCustomerMapper.mapOrder;
-import static capstone.backend.model.enums.OrderStatus.OPEN;
+import static capstone.backend.model.enums.OrderToCustomerStatus.OPEN;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItemDTO;
 import static capstone.backend.utils.OrderToCustomerTestUtils.*;
 import static org.hamcrest.MatcherAssert.assertThat;

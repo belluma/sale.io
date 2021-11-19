@@ -2,7 +2,7 @@ package capstone.backend.model.db.order;
 
 
 
-import capstone.backend.model.enums.OrderStatus;
+import capstone.backend.model.enums.OrderToSupplierStatus;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
@@ -27,11 +27,6 @@ public abstract class Order {
     @OneToMany(fetch = FetchType.EAGER)
     @ToString.Exclude
     private List<OrderItem> orderItems;
-    private OrderStatus status;
-
-    public Order(OrderStatus status){
-        this.status = status;
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -4,7 +4,7 @@ import capstone.backend.model.db.order.OrderToSupplier;
 import capstone.backend.model.dto.order.OrderToSupplierDTO;
 
 import static capstone.backend.mapper.SupplierMapper.mapSupplier;
-import static capstone.backend.model.enums.OrderStatus.PENDING;
+import static capstone.backend.model.enums.OrderToSupplierStatus.PENDING;
 
 public class OrderToSupplierMapper {
 

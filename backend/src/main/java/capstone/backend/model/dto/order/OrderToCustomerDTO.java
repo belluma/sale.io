@@ -1,6 +1,7 @@
 package capstone.backend.model.dto.order;
 
 
+import capstone.backend.model.enums.OrderToCustomerStatus;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
@@ -9,4 +10,6 @@ import lombok.experimental.SuperBuilder;
 @Data
 @SuperBuilder
 public class OrderToCustomerDTO extends OrderDTO {
+
+    private OrderToCustomerStatus status;
 }

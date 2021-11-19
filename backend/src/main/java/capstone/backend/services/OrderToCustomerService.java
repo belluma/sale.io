@@ -6,19 +6,20 @@ import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.repo.OrderToCustomerRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 import static capstone.backend.mapper.OrderToCustomerMapper.mapOrder;
-import static capstone.backend.model.enums.OrderStatus.OPEN;
-import static capstone.backend.model.enums.OrderStatus.PAID;
+import static capstone.backend.model.enums.OrderToCustomerStatus.OPEN;
+import static capstone.backend.model.enums.OrderToCustomerStatus.PAID;
 
 
 @RequiredArgsConstructor
+@Service
 public class OrderToCustomerService {
 
     private final OrderToCustomerRepo repo;
