@@ -15,6 +15,7 @@ import java.util.Optional;
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 import static capstone.backend.mapper.OrderToCustomerMapper.mapOrder;
 import static capstone.backend.model.enums.OrderStatus.OPEN;
+import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItemDTO;
 import static capstone.backend.utils.OrderToCustomerTestUtils.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -164,6 +165,20 @@ class OrderToCustomerServiceTest {
         //WHEN - //THEN
         Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.cashoutOrder(orderToCashout));
         assertThat(ex.getMessage(), is("This order has already been cashed out!"));
+    }
+
+    @Test
+    void removeItemEntirelyFromOrder(){
+        //GIVEN
+        OrderItemDTO orderItem = sampleOrderItemDTO();
+    OrderToCustomerDTO order = orderDTOWithStatusOpenWithOrderItem();
+
+        //WHEN
+
+
+        //THEN
+
+
     }
 
 }

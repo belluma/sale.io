@@ -76,4 +76,7 @@ public class ProductService {
     public boolean productExists(ProductDTO product) {
         return (product.getId() != null && repo.existsById(product.getId()));
     }
+
+    public void resetAmountInStockWhenRemovingFromBill(OrderItem mapOrderItem) {
+    }
 }

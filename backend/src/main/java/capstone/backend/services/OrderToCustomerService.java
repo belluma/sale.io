@@ -62,9 +62,9 @@ public class OrderToCustomerService {
 
     public OrderToCustomerDTO removeItemsFromOrder(Long orderId, OrderItemDTO orderItem, OrderToCustomerDTO order) throws IllegalArgumentException, EntityNotFoundException {
         OrderToCustomer openOrder = validateOrderWhenRemoveItems(orderItem, order);
-        OrderItemDTO orderItemWithItemsRemoved = orderItemService.reduceQuantityOfOrderItem(orderItem, order);
+        orderItemService.reduceQuantityOfOrderItem(orderItem, order);
         productService.resetAmountInStockWhenRemovingFromBill(mapOrderItem(orderItem));
-        reduceAmountOnBillOrDeleteIfNull(openOrder, orderItemWithItemsRemoved);
+//        reduceAmountOnBillOrDeleteIfNull(openOrder, orderItemWithItemsRemoved);
         return mapOrder(repo.save(openOrder));
     }
 
