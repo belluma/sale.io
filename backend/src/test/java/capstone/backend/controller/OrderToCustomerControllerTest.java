@@ -21,13 +21,13 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static capstone.backend.mapper.OrderToCustomerMapper.mapOrder;
 import static capstone.backend.model.enums.OrderToCustomerStatus.OPEN;
 import static capstone.backend.model.enums.OrderToCustomerStatus.PAID;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
-import static capstone.backend.utils.OrderToCustomerTestUtils.orderPaidWithOrderItem;
 import static capstone.backend.utils.ProductTestUtils.sampleProduct;
 import static capstone.backend.utils.SupplierTestUtils.sampleSupplier;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -81,19 +81,33 @@ class OrderToCustomerControllerTest {
         Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
         OrderItem orderItem = orderItemRepo.save(sampleOrderItem().withProduct(product));
         OrderItem orderItem2 = orderItemRepo.save(sampleOrderItem().withProduct(product));
-        OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(1l, List.of(orderItem), OPEN));
-        OrderToCustomer order2 = orderRepo.save(new OrderToCustomer(1l, List.of(orderItem2), PAID));
+        OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(1L, List.of(orderItem), OPEN));
+        OrderToCustomer order2 = orderRepo.save(new OrderToCustomer(1L, List.of(orderItem2), PAID));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<OrderToCustomerDTO[]> response = restTemplate.exchange(BASEURL + "/all", HttpMethod.GET, new HttpEntity<>(headers), OrderToCustomerDTO[].class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertIterableEquals(List.of(mapOrder(order1), mapOrder(order2)), Arrays.asList(response.getBody()));
+        assertIterableEquals(List.of(mapOrder(order1), mapOrder(order2)), Arrays.asList(Objects.requireNonNull(response.getBody())));
         assertThat(orderRepo.findAll().size(), is(2));
     }
 
     @Test
     void getAllOpenOrders() {
+        //GIVEN
+        Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
+        OrderItem orderItem = orderItemRepo.save(sampleOrderItem().withProduct(product));
+        OrderItem orderItem2 = orderItemRepo.save(sampleOrderItem().withProduct(product));
+        OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(1L, List.of(orderItem), OPEN));
+        orderRepo.save(new OrderToCustomer(1L, List.of(orderItem2), PAID));
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        //WHEN
+        ResponseEntity<OrderToCustomerDTO[]> response = restTemplate.exchange(BASEURL, HttpMethod.GET, new HttpEntity<>(headers), OrderToCustomerDTO[].class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertIterableEquals(List.of(mapOrder(order1)), Arrays.asList(Objects.requireNonNull(response.getBody())));
+        assertThat(orderRepo.findAll().size(), is(2));
     }
 
     @Test
