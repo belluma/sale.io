@@ -32,9 +32,9 @@ public class OrderToCustomerController {
     }
 
     @PutMapping("add")
-    public OrderToCustomerDTO addItemsToOrder(@RequestParam Long id, @RequestBody OrderItemDTO itemsToAdd, @RequestBody OrderToCustomerDTO order){
+    public OrderToCustomerDTO addItemsToOrder(@RequestParam Long id, @RequestBody OrderContainerDTO order){
         System.err.println(id);
-        return service.addItemsToOrder(id, itemsToAdd, order);
+        return service.addItemsToOrder(id, order.getItemToAddOrRemove(), order.getOrder());
     }
     @PutMapping("remove")
     public OrderToCustomerDTO removeItemsFromOrder(@RequestParam Long id, @RequestBody OrderContainerDTO order){

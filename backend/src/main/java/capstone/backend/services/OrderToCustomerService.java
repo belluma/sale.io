@@ -1,6 +1,7 @@
 package capstone.backend.services;
 
 import capstone.backend.mapper.OrderToCustomerMapper;
+import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.db.order.OrderToCustomer;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,17 +50,22 @@ public class OrderToCustomerService {
         OrderToCustomer openOrder = validateOrderWhenAddItems(orderId, orderItem);
         OrderItemDTO orderItemWithUpdatedAmount = orderItemService.addItemToOrderOrUpdateQuantity(orderItem, orderToCustomer);
         productService.substractStockWhenAddingItemToBill(mapOrderItem(orderItem));
-        updateAmountOnBill(openOrder, orderItemWithUpdatedAmount);
+        updateAmountOnBill(openOrder, mapOrderItem(orderItemWithUpdatedAmount));
         return mapOrder(repo.save(openOrder));
     }
 
-    private void updateAmountOnBill(OrderToCustomer order, OrderItemDTO orderItem) {
-        order.setOrderItems(
-                order
-                        .getOrderItems()
-                        .stream()
-                        .map(oldOrderItem -> Objects.equals(oldOrderItem.getId(), orderItem.getId()) ? mapOrderItem(orderItem) : oldOrderItem)
-                        .toList());
+    private void updateAmountOnBill(OrderToCustomer order, OrderItem orderItem) {
+if(!order.getOrderItems().contains(orderItem)){
+    List<OrderItem> itemsOnBill = new ArrayList<>(order.getOrderItems());
+    itemsOnBill.add(orderItem);
+    order.setOrderItems(itemsOnBill);
+}
+        //        order.setOrderItems(
+//                order
+//                        .getOrderItems()
+//                        .stream()
+//                        .map(oldOrderItem -> Objects.equals(oldOrderItem.getId(), orderItem.getId()) ? mapOrderItem(orderItem) : oldOrderItem)
+//                        .toList());
     }
 
     public OrderToCustomerDTO removeItemsFromOrder(Long orderId, OrderItemDTO orderItem, OrderToCustomerDTO order) throws IllegalArgumentException, EntityNotFoundException {
