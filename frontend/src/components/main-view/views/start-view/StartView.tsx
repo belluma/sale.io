@@ -1,31 +1,41 @@
 import React from 'react'
-import { useAppSelector } from '../../../../app/hooks';
-import { selectLoggedIn } from '../../../../slicer/authSlice';
+import {useAppSelector} from '../../../../app/hooks';
+import {selectLoggedIn} from '../../../../slicer/authSlice';
 
 import {appBarHeight} from "../../../header/Header";
 //component imports
 import {Redirect} from "react-router";
-import {Card, CardContent, CardMedia, Grid} from "@mui/material";
+import {Card, CardContent, CardMedia, Container, Grid} from "@mui/material";
 import {images} from "../../helpers";
 
 //interface imports
 
 type Props = {};
 
-function StartView(props: Props){
+function StartView(props: Props) {
     const loggedIn = useAppSelector(selectLoggedIn);
-
-    // const view = ()
-
-
-    return(
-       !loggedIn ? <Redirect to={'/login'} /> : <Card sx={{pt: 0, height: `calc(100vh - ${appBarHeight}`}} > <CardMedia
-           component="img"
-           height={"100vh"}
-           sx={{width: "100vw"}}
-           image='/background.png'
-           alt={"asdf"}
-       /></Card>
+    return (
+        !loggedIn ? <Redirect to={'/login'}/> :
+            <Container maxWidth={false} color="primary"
+                       sx={{height: `calc(100vh - ${appBarHeight}px)`, bgcolor: "primary.lighter"}}>
+                <Grid container sx={{height: 0.9}}  justifyContent="space-around" alignItems="center">
+                    <Grid item md={3} xs={12} >
+                        <Card sx={{ bgcolor:"transparent", boxShadow:"none"}} >
+                            <CardMedia
+                                component="img"
+                                height={50}
+                                src={"logo_gold.png"}/>
+                        </Card>
+                    </Grid>
+                    <Grid item xs={12} >
+                        <Card sx={{margin: "auto", width:{xs: 0.99, md: 0.2}, bgcolor:"transparent", boxShadow:"none"}} >
+                            <CardMedia
+                                component="img"
+                                height={50}
+                                src={"lettering_gold.png"}/>
+                        </Card>
+                    </Grid>
+                </Grid></Container>
     )
 }
 

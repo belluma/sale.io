@@ -1,6 +1,6 @@
 import React, {useEffect, useState } from 'react'
 //component imports
-import { AppBar, Slide, Toolbar, Typography, useScrollTrigger } from '@mui/material';
+import {AppBar, Slide, SvgIcon, Toolbar, Typography, useScrollTrigger} from '@mui/material';
 import HeaderButtons from "./header-buttons/HeaderButtons";
 import {selectShowDetails} from "../../slicer/detailsSlice";
 import {useAppSelector} from "../../app/hooks";
@@ -38,8 +38,9 @@ function Header(props: Props){
     return (
         <HideOnScroll {...props}>
             <AppBar sx={{bgcolor: 'primary.light' ,height:appBarHeight, zIndex:1400}}>
-                <Toolbar sx={{justifyContent: "space-between"}}>
-                    <Typography>Saleio</Typography>
+                <Toolbar >
+                        <img src={"logo_gold.png"} alt={"logo"} height="20"/>
+                        <img src={"lettering_gold.png"} alt="lettering" height="20"/>
                 </Toolbar>
                 <HeaderButtons appBarHeight={appBarHeight} />
             </AppBar>
