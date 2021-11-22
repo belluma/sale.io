@@ -2,11 +2,9 @@ import React from 'react'
 import {useAppSelector} from '../../../../app/hooks';
 import {selectLoggedIn} from '../../../../slicer/authSlice';
 
-import {appBarHeight} from "../../../header/Header";
 //component imports
 import {Redirect} from "react-router";
-import {Card, CardContent, CardMedia, Container, Grid} from "@mui/material";
-import {images} from "../../helpers";
+import {Card,  CardMedia, Container, Grid} from "@mui/material";
 
 //interface imports
 
@@ -16,8 +14,7 @@ function StartView(props: Props) {
     const loggedIn = useAppSelector(selectLoggedIn);
     return (
         !loggedIn ? <Redirect to={'/login'}/> :
-            <Container maxWidth={false} color="primary"
-                       sx={{height: `calc(100vh - ${appBarHeight}px)`, bgcolor: "primary.lighter"}}>
+            <Container maxWidth={false} color="primary">
                 <Grid container sx={{height: 0.9}}  justifyContent="space-around" alignItems="center">
                     <Grid item md={3} xs={12} >
                         <Card sx={{ bgcolor:"transparent", boxShadow:"none"}} >

@@ -37,7 +37,7 @@ function MainView(props: Props){
     const paddingTop = isStart ? `55px` : 15;
     const protectedRoutes = views.map((view) => <ProtectedRoute key={view} path={`/${Model[view]}`} component={protectedViews[view]} />)
     return (
-        <Container sx={{pt: paddingTop}} maxWidth={false} disableGutters={isStart}>
+        <Container sx={{pt: paddingTop, minHeight: `100vh`, bgcolor: "primary.lighter"}} maxWidth={false} disableGutters={isStart}>
             <Pending />
             <SuccessMessage />
             <Grid container justifyContent="center" alignItems="center">
