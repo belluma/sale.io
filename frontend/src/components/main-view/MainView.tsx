@@ -17,7 +17,7 @@ import CustomersView from "./views/customers/CustomersView";
 import OrdersView from "./views/orders/OrdersView";
 import Pending from "../messages/pending/Pending";
 //interface imports
-import {Model} from "../../interfaces/IThumbnailData";
+import {Model} from "../../interfaces/IThumbnail";
 import SuccessMessage from "../messages/success-message/SuccessMessage";
 import {appBarHeight} from "../header/Header";
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import {receiveOrder, selectCurrentOrder, selectOrderToSave} from "../../../../slicer/orderSlice";
-import {parseName} from "../../../../interfaces/IThumbnailData";
+import {parseName} from "../../../../interfaces/IThumbnail";
 import {getTotal} from "../helper";
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
 

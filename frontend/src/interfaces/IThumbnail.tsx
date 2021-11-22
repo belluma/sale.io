@@ -29,7 +29,7 @@ export enum Views {
 export interface INewItem {
 }
 
-export interface IThumbnailData extends INewItem {
+export interface IThumbnail extends INewItem {
     title?: string,
     subtitle?: string,
     id?: string |   undefined,
@@ -40,7 +40,7 @@ export interface IThumbnailData extends INewItem {
     footerText?:string,
 }
 
-export interface IDetailsData extends IThumbnailData {
+export interface IDetailsData extends IThumbnail {
 }
 export const parseName = ({firstName="", lastName=""}:IContact):string => {
     let name = '';
@@ -49,7 +49,7 @@ export const parseName = ({firstName="", lastName=""}:IContact):string => {
     return name;
 }
 
-export const parseEmployeeToThumbnailData = ({firstName, lastName, username, picture}: IEmployee): IDetailsData => {
+export const parseEmployeeToThumbnail = ({firstName, lastName, username, picture}: IEmployee): IDetailsData => {
     return {
         title: `${parseName({firstName, lastName})}`,
         picture: picture,
@@ -58,7 +58,7 @@ export const parseEmployeeToThumbnailData = ({firstName, lastName, username, pic
         model: Views.EMPLOYEE
     }
 }
-export const parseEmployeeToLoginThumbnailData = ({firstName, lastName, username, picture}: IEmployee): IDetailsData => {
+export const parseEmployeeToLoginThumbnail = ({firstName, lastName, username, picture}: IEmployee): IDetailsData => {
     return {
         title: `${parseName({firstName, lastName})}`,
         picture: picture,
@@ -67,7 +67,7 @@ export const parseEmployeeToLoginThumbnailData = ({firstName, lastName, username
         model: Views.LOGIN
     }
 }
-export const parseSupplierToThumbnailData = ({firstName, lastName, id, picture}: ISupplier): IDetailsData => {
+export const parseSupplierToThumbnail = ({firstName, lastName, id, picture}: ISupplier): IDetailsData => {
     return {
         title: `${parseName({firstName, lastName})}`,
         picture: picture,
@@ -76,17 +76,17 @@ export const parseSupplierToThumbnailData = ({firstName, lastName, id, picture}:
         model: Views.SUPPLIER
     }
 }
-export const parseProductToThumbnailData = ({id, name, picture, amountInStock}: IProduct): IDetailsData => {
+export const parseProductToThumbnail = ({id, name, picture, amountInStock}: IProduct): IDetailsData => {
     return {
         title: name,
-        picture: picture,
+        picture: `images/protected/simple/${picture}`,
         id: id?.toString() || "",
         alt: "product picture",
         model: Views.PRODUCT,
         contentText: `in stock: ${amountInStock}`
     }}
 
-    export const parseOrderToThumbnailData = ({supplier, id, orderItems, status}:IOrder):IDetailsData => {
+    export const parseOrderToThumbnail = ({supplier, id, orderItems, status}:IOrder):IDetailsData => {
         return{
             title: `order to ${supplier && parseName(supplier)}`,
             picture: `/images/${status}.png`,

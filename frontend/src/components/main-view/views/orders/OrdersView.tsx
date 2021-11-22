@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
-import {parseOrderToThumbnailData, Views} from "../../../../interfaces/IThumbnailData";
+import {parseOrderToThumbnail, Views} from "../../../../interfaces/IThumbnail";
 import {selectView} from "../../../../slicer/viewSlice";
 import {supplierColumns} from "../../list-view/columnDefinition";
 import {getAllOrders, selectOrders} from "../../../../slicer/orderSlice";
@@ -23,7 +23,7 @@ function OrdersView(props: Props){
     const orders = useAppSelector(selectOrders)
     //@ts-ignore status can't be undefined because the backend automatically adds it to any order that gets created
     const byStatus = (a:IOrder, b:IOrder) =>  a.status.localeCompare(b.status)
-    const thumbnails = [...orders].sort(byStatus).map(parseOrderToThumbnailData);
+    const thumbnails = [...orders].sort(byStatus).map(parseOrderToThumbnail);
 
     return (
         useAppSelector(selectView) ?

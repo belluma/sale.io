@@ -8,12 +8,12 @@ import {Grid} from "@mui/material";
 import Thumbnail from "../thumbnail/Thumbnail";
 //interface imports
 
-import {IThumbnailData, Views} from "../../../interfaces/IThumbnailData";
+import {IThumbnail, Views} from "../../../interfaces/IThumbnail";
 import {useAppSelector} from "../../../app/hooks";
 import {selectView} from "../../../slicer/viewSlice";
 
 type Props = {
-    gridItems:IThumbnailData[],
+    gridItems:IThumbnail[],
     view:Views,
 };
 

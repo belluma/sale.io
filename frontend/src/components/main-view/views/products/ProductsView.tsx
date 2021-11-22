@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 import {useAppDispatch, useAppSelector} from '../../../../app/hooks';
 import {getAllProducts, selectProducts} from "../../../../slicer/productSlice";
-import {parseProductToThumbnailData, Views} from "../../../../interfaces/IThumbnailData";
+import {parseProductToThumbnail, Views} from "../../../../interfaces/IThumbnail";
 import {selectView} from "../../../../slicer/viewSlice";
 import {productColumns} from "../../list-view/columnDefinition";
 
@@ -20,7 +20,7 @@ function ProductsView(props: Props) {
     }, [dispatch]);
 
     const products = useAppSelector(selectProducts)
-    const thumbnails = products.map(product => parseProductToThumbnailData(product));
+    const thumbnails = products.map(product => parseProductToThumbnail(product));
 
     return useAppSelector(selectView) ?
         <GridView gridItems={thumbnails} view={Views.PRODUCT}/> :

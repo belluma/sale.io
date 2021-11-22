@@ -1,9 +1,9 @@
 import React from 'react'
 import {
     parseName,
-    parseOrderToThumbnailData,
-    parseProductToThumbnailData
-} from "../../../../../../../interfaces/IThumbnailData";
+    parseOrderToThumbnail,
+    parseProductToThumbnail
+} from "../../../../../../../interfaces/IThumbnail";
 import {getTotal} from "../../../../../../forms/order/helper";
 import { useAppDispatch } from '../../../../../../../app/hooks';
 import {chooseCurrentProduct} from "../../../../../../../slicer/productSlice";
@@ -41,7 +41,7 @@ function SupplierListItem({item}: Props) {
         if(!item.id) return;
         dispatch(isProduct ? chooseCurrentProduct(item.id.toString()) : chooseCurrentOrder(item.id.toString()));
         //@ts-ignore check done by isProduct
-        dispatch(isProduct ? setDetailData(parseProductToThumbnailData(item)) : setDetailData(parseOrderToThumbnailData(item)));
+        dispatch(isProduct ? setDetailData(parseProductToThumbnail(item)) : setDetailData(parseOrderToThumbnail(item)));
         dispatch(setGoBack());
     }
     return (

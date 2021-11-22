@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
-import {parseSupplierToThumbnailData, Views} from "../../../../interfaces/IThumbnailData";
+import {parseSupplierToThumbnail, Views} from "../../../../interfaces/IThumbnail";
 import {getAllSuppliers, selectSuppliers} from "../../../../slicer/supplierSlice";
 import {supplierColumns} from "../../list-view/columnDefinition";
 import {selectView} from "../../../../slicer/viewSlice";
@@ -24,7 +24,7 @@ function SuppliersView(props: Props) {
     }, [dispatch]);
 
     const suppliers = useAppSelector(selectSuppliers)
-    const thumbnails = suppliers.map(supplier => parseSupplierToThumbnailData(supplier));
+    const thumbnails = suppliers.map(supplier => parseSupplierToThumbnail(supplier));
 
     return (
         useAppSelector(selectView) ?

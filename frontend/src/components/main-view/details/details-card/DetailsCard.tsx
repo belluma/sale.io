@@ -15,7 +15,7 @@ import EmployeeDetails from "../employee-details/EmployeeDetails";
 import SupplierDetails from "../supplier-details/SupplierDetails";
 
 //interface imports
-import {Model} from "../../../../interfaces/IThumbnailData";
+import {Model} from "../../../../interfaces/IThumbnail";
 
 type Props = {
     fullScreen: boolean,
@@ -46,9 +46,10 @@ function DetailsCard({fullScreen, handleClose}: Props) {
             <Divider/>
             {showPic && <CardMedia
                 component="img"
-                sx={{width: .99}}
+                sx={{width: .99, maxHeight: 350}}
                 image={picture || images[model]}
                 alt={alt}
+                height="350"
             />}
             {showPic && <Divider/>}
             <CardContent sx={{flexGrow: 1}}>
