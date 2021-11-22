@@ -26,6 +26,7 @@ export const detailsSlice = createSlice({
         },
         hideDetails: (state) => {
             state.showDetails = false;
+            state.goBack = false;
         },
         setGoBack: (state) => {
          state.goBack = true;

@@ -3,9 +3,10 @@ import './App.css';
 import {useAppDispatch} from "./app/hooks";
 import {getEmployees} from "./slicer/employeeSlice";
 import {loginFromStorage} from "./slicer/authSlice";
+import colorTheme from './theme'
 
 //components
-import {CssBaseline, Toolbar, useMediaQuery, useTheme} from '@mui/material';
+import {CssBaseline, ThemeProvider, Toolbar, useMediaQuery, useTheme} from '@mui/material';
 import Header from './components/header/Header';
 import MainView from './components/main-view/MainView';
 import {gridView} from "./slicer/viewSlice";
@@ -21,6 +22,7 @@ function App() {
     dispatch(getEmployees());
     dispatch(loginFromStorage());
     return (
+        <ThemeProvider theme={colorTheme}>
         <React.Fragment>
             <CssBaseline/>
             <Header/>
@@ -28,6 +30,7 @@ function App() {
             <MainView/>
 
         </React.Fragment>
+        </ThemeProvider>
     );
 }
 

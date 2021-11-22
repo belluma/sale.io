@@ -5,7 +5,7 @@ import {views} from "./helpers";
 //component imports
 import Signup from "./details/security/signup/Signup";
 import {Container, Grid} from "@mui/material";
-import {Route, Switch} from "react-router";
+import {Route, Switch, useLocation} from "react-router";
 import LoginView from "./views/login-view/LoginView";
 import StartRoute from "./start-route/StartRoute";
 import StartView from "./views/start-view/StartView";
@@ -19,6 +19,7 @@ import Pending from "../messages/pending/Pending";
 //interface imports
 import {Model} from "../../interfaces/IThumbnailData";
 import SuccessMessage from "../messages/success-message/SuccessMessage";
+import {appBarHeight} from "../header/Header";
 
 type Props = {};
 
@@ -32,9 +33,11 @@ function MainView(props: Props){
         CUSTOMER: CustomersView,
         ORDER: OrdersView
     };
+    const isStart = useLocation().pathname.includes("start");
+    const paddingTop = isStart ? `55px` : 15;
     const protectedRoutes = views.map((view) => <ProtectedRoute key={view} path={`/${Model[view]}`} component={protectedViews[view]} />)
     return (
-        <Container sx={{pt: 15}} maxWidth={false}>
+        <Container sx={{pt: paddingTop}} maxWidth={false} disableGutters={isStart}>
             <Pending />
             <SuccessMessage />
             <Grid container justifyContent="center" alignItems="center">

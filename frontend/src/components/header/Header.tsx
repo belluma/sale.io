@@ -11,7 +11,7 @@ type Props = {
     //typescript complaining children can't be undefined since last update
     children?:any
 };
-
+export const appBarHeight = 120;
 export default Header;
 
 function Header(props: Props){
@@ -34,7 +34,7 @@ function Header(props: Props){
         );
     }
 
-    const appBarHeight = 120;
+
     return (
         <HideOnScroll {...props}>
             <AppBar sx={{bgcolor: 'primary.light' ,height:appBarHeight, zIndex:1400}}>
