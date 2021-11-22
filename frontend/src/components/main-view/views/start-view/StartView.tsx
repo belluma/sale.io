@@ -15,13 +15,13 @@ function StartView(props: Props) {
     return (
         !loggedIn ? <Redirect to={'/login'}/> :
             <Container maxWidth={false} color="primary">
-                <Grid container sx={{pt: {xs: 5, md: 15}, height: 0.9}}  justifyContent="space-around" alignItems="center" rowSpacing={15}>
-                    <Grid item md={2} xs={12} >
+                <Grid container sx={{pt: {xs: 5, md: 7}, height: 0.9}}  justifyContent="space-around" alignItems="center" rowSpacing={10}>
+                    <Grid item md={4} xs={12} >
                         <Card sx={{ bgcolor:"transparent", boxShadow:"none"}} >
                             <CardMedia
                                 component="img"
                                 height={50}
-                                src={"logo_gold.png"}/>
+                                src={"saleio_logo.svg"}/>
                         </Card>
                     </Grid>
                     <Grid item xs={12} >
@@ -29,7 +29,7 @@ function StartView(props: Props) {
                             <CardMedia
                                 component="img"
                                 height={50}
-                                src={"lettering_gold.png"}/>
+                                src={"saleio_lettering.svg"}/>
                         </Card>
                     </Grid>
                 </Grid></Container>

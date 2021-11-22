@@ -42,11 +42,11 @@ function Header(props: Props) {
                 <Toolbar>
                     <Grid container>
                         <Grid item md={0.5} xs={2} sm={1}>
-                            <Box component="img" sx={{height: 40, width: 40}} alt={"logo"} src={"logo_gold.png"}/>
+                            <Box component="img" sx={{height: 40, width: 40}} alt={"logo"} src={"saleio_logo.svg"}/>
                         </Grid>
                         <Grid>
                             <Box component="img" sx={{height: 40, width: 250}} alt={"lettering"}
-                                 src={"lettering_gold.png"}/>
+                                 src={"saleio_lettering.svg"}/>
                         </Grid>
                     </Grid>
                 </Toolbar>
