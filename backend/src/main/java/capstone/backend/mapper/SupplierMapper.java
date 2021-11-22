@@ -24,6 +24,7 @@ public class SupplierMapper {
                 .email(supplier.getEmail())
                 .orders(Set.of())
                 .orderDay(supplier.getOrderDay())
+                .picture(supplier.getPicture())
                 .build();
     }
 
@@ -37,6 +38,7 @@ public class SupplierMapper {
                 .email(supplier.getEmail())
                 .orders(List.of())
                 .orderDay(supplier.getOrderDay())
+                .picture(supplier.getPicture())
                 .build();
     }
 

@@ -17,6 +17,7 @@ public class EmployeeMapper {
                     .picture(employee.getPicture())
                     .username(employee.getUsername())
                     .password(employee.getPassword())
+                    .picture(employee.getPicture())
                     .build();
         }
         public static EmployeeDTO mapEmployee(Employee employee) {
@@ -29,6 +30,7 @@ public class EmployeeMapper {
                     .picture(employee.getPicture())
                     .username(employee.getUsername())
                     .password(employee.getPassword())
+                    .picture(employee.getPicture())
                     .build();
         }
         public EmployeeDTO mapEmployeeAndConcealData(Employee employee){

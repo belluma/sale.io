@@ -52,7 +52,7 @@ export const parseName = ({firstName="", lastName=""}:IContact):string => {
 export const parseEmployeeToThumbnail = ({firstName, lastName, username, picture}: IEmployee): IDetailsData => {
     return {
         title: `${parseName({firstName, lastName})}`,
-        picture: picture,
+        picture: `/images/protected/employee/${picture}`,
         id: username,
         alt: "profile picture",
         model: Views.EMPLOYEE
@@ -61,7 +61,7 @@ export const parseEmployeeToThumbnail = ({firstName, lastName, username, picture
 export const parseEmployeeToLoginThumbnail = ({firstName, lastName, username, picture}: IEmployee): IDetailsData => {
     return {
         title: `${parseName({firstName, lastName})}`,
-        picture: picture,
+        picture: `/images/protected/employee/${picture}`,
         id: username,
         alt: "profile picture",
         model: Views.LOGIN
@@ -70,7 +70,7 @@ export const parseEmployeeToLoginThumbnail = ({firstName, lastName, username, pi
 export const parseSupplierToThumbnail = ({firstName, lastName, id, picture}: ISupplier): IDetailsData => {
     return {
         title: `${parseName({firstName, lastName})}`,
-        picture: picture,
+        picture: `images/protected/supplier/${picture}`,
         id: id?.toString(),
         alt: "company logo",
         model: Views.SUPPLIER
