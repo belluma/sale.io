@@ -15,8 +15,8 @@ function StartView(props: Props) {
     return (
         !loggedIn ? <Redirect to={'/login'}/> :
             <Container maxWidth={false} color="primary">
-                <Grid container sx={{height: 0.9}}  justifyContent="space-around" alignItems="center">
-                    <Grid item md={3} xs={12} >
+                <Grid container sx={{pt: {xs: 5, md: 15}, height: 0.9}}  justifyContent="space-around" alignItems="center" rowSpacing={15}>
+                    <Grid item md={2} xs={12} >
                         <Card sx={{ bgcolor:"transparent", boxShadow:"none"}} >
                             <CardMedia
                                 component="img"
