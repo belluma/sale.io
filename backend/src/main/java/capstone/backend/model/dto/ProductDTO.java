@@ -24,4 +24,5 @@ public class ProductDTO {
     private int maxAmount;
     private int unitSize;
     private int amountInStock;
+    private String picture;
 }

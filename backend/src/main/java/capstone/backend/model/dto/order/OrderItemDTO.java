@@ -5,9 +5,11 @@ import lombok.*;
 
 import java.util.Objects;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
+@ToString
 @Builder
 @With
 public class OrderItemDTO {
