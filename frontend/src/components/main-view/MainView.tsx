@@ -23,9 +23,9 @@ import {appBarHeight} from "../header/Header";
 
 type Props = {};
 
-function MainView(props: Props){
+function MainView(props: Props) {
     const protectedViews = {
-        NEW:StartView,
+        NEW: StartView,
         LOGIN: StartView,
         EMPLOYEE: EmployeesView,
         PRODUCT: ProductsView,
@@ -35,20 +35,22 @@ function MainView(props: Props){
     };
     const isStart = useLocation().pathname.includes("start");
     const paddingTop = isStart ? `55px` : 15;
-    const protectedRoutes = views.map((view) => <ProtectedRoute key={view} path={`/${Model[view]}`} component={protectedViews[view]} />)
+    const protectedRoutes = views.map((view) => <ProtectedRoute key={view} path={`/${Model[view]}`}
+                                                                component={protectedViews[view]}/>)
     return (
-        <Container sx={{pt: paddingTop, minHeight: `100vh`, bgcolor: "primary.lighter"}} maxWidth={false} disableGutters={isStart}>
-            <Pending />
-            <SuccessMessage />
-            <Grid container justifyContent="center" alignItems="center">
-                <Switch>
-                    <Route path={"/login"} component={LoginView}/>
-                    <Route path={"/signup"} component={Signup}/>
-                    <Route path={"/start"} component={StartView}/>
-                    <Route path={"/"} exact component={StartRoute} />
-                    {protectedRoutes}
-                </Switch>
-            </Grid>
+        <Container sx={{pt: paddingTop, minHeight: `100vh`, bgcolor: "primary.lighter"}} maxWidth={false}
+                   disableGutters={isStart}>
+            <Pending/>
+            <SuccessMessage/>
+            {/*<Grid sx={{minHeight: 0.99}} container justifyContent="center" alignItems="center">*/}
+            <Switch>
+                <Route path={"/login"} component={LoginView}/>
+                <Route path={"/signup"} component={Signup}/>
+                <Route path={"/start"} component={StartView}/>
+                <Route path={"/"} exact component={StartRoute}/>
+                {protectedRoutes}
+            </Switch>
+            {/*</Grid>*/}
         </Container>
     );
 }
