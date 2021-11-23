@@ -8,14 +8,14 @@ import {
     selectShowDetails,
     setDetailData
 } from "../../../slicer/detailsSlice";
-import { selectCurrentSupplier } from '../../../slicer/supplierSlice';
+import {selectCurrentSupplier} from '../../../slicer/supplierSlice';
 import {parseSupplierToThumbnail} from "../../../interfaces/IThumbnail";
 //component imports
 import {
     Container,
     Dialog,
     DialogContent,
-     Fab,
+    Fab,
     useMediaQuery,
     useTheme
 } from "@mui/material";
@@ -48,7 +48,9 @@ function Details(props: Props) {
     }, [showDetails]);
     const transitionDuration = 200
     const handleClose = () => {
-        setTimeout(() => {dispatch(resetDetails())}, transitionDuration);
+        setTimeout(() => {
+            dispatch(resetDetails())
+        }, transitionDuration);
         dispatch(hideDetails());
     }
     const backToSupplier = () => {
@@ -57,14 +59,18 @@ function Details(props: Props) {
     }
 
     return (
-        <Dialog fullScreen={fullScreen} open={showDetails} onClose={handleClose} transitionDuration={transitionDuration} scroll='paper'>
-            <DialogContent dividers sx={{padding:0, display:'flex', alignItems:alignItems, height:{md:800}}}>
-                <Container ref={descriptionElementRef} sx={{margin:"auto", height: 0.99}}>
-                    {goBack && <Fab variant='circular' size='small' color="primary" sx={{position:"absolute", top:15, left:25}} onClick={backToSupplier}>
-                        <ArrowBackIcon />
+        <Dialog fullScreen={fullScreen} open={showDetails} onClose={handleClose} transitionDuration={transitionDuration}
+                scroll='paper' PaperProps={{}}>
+            <DialogContent dividers sx={{padding: 0, display: 'flex', alignItems: alignItems, maxWidth: 0.99, height: {md: 800}}}>
+                <Container ref={descriptionElementRef} sx={{margin: "auto", height: 0.99}}>
+                    {goBack &&
+                    <Fab variant='circular' size='small' color="primary" sx={{position: "absolute", top: 15, left: 25}}
+                         onClick={backToSupplier}>
+                        <ArrowBackIcon/>
                     </Fab>}
-                    <Fab variant='circular' size='small' color="primary" sx={{position:"absolute", top:15, right:25}} onClick={handleClose}>
-                        <ClearIcon />
+                    <Fab variant='circular' size='small' color="primary" sx={{position: "absolute", top: 15, right: 25}}
+                         onClick={handleClose}>
+                        <ClearIcon/>
                     </Fab>
                     <DetailsCard fullScreen={fullScreen} handleClose={handleClose}/>
                 </Container>

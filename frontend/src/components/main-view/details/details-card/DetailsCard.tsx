@@ -46,7 +46,7 @@ function DetailsCard({fullScreen, handleClose}: Props) {
             <Divider/>
             {showPic && <CardMedia
                 component="img"
-                sx={{width: .99, maxHeight: 350}}
+                sx={{width: .99, maxHeight: 350, alignSelf:'center'}}
                 image={picture || images[model]}
                 alt={alt}
                 height="350"

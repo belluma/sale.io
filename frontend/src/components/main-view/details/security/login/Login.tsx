@@ -1,36 +1,34 @@
-import React, {ChangeEvent, useState } from 'react'
+import React, {ChangeEvent, useState} from 'react'
 //component imports
-import {Divider, TextField, CardHeader, FormGroup, Button, Card } from '@mui/material';
+import {Divider, TextField, CardHeader, FormGroup, Button, Card, Toolbar, Grid, Container} from '@mui/material';
 
 //interface imports
 
-import { login } from '../../../../../slicer/authSlice';
+import {login} from '../../../../../slicer/authSlice';
 import {useAppDispatch, useAppSelector} from '../../../../../app/hooks';
-import { selectCurrentEmployeeCredentials} from "../../../../../slicer/employeeSlice";
+import {selectCurrentEmployeeCredentials} from "../../../../../slicer/employeeSlice";
 
-type Props = {
+type Props = {};
 
-};
-
-function Login(props: Props){
+function Login(props: Props) {
     const dispatch = useAppDispatch();
     const employee = useAppSelector(selectCurrentEmployeeCredentials)
     const [password, setPassword] = useState<string>("")
 
-    const handleInput = (e:ChangeEvent<HTMLInputElement>) => {
-        setPassword( e.target.value)
+    const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+        setPassword(e.target.value)
     }
     const handleLogin = () => {
-        if(employee && password.length)dispatch(login({...employee, password:password}));
+        if (employee && password.length) dispatch(login({...employee, password: password}));
     }
-    return(
-        <Card>
+    return (
+        <Card sx={{ height: 0.99, display:'flex', flexDirection: 'column'}}>
             <CardHeader title={`Hello ${employee?.firstName} enter your password to login`} align="center"/>
             <Divider/>
-            <FormGroup>
+            <Grid container flexDirection={"column"} sx={{height: 0.99}} justifyContent={'space-between'}>
                 <TextField sx={{my: 1}} required label="Password" type="password" onChange={handleInput}/>
-                <Button disabled={!employee || !password.length} type="submit" onClick={handleLogin}>Register</Button>
-            </FormGroup>
+                <Button disabled={!employee || !password.length} color={'primary'}  variant='contained' type="submit" onClick={handleLogin}>Login</Button>
+            </Grid>
         </Card>
     )
 }
