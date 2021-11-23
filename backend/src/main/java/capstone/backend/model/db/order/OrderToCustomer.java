@@ -27,7 +27,12 @@ public class OrderToCustomer extends Order {
         this.status = status;
     }
 
-    public OrderToCustomer(Long id, List<OrderItem> orderItems, OrderToCustomerStatus status){
+    public OrderToCustomer(List<OrderItem> orderItems, OrderToCustomerStatus status) {
+        super(orderItems);
+        this.status = status;
+    }
+
+    public OrderToCustomer(Long id, List<OrderItem> orderItems, OrderToCustomerStatus status) {
         super(id, orderItems);
         this.status = status;
     }
