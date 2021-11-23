@@ -4,7 +4,7 @@ import {views} from "./helpers";
 
 //component imports
 import Signup from "./details/security/signup/Signup";
-import {Container, Grid} from "@mui/material";
+import {Container} from "@mui/material";
 import {Route, Switch, useLocation} from "react-router";
 import LoginView from "./views/login-view/LoginView";
 import StartRoute from "./start-route/StartRoute";
@@ -19,7 +19,6 @@ import Pending from "../messages/pending/Pending";
 //interface imports
 import {Model} from "../../interfaces/IThumbnail";
 import SuccessMessage from "../messages/success-message/SuccessMessage";
-import {appBarHeight} from "../header/Header";
 
 type Props = {};
 

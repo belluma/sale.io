@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 //component imports
-import {AppBar, Box, Grid, Slide, SvgIcon, Toolbar, Typography, useScrollTrigger} from '@mui/material';
+import {AppBar, Box, Grid, Slide,  Toolbar, useScrollTrigger} from '@mui/material';
 import HeaderButtons from "./header-buttons/HeaderButtons";
 import {selectShowDetails} from "../../slicer/detailsSlice";
 import {useAppSelector} from "../../app/hooks";
