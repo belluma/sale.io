@@ -33,7 +33,10 @@ function HeaderButtons({appBarHeight}: Props) {
         dispatch(hideDetails());
         setDrawerOpen(false);
     }
-    const buttons = views.map((view) => <Button key={view} name={view} onClick={reroute}>{view}S</Button>);
+    const buttons = views.map((view) => {
+        return <Button fullWidth sx={{height: 45, mx: 2, bgcolor: "transparent", boxShadow: "none"}}
+                       variant={'contained'} size={'small'} key={view} name={view} onClick={reroute}>{view}S</Button>
+    });
     const burgerMenu = <IconButton onClick={toggleDrawer}><MenuIcon/></IconButton>
     return (
         <div>
