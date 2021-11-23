@@ -15,11 +15,13 @@ import {selectView} from "../../../slicer/viewSlice";
 type Props = {
     gridItems: IThumbnail[],
     view: Views,
+    customer?: boolean
 };
 
-function GridView({gridItems, view}: Props) {
+function GridView({gridItems, view, customer}: Props) {
     const isHidden = useAppSelector(selectView) ? "" : "is-hidden";
-    const newItemCard = <Grid item><Thumbnail data={{title: `new ${view}`, ...newItemThumbnail}}/></Grid>;
+    const thumbnailProps = customer ? {...newItemThumbnail, model: Views.CUSTOMER} : newItemThumbnail
+    const newItemCard = <Grid item><Thumbnail data={{title: `new ${view}`, ...thumbnailProps}}/></Grid>;
     const thumbnails = gridItems.map(item => <Grid item key={item.id}><Thumbnail data={item}/></Grid>)
     return (
         <Grid className={isHidden} container spacing={2} sx={{justifyContent: {md: "left", xs: "space-around"}}}>
