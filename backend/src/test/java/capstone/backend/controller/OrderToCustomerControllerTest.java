@@ -132,29 +132,19 @@ class OrderToCustomerControllerTest {
     void addItemsToEmptyOrder() {
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)).withAmountInStock(1));
         OrderItem orderItem = sampleOrderItem().withProduct(product);
         OrderToCustomer order1 = orderRepo.save(new OrderToCustomer( OPEN));
         OrderToCustomerDTO expected = new OrderToCustomerDTO(order1.getId(), List.of(mapOrderItem(orderItem)));
-        OrderToCustomerDTO expected2 = new OrderToCustomerDTO(order1.getId(), List.of(mapOrderItem(orderItem)));
         OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItem));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/add/?id=" + order1.getId();
         //WHEN
         ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), OrderToCustomerDTO.class);
         //THEN
-        assertThat(expected, is(expected2));
-        OrderToCustomer test = orderRepo.findById(order1.getId()).get();
-        assertThat(orderItem, is(orderItem.withId(12345L)));
-        assertThat(mapOrder(test).getId(), is(expected.getId()));
-        assertThat(mapOrder(test).getStatus(), is(expected.getStatus()));
-        assertThat(mapOrder(test).getOrderItems().get(0), is(expected.getOrderItems().get(0)));
-        assertIterableEquals(mapOrder(test).getOrderItems(), expected.getOrderItems());
-
-
-        assertThat(mapOrder(test), is(expected));
-//        assertThat(orderRepo.findById(order1.getId()).get(), is(expected));
-//        assertThat(response.getBody(), is(expected));
+        assertThat(response.getBody(), is(expected));
+        assertThat(response.getBody().getOrderItems().get(0).getQuantity(), is(orderItem.getQuantity()));
+        assertThat(response.getBody().getOrderItems().get(0).getProduct().getAmountInStock(), is(product.getAmountInStock() - orderItem.getQuantity()));
     }
 
     @Test

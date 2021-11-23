@@ -4,6 +4,7 @@ package capstone.backend.model.db;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 
