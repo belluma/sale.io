@@ -2,6 +2,7 @@ package capstone.backend.services;
 
 import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.db.order.OrderToCustomer;
+import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.repo.OrderToCustomerRepo;
@@ -18,6 +19,7 @@ import static capstone.backend.mapper.OrderToCustomerMapper.mapOrder;
 import static capstone.backend.model.enums.OrderToCustomerStatus.OPEN;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItemDTO;
 import static capstone.backend.utils.OrderToCustomerTestUtils.*;
+import static capstone.backend.utils.ProductTestUtils.sampleProductDTOWithDetailsWithId;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -71,10 +73,12 @@ class OrderToCustomerServiceTest {
         OrderToCustomerDTO initialOrder = emptyOrderDTOWithStatusOpen();
         OrderToCustomerDTO expected = orderDTOWithStatusOpenWithOrderItem();
         OrderToCustomer orderWithItemAdded = orderOpenWithOrderItem();
-        OrderItemDTO itemToAdd = sampleOrderItemDTO();
+        ProductDTO productToAdd = sampleProductDTOWithDetailsWithId().withAmountInStock(1);
+        OrderItemDTO itemToAdd = sampleOrderItemDTO().withProduct(productToAdd);
         when(orderRepo.findById(expected.getId())).thenReturn(Optional.of(emptyOrderOpen()));
         when(orderRepo.existsById(expected.getId())).thenReturn(true);
         when(productService.productExists(itemToAdd.getProduct())).thenReturn(true);
+        when(productService.getProductDetails(itemToAdd.getProduct().getId())).thenReturn(itemToAdd.getProduct());
         when(orderItemService.addItemToOrderOrUpdateQuantity(itemToAdd, initialOrder)).thenReturn(itemToAdd);
         when(orderRepo.save(orderWithItemAdded)).thenReturn(orderWithItemAdded);
         //WHEN
@@ -83,6 +87,7 @@ class OrderToCustomerServiceTest {
         verify(orderRepo, times(2)).findById(expected.getId());
         verify(orderRepo).existsById(expected.getId());
         verify(productService).productExists(itemToAdd.getProduct());
+        verify(productService).getProductDetails((itemToAdd.getProduct().getId()));
         verify(orderItemService).addItemToOrderOrUpdateQuantity(itemToAdd, initialOrder);
         verify(orderRepo).save(orderWithItemAdded);
         assertThat(actual, is(expected));
@@ -135,6 +140,28 @@ class OrderToCustomerServiceTest {
         verify(productService).productExists(itemWithNonExistentProduct.getProduct());
     }
 
+    @Test
+    void addItemsToOrderFailsWhenNotEnoughStock(){
+        //GIVEN
+        OrderToCustomerDTO initialOrder = emptyOrderDTOWithStatusOpen();
+        OrderToCustomerDTO expected = orderDTOWithStatusOpenWithOrderItem();
+        OrderToCustomer orderWithItemAdded = orderOpenWithOrderItem();
+        OrderItemDTO itemToAdd = sampleOrderItemDTO();
+        when(orderRepo.findById(expected.getId())).thenReturn(Optional.of(emptyOrderOpen()));
+        when(orderRepo.existsById(expected.getId())).thenReturn(true);
+        when(productService.productExists(itemToAdd.getProduct())).thenReturn(true);
+        when(productService.getProductDetails(itemToAdd.getProduct().getId())).thenReturn(itemToAdd.getProduct());
+        when(orderItemService.addItemToOrderOrUpdateQuantity(itemToAdd, initialOrder)).thenReturn(itemToAdd);
+        when(orderRepo.save(orderWithItemAdded)).thenReturn(orderWithItemAdded);
+        //WHEN
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.addItemsToOrder(expected.getId(), itemToAdd, initialOrder));
+        //THEN
+        verify(orderRepo).findById(expected.getId());
+        verify(orderRepo).existsById(expected.getId());
+        verify(productService).productExists(itemToAdd.getProduct());
+        verify(productService).getProductDetails(itemToAdd.getProduct().getId());
+        assertThat(ex.getMessage(), is("Not enough items in stock!"));
+    }
     @Test
     void cashoutOrder() {
         //GIVEN

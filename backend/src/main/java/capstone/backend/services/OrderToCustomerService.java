@@ -95,9 +95,7 @@ public class OrderToCustomerService {
     }
 
     private OrderToCustomer validateOrderWhenAddItems(Long orderId, OrderItemDTO orderItem) {
-        if (!enoughItemsInStock(orderItem)) {
-            throw new IllegalArgumentException("Not enough items in stock!");
-        }
+
         if (!orderExists(orderId)) {
             throw new EntityNotFoundException("You're trying to add to an order that doesn't exist");
         }
@@ -106,6 +104,9 @@ public class OrderToCustomerService {
         }
         if (!productService.productExists(orderItem.getProduct())) {
             throw new IllegalArgumentException("You're trying to add a product that doesn't exist");
+        }
+        if (!enoughItemsInStock(orderItem)) {
+            throw new IllegalArgumentException("Not enough items in stock!");
         }
         return repo.findById(orderId).orElseThrow(EntityNotFoundException::new);
     }
