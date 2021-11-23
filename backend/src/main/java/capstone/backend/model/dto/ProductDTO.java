@@ -2,10 +2,7 @@ package capstone.backend.model.dto;
 
 import capstone.backend.model.db.Category;
 import capstone.backend.model.dto.contact.SupplierDTO;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
@@ -13,6 +10,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@With
 public class ProductDTO {
 
     private Long id;

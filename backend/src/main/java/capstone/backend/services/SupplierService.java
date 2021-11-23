@@ -4,21 +4,19 @@ import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.mapper.SupplierMapper;
 import capstone.backend.model.dto.contact.SupplierDTO;
 import capstone.backend.repo.SupplierRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class SupplierService {
 
     private final SupplierRepo repo;
 
-    public SupplierService(SupplierRepo repo) {
-        this.repo = repo;
-    }
-
-    public List<SupplierDTO> getAllSuppliersWithDetails() {
+       public List<SupplierDTO> getAllSuppliersWithDetails() {
         return repo.findAll()
                 .stream()
                 .map(SupplierMapper::mapSupplier)

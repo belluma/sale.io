@@ -8,6 +8,7 @@ import capstone.backend.model.dto.contact.SupplierDTO;
 import capstone.backend.model.dto.order.OrderToSupplierDTO;
 import capstone.backend.model.enums.OrderStatus;
 import capstone.backend.repo.OrderToSupplierRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -17,19 +18,13 @@ import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
 import static capstone.backend.model.enums.OrderStatus.RECEIVED;
 
 @Service
+@RequiredArgsConstructor
 public class OrderToSupplierService {
 
     private final OrderToSupplierRepo repo;
     private final ProductService productService;
     private final OrderItemService orderItemService;
     private final SupplierService supplierService;
-
-    public OrderToSupplierService(OrderToSupplierRepo repo, ProductService productService, OrderItemService orderItemService, SupplierService supplierService) {
-        this.repo = repo;
-        this.productService = productService;
-        this.orderItemService = orderItemService;
-        this.supplierService = supplierService;
-    }
 
     public List<OrderToSupplierDTO> getAllOrders() {
         return repo.findAll()
@@ -52,16 +47,8 @@ public class OrderToSupplierService {
     }
 
     public OrderToSupplierDTO receiveOrder(OrderToSupplierDTO order, OrderStatus status) throws EntityNotFoundException, IllegalArgumentException {
-        if (status != RECEIVED) {
-            throw new IllegalArgumentException("Your request couldn't be processed!");
-        }
-        if (!orderExists(order)) {
-            throw new EntityNotFoundException("The order you're trying to receive doesn't exist");
-        }
-        if(order.getStatus() == RECEIVED){
-            throw new IllegalArgumentException("The order you're trying to receive has already been received");
-        }
-        productService.adjustAmountInStock(order.getOrderItems());
+        validateOrderToReceive(order, status);
+        productService.receiveGoods(order.getOrderItems());
         OrderToSupplier orderToReceive = repo.getById(order.getId());
         orderToReceive.setStatus(RECEIVED);
         return mapOrder(repo.save(orderToReceive));
@@ -85,6 +72,18 @@ public class OrderToSupplierService {
         if (supplierDoesNotCarryProduct(order)) {
             throw new IllegalArgumentException("The supplier doesn't carry one or several of the items you tried to order!");
         }
+    }
+    private void validateOrderToReceive(OrderToSupplierDTO order, OrderStatus status){
+        if (status != RECEIVED) {
+            throw new IllegalArgumentException("Your request couldn't be processed!");
+        }
+        if (!orderExists(order)) {
+            throw new EntityNotFoundException("The order you're trying to receive doesn't exist");
+        }
+        if(order.getStatus() == RECEIVED){
+            throw new IllegalArgumentException("The order you're trying to receive has already been received");
+        }
+        productsExist(order, "Your order contains products that don't exist in your database");
     }
 
     private boolean productsExist(OrderToSupplierDTO order) {

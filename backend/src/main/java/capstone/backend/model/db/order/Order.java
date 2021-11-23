@@ -29,12 +29,16 @@ public abstract class Order {
     private List<OrderItem> orderItems;
     private OrderStatus status;
 
+    public Order(OrderStatus status){
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Order order = (Order) o;
-        return id != null && Objects.equals(id, order.id);
+        return Objects.equals(id, order.id);
     }
 
     @Override

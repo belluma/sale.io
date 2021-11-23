@@ -2,9 +2,11 @@ package capstone.backend.services;
 
 import capstone.backend.model.db.Product;
 import capstone.backend.model.db.order.OrderItem;
+import capstone.backend.model.db.order.OrderToCustomer;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.model.dto.order.OrderItemDTO;
+import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.repo.ProductRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -15,8 +17,9 @@ import java.util.List;
 import java.util.Optional;
 
 import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
-import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItemDTO;
+import static capstone.backend.utils.OrderToCustomerTestUtils.emptyOrderDTOWithStatusOpen;
+import static capstone.backend.utils.OrderToCustomerTestUtils.emptyOrderOpen;
 import static capstone.backend.utils.ProductTestUtils.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -127,20 +130,41 @@ class ProductServiceTest {
     }
 
     @Test
-    void adjustAmountInStock(){
+    void receiveGoods() {
         //GIVEN
         List<OrderItemDTO> receivedOrder = List.of(sampleOrderItemDTO());
         Long productId = receivedOrder.get(0).getProduct().getId();
         when(repo.getById(productId)).thenReturn(sampleProductWithId());
         //WHEN
-        service.adjustAmountInStock(receivedOrder);
+        service.receiveGoods(receivedOrder);
         //THEN
         verify(repo).getById(productId);
         verify(repo).save(sampleProductWithId().withAmountInStock(1));
     }
 
     @Test
-    void productExists(){
+    void receiveGoodsFailsWithNegativeAmount() {
+        //GIVEN
+        List<OrderItemDTO> receivedOrder = List.of(sampleOrderItemDTO());
+        receivedOrder.get(0).setQuantity(-1);
+        //WHEN - //THEN
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> service.receiveGoods(receivedOrder));
+        assertThat(ex.getMessage(), is("You can't receive orders with negative quantity count"));
+    }
+
+    @Test
+    void receiveGoodsFailsWhenOneOfItemsHasNegativeAmount() {
+        //GIVEN
+        OrderItemDTO orderItemWithNegativeAmount = sampleOrderItemDTO();
+        orderItemWithNegativeAmount.setQuantity(-1);
+        List<OrderItemDTO> receivedOrder = List.of(sampleOrderItemDTO(), sampleOrderItemDTO(), sampleOrderItemDTO(), orderItemWithNegativeAmount);
+        //WHEN - //THEN
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> service.receiveGoods(receivedOrder));
+        assertThat(ex.getMessage(), is("You can't receive orders with negative quantity count"));
+    }
+
+    @Test
+    void productExists() {
         //GIVEN
         ProductDTO product = sampleProductDTOWithDetailsWithId();
         //WHEN

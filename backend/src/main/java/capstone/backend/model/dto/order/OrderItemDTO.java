@@ -1,15 +1,13 @@
 package capstone.backend.model.dto.order;
 
 import capstone.backend.model.dto.ProductDTO;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@With
 public class OrderItemDTO {
 
     private Long id;

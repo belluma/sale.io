@@ -12,7 +12,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 
 import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
 import static capstone.backend.model.enums.OrderStatus.PENDING;
@@ -134,14 +133,16 @@ class OrderToSupplierServiceTest {
         OrderToSupplierDTO orderToReceive = sampleOrderDTOWithStatusPending();
         OrderToSupplierDTO expected = sampleOrderDTOWithStatusReceived();
         expected.setStatus(RECEIVED);
+        ProductDTO product = expected.getOrderItems().get(0).getProduct();
         when(orderRepo.existsById(orderToReceive.getId())).thenReturn(true);
         when(orderRepo.getById(orderToReceive.getId())).thenReturn(mapOrder(orderToReceive));
+        when(productService.productExists(product)).thenReturn(true);
         when(orderRepo.save(mapOrder(orderToReceive))).thenReturn(mapOrder(expected));
         //WHEN
         OrderToSupplierDTO actual = orderService.receiveOrder(orderToReceive, RECEIVED);
         //THEN
         verify(orderRepo).existsById(123L);
-        verify(productService).adjustAmountInStock(orderToReceive.getOrderItems());
+        verify(productService).receiveGoods(orderToReceive.getOrderItems());
         verify(orderRepo).getById(123L);
         assertThat(actual, is(expected));
     }
@@ -164,5 +165,18 @@ class OrderToSupplierServiceTest {
         //WHEN - //THEN
         Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.receiveOrder(order, PENDING));
         assertThat(ex.getMessage(), is("Your request couldn't be processed!"));
+    }
+
+    @Test
+    void receiveOrderThrowsWhenNonExitentProductInOrder(){
+        //GIVEN
+        OrderToSupplierDTO orderWithNonExistentProduct = sampleOrderDTOWithStatusPending();
+        ProductDTO product = orderWithNonExistentProduct.getOrderItems().get(0).getProduct();
+        when(orderRepo.existsById(orderWithNonExistentProduct.getId())).thenReturn(true);
+        when(orderRepo.getById(orderWithNonExistentProduct.getId())).thenReturn(mapOrder(orderWithNonExistentProduct));
+        when(productService.productExists(product)).thenReturn(false);
+        //WHEN -  /THEN
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.receiveOrder(orderWithNonExistentProduct, RECEIVED));
+        assertThat(ex.getMessage(), is("Your order contains products that don't exist in your database"));
     }
 }

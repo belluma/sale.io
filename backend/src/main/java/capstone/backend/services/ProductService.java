@@ -8,21 +8,17 @@ import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.repo.ProductRepo;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class ProductService {
 
     private final ProductRepo repo;
-
-    public ProductService(ProductRepo repo) {
-        this.repo = repo;
-    }
-
 
     public List<ProductDTO> getAllProductsWithDetails() {
         return repo
@@ -55,14 +51,26 @@ public class ProductService {
                 .save(ProductMapper.mapProduct(product)));
     }
 
-    public void adjustAmountInStock(List<OrderItemDTO> receivedOrder) {
+    public void receiveGoods(List<OrderItemDTO> receivedOrder)throws IllegalArgumentException {
+        receivedOrder.forEach(item -> {
+            if(item.getQuantity() < 0){
+                throw new IllegalArgumentException("You can't receive orders with negative quantity count");
+            }
+        });
         receivedOrder
                 .forEach(item -> {
                     Product productToReceive = repo.getById(item.getProduct().getId());
-                    int newAmount = item.getQuantity() + productToReceive.getAmountInStock();
+                    int newAmount = productToReceive.getAmountInStock() + item.getQuantity();
                     productToReceive.setAmountInStock(newAmount);
                     repo.save(productToReceive);
                 });
+    }
+
+    public void substractStockWhenAddingItemToBill(OrderItem itemsToSell) {
+        Product productToReceive = repo.getById(itemsToSell.getProduct().getId());
+        int newAmount = productToReceive.getAmountInStock() - itemsToSell.getQuantity()  ;
+        productToReceive.setAmountInStock(newAmount);
+        repo.save(productToReceive);
     }
 
     public boolean productExists(ProductDTO product) {
