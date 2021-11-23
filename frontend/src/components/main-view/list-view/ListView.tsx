@@ -2,11 +2,12 @@ import React from 'react'
 
 //component imports
 
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import {DataGrid, GridColDef} from '@mui/x-data-grid';
 import {IEmployee} from "../../../interfaces/IEmployee";
 import {ISupplier} from "../../../interfaces/ISupplier";
 import {IProduct} from "../../../interfaces/IProduct";
-import {Container} from "@mui/material";
+import {Container, Pagination} from "@mui/material";
+import {useStyles} from "./styles";
 
 //interface imports
 type Props = {
@@ -15,22 +16,24 @@ type Props = {
 };
 
 
-
-export default function ListView({rows, columns}:Props) {
+export default function ListView({rows, columns}: Props) {
+    //@ts-ignore
+    const classes = useStyles();
     return (
-        <Container maxWidth={false} sx={{height:0.99}} fixed>
+        <Container maxWidth={false} sx={{height: 0.99}} fixed>
             <DataGrid
-                classes={{root:"has-text-white", cell:"has-text-white"}}
+                classes={{root: classes.whiteFont, cell: "has-text-white"}}
                 autoHeight
                 autoPageSize
                 disableColumnMenu
                 rows={rows}
                 columns={columns}
                 pageSize={25}
-                rowsPerPageOptions={[ 25]}
+                rowsPerPageOptions={[25]}
                 checkboxSelection
                 disableSelectionOnClick
             />
         </Container>
     );
 }
+
