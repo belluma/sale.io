@@ -55,17 +55,11 @@ public class OrderToCustomerService {
     }
 
     private void updateAmountOnBill(OrderToCustomer order, OrderItem orderItem) {
-if(!order.getOrderItems().contains(orderItem)){
-    List<OrderItem> itemsOnBill = new ArrayList<>(order.getOrderItems());
-    itemsOnBill.add(orderItem);
-    order.setOrderItems(itemsOnBill);
-}
-        //        order.setOrderItems(
-//                order
-//                        .getOrderItems()
-//                        .stream()
-//                        .map(oldOrderItem -> Objects.equals(oldOrderItem.getId(), orderItem.getId()) ? mapOrderItem(orderItem) : oldOrderItem)
-//                        .toList());
+        if (!order.getOrderItems().contains(orderItem)) {
+            List<OrderItem> itemsOnBill = new ArrayList<>(order.getOrderItems());
+            itemsOnBill.add(orderItem);
+            order.setOrderItems(itemsOnBill);
+        }
     }
 
     public OrderToCustomerDTO removeItemsFromOrder(Long orderId, OrderItemDTO orderItem, OrderToCustomerDTO order) throws IllegalArgumentException, EntityNotFoundException {
@@ -101,6 +95,9 @@ if(!order.getOrderItems().contains(orderItem)){
     }
 
     private OrderToCustomer validateOrderWhenAddItems(Long orderId, OrderItemDTO orderItem) {
+        if (!enoughItemsInStock(orderItem)) {
+            throw new IllegalArgumentException("Not enough items in stock!");
+        }
         if (!orderExists(orderId)) {
             throw new EntityNotFoundException("You're trying to add to an order that doesn't exist");
         }
@@ -159,7 +156,10 @@ if(!order.getOrderItems().contains(orderItem)){
                 throw new IllegalArgumentException("It's not possible to remove more items than are on the order");
             }
         });
+    }
 
+    private boolean enoughItemsInStock(OrderItemDTO orderItem) {
+        return orderItem.getQuantity() <= productService.getProductDetails(orderItem.getProduct().getId()).getAmountInStock();
     }
 
 }

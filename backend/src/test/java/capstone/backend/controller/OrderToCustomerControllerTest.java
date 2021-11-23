@@ -148,6 +148,22 @@ class OrderToCustomerControllerTest {
     }
 
     @Test
+    void addItemsToOrderFailsWhenAmountInStockTooLow(){
+        //GIVEN
+        Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
+        OrderItem orderItem = sampleOrderItem().withProduct(product);
+        OrderToCustomer order1 = orderRepo.save(new OrderToCustomer( OPEN));
+        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItem));
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        String URL = BASEURL + "/add/?id=" + order1.getId();
+        //WHEN
+        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), OrderToCustomerDTO.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
+    }
+
+    @Test
     void removeItemsFromOrder() {
     }
 }
