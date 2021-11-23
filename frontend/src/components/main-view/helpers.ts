@@ -13,7 +13,7 @@ export const images = {
     success: '',
     none: ''
 }
-export const newItemData = {
+export const newItemThumbnail = {
     picture: "images/add.svg",
     model: Views.NEW
 }

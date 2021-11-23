@@ -227,6 +227,19 @@ class OrderToCustomerControllerTest {
     }
 
     @Test
+    void addItemsFailsWhenOrderDoesNotExist(){
+        //GIVEN
+
+
+        //WHEN
+
+
+        //THEN
+
+
+    }
+
+    @Test
     void addItemsToOrderFailsWhenAmountInStockTooLow(){
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
