@@ -60,3 +60,12 @@ export const parseOrderToThumbnail = ({supplier, id, orderItems, status}:IOrder)
         footerText: `Total: €${orderItems.reduce(getTotal, 0).toFixed(2)}`
     }
 }
+
+export const parseCategoryToThumbnail = (category: string, index:number):IDetailsData => {
+    return {
+        title: category,
+        picture: `/images/protected/categories/${category}`,
+        id: index.toString(),
+        model: Views.SALES,
+    }
+}
