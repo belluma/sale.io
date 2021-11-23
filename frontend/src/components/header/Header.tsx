@@ -40,14 +40,17 @@ function Header(props: Props) {
         <HideOnScroll {...props}>
             <AppBar sx={{bgcolor: 'primary.light', height: appBarHeight, zIndex: 1400}}>
                 <Toolbar>
-                    <Grid container>
-                        <Grid item md={0.5} xs={2} sm={1}>
-                            <Box component="img" sx={{height: 40, width: 40}} alt={"logo"} src={"saleio_logo.svg"}/>
+                    <Grid container alignItems={'center'} sx={{pt: 2}}>
+                        <Grid item container alignItems={'center'}>
+                            <Grid item sx={{pb:1}}>
+                            <Box component="img" sx={{height: 70, width: 70}} alt={"logo"} src={"saleio_logo.svg"}/>
+                            </Grid>
+                            <Grid item>
+                                <Box component="img" sx={{height: 60, width: 250}} alt={"lettering"}
+                                     src={"saleio_lettering.svg"}/>
+                            </Grid>
                         </Grid>
-                        <Grid>
-                            <Box component="img" sx={{height: 40, width: 250}} alt={"lettering"}
-                                 src={"saleio_lettering.svg"}/>
-                        </Grid>
+
                     </Grid>
                 </Toolbar>
                 <HeaderButtons appBarHeight={appBarHeight}/>
