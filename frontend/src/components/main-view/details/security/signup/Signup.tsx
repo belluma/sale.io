@@ -5,7 +5,7 @@ import {selectEmployees} from "../../../../../slicer/employeeSlice";
 
 
 //component imports
-import {Card, CardHeader, Button, Divider, FormGroup, TextField} from '@mui/material';
+import {Card, CardHeader, Button, Divider, FormGroup, TextField, Toolbar} from '@mui/material';
 import {Redirect} from "react-router";
 
 //interface imports
@@ -39,9 +39,11 @@ function Signup(props: Props) {
         setPasswordConfirmed(password.length > 3 && password === e.target.value);
     }
     return (
-        employees.length ? <Redirect to={"/login"}/> : <Card>
-            <CardHeader title="Choose your administrator Password" align="center"/>
+        employees.length ? <Redirect to={"/login"}/> :
+            <Card sx={{margin: 'auto', padding: 5, width:{xs:0.99, sm: 500}}}>
+            <CardHeader title="Choose your administrator name and password" align="center"/>
             <Divider/>
+                <Toolbar />
             <FormGroup>
                 <TextField onChange={handleInput} sx={{my: 1}} required value={credentials?.firstName} name="firstName"
                            label="firstName" type="text"/>
@@ -51,7 +53,8 @@ function Signup(props: Props) {
                            label="password" type="password"/>
                 <TextField onChange={handleRepeatPassword} sx={{my: 1}} required value={repeatedPassword}
                            label="confirm password" type="password"/>
-                <Button
+                <Toolbar />
+                <Button variant={'contained'}
                     disabled={!passwordConfirmed || (!credentials.firstName && !credentials.lastName)}
                     type="submit" onClick={register}>Register</Button>
             </FormGroup>
