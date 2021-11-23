@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
-import {IDetailsData,} from "../interfaces/IThumbnailData";
+import {IDetailsData,} from "../interfaces/IThumbnail";
 import {IDetailsState, initialDetailsData} from "../interfaces/IStates";
 
 
@@ -26,6 +26,7 @@ export const detailsSlice = createSlice({
         },
         hideDetails: (state) => {
             state.showDetails = false;
+            state.goBack = false;
         },
         setGoBack: (state) => {
          state.goBack = true;

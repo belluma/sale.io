@@ -3,9 +3,13 @@ package capstone.backend.model.dto.order;
 import capstone.backend.model.dto.ProductDTO;
 import lombok.*;
 
-@Data
+import java.util.Objects;
+
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
+@ToString
 @Builder
 @With
 public class OrderItemDTO {
@@ -14,4 +18,16 @@ public class OrderItemDTO {
     private ProductDTO product;
     private int quantity;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderItemDTO that = (OrderItemDTO) o;
+        return Objects.equals(product, that.product);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(product);
+    }
 }

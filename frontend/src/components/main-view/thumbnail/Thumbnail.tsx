@@ -11,10 +11,10 @@ import {chooseCurrentOrder} from "../../../slicer/orderSlice";
 
 import {Card, CardActions, CardContent, CardHeader, CardMedia, Divider} from "@mui/material";
 //interface imports
-import {IThumbnailData, Views} from '../../../interfaces/IThumbnailData';
+import {IThumbnail, Views} from '../../../interfaces/IThumbnail';
 
 type Props = {
-    data: IThumbnailData
+    data: IThumbnail
 }
 
 
@@ -39,7 +39,7 @@ function Thumbnail({data}: Props) {
         <Card onClick={onClick} sx={{display: "flex", flexDirection: "column", height: 500, width: 345, cursor:'pointer'}}>
             <CardHeader title={title} subtitle={subtitle}/>
             <CardMedia
-                sx={{flexGrow: 1}}
+                sx={{flexGrow: 1, maxHeight: 350}}
                 component="img"
                 height="350"
                 image={picture || images[model]}

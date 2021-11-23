@@ -35,6 +35,7 @@ public class Product {
     private int maxAmount;
     private int unitSize;
     private int amountInStock;
+    private String picture;
 
 
     @Override

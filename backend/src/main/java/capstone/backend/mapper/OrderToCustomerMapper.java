@@ -3,7 +3,8 @@ package capstone.backend.mapper;
 import capstone.backend.model.db.order.OrderToCustomer;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
 
-import static capstone.backend.model.enums.OrderStatus.PENDING;
+import static capstone.backend.model.enums.OrderToCustomerStatus.OPEN;
+import static capstone.backend.model.enums.OrderToSupplierStatus.PENDING;
 
 public class OrderToCustomerMapper {
 
@@ -23,7 +24,7 @@ public class OrderToCustomerMapper {
             mappedOrder.setId(order.getId());
         }
         if (order.getStatus() == null){
-            mappedOrder.setStatus(PENDING);
+            mappedOrder.setStatus(OPEN);
         }else {
             mappedOrder.setStatus(order.getStatus());
         }
@@ -42,7 +43,7 @@ public static OrderToCustomerDTO mapOrder(OrderToCustomer order){
             mappedOrder.setId(order.getId());
         }
         if (order.getStatus() == null){
-            mappedOrder.setStatus(PENDING);
+            mappedOrder.setStatus(OPEN);
         }else {
             mappedOrder.setStatus(order.getStatus());
         }

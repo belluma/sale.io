@@ -9,7 +9,7 @@ import {
     setDetailData
 } from "../../../slicer/detailsSlice";
 import { selectCurrentSupplier } from '../../../slicer/supplierSlice';
-import {parseSupplierToThumbnailData} from "../../../interfaces/IThumbnailData";
+import {parseSupplierToThumbnail} from "../../../interfaces/IThumbnail";
 //component imports
 import {
     Container,
@@ -53,7 +53,7 @@ function Details(props: Props) {
     }
     const backToSupplier = () => {
         dispatch(resetGoBack());
-        dispatch(setDetailData(parseSupplierToThumbnailData(supplier)));
+        dispatch(setDetailData(parseSupplierToThumbnail(supplier)));
     }
 
     return (

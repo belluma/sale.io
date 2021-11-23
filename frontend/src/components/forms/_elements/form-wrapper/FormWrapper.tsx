@@ -17,7 +17,7 @@ import ProductForm from "../../product/ProductForm";
 import OrderForm from "../../order/OrderForm";
 
 //interface imports
-import {Model} from "../../../../interfaces/IThumbnailData";
+import {Model} from "../../../../interfaces/IThumbnail";
 
 
 type Props = {

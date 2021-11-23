@@ -1,5 +1,5 @@
 import {IUserCredentials, IEmployee} from "./IEmployee";
-import {IDetailsData, Views} from "./IThumbnailData";
+import {IDetailsData, Views} from "./IThumbnail";
 import {IProduct} from "./IProduct";
 import {ICustomer} from "./ICustomer";
 import {ISupplier} from "./ISupplier";

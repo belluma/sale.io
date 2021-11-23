@@ -1,6 +1,8 @@
 package capstone.backend.services;
 
+import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.db.order.OrderToCustomer;
+import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.repo.OrderToCustomerRepo;
@@ -14,9 +16,10 @@ import java.util.Optional;
 
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 import static capstone.backend.mapper.OrderToCustomerMapper.mapOrder;
-import static capstone.backend.model.enums.OrderStatus.OPEN;
+import static capstone.backend.model.enums.OrderToCustomerStatus.OPEN;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItemDTO;
 import static capstone.backend.utils.OrderToCustomerTestUtils.*;
+import static capstone.backend.utils.ProductTestUtils.sampleProductDTOWithDetailsWithId;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -70,10 +73,12 @@ class OrderToCustomerServiceTest {
         OrderToCustomerDTO initialOrder = emptyOrderDTOWithStatusOpen();
         OrderToCustomerDTO expected = orderDTOWithStatusOpenWithOrderItem();
         OrderToCustomer orderWithItemAdded = orderOpenWithOrderItem();
-        OrderItemDTO itemToAdd = sampleOrderItemDTO();
+        ProductDTO productToAdd = sampleProductDTOWithDetailsWithId().withAmountInStock(1);
+        OrderItemDTO itemToAdd = sampleOrderItemDTO().withProduct(productToAdd);
         when(orderRepo.findById(expected.getId())).thenReturn(Optional.of(emptyOrderOpen()));
         when(orderRepo.existsById(expected.getId())).thenReturn(true);
         when(productService.productExists(itemToAdd.getProduct())).thenReturn(true);
+        when(productService.getProductDetails(itemToAdd.getProduct().getId())).thenReturn(itemToAdd.getProduct());
         when(orderItemService.addItemToOrderOrUpdateQuantity(itemToAdd, initialOrder)).thenReturn(itemToAdd);
         when(orderRepo.save(orderWithItemAdded)).thenReturn(orderWithItemAdded);
         //WHEN
@@ -82,6 +87,7 @@ class OrderToCustomerServiceTest {
         verify(orderRepo, times(2)).findById(expected.getId());
         verify(orderRepo).existsById(expected.getId());
         verify(productService).productExists(itemToAdd.getProduct());
+        verify(productService).getProductDetails((itemToAdd.getProduct().getId()));
         verify(orderItemService).addItemToOrderOrUpdateQuantity(itemToAdd, initialOrder);
         verify(orderRepo).save(orderWithItemAdded);
         assertThat(actual, is(expected));
@@ -135,6 +141,28 @@ class OrderToCustomerServiceTest {
     }
 
     @Test
+    void addItemsToOrderFailsWhenNotEnoughStock(){
+        //GIVEN
+        OrderToCustomerDTO initialOrder = emptyOrderDTOWithStatusOpen();
+        OrderToCustomerDTO expected = orderDTOWithStatusOpenWithOrderItem();
+        OrderToCustomer orderWithItemAdded = orderOpenWithOrderItem();
+        OrderItemDTO itemToAdd = sampleOrderItemDTO();
+        when(orderRepo.findById(expected.getId())).thenReturn(Optional.of(emptyOrderOpen()));
+        when(orderRepo.existsById(expected.getId())).thenReturn(true);
+        when(productService.productExists(itemToAdd.getProduct())).thenReturn(true);
+        when(productService.getProductDetails(itemToAdd.getProduct().getId())).thenReturn(itemToAdd.getProduct());
+        when(orderItemService.addItemToOrderOrUpdateQuantity(itemToAdd, initialOrder)).thenReturn(itemToAdd);
+        when(orderRepo.save(orderWithItemAdded)).thenReturn(orderWithItemAdded);
+        //WHEN
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.addItemsToOrder(expected.getId(), itemToAdd, initialOrder));
+        //THEN
+        verify(orderRepo).findById(expected.getId());
+        verify(orderRepo).existsById(expected.getId());
+        verify(productService).productExists(itemToAdd.getProduct());
+        verify(productService).getProductDetails(itemToAdd.getProduct().getId());
+        assertThat(ex.getMessage(), is("Not enough items in stock!"));
+    }
+    @Test
     void cashoutOrder() {
         //GIVEN
         OrderToCustomerDTO orderToCashout = orderDTOWithStatusOpenWithOrderItem();
@@ -148,16 +176,18 @@ class OrderToCustomerServiceTest {
         verify(orderRepo, times(2)).findById(orderToCashout.getId());
         verify(orderRepo).save(orderPaidWithOrderItem());
     }
+
     @Test
-    void cashoutOrderFailsWhenOrderNonExistent(){
+    void cashoutOrderFailsWhenOrderNonExistent() {
         //GIVEN
         OrderToCustomerDTO orderToCashout = orderDTOWithStatusOpenWithOrderItem();
         when(orderRepo.findById(orderToCashout.getId())).thenReturn(Optional.empty());
         //WHEN - //THEN
         assertThrows(EntityNotFoundException.class, () -> orderService.cashoutOrder(orderToCashout));
     }
+
     @Test
-    void cashoutOrderFailsWhenOrderAlreadyPaid(){
+    void cashoutOrderFailsWhenOrderAlreadyPaid() {
         //GIVEN
         OrderToCustomerDTO orderToCashout = orderDTOWithStatusOpenWithOrderItem();
         when(orderRepo.findById(orderToCashout.getId())).thenReturn(Optional.of(orderPaidWithOrderItem()));
@@ -166,4 +196,153 @@ class OrderToCustomerServiceTest {
         assertThat(ex.getMessage(), is("This order has already been cashed out!"));
     }
 
+    @Test
+    void removeItemEntirelyFromOrder() {
+        //GIVEN
+        OrderItemDTO orderItem = sampleOrderItemDTO();
+        OrderToCustomerDTO order = orderDTOWithStatusOpenWithOrderItem();
+        OrderToCustomerDTO expected = emptyOrderDTOWithStatusOpen();
+        Long orderId = order.getId();
+        when(orderRepo.existsById(orderId)).thenReturn(true);
+        when(orderRepo.findById(orderId)).thenReturn(Optional.of(mapOrder(order)));
+        when(orderRepo.save(mapOrder(expected))).thenReturn(mapOrder(expected));
+        when(orderItemService.itemAlreadyOnOrder(orderItem, order)).thenReturn(Optional.of(orderItem));
+        when(productService.productExists(orderItem.getProduct())).thenReturn(true);
+        doAnswer(i -> {
+            OrderToCustomerDTO orderToReduceFrom = i.getArgument(1);
+            orderToReduceFrom.setOrderItems(List.of());
+            return null;
+        }).when(orderItemService).reduceQuantityOfOrderItem(orderItem, order);
+        doAnswer(i -> {
+            OrderItem orderItemThatHasBeenReduced = i.getArgument(0);
+            orderItemThatHasBeenReduced.getProduct().setAmountInStock(0);
+            return null;
+        }).when(productService).resetAmountInStockWhenRemovingFromBill(mapOrderItem(orderItem));
+        //WHEN
+        OrderToCustomerDTO actual = orderService.removeItemsFromOrder(orderId, orderItem, order);
+        //THEN
+        verify(orderRepo).existsById(orderId);
+        verify(orderRepo, times(2)).findById(orderId);
+        verify(orderItemService).itemAlreadyOnOrder(orderItem, order);
+        verify(productService).productExists(orderItem.getProduct());
+        verify(orderItemService).reduceQuantityOfOrderItem(orderItem, order);
+        verify(productService).resetAmountInStockWhenRemovingFromBill(mapOrderItem(orderItem));
+        assertThat(actual, is(expected));
+        assertThat(orderItem.getProduct().getAmountInStock(), is(0));
+    }
+
+    @Test
+    void deductAmountOnAnOrderWithSeveralItems() {
+        //GIVEN
+        OrderItemDTO orderItem = sampleOrderItemDTO();
+        OrderToCustomerDTO order = orderDTOWithThreeItemsAndStatusOpen();
+        OrderToCustomerDTO expected = orderDTOWithTwoItemsAndStatusOpen();
+        Long orderId = order.getId();
+        when(productService.productExists(any())).thenReturn(true);
+        when(orderRepo.existsById(orderId)).thenReturn(true);
+        when(orderRepo.findById(orderId)).thenReturn(Optional.of(mapOrder(order)));
+        when(orderRepo.save(mapOrder(expected))).thenReturn(mapOrder(expected));
+        when(orderItemService.itemAlreadyOnOrder(orderItem, order)).thenReturn(Optional.of(orderItem));
+        doAnswer(i -> {
+            OrderToCustomerDTO orderToReduceFrom = i.getArgument(1);
+            orderToReduceFrom.setOrderItems(expected.getOrderItems());
+            return null;
+        }).when(orderItemService).reduceQuantityOfOrderItem(orderItem, order);
+        doAnswer(i -> {
+            OrderItem orderItemThatHasBeenReduced = i.getArgument(0);
+            orderItemThatHasBeenReduced.getProduct().setAmountInStock(0);
+            return null;
+        }).when(productService).resetAmountInStockWhenRemovingFromBill(mapOrderItem(orderItem));
+        //WHEN
+        OrderToCustomerDTO actual = orderService.removeItemsFromOrder(orderId, orderItem, order);
+        //THEN
+        verify(orderRepo).existsById(orderId);
+        verify(orderRepo, times(2)).findById(orderId);
+        verify(orderItemService).itemAlreadyOnOrder(orderItem, order);
+        verify(productService).productExists(orderItem.getProduct());
+        verify(orderItemService).reduceQuantityOfOrderItem(orderItem, order);
+        verify(productService).resetAmountInStockWhenRemovingFromBill(mapOrderItem(orderItem));
+        assertThat(actual, is(expected));
+        assertThat(orderItem.getProduct().getAmountInStock(), is(0));
+    }
+
+    @Test
+    void removeItemsFromOrderFailsWhenOrderNonExistent() {
+        //GIVEN
+        OrderItemDTO orderItem = sampleOrderItemDTO();
+        OrderToCustomerDTO order = orderDTOWithThreeItemsAndStatusOpen();
+        when(orderRepo.existsById(order.getId())).thenReturn(false);
+        //WHEN - //THEN
+        Exception ex = assertThrows(EntityNotFoundException.class, () -> orderService.removeItemsFromOrder(order.getId(), orderItem, order));
+        assertThat(ex.getMessage(), is("You're trying to remove from an order that doesn't exist"));
+        verify(orderRepo).existsById(order.getId());
+    }
+
+    @Test
+    void removeItemsFailsWhenOrderAlreadyPaid() {
+        OrderToCustomerDTO order = orderDTOWithStatusOpenWithOrderItem();
+        OrderItemDTO orderItem = sampleOrderItemDTO();
+        when(orderRepo.existsById(order.getId())).thenReturn(true);
+        when(orderRepo.findById(order.getId())).thenReturn(Optional.of(orderPaidWithOrderItem()));
+        //WHEN - //THEN
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.removeItemsFromOrder(order.getId(), orderItem, order));
+        assertThat(ex.getMessage(), is("This order has already been cashed out!"));
+        verify(orderRepo).existsById(order.getId());
+        verify(orderRepo).findById(order.getId());
+    }
+
+    @Test
+    void removeItemsFailsWhenItemNotOnOrder() {
+        //GIVEN
+        OrderToCustomerDTO order = orderDTOWithStatusOpenWithOrderItem();
+        OrderItemDTO orderItem = sampleOrderItemDTO();
+        when(orderRepo.existsById(order.getId())).thenReturn(true);
+        when(orderRepo.findById(order.getId())).thenReturn(Optional.of(mapOrder(order)));
+        when(orderItemService.itemAlreadyOnOrder(orderItem, order)).thenReturn(Optional.empty());
+        //WHEN - //THEN
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.removeItemsFromOrder(order.getId(), orderItem, order));
+        assertThat(ex.getMessage(), is("The item you're trying to remove is not on the order"));
+        verify(orderRepo).existsById(order.getId());
+        verify(orderRepo).findById(order.getId());
+        verify(orderItemService).itemAlreadyOnOrder(orderItem, order);
+    }
+
+    @Test
+    void removeItemsFailsWhenProductDoesNotExist() {
+        //GIVEN
+        OrderToCustomerDTO order = orderDTOWithStatusOpenWithOrderItem();
+        OrderItemDTO orderItem = sampleOrderItemDTO();
+        when(orderRepo.existsById(order.getId())).thenReturn(true);
+        when(orderRepo.findById(order.getId())).thenReturn(Optional.of(mapOrder(order)));
+        when(orderItemService.itemAlreadyOnOrder(orderItem, order)).thenReturn(Optional.of(orderItem));
+        when(productService.productExists(orderItem.getProduct())).thenReturn(false);
+        //WHEN - //THEN
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.removeItemsFromOrder(order.getId(), orderItem, order));
+        assertThat(ex.getMessage(), is("You're trying to remove a product that doesn't exist"));
+        verify(orderRepo).existsById(order.getId());
+        verify(orderRepo).findById(order.getId());
+        verify(orderItemService).itemAlreadyOnOrder(orderItem, order);
+        verify(productService).productExists(orderItem.getProduct());
+    }
+
+    @Test
+    void removeItemsFailsWhenTryingToRemoveMoreItemsThanOnList() {
+        //GIVEN
+        OrderItemDTO orderItem = sampleOrderItemDTO().withQuantity(2);
+        OrderToCustomerDTO order = orderDTOWithStatusOpenWithOrderItem();
+        OrderToCustomerDTO expected = emptyOrderDTOWithStatusOpen();
+        Long orderId = order.getId();
+        when(orderRepo.existsById(orderId)).thenReturn(true);
+        when(orderRepo.findById(orderId)).thenReturn(Optional.of(mapOrder(order)));
+        when(orderRepo.save(mapOrder(expected))).thenReturn(mapOrder(expected));
+        when(orderItemService.itemAlreadyOnOrder(orderItem, order)).thenReturn(Optional.of(orderItem));
+        when(productService.productExists(orderItem.getProduct())).thenReturn(true);
+        //WHEN - //THEN
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.removeItemsFromOrder(orderId, orderItem, order));
+        assertThat(ex.getMessage(), is("It's not possible to remove more items than are on the order"));
+        verify(orderRepo).existsById(orderId);
+        verify(orderRepo).findById(orderId);
+        verify(orderItemService).itemAlreadyOnOrder(orderItem, order);
+        verify(productService).productExists(orderItem.getProduct());
+    }
 }

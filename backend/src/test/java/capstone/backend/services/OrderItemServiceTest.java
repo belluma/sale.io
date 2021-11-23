@@ -1,6 +1,6 @@
 package capstone.backend.services;
 
-import capstone.backend.model.db.order.OrderItem;
+import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.repo.OrderItemRepo;
@@ -76,7 +76,7 @@ class OrderItemServiceTest {
     }
 
     @Test
-    void addItemToOrderOrUpdateQuantityAddsWhenItemAlreadyOnOrder(){
+    void addItemToOrderOrUpdateQuantityAddsWhenItemAlreadyOnOrder() {
         //GIVEN
         OrderToCustomerDTO order = orderDTOWithStatusOpenWithOrderItem();
         OrderItemDTO itemToAdd = sampleOrderItemDTO();
@@ -88,10 +88,11 @@ class OrderItemServiceTest {
         assertThat(actual, is(expected));
         verify(repo).save(mapOrderItem(expected));
     }
-@Test
-    void addItemToOrderOrUpdateQuantityAddsWhenItemOneOfSeveralAlreadyOnOrder(){
+
+    @Test
+    void addItemToOrderOrUpdateQuantityAddsWhenItemOneOfSeveralAlreadyOnOrder() {
         //GIVEN
-        OrderToCustomerDTO order = orderDTOWithSeveralItemsAndStatusOpen();
+        OrderToCustomerDTO order = orderDTOWithThreeItemsAndStatusOpen();
         OrderItemDTO itemToAdd = sampleOrderItemDTO();
         OrderItemDTO expected = sampleOrderItemDTO().withQuantity(2);
         when(repo.save(mapOrderItem(expected))).thenReturn(mapOrderItem(expected));
@@ -101,8 +102,9 @@ class OrderItemServiceTest {
         assertThat(actual, is(expected));
         verify(repo).save(mapOrderItem(expected));
     }
+
     @Test
-    void addItemToOrderOrUpdateQuantityAddsNewProductToEmptyOrder(){
+    void addItemToOrderOrUpdateQuantityAddsNewProductToEmptyOrder() {
         //GIVEN
         OrderToCustomerDTO emptyOrder = emptyOrderDTOWithStatusOpen();
         OrderItemDTO expected = sampleOrderItemDTO();
@@ -113,10 +115,11 @@ class OrderItemServiceTest {
         assertThat(actual, is(expected));
         verify(repo).save(mapOrderItem(expected));
     }
+
     @Test
-    void addItemToOrderOrUpdateQuantityAddsNewProductToOrderThatAlreadyHasProductsOnIt(){
+    void addItemToOrderOrUpdateQuantityAddsNewProductToOrderThatAlreadyHasProductsOnIt() {
         //GIVEN
-        OrderToCustomerDTO order = orderDTOWithSeveralItemsAndStatusOpen();
+        OrderToCustomerDTO order = orderDTOWithThreeItemsAndStatusOpen();
         OrderItemDTO expected = sampleOrderItemDTO().withProduct(sampleProductDTOWithDetailsWithId().withId(1000L));
         when(repo.save(mapOrderItem(expected))).thenReturn(mapOrderItem(expected));
         //WHEN
@@ -124,5 +127,27 @@ class OrderItemServiceTest {
         //THEN
         assertThat(actual, is(expected));
         verify(repo).save(mapOrderItem(expected));
+    }
+
+    @Test
+    void reduceQuantityOfOrderItemDeletesEntryInRepoWhenNewQuantityZero() {
+        //GIVEN
+        OrderItemDTO orderItemToReduce = sampleOrderItemDTO();
+        OrderToCustomerDTO order = orderDTOWithOrderItem();
+        //WHEN
+        service.reduceQuantityOfOrderItem(orderItemToReduce, order);
+        //THEN
+        verify(repo).deleteById(orderItemToReduce.getId());
+    }
+     @Test
+    void reduceQuantityOfOrderItemSavesNewQuantityWhenMoreThanZero() {
+        //GIVEN
+        OrderItemDTO orderItemToReduce = sampleOrderItemDTO();
+        OrderToCustomerDTO order = orderDTOWithOrderItem();
+        order.getOrderItems().get(0).setQuantity(23);
+        //WHEN
+        service.reduceQuantityOfOrderItem(orderItemToReduce, order);
+        //THEN
+        verify(repo).save(mapOrderItem(orderItemToReduce));
     }
 }

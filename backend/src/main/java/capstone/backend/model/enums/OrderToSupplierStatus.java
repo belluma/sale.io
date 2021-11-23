@@ -1,8 +1,7 @@
 package capstone.backend.model.enums;
 
-public enum OrderStatus {
+public enum OrderToSupplierStatus {
     PENDING,
     RECEIVED,
-    OPEN,
-    PAID
+
 }

@@ -1,6 +1,6 @@
 import {Dispatch} from "@reduxjs/toolkit";
 import {setDetailData, showDetails} from "./detailsSlice";
-import {IDetailsData, Views} from "../interfaces/IThumbnailData";
+import {IDetailsData, Views} from "../interfaces/IThumbnail";
 import {IOrder} from "../interfaces/IOrder";
 import {IProduct} from "../interfaces/IProduct";
 import {IEmployee} from "../interfaces/IEmployee";

@@ -22,6 +22,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static capstone.backend.utils.EmployeeTestUtils.sampleUser;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -69,6 +70,6 @@ class EmployeeControllerTest {
         ResponseEntity<EmployeeDTO[]> response = restTemplate.getForEntity("/api/employees", EmployeeDTO[].class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertIterableEquals(Arrays.asList(response.getBody()), List.of(mapper.mapEmployeeAndConcealData(sampleUser())));
+        assertIterableEquals(Arrays.asList(Objects.requireNonNull(response.getBody())), List.of(mapper.mapEmployeeAndConcealData(sampleUser())));
     }
 }

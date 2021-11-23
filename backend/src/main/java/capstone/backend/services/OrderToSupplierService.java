@@ -6,7 +6,7 @@ import capstone.backend.model.db.order.OrderToSupplier;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.model.dto.contact.SupplierDTO;
 import capstone.backend.model.dto.order.OrderToSupplierDTO;
-import capstone.backend.model.enums.OrderStatus;
+import capstone.backend.model.enums.OrderToSupplierStatus;
 import capstone.backend.repo.OrderToSupplierRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
-import static capstone.backend.model.enums.OrderStatus.RECEIVED;
+import static capstone.backend.model.enums.OrderToSupplierStatus.RECEIVED;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +46,7 @@ public class OrderToSupplierService {
         return mapOrder(repo.save(mapOrder(order)));
     }
 
-    public OrderToSupplierDTO receiveOrder(OrderToSupplierDTO order, OrderStatus status) throws EntityNotFoundException, IllegalArgumentException {
+    public OrderToSupplierDTO receiveOrder(OrderToSupplierDTO order, OrderToSupplierStatus status) throws EntityNotFoundException, IllegalArgumentException {
         validateOrderToReceive(order, status);
         productService.receiveGoods(order.getOrderItems());
         OrderToSupplier orderToReceive = repo.getById(order.getId());
@@ -73,7 +73,7 @@ public class OrderToSupplierService {
             throw new IllegalArgumentException("The supplier doesn't carry one or several of the items you tried to order!");
         }
     }
-    private void validateOrderToReceive(OrderToSupplierDTO order, OrderStatus status){
+    private void validateOrderToReceive(OrderToSupplierDTO order, OrderToSupplierStatus status){
         if (status != RECEIVED) {
             throw new IllegalArgumentException("Your request couldn't be processed!");
         }

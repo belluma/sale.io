@@ -66,14 +66,17 @@ public class ProductService {
                 });
     }
 
-    public void substractStockWhenAddingItemToBill(OrderItem itemsToSell) {
-        Product productToReceive = repo.getById(itemsToSell.getProduct().getId());
-        int newAmount = productToReceive.getAmountInStock() - itemsToSell.getQuantity()  ;
+    public void substractStockWhenAddingItemToBill(OrderItem itemsToAddToBill) {
+        Product productToReceive = repo.getById(itemsToAddToBill.getProduct().getId());
+        int newAmount = productToReceive.getAmountInStock() - itemsToAddToBill.getQuantity()  ;
         productToReceive.setAmountInStock(newAmount);
         repo.save(productToReceive);
     }
 
     public boolean productExists(ProductDTO product) {
         return (product.getId() != null && repo.existsById(product.getId()));
+    }
+
+    public void resetAmountInStockWhenRemovingFromBill(OrderItem orderItem) {
     }
 }

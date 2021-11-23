@@ -32,6 +32,7 @@ public class ProductMapper {
                 .maxAmount(product.getMaxAmount())
                 .unitSize(product.getUnitSize())
                 .amountInStock(product.getAmountInStock())
+                .picture(product.getPicture())
                 .build();
     }
 
@@ -49,6 +50,7 @@ public class ProductMapper {
                 .maxAmount(product.getMaxAmount())
                 .unitSize(product.getUnitSize())
                 .amountInStock(product.getAmountInStock())
+                .picture(product.getPicture())
                 .build();
     }
 

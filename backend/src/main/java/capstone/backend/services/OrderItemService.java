@@ -47,11 +47,27 @@ public class OrderItemService {
         return orderItem.get();
     }
 
-    private Optional<OrderItemDTO> itemAlreadyOnOrder(OrderItemDTO itemToAdd, OrderToCustomerDTO order) {
+    public Optional<OrderItemDTO> itemAlreadyOnOrder(OrderItemDTO itemToAdd, OrderToCustomerDTO order) {
         return order
                 .getOrderItems()
                 .stream()
                 .filter(orderItem -> orderItem.getProduct().equals(itemToAdd.getProduct()))
                 .findFirst();
+    }
+
+    public void reduceQuantityOfOrderItem(OrderItemDTO orderItemToReduce, OrderToCustomerDTO order) {
+        order
+                .getOrderItems()
+                .stream()
+                .filter(orderItem -> orderItem.equals(orderItemToReduce))
+                .findFirst()
+                .ifPresent(item -> {
+                    if (item.getQuantity() == orderItemToReduce.getQuantity()) {
+                        repo.deleteById(item.getId());
+                    } else {
+                        repo.save(mapOrderItem(item.withQuantity(item.getQuantity() - orderItemToReduce.getQuantity())));
+                    }
+                    ;
+                });
     }
 }

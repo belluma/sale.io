@@ -12,7 +12,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Drawer from "../../drawer/Drawer";
 import ChangeView from "./change-view/ChangeView";
 //interface imports
-import {Views} from "../../../interfaces/IThumbnailData";
+import {Views} from "../../../interfaces/IThumbnail";
 
 type Props = {
     appBarHeight: number,
