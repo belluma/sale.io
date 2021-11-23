@@ -207,6 +207,26 @@ class OrderToCustomerControllerTest {
     }
 
     @Test
+    void addItemsToOrderWithHigherQuantity(){
+        //GIVEN
+        Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)).withAmountInStock(42));
+        OrderItem orderItemToAdd = sampleOrderItem().withProduct(product).withQuantity(23);
+        OrderItem orderItemOnOrder = orderItemRepo.save(sampleOrderItem().withProduct(product));
+        OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(orderItemOnOrder), OPEN));
+        OrderToCustomerDTO expected = new OrderToCustomerDTO(order1.getId(), List.of(mapOrderItem(orderItemOnOrder)));
+        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToAdd));
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        String URL = BASEURL + "/add/?id=" + order1.getId();
+        //WHEN
+        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), OrderToCustomerDTO.class);
+        //THEN
+        assertThat(response.getBody(), is(expected));
+        assertThat(Objects.requireNonNull(response.getBody()).getOrderItems().get(0).getQuantity(), is(orderItemToAdd.getQuantity() + orderItemOnOrder.getQuantity()));
+        assertThat(response.getBody().getOrderItems().get(0).getProduct().getAmountInStock(), is(product.getAmountInStock() - orderItemToAdd.getQuantity()));
+    }
+
+    @Test
     void addItemsToOrderFailsWhenAmountInStockTooLow(){
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
