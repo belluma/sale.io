@@ -10,6 +10,7 @@ import GridView from "../../grid-view/GridView";
 import ListView from "../../list-view/ListView";
 import {parseEmployeeToThumbnail} from "../../thumbnail/helper";
 import {Views} from "../../../../interfaces/IThumbnail";
+import {parseEmployee} from "../../list-view/parseData";
 //interface imports
 
 type Props = {};
@@ -22,11 +23,11 @@ function EmployeesView(props: Props) {
 
     const employees = useAppSelector(selectEmployees)
     const thumbnails = employees.map(parseEmployeeToThumbnail);
-// const rowData = employees.map(parseEmployeeToList)
+    const rowData = employees.map(parseEmployee);
 
     return useAppSelector(selectView) ?
         <GridView gridItems={thumbnails} view={Views.EMPLOYEE}/> :
-        <ListView rows={employees} columns={employeeColumns}/>
+        <ListView rows={rowData} columns={employeeColumns}/>
 }
 
 export default EmployeesView;
