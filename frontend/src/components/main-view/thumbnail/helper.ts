@@ -5,6 +5,7 @@ import {IProduct} from "../../../interfaces/IProduct";
 import {IOrder} from "../../../interfaces/IOrder";
 import {getTotal} from "../../forms/order/helper";
 import {IDetailsData, Views} from "../../../interfaces/IThumbnail";
+import {ICustomer} from "../../../interfaces/ICustomer";
 
 export const parseName = ({firstName="", lastName=""}:IContact):string => {
     let name = '';
@@ -60,6 +61,19 @@ export const parseOrderToThumbnail = ({supplier, id, orderItems, status}:IOrder)
         footerText: `Total: €${orderItems.reduce(getTotal, 0).toFixed(2)}`
     }
 }
+export const parseCustomerToThumbnail = ({ id, orderItems, status}:ICustomer):IDetailsData => {
+    return{
+        title: `open order`,
+        picture: `/images/${status}.png`,
+        id: id?.toString() || "",
+        model: Views.CUSTOMER,
+        contentText: `${orderItems.length} item${orderItems.length > 1 ? "s" : ""}`,
+        footerText: `Total: €${orderItems.reduce(getTotal, 0).toFixed(2)}`
+    }
+}
+
+
+
 
 export const parseCategoryToThumbnail = (category: string, index:number):IDetailsData => {
     return {

@@ -27,7 +27,7 @@ const initialState: ICustomersState = {
     success: false,
     toSave: emptyCustomer
 }
-const route = "customers";
+const route = "orders_customers";
 
 export const validateCustomer = (customer: ICustomer): boolean => {
     const necessaryValues = ['name', 'suppliers', 'purchasePrice', 'unitSize']
@@ -46,14 +46,14 @@ const validateBeforeSendingToBackend = ({customer}: RootState) => {
 const hideDetailsAndReloadList = (dispatch: Dispatch) => {
     dispatch(hideDetails());
     //@ts-ignore
-    dispatch(getAllCustomers());
+    dispatch(getAllOpenCustomers());
 }
 
-export const getAllCustomers = createAsyncThunk<IResponseGetAllCustomers, void, { state: RootState, dispatch: Dispatch }>(
+export const getAllOpenCustomers = createAsyncThunk<IResponseGetAllCustomers, void, { state: RootState, dispatch: Dispatch }>(
     'customers/getAll',
     async (_, {getState, dispatch}) => {
         const token = getState().authentication.token;
-        const {data, status, statusText} = await apiGetAll(route, token);
+        const {data, status, statusText} = await apiGetAll(route + '/all', token);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
@@ -124,12 +124,12 @@ export const customerSlice = createSlice({
     },
     extraReducers: (builder => {
         builder
-            .addCase(getAllCustomers.pending, setPending)
+            .addCase(getAllOpenCustomers.pending, setPending)
             .addCase(getOneCustomer.pending, setPending)
             .addCase(createCustomer.pending, setPending)
             .addCase(editCustomer.pending, setPending)
             .addCase(deleteCustomer.pending, setPending)
-            .addCase(getAllCustomers.fulfilled, (state, action: PayloadAction<IResponseGetAllCustomers>) => {
+            .addCase(getAllOpenCustomers.fulfilled, (state, action: PayloadAction<IResponseGetAllCustomers>) => {
                 if (stopPendingAndHandleError(state, action, emptyCustomer)) return;
                 state.customers = action.payload.data;
             })

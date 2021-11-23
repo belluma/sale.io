@@ -2,9 +2,11 @@ import {IOrderItem} from "./IOrder";
 
 export interface ICustomer {
     id?: number,
-    orderItems: IOrderItem[]
+    orderItems: IOrderItem[],
+    status: "open" | 'paid'
 }
 
 export const emptyCustomer: ICustomer = {
-    orderItems: []
+    orderItems: [],
+    status: 'open'
 }
