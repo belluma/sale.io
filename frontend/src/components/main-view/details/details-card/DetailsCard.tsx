@@ -33,7 +33,7 @@ function DetailsCard({fullScreen, handleClose}: Props) {
         login: <Login/>,
         employee: <EmployeeDetails/>,
         product: <ProductDetails/>,
-        customer: <div/>,
+        customer: <><div></div><></></>,
         supplier: <SupplierDetails/>,
         order: <OrderPreview/>,
         error: <ErrorMessage statusText={subtitle}/>,
