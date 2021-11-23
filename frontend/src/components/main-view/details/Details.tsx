@@ -9,7 +9,7 @@ import {
     setDetailData
 } from "../../../slicer/detailsSlice";
 import {selectCurrentSupplier} from '../../../slicer/supplierSlice';
-import {parseSupplierToThumbnail} from "../../../interfaces/IThumbnail";
+import {} from "../../../interfaces/IThumbnail";
 //component imports
 import {
     Container,
@@ -22,6 +22,7 @@ import {
 import ClearIcon from '@mui/icons-material/Clear'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import DetailsCard from "./details-card/DetailsCard";
+import {parseSupplierToThumbnail} from "../thumbnail/helper";
 
 
 //interface imports

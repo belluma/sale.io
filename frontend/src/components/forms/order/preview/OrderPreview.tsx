@@ -1,6 +1,5 @@
 import React from 'react'
 import {receiveOrder, selectCurrentOrder, selectOrderToSave} from "../../../../slicer/orderSlice";
-import {parseName} from "../../../../interfaces/IThumbnail";
 import {getTotal} from "../helper";
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
 
@@ -24,6 +23,7 @@ import Grid from '@material-ui/core/Grid';
 //interface imports
 import {OrderStatus} from "../../../../interfaces/OrderStatus";
 import {IOrder} from "../../../../interfaces/IOrder";
+import {parseName} from "../../../main-view/thumbnail/helper";
 
 type Props = {
     isFormEnabled?: boolean,

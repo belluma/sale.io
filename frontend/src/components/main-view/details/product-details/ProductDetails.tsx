@@ -2,7 +2,7 @@ import React from 'react'
 import {useAppSelector} from "../../../../app/hooks";
 import {selectCurrentProduct} from "../../../../slicer/productSlice";
 import { Divider, Grid, Typography} from "@mui/material";
-import {parseName} from "../../../../interfaces/IThumbnail";
+import {parseName} from "../../thumbnail/helper";
 
 //component imports
 

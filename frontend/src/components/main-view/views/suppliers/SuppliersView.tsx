@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
-import {parseSupplierToThumbnail, Views} from "../../../../interfaces/IThumbnail";
+import { Views} from "../../../../interfaces/IThumbnail";
 import {getAllSuppliers, selectSuppliers} from "../../../../slicer/supplierSlice";
 import {supplierColumns} from "../../list-view/columnDefinition";
 import {selectView} from "../../../../slicer/viewSlice";
@@ -10,6 +10,7 @@ import GridView from "../../grid-view/GridView";
 import ListView from "../../list-view/ListView";
 import {getAllProducts} from "../../../../slicer/productSlice";
 import {getAllOrders} from "../../../../slicer/orderSlice";
+import {parseSupplierToThumbnail} from "../../thumbnail/helper";
 
 //interface imports
 

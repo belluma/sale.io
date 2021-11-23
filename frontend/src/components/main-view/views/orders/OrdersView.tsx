@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
-import {parseOrderToThumbnail, Views} from "../../../../interfaces/IThumbnail";
+import { Views} from "../../../../interfaces/IThumbnail";
 import {selectView} from "../../../../slicer/viewSlice";
 import {supplierColumns} from "../../list-view/columnDefinition";
 import {getAllOrders, selectOrders} from "../../../../slicer/orderSlice";
@@ -11,6 +11,7 @@ import ListView from "../../list-view/ListView";
 //interface imports
 
 import {IOrder} from "../../../../interfaces/IOrder";
+import {parseOrderToThumbnail} from "../../thumbnail/helper";
 
 type Props = {};
 
