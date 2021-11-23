@@ -39,7 +39,7 @@ function Thumbnail({data}: Props) {
         <Card onClick={onClick} sx={thumbnailStyles}>
             <CardHeader title={title} subtitle={subtitle}/>
             <CardMedia
-                sx={{flexGrow: 1, maxHeight: 350}}
+                sx={{flexGrow: 1, maxHeight: 220}}
                 component="img"
                 height="350"
                 image={picture || images[model]}
