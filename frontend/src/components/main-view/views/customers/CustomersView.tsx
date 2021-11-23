@@ -7,6 +7,7 @@ import React from 'react'
 type Props = {};
 
 function CustomersView(props: Props){
+
     return(
 <div></div>    )
 }

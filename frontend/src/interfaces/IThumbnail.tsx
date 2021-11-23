@@ -1,7 +1,7 @@
 export enum Model {
     EMPLOYEE = "employee",
     PRODUCT = "product",
-    SALES = "sales",
+    CUSTOMER = "customer",
     SUPPLIER = "supplier",
     ORDER = "order",
 }
@@ -13,7 +13,7 @@ export enum Views {
     ERROR = "error",
     EMPLOYEE = "employee",
     PRODUCT = "product",
-    SALES = "sales",
+    CUSTOMER = "customer",
     SUPPLIER = "supplier",
     ORDER = "order",
     NONE = "none",

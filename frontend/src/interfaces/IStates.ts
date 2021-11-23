@@ -66,3 +66,9 @@ export interface IAPIState {
     pending: boolean,
     selectedEntity: ICustomer | IEmployee | IProduct | ISupplier | undefined,
 }
+
+export interface ICustomersState extends IBaseState{
+    customers: ICustomer[],
+    current: ICustomer,
+    toSave: ICustomer
+}

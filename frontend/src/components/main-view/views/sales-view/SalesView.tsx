@@ -13,7 +13,7 @@ function SalesView(props: Props){
     const categories = ["Softdrinks", "Alkolische Getränke", "heiße Getränke", 'Salate', "Hauptgerichte", "Beilagen"]
     const thumbnails = categories.map(parseCategoryToThumbnail)
     return(
-       <GridView gridItems={thumbnails} view={Views.SALES} />
+       <GridView gridItems={thumbnails} view={Views.LOGIN} />
     )
 }
 
