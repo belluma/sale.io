@@ -55,7 +55,7 @@ export interface IOrdersState extends IBaseState {
     toSave: IOrder,
 }
 
-export type States = IProductsState | ISuppliersState | IOrdersState | IEmployeeState
+export type States = IProductsState | ISuppliersState | IOrdersState | IEmployeeState | ICustomersState
 
 
 export interface IAPIState {

@@ -63,6 +63,9 @@ export type Actions =
     | PayloadAction<IResponseGetOneSupplier>
     | PayloadAction<IResponseGetAllOrders>
     | PayloadAction<IResponseGetOneOrder>
+    | PayloadAction<IResponseGetAllCustomers>
+    | PayloadAction<IResponseGetOneCustomer>
+
 
 export interface IApiResponse {
     status: number,
