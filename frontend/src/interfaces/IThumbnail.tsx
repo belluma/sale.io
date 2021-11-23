@@ -14,6 +14,7 @@ export enum Views {
     EMPLOYEE = "employee",
     PRODUCT = "product",
     CUSTOMER = "customer",
+    NEWCUSTOMER = "newCustomer",
     SUPPLIER = "supplier",
     ORDER = "order",
     NONE = "none",

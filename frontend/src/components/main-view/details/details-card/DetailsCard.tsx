@@ -38,6 +38,7 @@ function DetailsCard({fullScreen, handleClose}: Props) {
         order: <OrderPreview/>,
         error: <ErrorMessage statusText={subtitle}/>,
         none: (<></>),
+        newCustomer: (<></>)
     }
     const showPic = (model !== "new" && model !== "order" && model !== "supplier");
     return (

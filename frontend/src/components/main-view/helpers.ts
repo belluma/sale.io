@@ -7,6 +7,7 @@ export const images = {
     employee: '/images/profile.svg',
     product: 'images/beer.png',
     customer: 'images/no_image.jpg',
+newCustomer: 'images/no_image.jpg',
     supplier: 'images/no_image.jpg',
     order: '',
     error: '/images/error.svg',

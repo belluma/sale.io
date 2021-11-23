@@ -20,7 +20,7 @@ type Props = {
 
 function GridView({gridItems, view, customer}: Props) {
     const isHidden = useAppSelector(selectView) ? "" : "is-hidden";
-    const thumbnailProps = customer ? {...newItemThumbnail, model: Views.CUSTOMER} : newItemThumbnail
+    const thumbnailProps = customer ? {...newItemThumbnail, model: Views.NEWCUSTOMER, id: '0'} : newItemThumbnail
     const newItemCard = <Grid item><Thumbnail data={{title: `new ${view}`, ...thumbnailProps}}/></Grid>;
     const thumbnails = gridItems.map(item => <Grid item key={item.id}><Thumbnail data={item}/></Grid>)
     return (

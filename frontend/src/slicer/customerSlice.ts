@@ -72,9 +72,7 @@ export const getOneCustomer = createAsyncThunk<IResponseGetOneCustomer, string, 
 export const createCustomer = createAsyncThunk<IResponseGetOneCustomer, void, { state: RootState, dispatch: Dispatch }>(
     'customers/create',
     async (_, {getState, dispatch}) => {
-        if (!validateBeforeSendingToBackend(getState())) {
-            return invalidDataError;
-        }
+        console.log(123)
         const token = getState().authentication.token
         const {data, status, statusText} = await apiCreate(route, token, getState().customer.toSave);
         handleError(status, statusText, dispatch);

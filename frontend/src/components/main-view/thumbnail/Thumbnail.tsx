@@ -8,10 +8,10 @@ import {chooseCurrentProduct} from "../../../slicer/productSlice";
 import {chooseCurrentSupplier} from "../../../slicer/supplierSlice";
 import {chooseCurrentOrder} from "../../../slicer/orderSlice";
 //component imports
-
 import {Card, CardActions, CardContent, CardHeader, CardMedia, Divider} from "@mui/material";
 //interface imports
 import {IThumbnail, Views} from '../../../interfaces/IThumbnail';
+import {createCustomer} from "../../../slicer/customerSlice";
 
 type Props = {
     data: IThumbnail
@@ -27,15 +27,18 @@ function Thumbnail({data}: Props) {
         employee: chooseCurrentEmployee,
         product: chooseCurrentProduct,
         customer: toBeReplaced,
+        newCustomer: createCustomer,
         supplier: chooseCurrentSupplier,
         order: chooseCurrentOrder,
     }
     const onClick = () => {
-        if (model !== Views.CUSTOMER) {
+        if(model !== Views.NEWCUSTOMER) {
             dispatch(setDetailData(data));
             dispatch(showDetails());
         }
-        if (model !== Views.NEW && model !== Views.ERROR && id) dispatch(selectors[model](id))
+        if (model !== Views.NEW && model !== Views.ERROR && id) {
+            dispatch(selectors[model](id));
+        }
     }
     return (
         <Card onClick={onClick} sx={thumbnailStyles}>
