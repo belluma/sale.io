@@ -19,7 +19,6 @@ import Pending from "../messages/pending/Pending";
 //interface imports
 import {Model} from "../../interfaces/IThumbnail";
 import SuccessMessage from "../messages/success-message/SuccessMessage";
-import {appBarHeight} from "../header/Header";
 
 type Props = {};
 
