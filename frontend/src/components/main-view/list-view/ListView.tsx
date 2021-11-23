@@ -7,7 +7,7 @@ import {IEmployee} from "../../../interfaces/IEmployee";
 import {ISupplier} from "../../../interfaces/ISupplier";
 import {IProduct} from "../../../interfaces/IProduct";
 import {Container} from "@mui/material";
-import {useStyles} from "./styles";
+import {useDataGridStyles} from "./styles";
 
 //interface imports
 type Props = {
@@ -17,7 +17,7 @@ type Props = {
 
 
 export default function ListView({rows, columns}: Props) {
-    const classes = useStyles();
+    const classes = useDataGridStyles();
     return (
         <Container maxWidth={false} sx={{height: 0.99}} fixed>
             <DataGrid

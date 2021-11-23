@@ -13,6 +13,7 @@ import Drawer from "../../drawer/Drawer";
 import ChangeView from "./change-view/ChangeView";
 //interface imports
 import {Views} from "../../../interfaces/IThumbnail";
+import {useButtonStyles} from "./styles";
 
 type Props = {
     appBarHeight: number,
@@ -38,6 +39,7 @@ function HeaderButtons({appBarHeight}: Props) {
                        variant={'contained'} size={'small'} key={view} name={view} onClick={reroute}>{view}S</Button>
     });
     const burgerMenu = <IconButton onClick={toggleDrawer}><MenuIcon/></IconButton>
+    const classes = useButtonStyles();
     return (
         <div>
             <Drawer open={drawerOpen} toggle={toggleDrawer} buttons={buttons}
@@ -45,7 +47,7 @@ function HeaderButtons({appBarHeight}: Props) {
             <Toolbar sx={{mb: 1, alignItems: "stretch", justifyContent: "space-between"}}>
                 {smallScreen ? burgerMenu : buttons}
                 {!smallScreen && <ChangeView key={"changeView"}/>}
-                {loggedIn && <IconButton onClick={handleLogout} edge="end">
+                {loggedIn && <IconButton classes={{root: classes.goldFont}} onClick={handleLogout} edge="end">
                     <LogoutIcon/>
                 </IconButton>}
             </Toolbar>
