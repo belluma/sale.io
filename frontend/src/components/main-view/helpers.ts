@@ -9,13 +9,21 @@ export const images = {
     customer: 'images/no_image.jpg',
     supplier: 'images/no_image.jpg',
     order: '',
-    error:'/images/error.svg',
+    error: '/images/error.svg',
     success: '',
     none: ''
 }
 export const newItemData = {
-    picture:"images/add.svg",
-    model:Views.NEW
+    picture: "images/add.svg",
+    model: Views.NEW
 }
 
+export const thumbnailStyles = {
+    display: "flex",
+    flexDirection: "column",
+    height: {xs: 500, md: 350},
+    width: {xs: 350, md: 245},
+    borderRadius: 8,
+    cursor: 'pointer'
+} as const
 

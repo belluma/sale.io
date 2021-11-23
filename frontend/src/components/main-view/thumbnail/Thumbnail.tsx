@@ -1,6 +1,6 @@
 import React from 'react'
 import {useAppDispatch} from '../../../app/hooks';
-import {images} from '../helpers'
+import {images, thumbnailStyles} from '../helpers'
 
 import {setDetailData, showDetails} from "../../../slicer/detailsSlice";
 import {chooseCurrentEmployee, toBeReplaced} from "../../../slicer/employeeSlice";
@@ -36,7 +36,7 @@ function Thumbnail({data}: Props) {
         if (model !== Views.NEW && model !== Views.ERROR && id) dispatch(selectors[model](id))
     }
     return (
-        <Card onClick={onClick} sx={{display: "flex", flexDirection: "column", height: 500, width: 345, cursor:'pointer'}}>
+        <Card onClick={onClick} sx={thumbnailStyles}>
             <CardHeader title={title} subtitle={subtitle}/>
             <CardMedia
                 sx={{flexGrow: 1, maxHeight: 350}}
