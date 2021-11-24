@@ -3,7 +3,7 @@ import {IEmployee} from "../../../interfaces/IEmployee";
 import {ISupplier} from "../../../interfaces/ISupplier";
 import {IProduct} from "../../../interfaces/IProduct";
 import {IOrder} from "../../../interfaces/IOrder";
-import {getTotal} from "../../forms/order/helper";
+import {getTotalWholeSale} from "../../forms/order/helper";
 import {IDetailsData, Views} from "../../../interfaces/IThumbnail";
 import {ICustomer} from "../../../interfaces/ICustomer";
 import {ICategory} from "../../../interfaces/ICategory";
@@ -59,7 +59,7 @@ export const parseOrderToThumbnail = ({supplier, id, orderItems, status}:IOrder)
         id: id?.toString() || "",
         model: Views.ORDER,
         contentText: `${orderItems.length} item${orderItems.length > 1 ? "s" : ""}`,
-        footerText: `Total: €${orderItems.reduce(getTotal, 0).toFixed(2)}`
+        footerText: `Total: €${orderItems.reduce(getTotalWholeSale, 0).toFixed(2)}`
     }
 }
 export const parseCustomerToThumbnail = ({ id, orderItems, status, name}:ICustomer):IDetailsData => {
@@ -69,8 +69,8 @@ export const parseCustomerToThumbnail = ({ id, orderItems, status, name}:ICustom
         picture: `/images/${status}.png`,
         id: id?.toString() || "",
         model: Views.CUSTOMER,
-        contentText:`total: €${orderItems.reduce(getTotal, 0).toFixed(2)}`,
-        footerText: `Total: €${orderItems.reduce(getTotal, 0).toFixed(2)}`
+        contentText:`total: €${orderItems.reduce(getTotalWholeSale, 0).toFixed(2)}`,
+        footerText: `Total: €${orderItems.reduce(getTotalWholeSale, 0).toFixed(2)}`
     }
 }
 

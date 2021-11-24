@@ -2,7 +2,10 @@ import React from 'react'
 import {useAppSelector} from "../../../../../app/hooks";
 import {selectCurrentProduct} from "../../../../../slicer/productSlice";
 import {selectCurrentCustomer} from "../../../../../slicer/customerSlice";
-import {getSubTotal, getTotal} from "../../../../forms/order/helper";
+import {
+    getSubTotalRetail,
+    getTotalRetail,
+} from "../../../../forms/order/helper";
 
 
 //component imports
@@ -19,8 +22,8 @@ type Props = {
 function BillPreview({quantity}: Props) {
     const product = useAppSelector(selectCurrentProduct);
     const order = useAppSelector(selectCurrentCustomer);
-    const subTotal = getSubTotal({product, quantity});
-    const total = order.orderItems.reduce(getTotal, 0);
+    const subTotal = getSubTotalRetail({product, quantity});
+    const total = order.orderItems.reduce(getTotalRetail, 0);
     return (
         <Grid container item flexDirection='row' justifyContent='flex-end'>
             <GridRow label='Price per unit:' price={`€ ${product.retailPrice?.toFixed(2)}`}/>

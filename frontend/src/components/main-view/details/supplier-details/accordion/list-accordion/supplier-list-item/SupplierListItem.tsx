@@ -1,5 +1,5 @@
 import React from 'react'
-import {getTotal} from "../../../../../../forms/order/helper";
+import {getTotalWholeSale} from "../../../../../../forms/order/helper";
 import { useAppDispatch } from '../../../../../../../app/hooks';
 import {chooseCurrentProduct} from "../../../../../../../slicer/productSlice";
 import {setDetailData, setGoBack} from "../../../../../../../slicer/detailsSlice";
@@ -31,7 +31,7 @@ function SupplierListItem({item}: Props) {
     }
     const quickInfo = ():string => {
         //@ts-ignore type check with instanceOfProduct function
-        return isProduct ? item.amountInStock || "" : `€${item.orderItems.reduce(getTotal, 0).toFixed(2)}`;
+        return isProduct ? item.amountInStock || "" : `€${item.orderItems.reduce(getTotalWholeSale, 0).toFixed(2)}`;
     }
     const showItemDetails = () => {
         if(!item.id) return;

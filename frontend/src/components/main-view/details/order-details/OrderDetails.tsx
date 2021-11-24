@@ -1,5 +1,5 @@
 import React from 'react'
-import { getTotal } from '../../../forms/order/helper';
+import {getTotalRetail, getTotalWholeSale} from '../../../forms/order/helper';
 
 
 //component imports
@@ -17,14 +17,15 @@ import {IOrderItem} from "../../../../interfaces/IOrder";
 type Props = {
     children?: ReactJSXElement[],
     orderItems: IOrderItem[],
-    isFormEnabled?: boolean
+    isFormEnabled?: boolean,
+    retail?: boolean
 };
 
-function OrderDetails({children, orderItems, isFormEnabled}: Props){
+function OrderDetails({children, orderItems, isFormEnabled, retail}: Props){
     const productsOnOrder = orderItems.map((item, i) => {
-        return <OrderItem form={isFormEnabled} key={i} item={item} index={i}/>
+        return <OrderItem form={isFormEnabled} key={i} item={item} retail={retail} index={i}/>
     })
-    const total = orderItems.reduce(getTotal, 0);
+    const total = orderItems.reduce(retail ? getTotalRetail : getTotalWholeSale, 0);
     return(
         <Card sx={{width: 0.99, height: 0.99, display: 'flex', flexDirection: 'column'}}>
             {children?.length && children.length > 1 && children[1]}
