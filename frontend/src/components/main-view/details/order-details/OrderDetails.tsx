@@ -26,11 +26,11 @@ function OrderDetails({children, orderItems, isFormEnabled, retail}: Props){
     })
     const total = orderItems.reduce(retail ? getTotalRetail : getTotalWholeSale, 0);
     return(
-        <Card sx={{width: 0.99, height: 0.99, display: 'flex', flexDirection: 'column'}}>
+        <Card sx={{width: 1, height: 1, display: 'flex', flexDirection: 'column'}}>
             {children?.length && children.length > 1 && children[1]}
             {children?.length && children.length > 2 && children[2]}
-            <CardContent>
-                <Grid container>
+            <CardContent >
+                <Grid  container>
                     {productsOnOrder}
                 </Grid>
             </CardContent>

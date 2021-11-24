@@ -7,3 +7,12 @@ export const useOffsetDialog = makeStyles({
         },
     }
 })
+
+export const useNoPadding = makeStyles({
+    noPadding: {
+        '& .MuiContainer-root': {
+            paddingLeft: 0,
+            paddingRight: 0
+        }
+    }
+})
