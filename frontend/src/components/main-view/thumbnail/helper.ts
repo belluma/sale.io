@@ -78,7 +78,7 @@ export const parseCustomerToThumbnail = ({ id, orderItems, status}:ICustomer):ID
 export const parseCategoryToThumbnail = (category: string, index:number):IDetailsData => {
     return {
         title: category,
-        picture: `/images/protected/categories/${category.split(' ')[0]}`,
+        picture: `/images/protected/categories/${category.split(' ')[0]}.jpg`,
         id: index.toString(),
         model: Views.LOGIN,
     }

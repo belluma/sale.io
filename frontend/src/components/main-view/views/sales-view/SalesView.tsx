@@ -14,8 +14,9 @@ type Props = {};
 
 function SalesView(props: Props){
     const currentCustomer = useAppSelector(selectCurrentCustomer)
-    const categories = ["Softdrinks", "Alkolische Getränke", "heiße Getränke", 'Salate', "Hauptgerichte", "Beilagen"]
+    const categories = ["Softdrinks", "Alkoholische Getränke", "Heisse Getränke", 'Salate', "Hauptgerichte", "Beilagen"]
     const thumbnails = categories.map(parseCategoryToThumbnail)
+    console.log(thumbnails)
     return(
         !currentCustomer.id ? <Redirect to={'start'}  /> : <GridView gridItems={thumbnails} view={Views.LOGIN} />
     )
