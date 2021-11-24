@@ -5,6 +5,7 @@ import {selectDetailsData} from "../../../../slicer/detailsSlice";
 
 import {useLocation} from "react-router";
 //component imports
+
 import {Card, CardContent, CardHeader, CardMedia, Divider} from "@mui/material";
 import Login from "../security/login/Login";
 import FormWrapper from "../../../forms/_elements/form-wrapper/FormWrapper";
@@ -12,9 +13,11 @@ import ErrorMessage from "../../../messages/error-message/ErrorMessage";
 import OrderPreview from "../../../forms/order/preview/OrderPreview";
 import ProductDetails from "../product-details/ProductDetails";
 import EmployeeDetails from "../employee-details/EmployeeDetails";
+import CustomerDetails from "../customer-details/CustomerDetails";
 import SupplierDetails from "../supplier-details/SupplierDetails";
 
 //interface imports
+
 import {Model} from "../../../../interfaces/IThumbnail";
 
 type Props = {
@@ -33,14 +36,14 @@ function DetailsCard({fullScreen, handleClose}: Props) {
         login: <Login/>,
         employee: <EmployeeDetails/>,
         product: <ProductDetails/>,
-        customer: <><div></div><></></>,
+        customer: <CustomerDetails />,
         supplier: <SupplierDetails/>,
         order: <OrderPreview/>,
         error: <ErrorMessage statusText={subtitle}/>,
         none: (<></>),
         newCustomer: (<></>)
     }
-    const showPic = (model !== "new" && model !== "order" && model !== "supplier");
+    const showPic = (model !== "new" && model !== "order" && model !== "supplier" && model !== "customer");
     return (
         <Card sx={{width: {sm: .99, md: 500}, height: 0.99, display: "flex", flexDirection: "column", overflow:"auto"}}>
             <CardHeader title={title} subtitle={subtitle} align="center"/>
