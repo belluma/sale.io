@@ -18,7 +18,7 @@ import {
     handleApiResponse,
 } from "./errorHelper";
 import {emptyCategory, ICategory} from "../interfaces/ICategory";
-
+import history from '../services/history'
 
 const initialState: ICategoriesState = {
     categories: [],
@@ -111,7 +111,9 @@ export const categorySlice = createSlice({
     initialState,
     reducers: {
         chooseCurrentCategory: (state, action: PayloadAction<string>) => {
-            state.current = state.categories.find(category => category.id?.toString() === action.payload) || emptyCategory;
+            const category = state.categories.find(category => category.id?.toString() === action.payload) || emptyCategory;
+            state.current = category;
+            history.push(`sales/category?=${category.name}`)
         },
         handleCategoryFormInput: (state, {payload}: PayloadAction<ICategory>) => {
             state.toSave = payload;
