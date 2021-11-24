@@ -6,8 +6,8 @@ import {
     getAll as apiGetAll,
     getOne as apiGetOne,
     create as apiCreate,
-    edit as apiEdit,
-    del as apiDelete
+    del as apiDelete,
+    addItemsToOrder as apiAddItemsToOrder
 } from '../services/apiService'
 import {emptyCustomer, ICustomer} from "../interfaces/ICustomer";
 import {hideDetails} from "./detailsSlice";
@@ -15,9 +15,9 @@ import {
     setPending,
     stopPendingAndHandleError,
     handleError,
-    invalidDataError,
     handleApiResponse,
 } from "./errorHelper";
+import {IOrderItem} from "../interfaces/IOrder";
 
 
 const initialState: ICustomersState = {
@@ -29,19 +29,6 @@ const initialState: ICustomersState = {
 }
 const route = "orders_customers";
 
-export const validateCustomer = (customer: ICustomer): boolean => {
-    const necessaryValues = ['name', 'suppliers', 'purchasePrice', 'unitSize']
-    //@ts-ignore values defined in line above must be keys of ICustomer
-    if (necessaryValues.every(v => !!customer[v])) {
-        //@ts-ignore line above checks that values are not undefined
-        return customer.name.length > 0 && customer.suppliers.length > 0 && customer.purchasePrice > 0 && customer.unitSize > 0
-    }
-    return false
-}
-
-const validateBeforeSendingToBackend = ({customer}: RootState) => {
-    return validateCustomer(customer.toSave);
-}
 
 const hideDetailsAndReloadList = (dispatch: Dispatch) => {
     dispatch(hideDetails());
@@ -72,7 +59,6 @@ export const getOneCustomer = createAsyncThunk<IResponseGetOneCustomer, string, 
 export const createCustomer = createAsyncThunk<IResponseGetOneCustomer, void, { state: RootState, dispatch: Dispatch }>(
     'customers/create',
     async (_, {getState, dispatch}) => {
-        console.log(123)
         const token = getState().authentication.token
         const {data, status, statusText} = await apiCreate(route, token, getState().customer.toSave);
         handleError(status, statusText, dispatch);
@@ -81,14 +67,14 @@ export const createCustomer = createAsyncThunk<IResponseGetOneCustomer, void, { 
     }
 )
 
-export const editCustomer = createAsyncThunk<IResponseGetOneCustomer, ICustomer, { state: RootState, dispatch: Dispatch }>(
+export const addItemsToOrder = createAsyncThunk<IResponseGetOneCustomer,IOrderItem, { state: RootState, dispatch: Dispatch }>(
     'customers/edit',
-    async (customer, {getState, dispatch}) => {
-        if (!validateBeforeSendingToBackend(getState())) {
-            return invalidDataError;
-        }
+    async (orderItem, {getState, dispatch}) => {
+        console.log(123)
+        const customer = getState().customer.current;
+        const order = {order: customer, itemToAddOrRemove: orderItem}
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiEdit(route, token, customer);
+        const {data, status, statusText} = await apiAddItemsToOrder( token, order);
         handleError(status, statusText, dispatch);
         if (status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
@@ -125,7 +111,7 @@ export const customerSlice = createSlice({
             .addCase(getAllOpenCustomers.pending, setPending)
             .addCase(getOneCustomer.pending, setPending)
             .addCase(createCustomer.pending, setPending)
-            .addCase(editCustomer.pending, setPending)
+            .addCase(addItemsToOrder.pending, setPending)
             .addCase(deleteCustomer.pending, setPending)
             .addCase(getAllOpenCustomers.fulfilled, (state, action: PayloadAction<IResponseGetAllCustomers>) => {
                 if (stopPendingAndHandleError(state, action, emptyCustomer)) return;
@@ -136,8 +122,9 @@ export const customerSlice = createSlice({
             })
             .addCase(createCustomer.fulfilled, (state, action: PayloadAction<IResponseGetOneCustomer>) => {
                 handleApiResponse(state, action, emptyCustomer)
+                console.log(action)
             })
-            .addCase(editCustomer.fulfilled, (state, action: PayloadAction<IResponseGetOneCustomer>) => {
+            .addCase(addItemsToOrder.fulfilled, (state, action: PayloadAction<IResponseGetOneCustomer>) => {
                 handleApiResponse(state, action, emptyCustomer)
             })
             .addCase(deleteCustomer.fulfilled, (state, action: PayloadAction<IResponseGetOneCustomer>) => {

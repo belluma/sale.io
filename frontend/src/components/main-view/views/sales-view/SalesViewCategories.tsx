@@ -10,6 +10,7 @@ import GridView from "../../grid-view/GridView";
 
 //interface imports
 import {Views} from "../../../../interfaces/IThumbnail";
+import {getAllProducts} from "../../../../slicer/productSlice";
 
 type Props = {};
 
@@ -17,6 +18,7 @@ function SalesViewCategories(props: Props){
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(getAllCategories());
+        dispatch(getAllProducts());
     }, [dispatch])
     const currentCustomer = useAppSelector(selectCurrentCustomer)
     const categories = useAppSelector(selectCategories)

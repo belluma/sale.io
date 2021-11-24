@@ -1,23 +1,27 @@
 import React, {useState} from 'react'
-import {useAppSelector} from "../../../../app/hooks";
+import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
 import {selectCurrentProduct} from "../../../../slicer/productSlice";
 
 //component imports
 
-import {Button, Fab, Grid, IconButton, Typography} from '@mui/material';
+import {Button, Fab, Grid, Typography} from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import {getSubTotal, getTotal} from "../../../forms/order/helper";
-import {selectCurrentCustomer} from '../../../../slicer/customerSlice';
 import BillPreview from "./bill-preview/BillPreview";
+import {addItemsToOrder} from "../../../../slicer/customerSlice";
 
 //interface imports
 
 type Props = {};
 
 function SalesDetails(props: Props) {
+    const dispatch = useAppDispatch();
     const product = useAppSelector(selectCurrentProduct);
     const [quantity, setQuantity] = useState(0);
+    const addItems = () => {
+        console.log(quantity)
+        quantity > 0 && dispatch(addItemsToOrder({product, quantity}));
+    }
     const increase = () => {
         product.amountInStock && quantity < product.amountInStock && setQuantity(quantity + 1);
     }
@@ -44,9 +48,8 @@ function SalesDetails(props: Props) {
                     </Fab>
                 </Grid>
             </Grid>
-
             <BillPreview quantity={quantity}/>
-
+            <Grid item alignSelf='flex-end'><Button variant='contained' onClick={addItems} disabled={!quantity}>Add</Button></Grid>
         </Grid>
     )
 }
