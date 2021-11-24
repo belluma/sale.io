@@ -17,7 +17,7 @@ type Props = {
     item: IOrderItem,
     index: number,
     form?: boolean,
-    retail?:boolean
+    retail?: boolean
 };
 
 function OrderItem({item, index, form, retail}: Props) {
@@ -27,10 +27,9 @@ function OrderItem({item, index, form, retail}: Props) {
         dispatch(removeOrderItem(index));
     }
     const total = retail ? getSubTotalRetail(item) : getSubTotalWholesale(item);
-    const changeQuantity = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const changeQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(editItemQty({quantity: +e.target.value, index}));
     }
-
     return (
         <Toolbar sx={{width: 0.99}} disableGutters>
             <Grid item xs={1}>
@@ -43,7 +42,7 @@ function OrderItem({item, index, form, retail}: Props) {
                 <Grid item xs={2}>
                     <CustomNumber name={"quantity"} label={"quantity"} onChange={changeQuantity} value={item.quantity}/>
                 </Grid>
-                : <Grid item xs={2} sx={{textAlign:"end", pr:1}}>{item.quantity}</Grid>}
+                : <Grid item xs={2} sx={{textAlign: "end", pr: 1}}>{item.quantity}</Grid>}
             <Grid item xs={1}>
                 {form && <IconButton sx={{display: "inline"}} onClick={() => setEdit(!edit)} edge='start'>
                     {edit ? <CheckIcon/> : <EditIcon/>}

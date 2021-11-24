@@ -35,7 +35,7 @@ function CustomerDetails(props: Props){
 )
 
     return(
-        <OrderDetails orderItems={orderItems} retail>
+        <OrderDetails orderItems={orderItems} retail isFormEnabled>
                 <Buttons />
             <CardHeader title={customerName}/>
             <Divider/>

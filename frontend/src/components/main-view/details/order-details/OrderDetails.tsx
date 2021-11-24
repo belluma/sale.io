@@ -20,7 +20,6 @@ type Props = {
     isFormEnabled?: boolean,
     retail?: boolean
 };
-
 function OrderDetails({children, orderItems, isFormEnabled, retail}: Props){
     const productsOnOrder = orderItems.map((item, i) => {
         return <OrderItem form={isFormEnabled} key={i} item={item} retail={retail} index={i}/>
