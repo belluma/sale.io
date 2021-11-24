@@ -3,7 +3,7 @@ import {IEmployee} from "../../../interfaces/IEmployee";
 import {ISupplier} from "../../../interfaces/ISupplier";
 import {IProduct} from "../../../interfaces/IProduct";
 import {IOrder} from "../../../interfaces/IOrder";
-import {getTotalWholeSale} from "../../forms/order/helper";
+import {getTotalRetail, getTotalWholeSale} from "../../forms/order/helper";
 import {IDetailsData, Views} from "../../../interfaces/IThumbnail";
 import {ICustomer} from "../../../interfaces/ICustomer";
 import {ICategory} from "../../../interfaces/ICategory";
@@ -69,8 +69,8 @@ export const parseCustomerToThumbnail = ({ id, orderItems, status, name}:ICustom
         picture: `/images/${status}.png`,
         id: id?.toString() || "",
         model: Views.CUSTOMER,
-        contentText:`total: €${orderItems.reduce(getTotalWholeSale, 0).toFixed(2)}`,
-        footerText: `Total: €${orderItems.reduce(getTotalWholeSale, 0).toFixed(2)}`
+        contentText:`total: €${orderItems.reduce(getTotalRetail, 0).toFixed(2)}`,
+        footerText: `Total: €${orderItems.reduce(getTotalRetail, 0).toFixed(2)}`
     }
 }
 
