@@ -46,7 +46,7 @@ function OrderPreview({isFormEnabled}: Props) {
     </ThemeProvider>)
 
     return (
-        <OrderDetails isFormEnabled={isFormEnabled} orderItems={orderItems}>
+        <OrderDetails {...isFormEnabled} orderItems={orderItems}>
             {order.status === OrderStatus.PENDING ?
                <ReceiveButton />: <></>}
             <CardHeader title={`order to ${supplier && parseName(supplier)}`}/>

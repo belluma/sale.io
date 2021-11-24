@@ -45,7 +45,7 @@ function DetailsCard({fullScreen, handleClose}: Props) {
         none: (<></>),
         newCustomer: (<></>)
     }
-    const showPic = ["new", "order", "supplier", "customer"].indexOf(model) < 1;
+    const showPic = ["new", "order", "supplier", "customer"].indexOf(model) < 0 ;
     return (
         <Card
             sx={{width: {sm: .99, md: 500}, height: 0.99, display: "flex", flexDirection: "column", overflow: "auto"}}>
