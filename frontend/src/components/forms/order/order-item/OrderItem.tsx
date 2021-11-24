@@ -26,7 +26,6 @@ function OrderItem({item, index, form, retail}: Props) {
     const handleRemove = () => {
         dispatch(removeOrderItem(index));
     }
-    console.log(retail)
     const total = retail ? getSubTotalRetail(item) : getSubTotalWholesale(item);
     const changeQuantity = (e:React.ChangeEvent<HTMLInputElement>) => {
         dispatch(editItemQty({quantity: +e.target.value, index}));

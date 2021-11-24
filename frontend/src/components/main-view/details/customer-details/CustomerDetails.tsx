@@ -13,7 +13,6 @@ import {Button, CardHeader, Divider, Toolbar} from "@mui/material";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
 import AddIcon from '@mui/icons-material/Add'
 //interface imports
-import {IOrderItem} from "../../../../interfaces/IOrder";
 
 type Props = {};
 
