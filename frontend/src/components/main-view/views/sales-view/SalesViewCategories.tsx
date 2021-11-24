@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Views} from "../../../../interfaces/IThumbnail";
 import {parseCategoryToThumbnail} from "../../thumbnail/helper";
 import GridView from "../../grid-view/GridView";
@@ -15,7 +15,9 @@ type Props = {};
 
 function SalesViewCategories(props: Props){
     const dispatch = useAppDispatch();
-    dispatch(getAllCategories());
+    useEffect(() => {
+        dispatch(getAllCategories());
+    }, [dispatch])
     const currentCustomer = useAppSelector(selectCurrentCustomer)
     const categories = useAppSelector(selectCategories)
     const thumbnails = categories.map(parseCategoryToThumbnail)

@@ -36,21 +36,22 @@ function DetailsCard({fullScreen, handleClose}: Props) {
         login: <Login/>,
         employee: <EmployeeDetails/>,
         product: <ProductDetails/>,
-        customer: <CustomerDetails />,
+        customer: <CustomerDetails/>,
         supplier: <SupplierDetails/>,
         order: <OrderPreview/>,
         error: <ErrorMessage statusText={subtitle}/>,
         none: (<></>),
         newCustomer: (<></>)
     }
-    const showPic = (model !== "new" && model !== "order" && model !== "supplier" && model !== "customer");
+    const showPic = ["new", "order", "supplier", "customer"].indexOf(model) < 1;
     return (
-        <Card sx={{width: {sm: .99, md: 500}, height: 0.99, display: "flex", flexDirection: "column", overflow:"auto"}}>
+        <Card
+            sx={{width: {sm: .99, md: 500}, height: 0.99, display: "flex", flexDirection: "column", overflow: "auto"}}>
             <CardHeader title={title} subtitle={subtitle} align="center"/>
             <Divider/>
             {showPic && <CardMedia
                 component="img"
-                sx={{width: .99, maxHeight: 350, alignSelf:'center'}}
+                sx={{width: .99, maxHeight: 350, alignSelf: 'center'}}
                 image={picture || images[model]}
                 alt={alt}
                 height="350"

@@ -12,6 +12,7 @@ import {Card, CardActions, CardContent, CardHeader, CardMedia, Divider} from "@m
 //interface imports
 import {IThumbnail, Views} from '../../../interfaces/IThumbnail';
 import {chooseCurrentCustomer, createCustomer} from "../../../slicer/customerSlice";
+import {chooseCurrentCategory} from "../../../slicer/categorySlice";
 
 type Props = {
     data: IThumbnail
@@ -22,7 +23,7 @@ function Thumbnail({data}: Props) {
     const {title, subtitle, picture, id, alt, model, contentText, footerText} = data;
     const dispatch = useAppDispatch();
     const selectors = {
-        none: toBeReplaced,
+        none: chooseCurrentCategory,
         login: chooseCurrentEmployee,
         employee: chooseCurrentEmployee,
         product: chooseCurrentProduct,
@@ -33,7 +34,7 @@ function Thumbnail({data}: Props) {
     }
     const onClick = () => {
         console.log(model)
-        if(model !== Views.NEWCUSTOMER) {
+        if(model !== Views.NEWCUSTOMER && model !== Views.NONE) {
             dispatch(setDetailData(data));
             dispatch(showDetails());
         }
