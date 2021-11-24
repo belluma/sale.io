@@ -33,7 +33,6 @@ function Thumbnail({data}: Props) {
         order: chooseCurrentOrder,
     }
     const onClick = () => {
-        console.log(model)
         if(model !== Views.NEWCUSTOMER && model !== Views.NONE) {
             dispatch(setDetailData(data));
             dispatch(showDetails());

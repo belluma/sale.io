@@ -19,6 +19,7 @@ import SupplierDetails from "../supplier-details/SupplierDetails";
 //interface imports
 
 import {Model} from "../../../../interfaces/IThumbnail";
+import SalesDetails from "../sales-details/SalesDetails";
 
 type Props = {
     fullScreen: boolean,
@@ -28,7 +29,7 @@ type Props = {
 function DetailsCard({fullScreen, handleClose}: Props) {
     const detailsData = useAppSelector(selectDetailsData);
     const {title, subtitle, picture, alt, model} = detailsData;
-    const path = useLocation().pathname.slice(1);
+    const path = useLocation().pathname.slice(1)
     const formSelector = Object.values(Model).includes(path as Model) ? path : "none";
     const cardContent = {
         //@ts-ignore check type in ternary statement at declaration of formSelector
@@ -40,6 +41,7 @@ function DetailsCard({fullScreen, handleClose}: Props) {
         supplier: <SupplierDetails/>,
         order: <OrderPreview/>,
         error: <ErrorMessage statusText={subtitle}/>,
+        sales: <SalesDetails />,
         none: (<></>),
         newCustomer: (<></>)
     }
@@ -58,7 +60,7 @@ function DetailsCard({fullScreen, handleClose}: Props) {
             />}
             {showPic && <Divider/>}
             <CardContent sx={{flexGrow: 1}}>
-                {cardContent[model]}
+                {path === 'category' ? cardContent.sales : cardContent[model]}
             </CardContent>
         </Card>
     )
