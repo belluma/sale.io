@@ -42,7 +42,6 @@ function MainView(props: Props) {
                    disableGutters={isStart}>
             <Pending/>
             <SuccessMessage/>
-            {/*<Grid sx={{minHeight: 0.99}} container justifyContent="center" alignItems="center">*/}
             <Switch>
                 <Route path={"/login"} component={LoginView}/>
                 <Route path={"/signup"} component={Signup}/>
@@ -51,7 +50,6 @@ function MainView(props: Props) {
                 <Route path={"/"} exact component={StartRoute}/>
                 {protectedRoutes}
             </Switch>
-            {/*</Grid>*/}
         </Container>
     );
 }
