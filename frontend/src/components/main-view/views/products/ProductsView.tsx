@@ -1,17 +1,19 @@
 import React, {useEffect} from 'react'
 import {useAppDispatch, useAppSelector} from '../../../../app/hooks';
 import {getAllProducts, selectProducts} from "../../../../slicer/productSlice";
-import {Views} from "../../../../interfaces/IThumbnail";
 import {selectView} from "../../../../slicer/viewSlice";
-import {productColumns} from "../../list-view/columnDefinition";
-
-//component imports
-import ListView from "../../list-view/ListView";
-import GridView from "../../grid-view/GridView";
 import {parseProductToThumbnail} from "../../thumbnail/helper";
 import {parseProduct} from "../../list-view/parseData";
+import {productColumns} from "../../list-view/columnDefinition";
+
+
+//component imports
+
+import ListView from "../../list-view/ListView";
+import GridView from "../../grid-view/GridView";
 
 //interface imports
+import {Views} from "../../../../interfaces/IThumbnail";
 
 type Props = {};
 

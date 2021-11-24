@@ -21,7 +21,7 @@ function CustomerDetails(props: Props){
     const history = useHistory();
     const dispatch = useAppDispatch();
     const currentCustomer = useAppSelector(selectCurrentCustomer);
-    const orderItems: IOrderItem[] = [];
+    const {orderItems} = currentCustomer;
     const {id, name} = currentCustomer;
     const customerName = name ? name : `table ${id}`
     const openSalesView = () => {

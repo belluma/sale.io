@@ -62,9 +62,9 @@ export const parseOrderToThumbnail = ({supplier, id, orderItems, status}:IOrder)
         footerText: `Total: €${orderItems.reduce(getTotal, 0).toFixed(2)}`
     }
 }
-export const parseCustomerToThumbnail = ({ id, orderItems, status}:ICustomer):IDetailsData => {
+export const parseCustomerToThumbnail = ({ id, orderItems, status, name}:ICustomer):IDetailsData => {
     return{
-        title: `open order`,
+        title: name || `table ${id}`,
         picture: `/images/${status}.png`,
         id: id?.toString() || "",
         model: Views.CUSTOMER,
