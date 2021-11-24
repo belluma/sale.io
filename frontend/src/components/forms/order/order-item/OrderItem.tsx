@@ -32,7 +32,7 @@ function OrderItem({item, index, form, retail}: Props) {
     }
     return (
         <Toolbar sx={{width: 0.99}} disableGutters>
-            <Grid item xs={1}>
+            <Grid item xs={2}>
                 {form && <IconButton sx={{display: "inline"}} onClick={handleRemove} color="warning">
                     <ClearIcon/>
                 </IconButton>}
