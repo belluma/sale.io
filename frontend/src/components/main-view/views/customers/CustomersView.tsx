@@ -1,4 +1,9 @@
-import React from 'react'
+import React, {useEffect} from 'react'
+import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
+import {getAllOpenCustomers, selectCustomers} from "../../../../slicer/customerSlice";
+import {parseCustomerToThumbnail} from "../../thumbnail/helper";
+import GridView from "../../grid-view/GridView";
+import {Views} from "../../../../interfaces/IThumbnail";
 
 //component imports
 
@@ -7,8 +12,16 @@ import React from 'react'
 type Props = {};
 
 function CustomersView(props: Props){
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        dispatch(getAllOpenCustomers());
+    }, [dispatch]);
+    const products = useAppSelector(selectCustomers)
+    const thumbnails = products.map(parseCustomerToThumbnail);
     return(
-<div></div>    )
+        <GridView customer gridItems={thumbnails} view={Views.CUSTOMER}/>
+
+)
 }
 
 export default CustomersView;

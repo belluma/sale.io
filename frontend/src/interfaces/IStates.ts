@@ -55,7 +55,7 @@ export interface IOrdersState extends IBaseState {
     toSave: IOrder,
 }
 
-export type States = IProductsState | ISuppliersState | IOrdersState | IEmployeeState
+export type States = IProductsState | ISuppliersState | IOrdersState | IEmployeeState | ICustomersState
 
 
 export interface IAPIState {
@@ -65,4 +65,10 @@ export interface IAPIState {
     suppliers: ISupplier[],
     pending: boolean,
     selectedEntity: ICustomer | IEmployee | IProduct | ISupplier | undefined,
+}
+
+export interface ICustomersState extends IBaseState{
+    customers: ICustomer[],
+    current: ICustomer,
+    toSave: ICustomer
 }

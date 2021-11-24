@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react'
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
 
-import {parseEmployeeToThumbnail, Views} from "../../../../interfaces/IThumbnail";
 import {selectView} from "../../../../slicer/viewSlice";
 import {employeeColumns} from "../../list-view/columnDefinition";
 import {getEmployees, selectEmployees} from "../../../../slicer/employeeSlice";
@@ -9,6 +8,9 @@ import {getEmployees, selectEmployees} from "../../../../slicer/employeeSlice";
 //component imports
 import GridView from "../../grid-view/GridView";
 import ListView from "../../list-view/ListView";
+import {parseEmployeeToThumbnail} from "../../thumbnail/helper";
+import {Views} from "../../../../interfaces/IThumbnail";
+import {parseEmployee} from "../../list-view/parseData";
 //interface imports
 
 type Props = {};
@@ -20,11 +22,12 @@ function EmployeesView(props: Props) {
     }, [dispatch]);
 
     const employees = useAppSelector(selectEmployees)
-    const thumbnails = employees.map(employee => parseEmployeeToThumbnail(employee));
+    const thumbnails = employees.map(parseEmployeeToThumbnail);
+    const rowData = employees.map(parseEmployee);
 
     return useAppSelector(selectView) ?
         <GridView gridItems={thumbnails} view={Views.EMPLOYEE}/> :
-        <ListView rows={employees} columns={employeeColumns}/>
+        <ListView rows={rowData} columns={employeeColumns}/>
 }
 
 export default EmployeesView;

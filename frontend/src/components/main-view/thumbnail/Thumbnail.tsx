@@ -1,6 +1,6 @@
 import React from 'react'
 import {useAppDispatch} from '../../../app/hooks';
-import {images} from '../helpers'
+import {images, thumbnailStyles} from '../helpers'
 
 import {setDetailData, showDetails} from "../../../slicer/detailsSlice";
 import {chooseCurrentEmployee, toBeReplaced} from "../../../slicer/employeeSlice";
@@ -8,10 +8,10 @@ import {chooseCurrentProduct} from "../../../slicer/productSlice";
 import {chooseCurrentSupplier} from "../../../slicer/supplierSlice";
 import {chooseCurrentOrder} from "../../../slicer/orderSlice";
 //component imports
-
 import {Card, CardActions, CardContent, CardHeader, CardMedia, Divider} from "@mui/material";
 //interface imports
 import {IThumbnail, Views} from '../../../interfaces/IThumbnail';
+import {createCustomer} from "../../../slicer/customerSlice";
 
 type Props = {
     data: IThumbnail
@@ -27,19 +27,24 @@ function Thumbnail({data}: Props) {
         employee: chooseCurrentEmployee,
         product: chooseCurrentProduct,
         customer: toBeReplaced,
+        newCustomer: createCustomer,
         supplier: chooseCurrentSupplier,
         order: chooseCurrentOrder,
     }
     const onClick = () => {
-        dispatch(setDetailData(data));
-        dispatch(showDetails());
-        if (model !== Views.NEW && model !== Views.ERROR && id) dispatch(selectors[model](id))
+        if(model !== Views.NEWCUSTOMER) {
+            dispatch(setDetailData(data));
+            dispatch(showDetails());
+        }
+        if (model !== Views.NEW && model !== Views.ERROR && id) {
+            dispatch(selectors[model](id));
+        }
     }
     return (
-        <Card onClick={onClick} sx={{display: "flex", flexDirection: "column", height: 500, width: 345, cursor:'pointer'}}>
+        <Card onClick={onClick} sx={thumbnailStyles}>
             <CardHeader title={title} subtitle={subtitle}/>
             <CardMedia
-                sx={{flexGrow: 1, maxHeight: 350}}
+                sx={{flexGrow: 1, maxHeight: 220}}
                 component="img"
                 height="350"
                 image={picture || images[model]}

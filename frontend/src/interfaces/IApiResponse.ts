@@ -46,6 +46,13 @@ export interface IResponseGetAllOrders extends IResponseBase {
 export interface IResponseGetOneOrder extends IResponseBase {
     data: IOrder;
 }
+export interface IResponseGetAllCustomers extends IResponseBase {
+    data: ICustomer[];
+}
+
+export interface IResponseGetOneCustomer extends IResponseBase {
+    data: ICustomer;
+}
 
 export type Actions =
     PayloadAction<IResponseGetAllEmployees>
@@ -56,6 +63,9 @@ export type Actions =
     | PayloadAction<IResponseGetOneSupplier>
     | PayloadAction<IResponseGetAllOrders>
     | PayloadAction<IResponseGetOneOrder>
+    | PayloadAction<IResponseGetAllCustomers>
+    | PayloadAction<IResponseGetOneCustomer>
+
 
 export interface IApiResponse {
     status: number,

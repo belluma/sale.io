@@ -7,6 +7,7 @@ import {IEmployee} from "../interfaces/IEmployee";
 import {ISupplier} from "../interfaces/ISupplier";
 import {States} from "../interfaces/IStates";
 import {Actions} from "../interfaces/IApiResponse";
+import {ICustomer} from "../interfaces/ICustomer";
 
 export interface IError {
     status: number;
@@ -28,7 +29,9 @@ const parseErrorMessage = ({statusText}: IError): IDetailsData => {
         model: Views.ERROR,
     }
 }
-type ToSave = IOrder | IProduct | IEmployee | ISupplier;
+
+
+type ToSave = IOrder | IProduct | IEmployee | ISupplier | ICustomer;
 
 export const setPending = (state: States) => {
     state.pending = true;

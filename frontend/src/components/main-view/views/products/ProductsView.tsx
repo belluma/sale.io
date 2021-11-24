@@ -1,13 +1,15 @@
 import React, {useEffect} from 'react'
 import {useAppDispatch, useAppSelector} from '../../../../app/hooks';
 import {getAllProducts, selectProducts} from "../../../../slicer/productSlice";
-import {parseProductToThumbnail, Views} from "../../../../interfaces/IThumbnail";
+import {Views} from "../../../../interfaces/IThumbnail";
 import {selectView} from "../../../../slicer/viewSlice";
 import {productColumns} from "../../list-view/columnDefinition";
 
 //component imports
 import ListView from "../../list-view/ListView";
 import GridView from "../../grid-view/GridView";
+import {parseProductToThumbnail} from "../../thumbnail/helper";
+import {parseProduct} from "../../list-view/parseData";
 
 //interface imports
 
@@ -20,11 +22,12 @@ function ProductsView(props: Props) {
     }, [dispatch]);
 
     const products = useAppSelector(selectProducts)
-    const thumbnails = products.map(product => parseProductToThumbnail(product));
-
+    const thumbnails = products.map(parseProductToThumbnail);
+    const listData = products.map(parseProduct)
+    console.log(listData)
     return useAppSelector(selectView) ?
         <GridView gridItems={thumbnails} view={Views.PRODUCT}/> :
-        <ListView rows={products} columns={productColumns}/>
+        <ListView rows={listData} columns={productColumns}/>
 }
 
 export default ProductsView;

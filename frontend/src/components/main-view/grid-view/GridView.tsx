@@ -1,5 +1,5 @@
 import React from 'react'
-import {newItemData} from "../helpers";
+import {newItemThumbnail} from "../helpers";
 import 'bulma/css/bulma.css';
 
 //component imports
@@ -13,19 +13,21 @@ import {useAppSelector} from "../../../app/hooks";
 import {selectView} from "../../../slicer/viewSlice";
 
 type Props = {
-    gridItems:IThumbnail[],
-    view:Views,
+    gridItems: IThumbnail[],
+    view: Views,
+    customer?: boolean
 };
 
-function GridView({gridItems, view}: Props){
+function GridView({gridItems, view, customer}: Props) {
     const isHidden = useAppSelector(selectView) ? "" : "is-hidden";
-   const thumbnailData = {title:`new ${view}`, ...newItemData};
-    const thumbnails = gridItems.map(item => <Grid  item key={item.id}><Thumbnail data={item}/></Grid>)
-    return(
+    const thumbnailProps = customer ? {...newItemThumbnail, model: Views.NEWCUSTOMER, id: '0'} : newItemThumbnail
+    const newItemCard = <Grid item><Thumbnail data={{title: `new ${view}`, ...thumbnailProps}}/></Grid>;
+    const thumbnails = gridItems.map(item => <Grid item key={item.id}><Thumbnail data={item}/></Grid>)
+    return (
         <Grid className={isHidden} container spacing={2} sx={{justifyContent: {md: "left", xs: "space-around"}}}>
-            {view !== Views.LOGIN && <Grid item><Thumbnail data={thumbnailData} /></Grid>}
+            {view !== Views.LOGIN && newItemCard}
             {thumbnails}
-            <Details />
+            <Details/>
         </Grid>
     )
 }

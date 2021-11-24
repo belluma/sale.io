@@ -1,9 +1,4 @@
 import React from 'react'
-import {
-    parseName,
-    parseOrderToThumbnail,
-    parseProductToThumbnail
-} from "../../../../../../../interfaces/IThumbnail";
 import {getTotal} from "../../../../../../forms/order/helper";
 import { useAppDispatch } from '../../../../../../../app/hooks';
 import {chooseCurrentProduct} from "../../../../../../../slicer/productSlice";
@@ -15,6 +10,7 @@ import {Grid, ListItemButton} from "@mui/material";
 //interface imports
 import {IOrder} from "../../../../../../../interfaces/IOrder";
 import {IProduct} from "../../../../../../../interfaces/IProduct";
+import {parseName, parseOrderToThumbnail, parseProductToThumbnail} from "../../../../../thumbnail/helper";
 
 type Props = {
     item: IOrder | IProduct,

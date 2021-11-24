@@ -33,11 +33,12 @@ function DetailsCard({fullScreen, handleClose}: Props) {
         login: <Login/>,
         employee: <EmployeeDetails/>,
         product: <ProductDetails/>,
-        customer: <div/>,
+        customer: <><div></div><></></>,
         supplier: <SupplierDetails/>,
         order: <OrderPreview/>,
         error: <ErrorMessage statusText={subtitle}/>,
         none: (<></>),
+        newCustomer: (<></>)
     }
     const showPic = (model !== "new" && model !== "order" && model !== "supplier");
     return (
@@ -46,7 +47,7 @@ function DetailsCard({fullScreen, handleClose}: Props) {
             <Divider/>
             {showPic && <CardMedia
                 component="img"
-                sx={{width: .99, maxHeight: 350}}
+                sx={{width: .99, maxHeight: 350, alignSelf:'center'}}
                 image={picture || images[model]}
                 alt={alt}
                 height="350"
