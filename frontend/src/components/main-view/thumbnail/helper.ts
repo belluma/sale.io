@@ -63,12 +63,13 @@ export const parseOrderToThumbnail = ({supplier, id, orderItems, status}:IOrder)
     }
 }
 export const parseCustomerToThumbnail = ({ id, orderItems, status, name}:ICustomer):IDetailsData => {
+
     return{
         title: name || `table ${id}`,
         picture: `/images/${status}.png`,
         id: id?.toString() || "",
         model: Views.CUSTOMER,
-        contentText: `${orderItems.length} item${orderItems.length > 1 ? "s" : ""}`,
+        contentText:`total: €${orderItems.reduce(getTotal, 0).toFixed(2)}`,
         footerText: `Total: €${orderItems.reduce(getTotal, 0).toFixed(2)}`
     }
 }
