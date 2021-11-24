@@ -48,12 +48,12 @@ function DetailsCard({fullScreen, handleClose}: Props) {
     const showPic = ["new", "order", "supplier", "customer"].indexOf(model) < 0 ;
     return (
         <Card
-            sx={{width: {sm: .99, md: 500}, height: 0.99, display: "flex", flexDirection: "column", overflow: "auto"}}>
+            sx={{width: {sm: .99, md: 350}, height: 0.99, display: "flex", flexDirection: "column", overflow: "auto"}}>
             <CardHeader title={title} subtitle={subtitle} align="center"/>
             <Divider/>
             {showPic && <CardMedia
                 component="img"
-                sx={{width: .99, maxHeight: 350, alignSelf: 'center'}}
+                sx={{width: .99, maxHeight: 300, alignSelf: 'center'}}
                 image={picture || images[model]}
                 alt={alt}
                 height="350"
