@@ -14,6 +14,8 @@ import Thumbnail from "../thumbnail/Thumbnail";
 
 //interface imports
 import {IThumbnail, Views} from "../../../interfaces/IThumbnail";
+import {selectCurrentCustomer} from "../../../slicer/customerSlice";
+import {parseCustomerToThumbnail} from "../thumbnail/helper";
 
 type Props = {
     gridItems: IThumbnail[],
@@ -28,18 +30,21 @@ function GridView({gridItems, view, customer}: Props) {
     const isCategory = path.indexOf('category') >= 0 || path.indexOf('sales') >= 0;
     const isHidden = useAppSelector(selectView) ? "" : "is-hidden";
     const thumbnailProps = customer ? {...newItemThumbnail, model: Views.NEWCUSTOMER, id: '0'} : newItemThumbnail
-    const newItemCard = <Grid item><Thumbnail data={{title: `new ${view}`, ...thumbnailProps}}/></Grid>;
     const thumbnails = gridItems.map(item => <Grid item key={item.id}><Thumbnail data={item}/></Grid>)
-    const GoBackButton = () => {
-        return (<Fab onClick={history.goBack} color={'primary'} sx={{position: 'absolute', top: -30, right: 25}}>
+    const currentOrder = useAppSelector(selectCurrentCustomer);
+    const orderPreview = <Grid item><Thumbnail data={parseCustomerToThumbnail(currentOrder)}/></Grid>
+    const newItemCard = <Grid item><Thumbnail data={{title: `new ${view}`, ...thumbnailProps}}/></Grid>;
+    const buttonProps = {position: 'absolute', top: -30, right: 25} as const;
+    const goBackButton =
+        <Fab onClick={history.goBack} color={'primary'} sx={buttonProps}>
             <ArrowBackIcon/>
-        </Fab>)
-    }
+        </Fab>
 
     return (
         <Grid className={isHidden} container spacing={2}
               sx={{position: 'relative', justifyContent: {md: "left", xs: "space-around"}}}>
-            {isCategory && <GoBackButton/>}
+            {isCategory && goBackButton}
+            {isCategory && orderPreview}
             {view !== Views.LOGIN && newItemCard}
             {thumbnails}
             <Details/>
