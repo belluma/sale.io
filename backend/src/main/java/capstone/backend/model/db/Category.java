@@ -12,6 +12,7 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@Builder
 @Entity
 @Table(name = "categories")
 public class Category {
