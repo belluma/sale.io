@@ -5,6 +5,7 @@ import capstone.backend.model.dto.CategoryDTO;
 
 public class CategoryMapper {
 
+    private CategoryMapper() {}
     public static CategoryDTO mapCategory(Category category) {
         return CategoryDTO
                 .builder()

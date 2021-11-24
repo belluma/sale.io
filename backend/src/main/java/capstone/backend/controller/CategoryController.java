@@ -3,6 +3,8 @@ package capstone.backend.controller;
 import capstone.backend.model.dto.CategoryDTO;
 import capstone.backend.services.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,11 +17,13 @@ public class CategoryController {
 
     private final CategoryService service;
 
-    public List<CategoryDTO> getAllCategories(){
+    @GetMapping
+    public List<CategoryDTO> getAllCategories() {
         return service.getAllCategories();
     }
 
-    public CategoryDTO createCategory(CategoryDTO category){
+    @PostMapping
+    public CategoryDTO createCategory(CategoryDTO category) {
         return service.createCategory(category);
     }
 

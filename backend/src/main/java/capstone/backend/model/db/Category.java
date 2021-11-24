@@ -4,15 +4,14 @@ package capstone.backend.model.db;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Objects;
 
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Builder
+@AllArgsConstructor
 @Entity
 @Table(name = "categories")
 public class Category {

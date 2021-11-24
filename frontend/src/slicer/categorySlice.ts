@@ -27,7 +27,7 @@ const initialState: ICategoriesState = {
     success: false,
     toSave: emptyCategory
 }
-const route = "orders_categories";
+const route = "categories";
 
 export const validateCategory = (category: ICategory): boolean => {
     const necessaryValues = ['name', 'suppliers', 'purchasePrice', 'unitSize']
@@ -49,11 +49,11 @@ const hideDetailsAndReloadList = (dispatch: Dispatch) => {
     dispatch(getAllOpenCategories());
 }
 
-export const getAllOpenCategories = createAsyncThunk<IResponseGetAllCategories, void, { state: RootState, dispatch: Dispatch }>(
+export const getAllCategories = createAsyncThunk<IResponseGetAllCategories, void, { state: RootState, dispatch: Dispatch }>(
     'categories/getAll',
     async (_, {getState, dispatch}) => {
         const token = getState().authentication.token;
-        const {data, status, statusText} = await apiGetAll(route + '/all', token);
+        const {data, status, statusText} = await apiGetAll(route, token);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
@@ -122,12 +122,12 @@ export const categorySlice = createSlice({
     },
     extraReducers: (builder => {
         builder
-            .addCase(getAllOpenCategories.pending, setPending)
+            .addCase(getAllCategories.pending, setPending)
             .addCase(getOneCategory.pending, setPending)
             .addCase(createCategory.pending, setPending)
             .addCase(editCategory.pending, setPending)
             .addCase(deleteCategory.pending, setPending)
-            .addCase(getAllOpenCategories.fulfilled, (state, action: PayloadAction<IResponseGetAllCategories>) => {
+            .addCase(getAllCategories.fulfilled, (state, action: PayloadAction<IResponseGetAllCategories>) => {
                 if (stopPendingAndHandleError(state, action, emptyCategory)) return;
                 state.categories = action.payload.data;
             })
