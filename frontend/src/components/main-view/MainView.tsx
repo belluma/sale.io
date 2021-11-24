@@ -20,6 +20,7 @@ import Pending from "../messages/pending/Pending";
 import {Model} from "../../interfaces/IThumbnail";
 import SuccessMessage from "../messages/success-message/SuccessMessage";
 import SalesViewCategories from "./views/sales-view/SalesViewCategories";
+import SalesViewProducts from "./views/sales-view/SalesViewProducts";
 
 type Props = {};
 
@@ -46,7 +47,8 @@ function MainView(props: Props) {
                 <Route path={"/login"} component={LoginView}/>
                 <Route path={"/signup"} component={Signup}/>
                 <Route path={"/start"} component={StartView}/>
-                <Route path={"/sales"} component={SalesViewCategories}/>
+                <Route path={"/sales"}  component={SalesViewCategories}/>
+                <Route path={"/category"} component={SalesViewProducts}/>
                 <Route path={"/"} exact component={StartRoute}/>
                 {protectedRoutes}
             </Switch>

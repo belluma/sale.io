@@ -113,7 +113,7 @@ export const categorySlice = createSlice({
         chooseCurrentCategory: (state, action: PayloadAction<string>) => {
             const category = state.categories.find(category => category.id?.toString() === action.payload) || emptyCategory;
             state.current = category;
-            history.push(`sales/category?=${category.name}`)
+            history.push(`category?category=${category.name}`)
         },
         handleCategoryFormInput: (state, {payload}: PayloadAction<ICategory>) => {
             state.toSave = payload;
