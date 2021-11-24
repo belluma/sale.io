@@ -4,6 +4,7 @@ import {ICustomer} from "./ICustomer";
 import {ISupplier} from "./ISupplier";
 import {IOrder} from "./IOrder";
 import {PayloadAction} from "@reduxjs/toolkit";
+import {ICategory} from "./ICategory";
 
 interface IResponseBase {
     status: number,
@@ -46,12 +47,21 @@ export interface IResponseGetAllOrders extends IResponseBase {
 export interface IResponseGetOneOrder extends IResponseBase {
     data: IOrder;
 }
+
 export interface IResponseGetAllCustomers extends IResponseBase {
     data: ICustomer[];
 }
 
 export interface IResponseGetOneCustomer extends IResponseBase {
     data: ICustomer;
+}
+
+export interface IResponseGetAllCategories extends IResponseBase {
+    data: ICategory[];
+}
+
+export interface IResponseGetOneCategory extends IResponseBase {
+    data: ICategory;
 }
 
 export type Actions =
@@ -65,6 +75,8 @@ export type Actions =
     | PayloadAction<IResponseGetOneOrder>
     | PayloadAction<IResponseGetAllCustomers>
     | PayloadAction<IResponseGetOneCustomer>
+    | PayloadAction<IResponseGetAllCategories>
+    | PayloadAction<IResponseGetOneCategory>
 
 
 export interface IApiResponse {

@@ -4,6 +4,7 @@ import {IProduct} from "./IProduct";
 import {ICustomer} from "./ICustomer";
 import {ISupplier} from "./ISupplier";
 import {IOrder} from "./IOrder";
+import {ICategory} from "./ICategory";
 
 export interface IAuthState {
     loggedIn: boolean,
@@ -11,14 +12,14 @@ export interface IAuthState {
 }
 
 export interface IDetailsState {
-    showDetails:boolean,
-    detailsData: IDetailsData ,
+    showDetails: boolean,
+    detailsData: IDetailsData,
     goBack: boolean,
 }
 
-export const initialDetailsData:IDetailsData = {
-    title:"",
-    subtitle:"",
+export const initialDetailsData: IDetailsData = {
+    title: "",
+    subtitle: "",
     picture: "",
     id: "",
     alt: "",
@@ -26,20 +27,20 @@ export const initialDetailsData:IDetailsData = {
 }
 
 interface IBaseState {
-    pending:boolean,
+    pending: boolean,
     success: boolean,
 }
 
-export interface IEmployeeState extends IBaseState{
+export interface IEmployeeState extends IBaseState {
     employees: IEmployee[],
-    current: IEmployee ,
+    current: IEmployee,
     currentEmployeeCredentials: IUserCredentials | undefined,
     toSave: IEmployee
 }
 
 export interface IProductsState extends IBaseState {
     products: IProduct[],
-    current: IProduct ,
+    current: IProduct,
     toSave: IProduct,
 }
 
@@ -51,11 +52,11 @@ export interface ISuppliersState extends IBaseState {
 
 export interface IOrdersState extends IBaseState {
     orders: IOrder[],
-    current: IOrder ,
+    current: IOrder,
     toSave: IOrder,
 }
 
-export type States = IProductsState | ISuppliersState | IOrdersState | IEmployeeState | ICustomersState
+export type States = IProductsState | ISuppliersState | IOrdersState | IEmployeeState | ICustomersState | ICategoriesState
 
 
 export interface IAPIState {
@@ -67,8 +68,14 @@ export interface IAPIState {
     selectedEntity: ICustomer | IEmployee | IProduct | ISupplier | undefined,
 }
 
-export interface ICustomersState extends IBaseState{
+export interface ICustomersState extends IBaseState {
     customers: ICustomer[],
     current: ICustomer,
     toSave: ICustomer
+}
+
+export interface ICategoriesState extends IBaseState {
+    categories: ICategory[],
+    current: ICategory,
+    toSave: ICategory
 }

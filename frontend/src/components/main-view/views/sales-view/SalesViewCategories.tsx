@@ -12,14 +12,13 @@ import {Redirect} from "react-router";
 
 type Props = {};
 
-function SalesView(props: Props){
+function SalesViewCategories(props: Props){
     const currentCustomer = useAppSelector(selectCurrentCustomer)
     const categories = ["Softdrinks", "Alkoholische Getränke", "Heisse Getränke", 'Salate', "Hauptgerichte", "Beilagen"]
     const thumbnails = categories.map(parseCategoryToThumbnail)
-    console.log(thumbnails)
     return(
         !currentCustomer.id ? <Redirect to={'start'}  /> : <GridView gridItems={thumbnails} view={Views.LOGIN} />
     )
 }
 
-export default SalesView;
+export default SalesViewCategories;

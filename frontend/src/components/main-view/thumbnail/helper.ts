@@ -80,6 +80,6 @@ export const parseCategoryToThumbnail = (category: string, index:number):IDetail
         title: category,
         picture: `/images/protected/categories/${category.split(' ')[0]}.jpg`,
         id: index.toString(),
-        model: Views.LOGIN,
+        model: Views.NONE,
     }
 }
