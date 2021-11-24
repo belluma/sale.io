@@ -11,7 +11,7 @@ import {chooseCurrentOrder} from "../../../slicer/orderSlice";
 import {Card, CardActions, CardContent, CardHeader, CardMedia, Divider} from "@mui/material";
 //interface imports
 import {IThumbnail, Views} from '../../../interfaces/IThumbnail';
-import {createCustomer} from "../../../slicer/customerSlice";
+import {chooseCurrentCustomer, createCustomer} from "../../../slicer/customerSlice";
 
 type Props = {
     data: IThumbnail
@@ -26,7 +26,7 @@ function Thumbnail({data}: Props) {
         login: chooseCurrentEmployee,
         employee: chooseCurrentEmployee,
         product: chooseCurrentProduct,
-        customer: toBeReplaced,
+        customer: chooseCurrentCustomer,
         newCustomer: createCustomer,
         supplier: chooseCurrentSupplier,
         order: chooseCurrentOrder,

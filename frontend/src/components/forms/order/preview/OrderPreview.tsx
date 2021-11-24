@@ -44,6 +44,7 @@ function OrderPreview({isFormEnabled}: Props) {
         {!isFormEnabled && order.status === OrderStatus.PENDING &&
         <Button onClick={handleReceive} variant="contained">Receive</Button>}
     </ThemeProvider>)
+
     return (
         <OrderDetails isFormEnabled={isFormEnabled} orderItems={orderItems}>
             {order.status === OrderStatus.PENDING ?
