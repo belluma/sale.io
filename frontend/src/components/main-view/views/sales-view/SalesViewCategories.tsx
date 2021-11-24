@@ -1,15 +1,15 @@
 import React, {useEffect} from 'react'
-import {Views} from "../../../../interfaces/IThumbnail";
 import {parseCategoryToThumbnail} from "../../thumbnail/helper";
-import GridView from "../../grid-view/GridView";
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
 import {selectCurrentCustomer} from "../../../../slicer/customerSlice";
-import {Redirect} from "react-router";
 import {getAllCategories, selectCategories} from "../../../../slicer/categorySlice";
 
 //component imports
+import {Redirect} from "react-router";
+import GridView from "../../grid-view/GridView";
 
 //interface imports
+import {Views} from "../../../../interfaces/IThumbnail";
 
 type Props = {};
 

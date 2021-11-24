@@ -1,15 +1,13 @@
 import {ISupplier} from "./ISupplier";
+import {ICategory} from "./ICategory";
 
-export enum Categories {
-    TEST = "test"
-}
 
 export interface IProduct {
     id?: string,
     name?: string
     suppliers?: ISupplier[];
     stockCodeSupplier?: string
-    category?: Categories,
+    category?: ICategory,
     picture?: string
     purchasePrice?: number,
     retailPrice?: number,

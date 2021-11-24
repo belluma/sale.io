@@ -3,7 +3,7 @@ import {useAppDispatch} from '../../../app/hooks';
 import {images, thumbnailStyles} from '../helpers'
 
 import {setDetailData, showDetails} from "../../../slicer/detailsSlice";
-import {chooseCurrentEmployee, toBeReplaced} from "../../../slicer/employeeSlice";
+import {chooseCurrentEmployee} from "../../../slicer/employeeSlice";
 import {chooseCurrentProduct} from "../../../slicer/productSlice";
 import {chooseCurrentSupplier} from "../../../slicer/supplierSlice";
 import {chooseCurrentOrder} from "../../../slicer/orderSlice";
