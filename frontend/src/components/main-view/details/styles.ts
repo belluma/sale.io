@@ -16,3 +16,5 @@ export const useNoPadding = makeStyles({
         }
     }
 })
+
+export const dividerStyles = {bgcolor: 'primary.light', mx: 3} as const

@@ -13,6 +13,7 @@ import Grid from "@material-ui/core/Grid";
 
 import {ReactJSXElement} from "@emotion/react/types/jsx-namespace";
 import {IOrderItem} from "../../../../interfaces/IOrder";
+import {dividerStyles} from "../styles";
 
 type Props = {
     children?: ReactJSXElement[],
@@ -35,7 +36,7 @@ function OrderDetails({children, orderItems, isFormEnabled, retail}: Props){
                 </Grid>
             </CardContent>
             <Container sx={{flexGrow: 1}}/>
-            <Divider/>
+            < Divider sx={dividerStyles}/>
             <CardActions sx={{display: "flex", justifyContent: "space-between", flexDirection:"row-reverse"}}>
                 <Typography >Total:€ {total.toFixed(2)}</Typography>
                 {children?.length  && children[0]}

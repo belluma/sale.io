@@ -20,7 +20,7 @@ import SupplierDetails from "../supplier-details/SupplierDetails";
 
 import {Model} from "../../../../interfaces/IThumbnail";
 import SalesDetails from "../sales-details/SalesDetails";
-import {useNoPadding} from "../styles";
+import {dividerStyles, useNoPadding} from "../styles";
 
 type Props = {
     fullScreen: boolean,
@@ -52,7 +52,7 @@ function DetailsCard({fullScreen, handleClose}: Props) {
         <Card
             sx={{width: {sm: 1, md: 350}, height: 1, display: "flex", flexDirection: "column", overflow: "auto"}}>
             <CardHeader title={title} subtitle={subtitle} align="center"/>
-            <Divider sx={{bgcolor: 'primary.light', mx: 3}}/>
+            <Divider sx={dividerStyles}/>
             {showPic && <CardMedia
                 component="img"
                 sx={{width: 1, maxHeight: 300, alignSelf: 'center'}}

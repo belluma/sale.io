@@ -77,7 +77,7 @@ function FormWrapper({model, handleClose}: Props) {
                 {formSelector[model]}
             </Container>
             <section>
-                <Button onClick={handleSubmit} disabled={disableButton()}>save</Button>
+                <Button variant='contained' sx={{mt:1}} onClick={handleSubmit} disabled={disableButton()}>save</Button>
             </section>
         </Container>
     )

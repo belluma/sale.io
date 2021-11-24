@@ -17,6 +17,7 @@ import {OrderStatus} from "../../../../interfaces/OrderStatus";
 import {IOrder} from "../../../../interfaces/IOrder";
 import {parseName} from "../../../main-view/thumbnail/helper";
 import OrderDetails from "../../../main-view/details/order-details/OrderDetails";
+import {dividerStyles} from "../../../main-view/details/styles";
 
 type Props = {
     isFormEnabled?: boolean,
@@ -50,7 +51,7 @@ function OrderPreview({isFormEnabled}: Props) {
             {order.status === OrderStatus.PENDING ?
                <ReceiveButton />: <></>}
             <CardHeader title={`order to ${supplier && parseName(supplier)}`}/>
-            <Divider/>
+            <Divider sx={dividerStyles}/>
         </OrderDetails>
     )
 }
