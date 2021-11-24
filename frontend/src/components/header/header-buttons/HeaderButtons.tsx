@@ -44,7 +44,7 @@ function HeaderButtons({appBarHeight}: Props) {
         <div>
             <Drawer open={drawerOpen} toggle={toggleDrawer} buttons={buttons}
                     marginTop={appBarHeight}/>
-            <Toolbar sx={{mb: 1, alignItems: "stretch", justifyContent: "space-between"}}>
+            <Toolbar sx={{mb: 1, alignItems: "center", justifyContent: "space-between"}}>
                 {smallScreen ? burgerMenu : buttons}
                 {!smallScreen && <ChangeView key={"changeView"}/>}
                 {loggedIn && <IconButton classes={{root: classes.goldFont}} onClick={handleLogout} edge="end">
