@@ -6,7 +6,6 @@ import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.db.order.OrderToCustomer;
 import capstone.backend.model.dto.order.OrderContainerDTO;
-import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.repo.*;
 import capstone.backend.utils.ControllerTestUtils;
