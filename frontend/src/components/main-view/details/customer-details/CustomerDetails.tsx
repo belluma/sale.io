@@ -12,17 +12,22 @@ import AddIcon from '@mui/icons-material/Add'
 
 //interface imports
 import {IOrderItem} from "../../../../interfaces/IOrder";
+import {useHistory} from "react-router";
 
 type Props = {};
 
 function CustomerDetails(props: Props){
+    const history = useHistory();
     const currentCustomer = useAppSelector(selectCurrentCustomer);
     const orderItems: IOrderItem[] = [];
     const {id, name} = currentCustomer;
     const customerName = name ? name : `table ${id}`
+    const openSalesView = () => {
+        history.push('sales');
+    }
     const Buttons = () => (
         <Toolbar>
-            <Button variant={'contained'} sx={{mx:2}} startIcon={<AddIcon/>}>Add</Button>
+            <Button variant={'contained'} sx={{mx:2}} startIcon={<AddIcon/>} onClick={openSalesView}>Add</Button>
             <Button variant={'contained'} sx={{mx:2}} startIcon={<AttachMoneyIcon/>}>Cashout</Button>
         </Toolbar>
 )
