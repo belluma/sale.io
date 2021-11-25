@@ -40,7 +40,7 @@ public class Employee extends Contact {
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return getClass().hashCode(); //I'm confused with this definition... so you want to give all your employes the same hashcode? this might lead to bad performance in hash-collections since all items will land in the same bin
     }
 
 }
