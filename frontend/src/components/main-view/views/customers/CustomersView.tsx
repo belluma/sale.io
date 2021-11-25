@@ -19,7 +19,7 @@ function CustomersView(props: Props){
     const products = useAppSelector(selectCustomers)
     const thumbnails = products.map(parseCustomerToThumbnail);
     return(
-        <GridView customer gridItems={thumbnails.slice(9)} view={Views.CUSTOMER}/>
+        <GridView customer gridItems={thumbnails} view={Views.CUSTOMER}/>
 
 )
 }
