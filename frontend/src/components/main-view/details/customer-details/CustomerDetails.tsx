@@ -29,8 +29,8 @@ function CustomerDetails(props: Props){
     }
     const Buttons = () => (
         <Toolbar>
-            <Button variant={'contained'} sx={{mx:2}} startIcon={<AddIcon/>} onClick={openSalesView}>Add</Button>
-            <Button variant={'contained'} sx={{mx:2}} startIcon={<AttachMoneyIcon/>}>Cashout</Button>
+            <Button variant={'contained'} size={'small'} sx={{mr:1}} startIcon={<AddIcon/>} onClick={openSalesView}>Add</Button>
+            <Button variant={'contained'} size={'small'} sx={{ml:1}} startIcon={<AttachMoneyIcon/>}>Cashout</Button>
         </Toolbar>
 )
 

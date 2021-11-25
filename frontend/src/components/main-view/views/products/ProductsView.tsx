@@ -14,6 +14,7 @@ import GridView from "../../grid-view/GridView";
 
 //interface imports
 import {Views} from "../../../../interfaces/IThumbnail";
+import {getAllCategories} from "../../../../slicer/categorySlice";
 
 type Props = {};
 
@@ -21,6 +22,7 @@ function ProductsView(props: Props) {
     const dispatch = useAppDispatch();
     useEffect(() => {
         dispatch(getAllProducts());
+        dispatch(getAllCategories());
     }, [dispatch]);
 
     const products = useAppSelector(selectProducts)
