@@ -1,6 +1,7 @@
 package capstone.backend.controller;
 
 import capstone.backend.CombinedTestContainer;
+import capstone.backend.mapper.OrderItemMapper;
 import capstone.backend.model.db.Product;
 import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.db.order.OrderItem;
@@ -27,6 +28,7 @@ import static capstone.backend.mapper.OrderToCustomerMapper.mapOrder;
 import static capstone.backend.model.enums.OrderToCustomerStatus.OPEN;
 import static capstone.backend.model.enums.OrderToCustomerStatus.PAID;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
+import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItemNoId;
 import static capstone.backend.utils.OrderToCustomerTestUtils.emptyOrderDTOWithStatusOpen;
 import static capstone.backend.utils.ProductTestUtils.sampleProduct;
 import static capstone.backend.utils.SupplierTestUtils.sampleSupplier;
@@ -34,6 +36,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.junit.jupiter.api.Assertions.*;
+
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class OrderToCustomerControllerTest {
@@ -58,7 +61,7 @@ class OrderToCustomerControllerTest {
     public static PostgreSQLContainer<CombinedTestContainer> container = CombinedTestContainer.getInstance();
 
     @BeforeEach
-    public void createSupplierAndProduct(){
+    public void createSupplierAndProduct() {
 
     }
 
@@ -134,7 +137,7 @@ class OrderToCustomerControllerTest {
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
         Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)).withAmountInStock(1));
         OrderItem orderItem = sampleOrderItem().withProduct(product);
-        OrderToCustomer order1 = orderRepo.save(new OrderToCustomer( OPEN));
+        OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(OPEN));
         OrderToCustomerDTO expected = new OrderToCustomerDTO(order1.getId(), List.of(mapOrderItem(orderItem)));
         OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItem));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
@@ -146,13 +149,15 @@ class OrderToCustomerControllerTest {
         assertThat(Objects.requireNonNull(response.getBody()).getOrderItems().get(0).getQuantity(), is(orderItem.getQuantity()));
         assertThat(response.getBody().getOrderItems().get(0).getProduct().getAmountInStock(), is(product.getAmountInStock() - orderItem.getQuantity()));
     }
+
     @Test
-    void addItemsToOrderWithExistingItem(){
+    void addItemsToOrderWithExistingItem() {
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
         Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)).withAmountInStock(1));
         OrderItem orderItemToAdd = sampleOrderItem().withProduct(product);
-        OrderItem orderItemOnOrder = orderItemRepo.save(sampleOrderItem().withProduct(product));
+//        OrderItem orderItemOnOrder = orderItemRepo.save(sampleOrderItem().withProduct(product));
+        OrderItem orderItemOnOrder = sampleOrderItem().withProduct(product).withId(null);
         OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(orderItemOnOrder), OPEN));
         OrderToCustomerDTO expected = new OrderToCustomerDTO(order1.getId(), List.of(mapOrderItem(orderItemOnOrder)));
         OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToAdd));
@@ -167,51 +172,42 @@ class OrderToCustomerControllerTest {
     }
 
     @Test
-    void addItemsToOrderWithMultipleItems(){
+    void addItemsToOrderWithMultipleItems() {
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
         Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)).withAmountInStock(1));
         Product product2 = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)).withAmountInStock(1));
         Product product3 = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)).withAmountInStock(1));
-        OrderItem orderItemOnOrder = orderItemRepo.save(sampleOrderItem().withProduct(product));
-        OrderItem orderItemOnOrder2 = orderItemRepo.save(sampleOrderItem().withProduct(product2));
-        OrderItem orderItemOnOrder3 = orderItemRepo.save(sampleOrderItem().withProduct(product3));
-        OrderItem orderItemToAdd = sampleOrderItem().withProduct(product2);
-        OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(
-                orderItemOnOrder,
-                orderItemOnOrder2,
-                orderItemOnOrder3
-        ), OPEN));
-        OrderToCustomerDTO expected = new OrderToCustomerDTO(order1.getId(), List.of(
-                mapOrderItem(orderItemOnOrder),
-                mapOrderItem(orderItemOnOrder2),
-                mapOrderItem(orderItemOnOrder3)));
-        assertThat(expected, is(mapOrder(order1)));
+        List<OrderItem> orderItems = List.of(sampleOrderItemNoId().withProduct(product),
+                sampleOrderItemNoId().withProduct(product2),
+                sampleOrderItemNoId().withProduct(product3));
+        OrderItem orderItemToAdd = orderItems.get(1);
+        OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(orderItems, OPEN));
+        OrderToCustomerDTO expected = new OrderToCustomerDTO(order1.getId(),orderItems.stream().map(OrderItemMapper::mapOrderItem).toList() );
         OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToAdd));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/add/?id=" + order1.getId();
         //WHEN
         ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), OrderToCustomerDTO.class);
         //THEN
-        assertThat(Objects.requireNonNull(response.getBody()).getOrderItems().get(0).getQuantity(), is(orderItemOnOrder.getQuantity()));
-        assertThat(Objects.requireNonNull(response.getBody()).getOrderItems().get(1).getQuantity(), is(orderItemToAdd.getQuantity() + orderItemOnOrder2.getQuantity()));
-        assertThat(Objects.requireNonNull(response.getBody()).getOrderItems().get(2).getQuantity(), is(orderItemOnOrder3.getQuantity()));
+        assertThat(Objects.requireNonNull(response.getBody()).getOrderItems().get(0).getQuantity(), is(orderItems.get(0).getQuantity()));
+        assertThat(Objects.requireNonNull(response.getBody()).getOrderItems().get(1).getQuantity(), is(orderItemToAdd.getQuantity() + orderItems.get(1).getQuantity()));
+        assertThat(Objects.requireNonNull(response.getBody()).getOrderItems().get(2).getQuantity(), is(orderItems.get(2).getQuantity()));
         assertThat(response.getBody().getId(), is(expected.getId()));
         assertThat(response.getBody().getOrderItems().size(), is(3));
-        assertThat(response.getBody().getOrderItems(), containsInAnyOrder(mapOrderItem(orderItemOnOrder), mapOrderItem(orderItemOnOrder2), mapOrderItem(orderItemOnOrder3)));
+        assertThat(response.getBody().getOrderItems(), containsInAnyOrder(mapOrderItem(orderItems.get(0)), mapOrderItem(orderItems.get(1)), mapOrderItem(orderItems.get(2))));
         assertThat(response.getBody().getOrderItems().get(0).getProduct().getAmountInStock(), is(product.getAmountInStock()));
         assertThat(response.getBody().getOrderItems().get(1).getProduct().getAmountInStock(), is(product2.getAmountInStock() - orderItemToAdd.getQuantity()));
         assertThat(response.getBody().getOrderItems().get(2).getProduct().getAmountInStock(), is(product3.getAmountInStock()));
-
     }
 
     @Test
-    void addItemsToOrderWithHigherQuantity(){
+    void addItemsToOrderWithHigherQuantity() {
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
         Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)).withAmountInStock(42));
         OrderItem orderItemToAdd = sampleOrderItem().withProduct(product).withQuantity(23);
-        OrderItem orderItemOnOrder = orderItemRepo.save(sampleOrderItem().withProduct(product));
+        OrderItem orderItemOnOrder = sampleOrderItemNoId().withProduct(product);
         OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(orderItemOnOrder), OPEN));
         OrderToCustomerDTO expected = new OrderToCustomerDTO(order1.getId(), List.of(mapOrderItem(orderItemOnOrder)));
         OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToAdd));
@@ -226,7 +222,41 @@ class OrderToCustomerControllerTest {
     }
 
     @Test
-    void addItemsFailsWhenOrderDoesNotExist(){
+    void addItemsFailsWhenOrderDoesNotExist() {
+        //GIVEN
+        Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)).withAmountInStock(1));
+        OrderItem orderItem = sampleOrderItem().withProduct(product);
+        OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(), OPEN));
+        order1.setId(12345L);
+        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItem));
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        String URL = BASEURL + "/add/?id=" + 12345;
+        //WHEN
+        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), OrderToCustomerDTO.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
+    }
+
+    @Test
+    void addItemsFailsWhenOrderAlreadyPaid() {
+        //GIVEN
+        Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)).withAmountInStock(1));
+        OrderItem orderItemToAdd = sampleOrderItemNoId().withProduct(product);
+        OrderItem orderItemOnOrder = sampleOrderItemNoId().withProduct(product);
+        OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(orderItemOnOrder), PAID));
+        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToAdd));
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        String URL = BASEURL + "/add/?id=" + order1.getId();
+        //WHEN
+        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), OrderToCustomerDTO.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
+    }
+
+    @Test
+    void addItemsToOrderFailsWhenProductDoesNotExist() {
         //GIVEN
 
 
@@ -239,12 +269,13 @@ class OrderToCustomerControllerTest {
     }
 
     @Test
-    void addItemsToOrderFailsWhenAmountInStockTooLow(){
+    void addItemsToOrderFailsWhenAmountInStockTooLow() {
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
         Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
         OrderItem orderItem = sampleOrderItem().withProduct(product);
-        OrderToCustomer order1 = orderRepo.save(new OrderToCustomer( OPEN));
+        OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(OPEN));
+
         OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItem));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/add/?id=" + order1.getId();
