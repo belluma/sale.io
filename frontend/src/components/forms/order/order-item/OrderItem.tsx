@@ -12,6 +12,7 @@ import CustomNumber from "../../_elements/custom-number/CustomNumber";
 
 //interface imports
 import {IOrderItem} from "../../../../interfaces/IOrder";
+import ConfirmDelete from "./confirm-delete/ConfirmDelete";
 
 type Props = {
     item: IOrderItem,
@@ -23,9 +24,13 @@ type Props = {
 function OrderItem({item, index, form, retail}: Props) {
     const dispatch = useAppDispatch();
     const [edit, setEdit] = useState(false);
-    const handleRemove = () => {
-        dispatch(removeOrderItem(index));
+    const [popperAnchor, setPopperAnchor] = React.useState<null | HTMLElement>(null);
+    const popperOpen = Boolean(popperAnchor);
+    const popperId = popperOpen ? 'confirm-delete-popper' : undefined;
+    const handleRemove = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setPopperAnchor(event.currentTarget)
     }
+    const closePopper = () => setPopperAnchor(null);
     const total = retail ? getSubTotalRetail(item) : getSubTotalWholesale(item);
     const changeQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(editItemQty({quantity: +e.target.value, index}));
@@ -49,6 +54,8 @@ function OrderItem({item, index, form, retail}: Props) {
                 </IconButton>}
             </Grid>
             <Grid item xs={3}>€ {total?.toFixed(2)}</Grid>
+            <ConfirmDelete id={popperId} open={popperOpen} anchorEl={popperAnchor} cancel={closePopper}
+                           confirm={removeOrderItem} itemIndex={index}/>
         </Toolbar>
     )
 }
