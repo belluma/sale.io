@@ -24,11 +24,11 @@ function ConfirmDelete({id, open, anchorEl, cancel, confirm, itemIndex, name}: P
     }
     return (
         <Popper id={id} open={open} anchorEl={anchorEl} style={{zIndex: 1400}}>
-            <Paper sx={{width: {xs: 0.5, sm: 300}, padding: 3}} elevation={24}>
+            <Paper sx={{width: {xs: 0.5, sm: 280}, padding: 3}} elevation={24}>
                 <Grid container sx={{bgcolor: 'paper'}} spacing={3}>
                     <Grid item xs={12}>
                         <Typography variant={"body2"} gutterBottom align="center" >
-                            Do you really want to take {name} from the order?
+                            Do you really want to take {name} off the order?
                         </Typography>
                     </Grid>
                     <Grid item container justifyContent='space-between' xs={12}>

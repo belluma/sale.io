@@ -1,5 +1,5 @@
 import React from 'react'
-import {receiveOrder, selectCurrentOrder, selectOrderToSave} from "../../../../slicer/orderSlice";
+import {receiveOrder, removeOrderItem, selectCurrentOrder, selectOrderToSave} from "../../../../slicer/orderSlice";
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
 
 //component imports
@@ -47,7 +47,7 @@ function OrderPreview({isFormEnabled}: Props) {
     </ThemeProvider>)
 
     return (
-        <OrderDetails isFormEnabled={isFormEnabled} orderItems={orderItems}>
+        <OrderDetails isFormEnabled={isFormEnabled} orderItems={orderItems} handleRemove={removeOrderItem}>
             {order.status === OrderStatus.PENDING ?
                <ReceiveButton />: <></>}
             <CardHeader title={`order to ${supplier && parseName(supplier)}`}/>
