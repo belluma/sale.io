@@ -3,9 +3,10 @@ import {IEmployee} from "../../../interfaces/IEmployee";
 import {ISupplier} from "../../../interfaces/ISupplier";
 import {IProduct} from "../../../interfaces/IProduct";
 import {IOrder} from "../../../interfaces/IOrder";
-import {getTotal} from "../../forms/order/helper";
+import {getTotalRetail, getTotalWholeSale} from "../../forms/order/helper";
 import {IDetailsData, Views} from "../../../interfaces/IThumbnail";
 import {ICustomer} from "../../../interfaces/ICustomer";
+import {ICategory} from "../../../interfaces/ICategory";
 
 export const parseName = ({firstName="", lastName=""}:IContact):string => {
     let name = '';
@@ -58,28 +59,29 @@ export const parseOrderToThumbnail = ({supplier, id, orderItems, status}:IOrder)
         id: id?.toString() || "",
         model: Views.ORDER,
         contentText: `${orderItems.length} item${orderItems.length > 1 ? "s" : ""}`,
-        footerText: `Total: €${orderItems.reduce(getTotal, 0).toFixed(2)}`
+        footerText: `Total: €${orderItems.reduce(getTotalWholeSale, 0).toFixed(2)}`
     }
 }
-export const parseCustomerToThumbnail = ({ id, orderItems, status}:ICustomer):IDetailsData => {
+export const parseCustomerToThumbnail = ({ id, orderItems, status, name}:ICustomer):IDetailsData => {
+
     return{
-        title: `open order`,
+        title: name || `table ${id}`,
         picture: `/images/${status}.png`,
         id: id?.toString() || "",
         model: Views.CUSTOMER,
-        contentText: `${orderItems.length} item${orderItems.length > 1 ? "s" : ""}`,
-        footerText: `Total: €${orderItems.reduce(getTotal, 0).toFixed(2)}`
+        contentText:`total: €${orderItems.reduce(getTotalRetail, 0).toFixed(2)}`,
+        footerText: `Total: €${orderItems.reduce(getTotalRetail, 0).toFixed(2)}`
     }
 }
 
 
 
 
-export const parseCategoryToThumbnail = (category: string, index:number):IDetailsData => {
+export const parseCategoryToThumbnail = ({name, id}: ICategory, index:number):IDetailsData => {
     return {
-        title: category,
-        picture: `/images/protected/categories/${category.split(' ')[0]}`,
-        id: index.toString(),
-        model: Views.LOGIN,
+        title: name,
+        picture: `/images/protected/categories/${name?.split(' ')[0]}.jpg`,
+        id: `${id}` || index.toString(),
+        model: Views.NONE,
     }
 }

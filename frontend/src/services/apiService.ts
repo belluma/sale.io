@@ -1,7 +1,7 @@
 import axios from "axios";
 import {parseError} from './errorService';
 import {authHeaders, jsonHeaders} from "./serviceUtils";
-import {IBody} from "../interfaces/IApi";
+import {IBody, IOrderToCustomer} from "../interfaces/IApi";
 import {IOrder} from "../interfaces/IOrder";
 
 
@@ -69,6 +69,18 @@ export const receiveOrder = (token: string, data: IOrder) => {
     return axios({
         method: 'put',
         url: `/api/orders_suppliers/?id=${data.id}&status=RECEIVED`,
+        headers: {...jsonHeaders(), ...authHeaders(token)},
+        data
+    }).then(response => {
+        return response
+    })
+        .catch(err => parseError(err))
+}
+
+export const addItemsToOrder = (token: string, data: IOrderToCustomer) => {
+    return axios({
+        method: 'put',
+        url: `/api/orders_customers/add/?id=${data.order.id}`,
         headers: {...jsonHeaders(), ...authHeaders(token)},
         data
     }).then(response => {

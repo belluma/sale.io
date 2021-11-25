@@ -3,7 +3,7 @@ import {useAppDispatch} from '../../../app/hooks';
 import {images, thumbnailStyles} from '../helpers'
 
 import {setDetailData, showDetails} from "../../../slicer/detailsSlice";
-import {chooseCurrentEmployee, toBeReplaced} from "../../../slicer/employeeSlice";
+import {chooseCurrentEmployee} from "../../../slicer/employeeSlice";
 import {chooseCurrentProduct} from "../../../slicer/productSlice";
 import {chooseCurrentSupplier} from "../../../slicer/supplierSlice";
 import {chooseCurrentOrder} from "../../../slicer/orderSlice";
@@ -11,7 +11,8 @@ import {chooseCurrentOrder} from "../../../slicer/orderSlice";
 import {Card, CardActions, CardContent, CardHeader, CardMedia, Divider} from "@mui/material";
 //interface imports
 import {IThumbnail, Views} from '../../../interfaces/IThumbnail';
-import {createCustomer} from "../../../slicer/customerSlice";
+import {chooseCurrentCustomer, createCustomer} from "../../../slicer/customerSlice";
+import {chooseCurrentCategory} from "../../../slicer/categorySlice";
 
 type Props = {
     data: IThumbnail
@@ -22,17 +23,17 @@ function Thumbnail({data}: Props) {
     const {title, subtitle, picture, id, alt, model, contentText, footerText} = data;
     const dispatch = useAppDispatch();
     const selectors = {
-        none: toBeReplaced,
+        none: chooseCurrentCategory,
         login: chooseCurrentEmployee,
         employee: chooseCurrentEmployee,
         product: chooseCurrentProduct,
-        customer: toBeReplaced,
+        customer: chooseCurrentCustomer,
         newCustomer: createCustomer,
         supplier: chooseCurrentSupplier,
         order: chooseCurrentOrder,
     }
     const onClick = () => {
-        if(model !== Views.NEWCUSTOMER) {
+        if(model !== Views.NEWCUSTOMER && model !== Views.NONE) {
             dispatch(setDetailData(data));
             dispatch(showDetails());
         }

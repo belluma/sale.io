@@ -8,6 +8,7 @@ import {ISupplier} from "../interfaces/ISupplier";
 import {States} from "../interfaces/IStates";
 import {Actions} from "../interfaces/IApiResponse";
 import {ICustomer} from "../interfaces/ICustomer";
+import {ICategory} from "../interfaces/ICategory";
 
 export interface IError {
     status: number;
@@ -31,7 +32,7 @@ const parseErrorMessage = ({statusText}: IError): IDetailsData => {
 }
 
 
-type ToSave = IOrder | IProduct | IEmployee | ISupplier | ICustomer;
+type ToSave = IOrder | IProduct | IEmployee | ISupplier | ICustomer | ICategory;
 
 export const setPending = (state: States) => {
     state.pending = true;

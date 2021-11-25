@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import {useAppDispatch} from "../../../../app/hooks";
 import {editItemQty, removeOrderItem} from "../../../../slicer/orderSlice";
-import {getSubTotal} from "../helper";
+import {getSubTotalRetail, getSubTotalWholesale} from "../helper";
 //component imports
 import {Grid, IconButton, Toolbar} from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear"
@@ -16,16 +16,17 @@ import {IOrderItem} from "../../../../interfaces/IOrder";
 type Props = {
     item: IOrderItem,
     index: number,
-    form?: boolean
+    form?: boolean,
+    retail?:boolean
 };
 
-function OrderItem({item, index, form}: Props) {
+function OrderItem({item, index, form, retail}: Props) {
     const dispatch = useAppDispatch();
     const [edit, setEdit] = useState(false);
     const handleRemove = () => {
         dispatch(removeOrderItem(index));
     }
-    const total = getSubTotal(item)
+    const total = retail ? getSubTotalRetail(item) : getSubTotalWholesale(item);
     const changeQuantity = (e:React.ChangeEvent<HTMLInputElement>) => {
         dispatch(editItemQty({quantity: +e.target.value, index}));
     }

@@ -19,6 +19,8 @@ import Pending from "../messages/pending/Pending";
 //interface imports
 import {Model} from "../../interfaces/IThumbnail";
 import SuccessMessage from "../messages/success-message/SuccessMessage";
+import SalesViewCategories from "./views/sales-view/SalesViewCategories";
+import SalesViewProducts from "./views/sales-view/SalesViewProducts";
 
 type Props = {};
 
@@ -41,15 +43,15 @@ function MainView(props: Props) {
                    disableGutters={isStart}>
             <Pending/>
             <SuccessMessage/>
-            {/*<Grid sx={{minHeight: 0.99}} container justifyContent="center" alignItems="center">*/}
             <Switch>
                 <Route path={"/login"} component={LoginView}/>
                 <Route path={"/signup"} component={Signup}/>
                 <Route path={"/start"} component={StartView}/>
+                <Route path={"/sales"}  component={SalesViewCategories}/>
+                <Route path={"/category"} component={SalesViewProducts}/>
                 <Route path={"/"} exact component={StartRoute}/>
                 {protectedRoutes}
             </Switch>
-            {/*</Grid>*/}
         </Container>
     );
 }

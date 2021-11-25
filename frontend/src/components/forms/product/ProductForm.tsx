@@ -21,6 +21,7 @@ function ProductForm() {
     const productToSave = useAppSelector(selectProductToSave);
     const {name, purchasePrice, retailPrice, minAmount, maxAmount, unitSize, category} = productToSave;
     const supplierId = productToSave.suppliers?.length ? productToSave.suppliers[0].id : undefined;
+    const categoryId = category?.id?.toString();
     const suppliers = useAppSelector(selectSuppliers);
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -44,7 +45,7 @@ function ProductForm() {
                                       onChange={handleSupplierChange} model={"product"} required/>
                     </Grid>
                     <Grid item xs={6}>
-                        <CustomSelect name="category" label={"category"} value={category}
+                        <CustomSelect name="category" label={"category"} value={categoryId}
                                       options={[{id: '1', name: `vegetables`}]} {...props}  />
                     </Grid>
                     <Grid item xs={6}>

@@ -14,7 +14,6 @@ const initialState: IAuthState = {
     token: ""
 }
 
-
 export const login = createAsyncThunk(
     'login',
     async (credentials: IUserCredentials, {dispatch}) => {
