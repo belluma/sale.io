@@ -14,18 +14,17 @@ import Grid from "@material-ui/core/Grid";
 import {ReactJSXElement} from "@emotion/react/types/jsx-namespace";
 import {IOrderItem} from "../../../../interfaces/IOrder";
 import {dividerStyles} from "../styles";
-import {ActionCreatorWithPayload} from "@reduxjs/toolkit";
 
 type Props = {
     children?: ReactJSXElement[],
     orderItems: IOrderItem[],
     isFormEnabled?: boolean,
     retail?: boolean,
-    handleRemove?: ActionCreatorWithPayload<number>,
+    customer?: boolean
 };
-function OrderDetails({children, orderItems, isFormEnabled, retail, handleRemove}: Props){
+function OrderDetails({children, orderItems, isFormEnabled, retail, customer}: Props){
     const productsOnOrder = orderItems.map((item, i) => {
-        return <OrderItem form={isFormEnabled} key={i} item={item} retail={retail} handleRemove={handleRemove} index={i}/>
+        return <OrderItem form={isFormEnabled} key={i} item={item} retail={retail} customer={customer} index={i}/>
     })
     const total = orderItems.reduce(retail ? getTotalRetail : getTotalWholeSale, 0);
     return(

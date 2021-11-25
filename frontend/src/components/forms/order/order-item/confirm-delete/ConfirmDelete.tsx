@@ -1,26 +1,30 @@
 import React from 'react'
-import {ActionCreatorWithPayload} from "@reduxjs/toolkit";
-import {useAppDispatch} from "../../../../../app/hooks";
+import {useAppDispatch, useAppSelector} from "../../../../../app/hooks";
 //component imports
 import {Button, Grid, Paper, Popper, Typography} from "@mui/material";
 
 //interface imports
 import {VirtualElement} from '@popperjs/core';
+import {removeOrderItem} from "../../../../../slicer/orderSlice";
+import {selectCurrentCustomer, takeItemsOffOrder} from "../../../../../slicer/customerSlice";
 
 type Props = {
     id?: string,
     open: boolean,
     anchorEl?: null | VirtualElement | (() => VirtualElement);
     cancel: () => void,
-    confirm?: ActionCreatorWithPayload<number>,
+    customer?:boolean,
     itemIndex: number,
     name?: string
 };
 
-function ConfirmDelete({id, open, anchorEl, cancel, confirm, itemIndex, name}: Props) {
+function ConfirmDelete({id, open, anchorEl, cancel, customer, itemIndex, name}: Props) {
     const dispatch = useAppDispatch();
+    const currentCustomer = useAppSelector(selectCurrentCustomer)
     const removeItem = () => {
-        confirm && dispatch(confirm(itemIndex));
+        console.log(customer)
+        console.log(123)
+        dispatch(customer ? takeItemsOffOrder(currentCustomer.orderItems[itemIndex]) : removeOrderItem(itemIndex));
     }
     return (
         <Popper id={id} open={open} anchorEl={anchorEl} style={{zIndex: 1400}}>

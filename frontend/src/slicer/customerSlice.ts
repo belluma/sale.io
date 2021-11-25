@@ -7,7 +7,8 @@ import {
     getOne as apiGetOne,
     create as apiCreate,
     del as apiDelete,
-    addItemsToOrder as apiAddItemsToOrder
+    addItemsToOrder as apiAddItemsToOrder,
+    takeItemsOffOrder as apiTakeItemsOffOrder
 } from '../services/apiService'
 import {emptyCustomer, ICustomer} from "../interfaces/ICustomer";
 import {hideDetails} from "./detailsSlice";
@@ -68,13 +69,24 @@ export const createCustomer = createAsyncThunk<IResponseGetOneCustomer, void, { 
 )
 
 export const addItemsToOrder = createAsyncThunk<IResponseGetOneCustomer,IOrderItem, { state: RootState, dispatch: Dispatch }>(
-    'customers/edit',
+    'customers/add',
     async (orderItem, {getState, dispatch}) => {
-        console.log(123)
         const customer = getState().customer.current;
         const order = {order: customer, itemToAddOrRemove: orderItem}
         const token = getState().authentication.token
         const {data, status, statusText} = await apiAddItemsToOrder( token, order);
+        handleError(status, statusText, dispatch);
+        if (status === 200) hideDetailsAndReloadList(dispatch)
+        return {data, status, statusText}
+    }
+)
+export const takeItemsOffOrder = createAsyncThunk<IResponseGetOneCustomer,IOrderItem, { state: RootState, dispatch: Dispatch }>(
+    'customers/remove',
+    async (orderItem, {getState, dispatch}) => {
+        const customer = getState().customer.current;
+        const order = {order: customer, itemToAddOrRemove: orderItem}
+        const token = getState().authentication.token
+        const {data, status, statusText} = await apiTakeItemsOffOrder( token, order);
         handleError(status, statusText, dispatch);
         if (status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
@@ -112,6 +124,7 @@ export const customerSlice = createSlice({
             .addCase(getOneCustomer.pending, setPending)
             .addCase(createCustomer.pending, setPending)
             .addCase(addItemsToOrder.pending, setPending)
+            .addCase(takeItemsOffOrder.pending, setPending)
             .addCase(deleteCustomer.pending, setPending)
             .addCase(getAllOpenCustomers.fulfilled, (state, action: PayloadAction<IResponseGetAllCustomers>) => {
                 if (stopPendingAndHandleError(state, action, emptyCustomer)) return;
@@ -125,6 +138,9 @@ export const customerSlice = createSlice({
                 console.log(action)
             })
             .addCase(addItemsToOrder.fulfilled, (state, action: PayloadAction<IResponseGetOneCustomer>) => {
+                handleApiResponse(state, action, emptyCustomer)
+            })
+            .addCase(takeItemsOffOrder.fulfilled, (state, action: PayloadAction<IResponseGetOneCustomer>) => {
                 handleApiResponse(state, action, emptyCustomer)
             })
             .addCase(deleteCustomer.fulfilled, (state, action: PayloadAction<IResponseGetOneCustomer>) => {

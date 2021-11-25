@@ -88,5 +88,16 @@ export const addItemsToOrder = (token: string, data: IOrderToCustomer) => {
     })
         .catch(err => parseError(err))
 }
+export const takeItemsOffOrder = (token: string, data: IOrderToCustomer) => {
+    return axios({
+        method: 'put',
+        url: `/api/orders_customers/remove/?id=${data.order.id}`,
+        headers: {...jsonHeaders(), ...authHeaders(token)},
+        data
+    }).then(response => {
+        return response
+    })
+        .catch(err => parseError(err))
+}
 
 

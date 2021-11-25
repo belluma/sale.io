@@ -13,18 +13,17 @@ import CustomNumber from "../../_elements/custom-number/CustomNumber";
 //interface imports
 import {IOrderItem} from "../../../../interfaces/IOrder";
 import ConfirmDelete from "./confirm-delete/ConfirmDelete";
-import {ActionCreatorWithPayload} from "@reduxjs/toolkit";
 
 type Props = {
     item: IOrderItem,
     index: number,
     form?: boolean,
     retail?: boolean,
-    handleRemove?: ActionCreatorWithPayload<number>,
+    customer?:boolean
 
 };
 
-function OrderItem({item, index, form, retail, handleRemove}: Props) {
+function OrderItem({item, index, form, retail, customer}: Props) {
     const dispatch = useAppDispatch();
     const [edit, setEdit] = useState(false);
     const [popperAnchor, setPopperAnchor] = React.useState<null | HTMLElement>(null);
@@ -58,7 +57,7 @@ function OrderItem({item, index, form, retail, handleRemove}: Props) {
             </Grid>
             <Grid item xs={3}>€ {total?.toFixed(2)}</Grid>
             <ConfirmDelete id={popperId} open={popperOpen} anchorEl={popperAnchor} cancel={closePopper}
-                           confirm={handleRemove} itemIndex={index} name={item.product?.name}/>
+                           customer={customer} itemIndex={index} name={item.product?.name}/>
         </Toolbar>
     )
 }
