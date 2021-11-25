@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {useAppDispatch} from "../../../../app/hooks";
-import {editItemQty, removeOrderItem} from "../../../../slicer/orderSlice";
+import {editItemQty} from "../../../../slicer/orderSlice";
 import {getSubTotalRetail, getSubTotalWholesale} from "../helper";
 //component imports
 import {Grid, IconButton, Toolbar} from "@mui/material";
@@ -13,21 +13,24 @@ import CustomNumber from "../../_elements/custom-number/CustomNumber";
 //interface imports
 import {IOrderItem} from "../../../../interfaces/IOrder";
 import ConfirmDelete from "./confirm-delete/ConfirmDelete";
+import {ActionCreatorWithPayload} from "@reduxjs/toolkit";
 
 type Props = {
     item: IOrderItem,
     index: number,
     form?: boolean,
-    retail?: boolean
+    retail?: boolean,
+    handleRemove?: ActionCreatorWithPayload<number>,
+
 };
 
-function OrderItem({item, index, form, retail}: Props) {
+function OrderItem({item, index, form, retail, handleRemove}: Props) {
     const dispatch = useAppDispatch();
     const [edit, setEdit] = useState(false);
     const [popperAnchor, setPopperAnchor] = React.useState<null | HTMLElement>(null);
     const popperOpen = Boolean(popperAnchor);
     const popperId = popperOpen ? 'confirm-delete-popper' : undefined;
-    const handleRemove = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const openConfirmRemovePopper = (event: React.MouseEvent<HTMLButtonElement>) => {
         setPopperAnchor(event.currentTarget)
     }
     const closePopper = () => setPopperAnchor(null);
@@ -38,7 +41,7 @@ function OrderItem({item, index, form, retail}: Props) {
     return (
         <Toolbar sx={{width: 0.99}} disableGutters>
             <Grid item xs={2}>
-                {form && <IconButton sx={{display: "inline"}} onClick={handleRemove} color="warning">
+                {form && <IconButton sx={{display: "inline"}} onClick={openConfirmRemovePopper} color="warning">
                     <ClearIcon/>
                 </IconButton>}
             </Grid>
@@ -55,7 +58,7 @@ function OrderItem({item, index, form, retail}: Props) {
             </Grid>
             <Grid item xs={3}>€ {total?.toFixed(2)}</Grid>
             <ConfirmDelete id={popperId} open={popperOpen} anchorEl={popperAnchor} cancel={closePopper}
-                           confirm={removeOrderItem} itemIndex={index}/>
+                           confirm={handleRemove} itemIndex={index} name={item.product?.name}/>
         </Toolbar>
     )
 }
