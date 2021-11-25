@@ -26,7 +26,8 @@ const initialState: IOrdersState = {
     orders: [],
     current: emptyOrder,
     pending: false,
-    success: false, toSave: emptyOrder,
+    success: false,
+    toSave: emptyOrder,
 }
 const route = "orders_suppliers";
 export const validateOrder = (order: IOrder): boolean => {

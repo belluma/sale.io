@@ -57,6 +57,7 @@ function OrderForm(props: Props) {
         setProductToAdd({});
         setQuantity(0);
     }
+    const showPreview = selectedSupplierId && orderToSave.orderItems?.length
     return (
         <Grid container>
             <Grid item xs={12}>
@@ -77,7 +78,7 @@ function OrderForm(props: Props) {
             <Grid item xs={2}>
                 <Button disabled={!validateProduct} onClick={addProduct}>Add</Button>
             </Grid>
-            {selectedSupplierId && <OrderPreview isFormEnabled={true}/>}
+            {showPreview ? <OrderPreview isFormEnabled={true}/> : <></>}
         </Grid>
     )
 }
