@@ -1,7 +1,6 @@
 package capstone.backend.controller;
 
 import capstone.backend.model.dto.order.OrderContainerDTO;
-import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.services.OrderToCustomerService;
 import lombok.RequiredArgsConstructor;

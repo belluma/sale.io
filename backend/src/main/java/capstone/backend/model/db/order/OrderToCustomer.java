@@ -1,10 +1,8 @@
 package capstone.backend.model.db.order;
 
 import capstone.backend.model.enums.OrderToCustomerStatus;
-import capstone.backend.model.enums.OrderToSupplierStatus;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.List;

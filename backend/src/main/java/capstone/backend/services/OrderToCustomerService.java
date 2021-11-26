@@ -8,12 +8,10 @@ import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.repo.OrderToCustomerRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 import static capstone.backend.mapper.OrderToCustomerMapper.mapOrder;
 import static capstone.backend.model.enums.OrderToCustomerStatus.OPEN;
@@ -27,6 +25,7 @@ public class OrderToCustomerService {
     private final OrderToCustomerRepo repo;
     private final ProductService productService;
     private final OrderItemService orderItemService;
+    private final String orderCashedOut = "This order has already been cashed out!";
 
     public List<OrderToCustomerDTO> getAllOrders() {
         return repo.findAll()
@@ -72,7 +71,7 @@ public class OrderToCustomerService {
             throw new EntityNotFoundException("You're trying to add to an order that doesn't exist");
         }
         if (orderAlreadyPaid(orderId)) {
-            throw new IllegalArgumentException("This order has already been cashed out!");
+            throw new IllegalArgumentException(orderCashedOut);
         }
         if (!productService.productExists(orderItem.getProduct())) {
             throw new IllegalArgumentException("You're trying to add a product that doesn't exist");
@@ -109,7 +108,7 @@ public class OrderToCustomerService {
     public OrderToCustomerDTO cashoutOrder(OrderToCustomerDTO orderToCustomer) {
         OrderToCustomer openOrder = repo.findById(orderToCustomer.getId()).orElseThrow(EntityNotFoundException::new);
         if (orderAlreadyPaid(openOrder)) {
-            throw new IllegalArgumentException("This order has already been cashed out!");
+            throw new IllegalArgumentException(orderCashedOut);
         }
         openOrder.setStatus(PAID);
         return mapOrder(repo.save(openOrder));
@@ -120,7 +119,7 @@ public class OrderToCustomerService {
             throw new EntityNotFoundException("You're trying to remove from an order that doesn't exist");
         }
         if (orderAlreadyPaid(order)) {
-            throw new IllegalArgumentException("This order has already been cashed out!");
+            throw new IllegalArgumentException(orderCashedOut);
         }
         if (orderItemService.itemAlreadyOnOrder(orderItem, order).isEmpty()) {
             throw new IllegalArgumentException("The item you're trying to remove is not on the order");

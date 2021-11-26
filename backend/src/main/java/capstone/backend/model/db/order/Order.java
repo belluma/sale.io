@@ -1,12 +1,8 @@
 package capstone.backend.model.db.order;
 
-
-
-import capstone.backend.model.enums.OrderToSupplierStatus;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -42,8 +38,6 @@ public abstract class Order {
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(id, orderItems);
     }
-
-
 }

@@ -54,7 +54,6 @@ class OrderToCustomerControllerTest {
     SupplierRepo supplierRepo;
     @Autowired
     OrderItemRepo orderItemRepo;
-    OrderItemService orderItemService;
     @Autowired
     TestRestTemplate restTemplate;
     @Autowired
@@ -97,7 +96,6 @@ class OrderToCustomerControllerTest {
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertIterableEquals(List.of(order1, order2), Arrays.stream(Objects.requireNonNull(response.getBody())).map(OrderToCustomerMapper::mapOrder).toList());
-//        assertIterableEquals(List.of(mapOrder(order1), mapOrder(order2)), Arrays.asList(Objects.requireNonNull(response.getBody())));
         assertThat(orderRepo.findAll().size(), is(2));
     }
 
@@ -116,7 +114,6 @@ class OrderToCustomerControllerTest {
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertIterableEquals(List.of(order1), Arrays.stream(Objects.requireNonNull(response.getBody())).map(OrderToCustomerMapper::mapOrder).toList());
-//        assertIterableEquals(List.of(mapOrder(order1)), Arrays.asList(Objects.requireNonNull(response.getBody())));
         assertThat(orderRepo.findAll().size(), is(2));
     }
 
