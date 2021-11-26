@@ -28,10 +28,12 @@ import java.util.Set;
 
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
+import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
 import static capstone.backend.mapper.SupplierMapper.mapSupplier;
 import static capstone.backend.model.enums.OrderToSupplierStatus.PENDING;
 import static capstone.backend.model.enums.OrderToSupplierStatus.RECEIVED;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
+import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItemDTO;
 import static capstone.backend.utils.ProductTestUtils.sampleProduct;
 import static capstone.backend.utils.ProductTestUtils.sampleProductWithId;
 import static capstone.backend.utils.SupplierTestUtils.sampleSupplier;
@@ -82,14 +84,18 @@ class OrderToSupplierControllerTest {
         //GIVEN
         Supplier supplier = supplierRepo.save(sampleSupplier());
         Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(supplier)));
-        OrderItem orderItem = orderItemRepo.save(sampleOrderItem().withProduct(product));
-        OrderToSupplier order = orderRepo.save(new OrderToSupplier(1L, List.of(orderItem), PENDING, supplier));
+        OrderItem orderItem = sampleOrderItem().withProduct(product);
+        OrderItem itemOnOrder = orderItemRepo.save(orderItem);
+        OrderToSupplier order = orderRepo.save(new OrderToSupplier(1L, List.of(itemOnOrder), PENDING, supplier));
+        OrderToSupplierDTO expected = new OrderToSupplierDTO(order.getId(), List.of(mapOrderItem(orderItem)), mapSupplier(supplier));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<OrderToSupplierDTO[]> response = restTemplate.exchange(BASEURL, HttpMethod.GET, new HttpEntity<>(headers), OrderToSupplierDTO[].class);
-        OrderToSupplierDTO expected = mapOrder(order);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(Objects.requireNonNull(response.getBody())[0].getId(), is(expected.getId()));
+        assertThat(Objects.requireNonNull(response.getBody())[0].getOrderItems().get(0), is(expected.getOrderItems().get(0)));
+        assertThat(Objects.requireNonNull(response.getBody())[0].getSupplier(), is(expected.getSupplier()));
         assertIterableEquals(Arrays.asList(Objects.requireNonNull(response.getBody())), List.of(expected));
     }
 
@@ -183,8 +189,8 @@ class OrderToSupplierControllerTest {
         Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
         OrderItem orderItem = orderItemRepo.save(sampleOrderItem().withProduct(product));
         OrderToSupplier pendingOrder = orderRepo.save(new OrderToSupplier(1L, List.of(orderItem), PENDING, sampleSupplier));
-        OrderToSupplierDTO orderToReceive = mapOrder(pendingOrder);
-        OrderToSupplierDTO receivedOrder = mapOrder(pendingOrder);
+        OrderToSupplierDTO orderToReceive = new OrderToSupplierDTO(pendingOrder.getId(), List.of(sampleOrderItemDTO().withId(orderItem.getId()).withProduct(mapProductWithDetails(product))), mapSupplier(sampleSupplier));
+        OrderToSupplierDTO receivedOrder = new OrderToSupplierDTO(pendingOrder.getId(), List.of(sampleOrderItemDTO().withId(orderItem.getId()).withProduct(mapProductWithDetails(product))), mapSupplier(sampleSupplier));
         product.setAmountInStock(1);
         receivedOrder.setStatus(RECEIVED);
         receivedOrder.setOrderItems(List.of(mapOrderItem(orderItem.withProduct(product))));

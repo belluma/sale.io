@@ -24,11 +24,11 @@ public abstract class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany( cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<OrderItem> orderItems;
 
-    public Order(List<OrderItem> orderItems){
+    protected Order(List<OrderItem> orderItems){
         this.orderItems = orderItems;
     }
 

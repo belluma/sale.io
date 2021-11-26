@@ -1,6 +1,7 @@
 package capstone.backend.model.db;
 
 import capstone.backend.model.db.contact.Supplier;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.Hibernate;
 import javax.persistence.*;
@@ -22,8 +23,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany()
     @ToString.Exclude
+    @JsonIgnore
     private Set<Supplier> suppliers;
     private String stockCodeSupplier;
     @ManyToOne(fetch = FetchType.EAGER)

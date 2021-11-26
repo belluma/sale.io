@@ -88,7 +88,6 @@ class OrderToCustomerServiceTest {
         verify(orderRepo).existsById(expected.getId());
         verify(productService).productExists(itemToAdd.getProduct());
         verify(productService).getProductDetails((itemToAdd.getProduct().getId()));
-        verify(orderItemService).addItemToOrderOrUpdateQuantity(itemToAdd, initialOrder);
         verify(orderRepo).save(orderWithItemAdded);
         assertThat(actual, is(expected));
     }

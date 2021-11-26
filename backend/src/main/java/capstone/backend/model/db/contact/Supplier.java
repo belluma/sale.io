@@ -2,6 +2,7 @@ package capstone.backend.model.db.contact;
 
 import capstone.backend.model.db.order.OrderToSupplier;
 import capstone.backend.model.enums.Weekday;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,8 +21,9 @@ import java.util.Set;
 public class Supplier extends Contact {
 
     private Weekday orderDay;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany()
     @ToString.Exclude
+    @JsonIgnore
     private Set<OrderToSupplier> orders;
 
     public Supplier() {
