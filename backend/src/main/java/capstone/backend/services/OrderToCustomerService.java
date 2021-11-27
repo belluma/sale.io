@@ -72,9 +72,7 @@ public class OrderToCustomerService {
     }
 
     private OrderToCustomer validateOrderWhenAddItems(Long orderId, OrderItemDTO orderItem) {
-        if (!orderExists(orderId)) {
-            throw new EntityNotFoundException("You're trying to add to an order that doesn't exist");
-        }
+        orderExists(orderId);
         if (orderAlreadyPaid(orderId)) {
             throw new IllegalArgumentException(BEEN_CASHED_OUT);
         }
@@ -95,9 +93,7 @@ public class OrderToCustomerService {
     }
 
     private OrderToCustomer validateOrderWhenRemoveItems(Long orderId, OrderItemDTO orderItem) {
-        if (!orderExists(orderId)) {
-            throw new EntityNotFoundException("You're trying to remove from an order that doesn't exist");
-        }
+        orderExists(orderId);
         if (orderAlreadyPaid(orderId)) {
             throw new IllegalArgumentException(BEEN_CASHED_OUT);
         }
@@ -138,17 +134,10 @@ public class OrderToCustomerService {
         return mapOrder(repo.save(openOrder));
     }
 
-    private boolean orderExists(OrderToCustomerDTO order) {
-        return (order.getId() != null && repo.existsById(order.getId()));
-    }
-
-    private boolean orderExists(Long orderId) {
-        return (orderId != null && repo.existsById(orderId));
-    }
-
-    private boolean orderAlreadyPaid(OrderToCustomerDTO order) {
-        OrderToCustomer existingOrder = repo.findById(order.getId()).orElseThrow(EntityNotFoundException::new);
-        return existingOrder.getStatus() == PAID;
+       private void orderExists(Long orderId) throws EntityNotFoundException{
+        if (orderId == null || !repo.existsById(orderId)){
+            throw new EntityNotFoundException("You're trying to remove from an order that doesn't exist");
+        }
     }
 
     private boolean orderAlreadyPaid(OrderToCustomer order) {
