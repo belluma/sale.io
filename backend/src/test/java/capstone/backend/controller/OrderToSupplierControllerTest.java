@@ -1,6 +1,7 @@
 package capstone.backend.controller;
 
 import capstone.backend.CombinedTestContainer;
+import capstone.backend.exception.CustomError;
 import capstone.backend.model.db.Product;
 import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.db.order.OrderItem;
@@ -177,9 +178,11 @@ class OrderToSupplierControllerTest {
         OrderToSupplierDTO order = new OrderToSupplierDTO(1L, List.of(mapOrderItem(orderItem)), mapSupplier(supplierToOrderFrom));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
-        ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(order, headers), OrderToSupplierDTO.class);
+        ResponseEntity<CustomError> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(order, headers), CustomError.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is("The supplier doesn't carry one or several of the items you tried to order!"));
+        int x = 3;
     }
 
     @Test
