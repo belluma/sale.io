@@ -46,7 +46,7 @@ public class OrderToCustomerService {
         return mapOrder(repo.save(new OrderToCustomer(OPEN)));
     }
 
-    public OrderToCustomerDTO addItemsToOrder(Long orderId, OrderItemDTO orderItem, OrderToCustomerDTO orderToCustomer) throws IllegalArgumentException {
+    public OrderToCustomerDTO addItemsToOrder(Long orderId, OrderItemDTO orderItem) throws IllegalArgumentException {
         OrderToCustomer openOrder = validateOrderWhenAddItems(orderId, orderItem);
         productService.substractStockWhenAddingItemToBill(mapOrderItem(orderItem));
         updateAmountOnBill(openOrder, mapOrderItem(orderItem));
@@ -80,7 +80,7 @@ public class OrderToCustomerService {
         return repo.findById(orderId).orElseThrow(EntityNotFoundException::new);
     }
 
-    public OrderToCustomerDTO removeItemsFromOrder(Long orderId, OrderItemDTO orderItem, OrderToCustomerDTO order) throws IllegalArgumentException, EntityNotFoundException {
+    public OrderToCustomerDTO removeItemsFromOrder( OrderItemDTO orderItem, OrderToCustomerDTO order) throws IllegalArgumentException, EntityNotFoundException {
         OrderToCustomer openOrder = validateOrderWhenRemoveItems(orderItem, order);
         reduceAmountOrTakeOffBillIfZero(openOrder, mapOrderItem(orderItem));
         productService.resetAmountInStockWhenRemovingFromBill(mapOrderItem(orderItem));
