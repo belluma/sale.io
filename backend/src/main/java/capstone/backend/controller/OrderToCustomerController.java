@@ -36,7 +36,7 @@ public class OrderToCustomerController {
     }
     @PutMapping("remove")
     public OrderToCustomerDTO removeItemsFromOrder(@RequestParam Long id, @RequestBody OrderContainerDTO order){
-        return service.removeItemsFromOrder( order.getItemToAddOrRemove(), order.getOrder());
+        return service.removeItemsFromOrder(id,  order.getItemToAddOrRemove());
     }
 
 }

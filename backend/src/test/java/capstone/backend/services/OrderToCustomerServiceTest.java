@@ -213,10 +213,10 @@ class OrderToCustomerServiceTest {
             return null;
         }).when(productService).resetAmountInStockWhenRemovingFromBill(mapOrderItem(orderItem));
         //WHEN
-        OrderToCustomerDTO actual = orderService.removeItemsFromOrder( orderItem, order);
+        OrderToCustomerDTO actual = orderService.removeItemsFromOrder(orderId, orderItem);
         //THEN
         verify(orderRepo).existsById(orderId);
-        verify(orderRepo, times(2)).findById(orderId);
+        verify(orderRepo, times(4)).findById(orderId);
         verify(orderItemService).itemAlreadyOnOrder(orderItem, order);
         verify(productService).productExists(orderItem.getProduct());
         verify(productService).resetAmountInStockWhenRemovingFromBill(mapOrderItem(orderItem));
@@ -242,10 +242,10 @@ class OrderToCustomerServiceTest {
             return null;
         }).when(productService).resetAmountInStockWhenRemovingFromBill(mapOrderItem(orderItem));
         //WHEN
-        OrderToCustomerDTO actual = orderService.removeItemsFromOrder( orderItem, order);
+        OrderToCustomerDTO actual = orderService.removeItemsFromOrder(orderId, orderItem);
         //THEN
         verify(orderRepo).existsById(orderId);
-        verify(orderRepo, times(2)).findById(orderId);
+        verify(orderRepo, times(4)).findById(orderId);
         verify(orderItemService).itemAlreadyOnOrder(orderItem, order);
         verify(productService).productExists(orderItem.getProduct());
         verify(productService).resetAmountInStockWhenRemovingFromBill(mapOrderItem(orderItem));
@@ -258,9 +258,10 @@ class OrderToCustomerServiceTest {
         //GIVEN
         OrderItemDTO orderItem = sampleOrderItemDTO();
         OrderToCustomerDTO order = orderDTOWithThreeItemsAndStatusOpen();
+        Long orderId = order.getId();
         when(orderRepo.existsById(order.getId())).thenReturn(false);
         //WHEN - //THEN
-        Exception ex = assertThrows(EntityNotFoundException.class, () -> orderService.removeItemsFromOrder( orderItem, order));
+        Exception ex = assertThrows(EntityNotFoundException.class, () -> orderService.removeItemsFromOrder(orderId, orderItem));
         assertThat(ex.getMessage(), is("You're trying to remove from an order that doesn't exist"));
         verify(orderRepo).existsById(order.getId());
     }
@@ -269,10 +270,11 @@ class OrderToCustomerServiceTest {
     void removeItemsFailsWhenOrderAlreadyPaid() {
         OrderToCustomerDTO order = orderDTOWithStatusOpenWithOrderItem();
         OrderItemDTO orderItem = sampleOrderItemDTO();
+        Long orderId = order.getId();
         when(orderRepo.existsById(order.getId())).thenReturn(true);
         when(orderRepo.findById(order.getId())).thenReturn(Optional.of(orderPaidWithOrderItem()));
         //WHEN - //THEN
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.removeItemsFromOrder( orderItem, order));
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.removeItemsFromOrder(orderId, orderItem));
         assertThat(ex.getMessage(), is("This order has already been cashed out!"));
         verify(orderRepo).existsById(order.getId());
         verify(orderRepo).findById(order.getId());
@@ -283,14 +285,15 @@ class OrderToCustomerServiceTest {
         //GIVEN
         OrderToCustomerDTO order = orderDTOWithStatusOpenWithOrderItem();
         OrderItemDTO orderItem = sampleOrderItemDTO();
+        Long orderId = order.getId();
         when(orderRepo.existsById(order.getId())).thenReturn(true);
         when(orderRepo.findById(order.getId())).thenReturn(Optional.of(mapOrder(order)));
         when(orderItemService.itemAlreadyOnOrder(orderItem, order)).thenReturn(Optional.empty());
         //WHEN - //THEN
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.removeItemsFromOrder( orderItem, order));
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.removeItemsFromOrder(orderId, orderItem));
         assertThat(ex.getMessage(), is("The item you're trying to remove is not on the order"));
         verify(orderRepo).existsById(order.getId());
-        verify(orderRepo).findById(order.getId());
+        verify(orderRepo, times(2)).findById(order.getId());
         verify(orderItemService).itemAlreadyOnOrder(orderItem, order);
     }
 
@@ -299,15 +302,16 @@ class OrderToCustomerServiceTest {
         //GIVEN
         OrderToCustomerDTO order = orderDTOWithStatusOpenWithOrderItem();
         OrderItemDTO orderItem = sampleOrderItemDTO();
+        Long orderId = order.getId();
         when(orderRepo.existsById(order.getId())).thenReturn(true);
         when(orderRepo.findById(order.getId())).thenReturn(Optional.of(mapOrder(order)));
         when(orderItemService.itemAlreadyOnOrder(orderItem, order)).thenReturn(Optional.of(orderItem));
         when(productService.productExists(orderItem.getProduct())).thenReturn(false);
         //WHEN - //THEN
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.removeItemsFromOrder( orderItem, order));
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.removeItemsFromOrder(orderId, orderItem));
         assertThat(ex.getMessage(), is("You're trying to remove a product that doesn't exist"));
         verify(orderRepo).existsById(order.getId());
-        verify(orderRepo).findById(order.getId());
+        verify(orderRepo, times(2)).findById(order.getId());
         verify(orderItemService).itemAlreadyOnOrder(orderItem, order);
         verify(productService).productExists(orderItem.getProduct());
     }
@@ -325,10 +329,10 @@ class OrderToCustomerServiceTest {
         when(orderItemService.itemAlreadyOnOrder(orderItem, order)).thenReturn(Optional.of(orderItem));
         when(productService.productExists(orderItem.getProduct())).thenReturn(true);
         //WHEN - //THEN
-        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.removeItemsFromOrder( orderItem, order));
+        Exception ex = assertThrows(IllegalArgumentException.class, () -> orderService.removeItemsFromOrder(orderId, orderItem));
         assertThat(ex.getMessage(), is("It's not possible to remove more items than are on the order"));
         verify(orderRepo).existsById(orderId);
-        verify(orderRepo).findById(orderId);
+        verify(orderRepo, times(3)).findById(orderId);
         verify(orderItemService).itemAlreadyOnOrder(orderItem, order);
         verify(productService).productExists(orderItem.getProduct());
     }
