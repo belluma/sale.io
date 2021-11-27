@@ -42,6 +42,13 @@ public class OrderToCustomerService {
                 .toList();
     }
 
+    public OrderToCustomerDTO getSpecificOrder(Long id){
+       return repo.findById(id)
+                .map(OrderToCustomerMapper::mapOrder)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Order with id %d not found", id)));
+    }
+
+
     public OrderToCustomerDTO createEmptyOrder() {
         return mapOrder(repo.save(new OrderToCustomer(OPEN)));
     }
@@ -80,11 +87,28 @@ public class OrderToCustomerService {
         return repo.findById(orderId).orElseThrow(EntityNotFoundException::new);
     }
 
-    public OrderToCustomerDTO removeItemsFromOrder( OrderItemDTO orderItem, OrderToCustomerDTO order) throws IllegalArgumentException, EntityNotFoundException {
-        OrderToCustomer openOrder = validateOrderWhenRemoveItems(orderItem, order);
+    public OrderToCustomerDTO removeItemsFromOrder(Long orderId, OrderItemDTO orderItem) throws IllegalArgumentException, EntityNotFoundException {
+        OrderToCustomer openOrder = validateOrderWhenRemoveItems(orderId, orderItem);
         reduceAmountOrTakeOffBillIfZero(openOrder, mapOrderItem(orderItem));
         productService.resetAmountInStockWhenRemovingFromBill(mapOrderItem(orderItem));
         return mapOrder(repo.save(openOrder));
+    }
+
+    private OrderToCustomer validateOrderWhenRemoveItems(Long orderId, OrderItemDTO orderItem) {
+        if (!orderExists(orderId)) {
+            throw new EntityNotFoundException("You're trying to remove from an order that doesn't exist");
+        }
+        if (orderAlreadyPaid(orderId)) {
+            throw new IllegalArgumentException(BEEN_CASHED_OUT);
+        }
+        if (orderItemService.itemAlreadyOnOrder(orderItem, order).isEmpty()) {
+            throw new IllegalArgumentException("The item you're trying to remove is not on the order");
+        }
+        if (!productService.productExists(orderItem.getProduct())) {
+            throw new IllegalArgumentException("You're trying to remove a product that doesn't exist");
+        }
+        orderHasLessItemsThanTryingToReduce(orderItem, order);
+        return repo.findById(order.getId()).orElseThrow(EntityNotFoundException::new);
     }
 
     private void reduceAmountOrTakeOffBillIfZero(OrderToCustomer order, OrderItem orderItem) {
@@ -112,23 +136,6 @@ public class OrderToCustomerService {
         }
         openOrder.setStatus(PAID);
         return mapOrder(repo.save(openOrder));
-    }
-
-    private OrderToCustomer validateOrderWhenRemoveItems(OrderItemDTO orderItem, OrderToCustomerDTO order) {
-        if (!orderExists(order)) {
-            throw new EntityNotFoundException("You're trying to remove from an order that doesn't exist");
-        }
-        if (orderAlreadyPaid(order)) {
-            throw new IllegalArgumentException(BEEN_CASHED_OUT);
-        }
-        if (orderItemService.itemAlreadyOnOrder(orderItem, order).isEmpty()) {
-            throw new IllegalArgumentException("The item you're trying to remove is not on the order");
-        }
-        if (!productService.productExists(orderItem.getProduct())) {
-            throw new IllegalArgumentException("You're trying to remove a product that doesn't exist");
-        }
-        orderHasLessItemsThanTryingToReduce(orderItem, order);
-        return repo.findById(order.getId()).orElseThrow(EntityNotFoundException::new);
     }
 
     private boolean orderExists(OrderToCustomerDTO order) {
