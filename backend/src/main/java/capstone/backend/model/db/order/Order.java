@@ -20,7 +20,7 @@ public abstract class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToMany( cascade = CascadeType.ALL)
+    @OneToMany( cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @ToString.Exclude
     private List<OrderItem> orderItems;
 

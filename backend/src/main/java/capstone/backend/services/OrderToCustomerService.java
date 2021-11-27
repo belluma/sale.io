@@ -47,8 +47,6 @@ public class OrderToCustomerService {
 
     public OrderToCustomerDTO addItemsToOrder(Long orderId, OrderItemDTO orderItem, OrderToCustomerDTO orderToCustomer) throws IllegalArgumentException {
         OrderToCustomer openOrder = validateOrderWhenAddItems(orderId, orderItem);
-
-
         //        OrderItemDTO orderItemWithUpdatedAmount = orderItemService.addItemToOrderOrUpdateQuantity(orderItem, orderToCustomer);
         productService.substractStockWhenAddingItemToBill(mapOrderItem(orderItem));
         updateAmountOnBill(openOrder, mapOrderItem(orderItem));
