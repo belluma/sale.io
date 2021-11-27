@@ -101,14 +101,14 @@ public class OrderToCustomerService {
         if (orderAlreadyPaid(orderId)) {
             throw new IllegalArgumentException(BEEN_CASHED_OUT);
         }
-        if (orderItemService.itemAlreadyOnOrder(orderItem, order).isEmpty()) {
+        if (orderItemService.itemAlreadyOnOrder(orderItem, getSpecificOrder(orderId)).isEmpty()) {
             throw new IllegalArgumentException("The item you're trying to remove is not on the order");
         }
         if (!productService.productExists(orderItem.getProduct())) {
             throw new IllegalArgumentException("You're trying to remove a product that doesn't exist");
         }
-        orderHasLessItemsThanTryingToReduce(orderItem, order);
-        return repo.findById(order.getId()).orElseThrow(EntityNotFoundException::new);
+        orderHasLessItemsThanTryingToReduce(orderItem, orderId);
+        return repo.findById(orderId).orElseThrow(EntityNotFoundException::new);
     }
 
     private void reduceAmountOrTakeOffBillIfZero(OrderToCustomer order, OrderItem orderItem) {
@@ -161,8 +161,8 @@ public class OrderToCustomerService {
         return existingOrder.getStatus() == PAID;
     }
 
-    private void orderHasLessItemsThanTryingToReduce(OrderItemDTO orderItem, OrderToCustomerDTO order) {
-        order.getOrderItems().forEach(itemOnOrder -> {
+    private void orderHasLessItemsThanTryingToReduce(OrderItemDTO orderItem, Long orderId) {
+        getSpecificOrder(orderId).getOrderItems().forEach(itemOnOrder -> {
             if (itemOnOrder.equals(orderItem) && itemOnOrder.getQuantity() < orderItem.getQuantity()) {
                 throw new IllegalArgumentException("It's not possible to remove more items than are on the order");
             }
