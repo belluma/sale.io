@@ -51,9 +51,9 @@ public class ProductService {
                 .save(ProductMapper.mapProduct(product)));
     }
 
-    public void receiveGoods(List<OrderItemDTO> receivedOrder)throws IllegalArgumentException {
+    public void receiveGoods(List<OrderItemDTO> receivedOrder) throws IllegalArgumentException {
         receivedOrder.forEach(item -> {
-            if(item.getQuantity() < 0){
+            if (item.getQuantity() < 0) {
                 throw new IllegalArgumentException("You can't receive orders with negative quantity count");
             }
         });
@@ -68,7 +68,7 @@ public class ProductService {
 
     public void substractStockWhenAddingItemToBill(OrderItem itemsToAddToBill) {
         Product productToReceive = repo.getById(itemsToAddToBill.getProduct().getId());
-        int newAmount = productToReceive.getAmountInStock() - itemsToAddToBill.getQuantity()  ;
+        int newAmount = productToReceive.getAmountInStock() - itemsToAddToBill.getQuantity();
         productToReceive.setAmountInStock(newAmount);
         repo.save(productToReceive);
     }
@@ -78,5 +78,9 @@ public class ProductService {
     }
 
     public void resetAmountInStockWhenRemovingFromBill(OrderItem orderItem) {
+        Product productToReceive = repo.getById(orderItem.getProduct().getId());
+        int newAmount = productToReceive.getAmountInStock() + orderItem.getQuantity();
+        productToReceive.setAmountInStock(newAmount);
+        repo.save(productToReceive);
     }
 }

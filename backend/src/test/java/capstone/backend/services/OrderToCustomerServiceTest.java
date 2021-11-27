@@ -210,11 +210,6 @@ class OrderToCustomerServiceTest {
         when(orderItemService.itemAlreadyOnOrder(orderItem, order)).thenReturn(Optional.of(orderItem));
         when(productService.productExists(orderItem.getProduct())).thenReturn(true);
         doAnswer(i -> {
-            OrderToCustomerDTO orderToReduceFrom = i.getArgument(1);
-            orderToReduceFrom.setOrderItems(List.of());
-            return null;
-        }).when(orderItemService).reduceQuantityOfOrderItem(orderItem, order);
-        doAnswer(i -> {
             OrderItem orderItemThatHasBeenReduced = i.getArgument(0);
             orderItemThatHasBeenReduced.getProduct().setAmountInStock(0);
             return null;
@@ -226,7 +221,6 @@ class OrderToCustomerServiceTest {
         verify(orderRepo, times(2)).findById(orderId);
         verify(orderItemService).itemAlreadyOnOrder(orderItem, order);
         verify(productService).productExists(orderItem.getProduct());
-        verify(orderItemService).reduceQuantityOfOrderItem(orderItem, order);
         verify(productService).resetAmountInStockWhenRemovingFromBill(mapOrderItem(orderItem));
         assertThat(actual, is(expected));
         assertThat(orderItem.getProduct().getAmountInStock(), is(0));
@@ -245,11 +239,6 @@ class OrderToCustomerServiceTest {
         when(orderRepo.save(mapOrder(expected))).thenReturn(mapOrder(expected));
         when(orderItemService.itemAlreadyOnOrder(orderItem, order)).thenReturn(Optional.of(orderItem));
         doAnswer(i -> {
-            OrderToCustomerDTO orderToReduceFrom = i.getArgument(1);
-            orderToReduceFrom.setOrderItems(expected.getOrderItems());
-            return null;
-        }).when(orderItemService).reduceQuantityOfOrderItem(orderItem, order);
-        doAnswer(i -> {
             OrderItem orderItemThatHasBeenReduced = i.getArgument(0);
             orderItemThatHasBeenReduced.getProduct().setAmountInStock(0);
             return null;
@@ -261,7 +250,6 @@ class OrderToCustomerServiceTest {
         verify(orderRepo, times(2)).findById(orderId);
         verify(orderItemService).itemAlreadyOnOrder(orderItem, order);
         verify(productService).productExists(orderItem.getProduct());
-        verify(orderItemService).reduceQuantityOfOrderItem(orderItem, order);
         verify(productService).resetAmountInStockWhenRemovingFromBill(mapOrderItem(orderItem));
         assertThat(actual, is(expected));
         assertThat(orderItem.getProduct().getAmountInStock(), is(0));

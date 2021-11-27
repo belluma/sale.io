@@ -24,6 +24,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
@@ -302,17 +303,20 @@ class OrderToCustomerControllerTest {
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
         Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)).withAmountInStock(1));
         OrderItem orderItemOnOrder = sampleOrderItemNoId().withProduct(product);
+        OrderItem orderItemToTakeOffOrder = sampleOrderItemNoId().withProduct(product);
         OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(orderItemOnOrder), OPEN));
+        Long orderItemId = order1.getOrderItems().get(0).getId();
         OrderToCustomerDTO expected = new OrderToCustomerDTO(order1.getId(), List.of());
-        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemOnOrder));
+        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToTakeOffOrder));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/remove/?id=" + order1.getId();
         //WHEN
         ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), OrderToCustomerDTO.class);
+        ResponseEntity<Product> returnedProduct = restTemplate.exchange("/api/products/" + product.getId(), HttpMethod.GET, new HttpEntity<>(headers), Product.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(expected));
-        assertThat(Objects.requireNonNull(response.getBody()).getOrderItems().size(), is(0));
-        assertThat(orderItemOnOrder.getProduct().getAmountInStock(), is(product.getAmountInStock() + orderItemOnOrder.getQuantity()));
+        assertThat(Objects.requireNonNull(returnedProduct.getBody()).getAmountInStock(), is(2));
+        assertTrue(orderItemRepo.findById(orderItemId).isEmpty());
     }
 }

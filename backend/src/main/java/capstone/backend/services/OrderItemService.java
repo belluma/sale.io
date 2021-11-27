@@ -1,15 +1,12 @@
 package capstone.backend.services;
 
 import capstone.backend.mapper.OrderItemMapper;
-import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.repo.OrderItemRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -57,18 +54,7 @@ public class OrderItemService {
                 .findFirst();
     }
 
-    public void reduceQuantityOfOrderItem(OrderItemDTO orderItemToReduce, OrderToCustomerDTO order) {
-        order
-                .getOrderItems()
-                .stream()
-                .filter(orderItem -> orderItem.equals(orderItemToReduce))
-                .findFirst()
-                .ifPresent(item -> {
-                    if (item.getQuantity() == orderItemToReduce.getQuantity()) {
-                        repo.deleteById(item.getId());
-                    } else {
-                        repo.save(mapOrderItem(item.withQuantity(item.getQuantity() - orderItemToReduce.getQuantity())));
-                    }
-                });
+    public void deleteOrderItem(Long id) {
+        repo.deleteById(id);
     }
 }
