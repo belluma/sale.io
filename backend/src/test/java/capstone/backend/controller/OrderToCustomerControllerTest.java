@@ -1,6 +1,7 @@
 package capstone.backend.controller;
 
 import capstone.backend.CombinedTestContainer;
+import capstone.backend.exception.CustomError;
 import capstone.backend.mapper.OrderItemMapper;
 import capstone.backend.mapper.OrderToCustomerMapper;
 import capstone.backend.model.db.Product;
@@ -28,14 +29,12 @@ import java.util.*;
 
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 import static capstone.backend.mapper.OrderToCustomerMapper.mapOrder;
-import static capstone.backend.mapper.ProductMapper.mapProduct;
 import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
 import static capstone.backend.model.enums.OrderToCustomerStatus.OPEN;
 import static capstone.backend.model.enums.OrderToCustomerStatus.PAID;
 import static capstone.backend.utils.OrderItemTestUtils.*;
 import static capstone.backend.utils.OrderToCustomerTestUtils.emptyOrderDTOWithStatusOpen;
-import static capstone.backend.utils.ProductTestUtils.sampleProduct;
-import static capstone.backend.utils.ProductTestUtils.sampleProductDTOWithDetails;
+import static capstone.backend.utils.ProductTestUtils.*;
 import static capstone.backend.utils.SupplierTestUtils.sampleSupplier;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -418,5 +417,77 @@ class OrderToCustomerControllerTest {
         assertTrue(orderItemRepo.findById(orderItemId).isPresent());
         assertTrue(orderItemRepo.findById(orderItemId2).isPresent());
         assertTrue(orderItemRepo.findById(orderItemId3).isPresent());
+    }
+
+    @Test
+    void removeItemsFromOrderFailsWhenOrderNonExistent(){
+        //GIVEN
+        Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)).withAmountInStock(1));
+        OrderItemDTO orderItemOnOrder = sampleOrderItemDTONoId().withProduct(mapProductWithDetails(product));
+        OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(mapOrderItem(orderItemOnOrder)), OPEN));
+        String expectedErrorMessage =  "You're trying to remove from an order that doesn't exist";
+        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), orderItemOnOrder);
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        String URL = BASEURL + "/remove/?id=" + order1.getId() +  1;
+        //WHEN
+        ResponseEntity<CustomError> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), CustomError.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is(expectedErrorMessage));
+    }
+    @Test
+    void removeItemsFromOrderFailsWhenOrderAlreadyPaid(){
+        //GIVEN
+        Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)).withAmountInStock(1));
+        OrderItemDTO orderItemOnOrder = sampleOrderItemDTONoId().withProduct(mapProductWithDetails(product));
+        OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(mapOrderItem(orderItemOnOrder)), PAID));
+        String expectedErrorMessage =  "This order has already been cashed out!";
+        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), orderItemOnOrder);
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        String URL = BASEURL + "/remove/?id=" + order1.getId();
+        //WHEN
+        ResponseEntity<CustomError> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), CustomError.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is(expectedErrorMessage));
+    }
+    @Test
+    void removeItemsFromOrderFailsWhenItemNotOnOrder(){
+        //GIVEN
+        Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)).withAmountInStock(1));
+        OrderItemDTO orderItemOnOrder = sampleOrderItemDTONoId().withProduct(mapProductWithDetails(product));
+        OrderItemDTO orderItemNotOnOrder = sampleOrderItemDTONoId().withProduct(sampleProductDTOWithDetailsWithId());
+        OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(mapOrderItem(orderItemOnOrder)), OPEN));
+        String expectedErrorMessage =  "The item you're trying to remove is not on the order";
+        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), orderItemNotOnOrder);
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        String URL = BASEURL + "/remove/?id=" + order1.getId();
+        //WHEN
+        ResponseEntity<CustomError> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), CustomError.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is(expectedErrorMessage));
+    }
+
+    @Test
+    void removeItemsFromOrderFailsWhenLessItemsOnOrderThanTryingToReduce(){
+        //GIVEN
+        Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)).withAmountInStock(1));
+        OrderItemDTO orderItemOnOrder = sampleOrderItemDTONoId().withProduct(mapProductWithDetails(product)).withQuantity(1);
+        OrderItem orderItemToTakeOffOrder = sampleOrderItemNoId().withProduct(product).withQuantity(2);
+        OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(mapOrderItem(orderItemOnOrder)), OPEN));
+        String expectedErrorMessage =  "It's not possible to remove more items than are on the order";
+        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToTakeOffOrder));
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        String URL = BASEURL + "/remove/?id=" + order1.getId();
+        //WHEN
+        ResponseEntity<CustomError> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), CustomError.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is(expectedErrorMessage));
     }
 }

@@ -42,8 +42,8 @@ public class OrderToCustomerService {
                 .toList();
     }
 
-    public OrderToCustomerDTO getSpecificOrder(Long id){
-       return repo.findById(id)
+    public OrderToCustomerDTO getSpecificOrder(Long id) {
+        return repo.findById(id)
                 .map(OrderToCustomerMapper::mapOrder)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Order with id %d not found", id)));
     }
@@ -97,14 +97,15 @@ public class OrderToCustomerService {
         if (orderAlreadyPaid(orderId)) {
             throw new IllegalArgumentException(BEEN_CASHED_OUT);
         }
-        if (orderItemService.itemAlreadyOnOrder(orderItem, getSpecificOrder(orderId)).isEmpty()) {
+        if (itemNotOnOrder(orderId, orderItem)) {
             throw new IllegalArgumentException("The item you're trying to remove is not on the order");
         }
-        if (!productService.productExists(orderItem.getProduct())) {
-            throw new IllegalArgumentException("You're trying to remove a product that doesn't exist");
-        }
-        orderHasLessItemsThanTryingToReduce(orderItem, orderId);
+             orderHasLessItemsThanTryingToReduce(orderItem, orderId);
         return repo.findById(orderId).orElseThrow(EntityNotFoundException::new);
+    }
+
+    private boolean itemNotOnOrder(Long orderId, OrderItemDTO orderItem) {
+        return orderItemService.itemAlreadyOnOrder(orderItem, getSpecificOrder(orderId)).isEmpty();
     }
 
     private void reduceAmountOrTakeOffBillIfZero(OrderToCustomer order, OrderItem orderItem) {
@@ -134,8 +135,8 @@ public class OrderToCustomerService {
         return mapOrder(repo.save(openOrder));
     }
 
-       private void orderExists(Long orderId, String method) throws EntityNotFoundException{
-        if (orderId == null || !repo.existsById(orderId)){
+    private void orderExists(Long orderId, String method) throws EntityNotFoundException {
+        if (orderId == null || !repo.existsById(orderId)) {
             throw new EntityNotFoundException(String.format("You're trying to %s an order that doesn't exist", method));
         }
     }
