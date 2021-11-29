@@ -7,6 +7,7 @@ import capstone.backend.model.db.Product;
 import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.db.order.OrderToCustomer;
+import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.model.dto.order.OrderContainerDTO;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
@@ -27,6 +28,8 @@ import java.util.*;
 
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 import static capstone.backend.mapper.OrderToCustomerMapper.mapOrder;
+import static capstone.backend.mapper.ProductMapper.mapProduct;
+import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
 import static capstone.backend.model.enums.OrderToCustomerStatus.OPEN;
 import static capstone.backend.model.enums.OrderToCustomerStatus.PAID;
 import static capstone.backend.utils.OrderItemTestUtils.*;
@@ -323,7 +326,8 @@ class OrderToCustomerControllerTest {
         //GIVEN
         Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
         Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)).withAmountInStock(1));
-        OrderItemDTO orderItemOnOrder = sampleOrderItemDTONoId().withProduct(sampleProductDTOWithDetails().withId(product.getId())).withQuantity(2);
+        ProductDTO productOnOrderAfterBeingReturned = mapProductWithDetails(product).withAmountInStock(2);
+        OrderItemDTO orderItemOnOrder = sampleOrderItemDTONoId().withProduct(productOnOrderAfterBeingReturned).withQuantity(2);
         OrderItem orderItemToTakeOffOrder = sampleOrderItemNoId().withProduct(product);
         OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(mapOrderItem(orderItemOnOrder)), OPEN));
         Long orderItemId = order1.getOrderItems().get(0).getId();
@@ -336,12 +340,43 @@ class OrderToCustomerControllerTest {
         ResponseEntity<Product> returnedProduct = restTemplate.exchange("/api/products/" + product.getId(), HttpMethod.GET, new HttpEntity<>(headers), Product.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(Objects.requireNonNull(response.getBody()).getId(), is(expected.getId()));
-        assertThat(response.getBody(), is(expected));
-        assertThat(response.getBody(), is(expected));
-        assertThat(response.getBody(), is(expected));
+        assertThat(Objects.requireNonNull(response.getBody()), is(expected));
         assertThat(Objects.requireNonNull(returnedProduct.getBody()).getAmountInStock(), is(2));
         assertTrue(orderItemRepo.findById(orderItemId).isPresent());
+    }
+    @Test
+    void takeOffOneOfSeveralItems(){
+        //GIVEN
+        Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)).withAmountInStock(1));
+        Product product2 = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)).withAmountInStock(1));
+        Product product3 = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)).withAmountInStock(1));
+        OrderItemDTO orderItemOnOrder = sampleOrderItemDTONoId().withProduct(mapProductWithDetails(product));
+        OrderItemDTO orderItemOnOrder2 = sampleOrderItemDTONoId().withProduct(mapProductWithDetails(product2));
+        OrderItemDTO orderItemOnOrder3 = sampleOrderItemDTONoId().withProduct(mapProductWithDetails(product3));
+        OrderItem orderItemToTakeOffOrder = sampleOrderItemNoId().withProduct(product2);
+        OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(mapOrderItem(orderItemOnOrder), mapOrderItem(orderItemOnOrder2), mapOrderItem(orderItemOnOrder3)), OPEN));
+        Long orderItemId = order1.getOrderItems().get(0).getId();
+        Long orderItemId2 = order1.getOrderItems().get(1).getId();
+        Long orderItemId3 = order1.getOrderItems().get(2).getId();
+        OrderToCustomerDTO expected = new OrderToCustomerDTO(order1.getId(), List.of(orderItemOnOrder, orderItemOnOrder3));
+        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToTakeOffOrder));
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        String URL = BASEURL + "/remove/?id=" + order1.getId();
+        //WHEN
+        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), OrderToCustomerDTO.class);
+        ResponseEntity<Product> returnedProduct = restTemplate.exchange("/api/products/" + product.getId(), HttpMethod.GET, new HttpEntity<>(headers), Product.class);
+        ResponseEntity<Product> returnedProduct2 = restTemplate.exchange("/api/products/" + product2.getId(), HttpMethod.GET, new HttpEntity<>(headers), Product.class);
+        ResponseEntity<Product> returnedProduct3 = restTemplate.exchange("/api/products/" + product3.getId(), HttpMethod.GET, new HttpEntity<>(headers), Product.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(Objects.requireNonNull(response.getBody()).getId(), is(expected.getId()));
+        assertThat(Objects.requireNonNull(returnedProduct.getBody()).getAmountInStock(), is(1));
+        assertThat(Objects.requireNonNull(returnedProduct2.getBody()).getAmountInStock(), is(2));
+        assertThat(Objects.requireNonNull(returnedProduct3.getBody()).getAmountInStock(), is(1));
+        assertTrue(orderItemRepo.findById(orderItemId).isPresent());
+        assertTrue(orderItemRepo.findById(orderItemId2).isEmpty());
+        assertTrue(orderItemRepo.findById(orderItemId3).isPresent());
 
     }
 }
