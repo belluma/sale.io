@@ -3,7 +3,6 @@ package capstone.backend.model.db;
 import capstone.backend.model.db.contact.Supplier;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.Hibernate;
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
@@ -43,13 +42,13 @@ public class Product {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return id != null && Objects.equals(id, product.id);
+        return minAmount == product.minAmount && maxAmount == product.maxAmount && unitSize == product.unitSize && amountInStock == product.amountInStock && Objects.equals(id, product.id) && Objects.equals(name, product.name) && Objects.equals(suppliers, product.suppliers) && Objects.equals(stockCodeSupplier, product.stockCodeSupplier) && Objects.equals(category, product.category) && Objects.equals(purchasePrice, product.purchasePrice) && Objects.equals(retailPrice, product.retailPrice) && Objects.equals(picture, product.picture);
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(id, name, suppliers, stockCodeSupplier, category, purchasePrice, retailPrice, minAmount, maxAmount, unitSize, amountInStock, picture);
     }
 }

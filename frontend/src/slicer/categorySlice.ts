@@ -111,7 +111,7 @@ export const categorySlice = createSlice({
     initialState,
     reducers: {
         chooseCurrentCategory: (state, action: PayloadAction<string>) => {
-            const category = state.categories.find(category => category.id?.toString() === action.payload) || emptyCategory;
+            const category = state.categories.find(cat => cat.id?.toString() === action.payload) || emptyCategory;
             state.current = category;
             history.push(`category?category=${category.name}`)
         },
