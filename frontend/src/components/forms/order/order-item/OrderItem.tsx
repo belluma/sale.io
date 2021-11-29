@@ -13,19 +13,21 @@ import CustomNumber from "../../_elements/custom-number/CustomNumber";
 //interface imports
 import {IOrderItem} from "../../../../interfaces/IOrder";
 import ConfirmDelete from "./confirm-delete/ConfirmDelete";
+import {addItemsToOrder, takeItemsOffOrder} from "../../../../slicer/customerSlice";
 
 type Props = {
     item: IOrderItem,
     index: number,
     form?: boolean,
     retail?: boolean,
-    customer?:boolean
+    customer?: boolean
 
 };
 
 function OrderItem({item, index, form, retail, customer}: Props) {
     const dispatch = useAppDispatch();
     const [edit, setEdit] = useState(false);
+    const [quantity, setQuantity] = useState(item.quantity);
     const [popperAnchor, setPopperAnchor] = React.useState<null | HTMLElement>(null);
     const popperOpen = Boolean(popperAnchor);
     const popperId = popperOpen ? 'confirm-delete-popper' : undefined;
@@ -35,8 +37,17 @@ function OrderItem({item, index, form, retail, customer}: Props) {
     const closePopper = () => setPopperAnchor(null);
     const total = retail ? getSubTotalRetail(item) : getSubTotalWholesale(item);
     const changeQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
-        dispatch(editItemQty({quantity: +e.target.value, index}));
+        customer ? setQuantity(+e.target.value) : dispatch(editItemQty({quantity: +e.target.value, index}));
     }
+    const submitQtyChange = () => {
+        edit && quantity && item.quantity &&
+        dispatch(quantity < item.quantity ? takeItemsOffOrder({
+            ...item,
+            quantity: item.quantity - quantity
+        }) : addItemsToOrder({...item, quantity: quantity - item.quantity}));
+        setEdit(!edit);
+    }
+    const qty = customer ? quantity : item.quantity;
     return (
         <Toolbar sx={{width: 0.99}} disableGutters>
             <Grid item xs={2}>
@@ -47,11 +58,11 @@ function OrderItem({item, index, form, retail, customer}: Props) {
             <Grid item xs={5} component="h1">{item.product?.name}</Grid>
             {edit ?
                 <Grid item xs={2}>
-                    <CustomNumber name={"quantity"} label={"quantity"} onChange={changeQuantity} value={item.quantity}/>
+                    <CustomNumber name={"quantity"} label={"quantity"} onChange={changeQuantity} value={qty}/>
                 </Grid>
                 : <Grid item xs={2} sx={{textAlign: "end", pr: 1}}>{item.quantity}</Grid>}
             <Grid item xs={1}>
-                {form && <IconButton sx={{display: "inline"}} onClick={() => setEdit(!edit)} edge='start'>
+                {form && <IconButton sx={{display: "inline"}} onClick={submitQtyChange} edge='start'>
                     {edit ? <CheckIcon/> : <EditIcon/>}
                 </IconButton>}
             </Grid>
