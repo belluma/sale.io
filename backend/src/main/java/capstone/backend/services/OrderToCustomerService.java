@@ -72,7 +72,7 @@ public class OrderToCustomerService {
     }
 
     private OrderToCustomer validateOrderWhenAddItems(Long orderId, OrderItemDTO orderItem) {
-        orderExists(orderId);
+        orderExists(orderId, "add to");
         if (orderAlreadyPaid(orderId)) {
             throw new IllegalArgumentException(BEEN_CASHED_OUT);
         }
@@ -93,7 +93,7 @@ public class OrderToCustomerService {
     }
 
     private OrderToCustomer validateOrderWhenRemoveItems(Long orderId, OrderItemDTO orderItem) {
-        orderExists(orderId);
+        orderExists(orderId, "remove from");
         if (orderAlreadyPaid(orderId)) {
             throw new IllegalArgumentException(BEEN_CASHED_OUT);
         }
@@ -134,9 +134,9 @@ public class OrderToCustomerService {
         return mapOrder(repo.save(openOrder));
     }
 
-       private void orderExists(Long orderId) throws EntityNotFoundException{
+       private void orderExists(Long orderId, String method) throws EntityNotFoundException{
         if (orderId == null || !repo.existsById(orderId)){
-            throw new EntityNotFoundException("You're trying to remove from an order that doesn't exist");
+            throw new EntityNotFoundException(String.format("You're trying to %s an order that doesn't exist", method));
         }
     }
 
