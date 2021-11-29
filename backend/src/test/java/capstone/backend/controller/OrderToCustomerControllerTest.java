@@ -140,11 +140,10 @@ class OrderToCustomerControllerTest {
         OrderItem orderItem = sampleOrderItemNoId().withProduct(product);
         OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(OPEN));
         OrderToCustomerDTO expected = new OrderToCustomerDTO(order1.getId(), List.of(mapOrderItem(orderItem)));
-        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItem));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/add/?id=" + order1.getId();
         //WHEN
-        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), OrderToCustomerDTO.class);
+        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItem), headers), OrderToCustomerDTO.class);
         //THEN
         OrderItemDTO orderItemSavedOnOrder = (Objects.requireNonNull(response.getBody()).getOrderItems().get(0));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -163,11 +162,10 @@ class OrderToCustomerControllerTest {
         OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(orderItemOnOrder), OPEN));
         OrderToCustomerDTO expected = new OrderToCustomerDTO(order1.getId(), List.of(mapOrderItem(orderItemOnOrder)));
         int expectedNewQty = orderItemToAdd.getQuantity() + orderItemOnOrder.getQuantity();
-        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToAdd));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/add/?id=" + order1.getId();
         //WHEN
-        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), OrderToCustomerDTO.class);
+        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>( mapOrderItem(orderItemToAdd), headers), OrderToCustomerDTO.class);
         //THEN
         OrderItemDTO orderItemSavedOnOrder = (Objects.requireNonNull(response.getBody()).getOrderItems().get(0));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -189,11 +187,11 @@ class OrderToCustomerControllerTest {
         OrderItem orderItemToAdd = orderItems.get(1);
         OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(orderItems, OPEN));
         OrderToCustomerDTO expected = new OrderToCustomerDTO(order1.getId(), orderItems.stream().map(OrderItemMapper::mapOrderItem).toList());
-        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToAdd));
+//        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToAdd));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/add/?id=" + order1.getId();
         //WHEN
-        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), OrderToCustomerDTO.class);
+        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItemToAdd), headers), OrderToCustomerDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(Objects.requireNonNull(response.getBody()).getOrderItems().get(0).getQuantity(), is(orderItems.get(0).getQuantity()));
@@ -217,11 +215,11 @@ class OrderToCustomerControllerTest {
         OrderItem orderItemOnOrder = sampleOrderItemNoId().withProduct(product);
         OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(orderItemOnOrder), OPEN));
         OrderToCustomerDTO expected = new OrderToCustomerDTO(order1.getId(), List.of(mapOrderItem(orderItemOnOrder)));
-        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToAdd));
+//        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToAdd));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/add/?id=" + order1.getId();
         //WHEN
-        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), OrderToCustomerDTO.class);
+        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItemToAdd), headers), OrderToCustomerDTO.class);
         //THEN
         OrderItemDTO orderItemSavedOnOrder = (Objects.requireNonNull(response.getBody()).getOrderItems().get(0));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -238,11 +236,10 @@ class OrderToCustomerControllerTest {
         OrderItem orderItem = sampleOrderItem().withProduct(product);
         OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(), OPEN));
         order1.setId(12345L);
-        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItem));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/add/?id=" + 12345;
         //WHEN
-        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), OrderToCustomerDTO.class);
+        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItem), headers), OrderToCustomerDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
     }
@@ -255,11 +252,10 @@ class OrderToCustomerControllerTest {
         OrderItem orderItemToAdd = sampleOrderItemNoId().withProduct(product);
         OrderItem orderItemOnOrder = sampleOrderItemNoId().withProduct(product);
         OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(orderItemOnOrder), PAID));
-        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToAdd));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/add/?id=" + order1.getId();
         //WHEN
-        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), OrderToCustomerDTO.class);
+        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItemToAdd), headers), OrderToCustomerDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
     }
@@ -272,11 +268,10 @@ class OrderToCustomerControllerTest {
         OrderItem orderItemToAdd = sampleOrderItemNoId();
         OrderItem orderItemOnOrder = sampleOrderItemNoId().withProduct(product);
         OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(orderItemOnOrder), OPEN));
-        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToAdd));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/add/?id=" + order1.getId();
         //WHEN
-        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), OrderToCustomerDTO.class);
+        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItemToAdd), headers), OrderToCustomerDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
     }
@@ -288,11 +283,10 @@ class OrderToCustomerControllerTest {
         Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
         OrderItem orderItem = sampleOrderItem().withProduct(product);
         OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(OPEN));
-        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItem));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/add/?id=" + order1.getId();
         //WHEN
-        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), OrderToCustomerDTO.class);
+        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItem), headers), OrderToCustomerDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
     }
@@ -307,11 +301,10 @@ class OrderToCustomerControllerTest {
         OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(orderItemOnOrder), OPEN));
         Long orderItemId = order1.getOrderItems().get(0).getId();
         OrderToCustomerDTO expected = new OrderToCustomerDTO(order1.getId(), List.of());
-        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToTakeOffOrder));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/remove/?id=" + order1.getId();
         //WHEN
-        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), OrderToCustomerDTO.class);
+        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItemToTakeOffOrder), headers), OrderToCustomerDTO.class);
         ResponseEntity<Product> returnedProduct = restTemplate.exchange("/api/products/" + product.getId(), HttpMethod.GET, new HttpEntity<>(headers), Product.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -331,11 +324,10 @@ class OrderToCustomerControllerTest {
         OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(mapOrderItem(orderItemOnOrder)), OPEN));
         Long orderItemId = order1.getOrderItems().get(0).getId();
         OrderToCustomerDTO expected = new OrderToCustomerDTO(order1.getId(), List.of(orderItemOnOrder.withId(orderItemId).withQuantity(1)));
-        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToTakeOffOrder));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/remove/?id=" + order1.getId();
         //WHEN
-        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), OrderToCustomerDTO.class);
+        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItemToTakeOffOrder), headers), OrderToCustomerDTO.class);
         ResponseEntity<Product> returnedProduct = restTemplate.exchange("/api/products/" + product.getId(), HttpMethod.GET, new HttpEntity<>(headers), Product.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -360,11 +352,10 @@ class OrderToCustomerControllerTest {
         Long orderItemId2 = order1.getOrderItems().get(1).getId();
         Long orderItemId3 = order1.getOrderItems().get(2).getId();
         OrderToCustomerDTO expected = new OrderToCustomerDTO(order1.getId(), List.of(orderItemOnOrder, orderItemOnOrder3));
-        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToTakeOffOrder));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/remove/?id=" + order1.getId();
         //WHEN
-        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), OrderToCustomerDTO.class);
+        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItemToTakeOffOrder), headers), OrderToCustomerDTO.class);
         ResponseEntity<Product> returnedProduct = restTemplate.exchange("/api/products/" + product.getId(), HttpMethod.GET, new HttpEntity<>(headers), Product.class);
         ResponseEntity<Product> returnedProduct2 = restTemplate.exchange("/api/products/" + product2.getId(), HttpMethod.GET, new HttpEntity<>(headers), Product.class);
         ResponseEntity<Product> returnedProduct3 = restTemplate.exchange("/api/products/" + product3.getId(), HttpMethod.GET, new HttpEntity<>(headers), Product.class);
@@ -397,11 +388,10 @@ class OrderToCustomerControllerTest {
         Long orderItemId2 = order1.getOrderItems().get(1).getId();
         Long orderItemId3 = order1.getOrderItems().get(2).getId();
         OrderToCustomerDTO expected = new OrderToCustomerDTO(order1.getId(), List.of(orderItemOnOrder, orderItemOnOrder2, orderItemOnOrder3));
-        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToTakeOffOrder));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/remove/?id=" + order1.getId();
         //WHEN
-        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), OrderToCustomerDTO.class);
+        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItemToTakeOffOrder), headers), OrderToCustomerDTO.class);
         ResponseEntity<Product> returnedProduct = restTemplate.exchange("/api/products/" + product.getId(), HttpMethod.GET, new HttpEntity<>(headers), Product.class);
         ResponseEntity<Product> returnedProduct2 = restTemplate.exchange("/api/products/" + product2.getId(), HttpMethod.GET, new HttpEntity<>(headers), Product.class);
         ResponseEntity<Product> returnedProduct3 = restTemplate.exchange("/api/products/" + product3.getId(), HttpMethod.GET, new HttpEntity<>(headers), Product.class);
@@ -427,11 +417,10 @@ class OrderToCustomerControllerTest {
         OrderItemDTO orderItemOnOrder = sampleOrderItemDTONoId().withProduct(mapProductWithDetails(product));
         OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(mapOrderItem(orderItemOnOrder)), OPEN));
         String expectedErrorMessage =  "You're trying to remove from an order that doesn't exist";
-        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), orderItemOnOrder);
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/remove/?id=" + order1.getId() +  1;
         //WHEN
-        ResponseEntity<CustomError> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), CustomError.class);
+        ResponseEntity<CustomError> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(orderItemOnOrder, headers), CustomError.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
         assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is(expectedErrorMessage));
@@ -444,11 +433,10 @@ class OrderToCustomerControllerTest {
         OrderItemDTO orderItemOnOrder = sampleOrderItemDTONoId().withProduct(mapProductWithDetails(product));
         OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(mapOrderItem(orderItemOnOrder)), PAID));
         String expectedErrorMessage =  "This order has already been cashed out!";
-        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), orderItemOnOrder);
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/remove/?id=" + order1.getId();
         //WHEN
-        ResponseEntity<CustomError> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), CustomError.class);
+        ResponseEntity<CustomError> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(orderItemOnOrder, headers), CustomError.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
         assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is(expectedErrorMessage));
@@ -462,11 +450,10 @@ class OrderToCustomerControllerTest {
         OrderItemDTO orderItemNotOnOrder = sampleOrderItemDTONoId().withProduct(sampleProductDTOWithDetailsWithId());
         OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(mapOrderItem(orderItemOnOrder)), OPEN));
         String expectedErrorMessage =  "The item you're trying to remove is not on the order";
-        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), orderItemNotOnOrder);
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/remove/?id=" + order1.getId();
         //WHEN
-        ResponseEntity<CustomError> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), CustomError.class);
+        ResponseEntity<CustomError> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(orderItemNotOnOrder, headers), CustomError.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
         assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is(expectedErrorMessage));
@@ -481,11 +468,10 @@ class OrderToCustomerControllerTest {
         OrderItem orderItemToTakeOffOrder = sampleOrderItemNoId().withProduct(product).withQuantity(2);
         OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(mapOrderItem(orderItemOnOrder)), OPEN));
         String expectedErrorMessage =  "It's not possible to remove more items than are on the order";
-        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToTakeOffOrder));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/remove/?id=" + order1.getId();
         //WHEN
-        ResponseEntity<CustomError> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(requestBody, headers), CustomError.class);
+        ResponseEntity<CustomError> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItemToTakeOffOrder), headers), CustomError.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
         assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is(expectedErrorMessage));

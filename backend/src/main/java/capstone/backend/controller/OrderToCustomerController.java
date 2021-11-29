@@ -1,6 +1,6 @@
 package capstone.backend.controller;
 
-import capstone.backend.model.dto.order.OrderContainerDTO;
+import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.services.OrderToCustomerService;
 import lombok.RequiredArgsConstructor;
@@ -31,12 +31,12 @@ public class OrderToCustomerController {
     }
 
     @PutMapping("add")
-    public OrderToCustomerDTO addItemsToOrder(@RequestParam Long id, @RequestBody OrderContainerDTO order){
-        return service.addItemsToOrder(id, order.getItemToAddOrRemove());
+    public OrderToCustomerDTO addItemsToOrder(@RequestParam Long id, @RequestBody OrderItemDTO orderItem){
+        return service.addItemsToOrder(id, orderItem);
     }
     @PutMapping("remove")
-    public OrderToCustomerDTO removeItemsFromOrder(@RequestParam Long id, @RequestBody OrderContainerDTO order){
-        return service.removeItemsFromOrder(id,  order.getItemToAddOrRemove());
+    public OrderToCustomerDTO removeItemsFromOrder(@RequestParam Long id, @RequestBody OrderItemDTO orderItem){
+        return service.removeItemsFromOrder(id,  orderItem);
     }
 
 }
