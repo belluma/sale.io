@@ -23,6 +23,7 @@ public class OrderToSupplierDTO extends OrderDTO {
     public  OrderToSupplierDTO(Long id, List<OrderItemDTO> orderItems, SupplierDTO supplier) {
         super(id, orderItems);
         this.supplier = supplier;
+        this.status = OrderToSupplierStatus.PENDING;
     }
 
 }

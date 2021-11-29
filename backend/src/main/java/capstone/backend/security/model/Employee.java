@@ -4,7 +4,6 @@ import capstone.backend.model.enums.UserRole;
 import capstone.backend.model.db.contact.Contact;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.List;
@@ -33,14 +32,14 @@ public class Employee extends Contact {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Employee appUser = (Employee) o;
-        return username != null && Objects.equals(username, appUser.username);
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Employee employee = (Employee) o;
+        return Objects.equals(username, employee.username) && Objects.equals(password, employee.password) && Objects.equals(roles, employee.roles);
     }
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(super.hashCode(), username, password, roles);
     }
-
 }

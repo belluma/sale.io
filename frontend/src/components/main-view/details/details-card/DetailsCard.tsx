@@ -20,6 +20,7 @@ import SupplierDetails from "../supplier-details/SupplierDetails";
 
 import {Model} from "../../../../interfaces/IThumbnail";
 import SalesDetails from "../sales-details/SalesDetails";
+import {dividerStyles, useNoPadding} from "../styles";
 
 type Props = {
     fullScreen: boolean,
@@ -41,25 +42,26 @@ function DetailsCard({fullScreen, handleClose}: Props) {
         supplier: <SupplierDetails/>,
         order: <OrderPreview/>,
         error: <ErrorMessage statusText={subtitle}/>,
-        sales: <SalesDetails />,
+        sales: <SalesDetails/>,
         none: (<></>),
         newCustomer: (<></>)
     }
-    const showPic = ["new", "order", "supplier", "customer"].indexOf(model) < 0 ;
+    const classes = useNoPadding();
+    const showPic = ["new", "order", "supplier", "customer"].indexOf(model) < 0;
     return (
         <Card
-            sx={{width: {sm: .99, md: 500}, height: 0.99, display: "flex", flexDirection: "column", overflow: "auto"}}>
+            sx={{width: {sm: 1, md: 400}, height: 1, display: "flex", flexDirection: "column", overflow: "auto"}}>
             <CardHeader title={title} subtitle={subtitle} align="center"/>
-            <Divider/>
+            <Divider sx={dividerStyles}/>
             {showPic && <CardMedia
                 component="img"
-                sx={{width: .99, maxHeight: 350, alignSelf: 'center'}}
+                sx={{width: 1, maxHeight: 250, alignSelf: 'center'}}
                 image={picture || images[model]}
                 alt={alt}
                 height="350"
             />}
             {showPic && <Divider/>}
-            <CardContent sx={{flexGrow: 1}}>
+            <CardContent sx={{flexGrow: 1}} classes={{root: classes.noPadding}}>
                 {path === 'category' ? cardContent.sales : cardContent[model]}
             </CardContent>
         </Card>

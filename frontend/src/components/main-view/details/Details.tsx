@@ -23,6 +23,7 @@ import ClearIcon from '@mui/icons-material/Clear'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import DetailsCard from "./details-card/DetailsCard";
 import {parseSupplierToThumbnail} from "../thumbnail/helper";
+import {useOffsetDialog} from "./styles";
 
 
 //interface imports
@@ -58,12 +59,12 @@ function Details(props: Props) {
         dispatch(resetGoBack());
         dispatch(setDetailData(parseSupplierToThumbnail(supplier)));
     }
-
+const classes = useOffsetDialog();
     return (
         <Dialog fullScreen={fullScreen} open={showDetails} onClose={handleClose} transitionDuration={transitionDuration}
-                scroll='paper' PaperProps={{}}>
-            <DialogContent dividers sx={{padding: 0, display: 'flex', alignItems: alignItems, maxWidth: 0.99, height: {md: 800}}}>
-                <Container ref={descriptionElementRef} sx={{margin: "auto", height: 0.99}}>
+                scroll='paper' classes={{root: classes.offsetDialog}}>
+            <DialogContent dividers sx={{padding: 0, display: 'flex', alignItems: alignItems, maxWidth: 1, height: {md: 630}}}>
+                <Container disableGutters ref={descriptionElementRef}  sx={{margin: "auto", height: 1}}>
                     {goBack &&
                     <Fab variant='circular' size='small' color="primary" sx={{position: "absolute", top: 15, left: 25}}
                          onClick={backToSupplier}>

@@ -13,30 +13,31 @@ import Grid from "@material-ui/core/Grid";
 
 import {ReactJSXElement} from "@emotion/react/types/jsx-namespace";
 import {IOrderItem} from "../../../../interfaces/IOrder";
+import {dividerStyles} from "../styles";
 
 type Props = {
     children?: ReactJSXElement[],
     orderItems: IOrderItem[],
     isFormEnabled?: boolean,
-    retail?: boolean
+    retail?: boolean,
+    customer?: boolean
 };
-
-function OrderDetails({children, orderItems, isFormEnabled, retail}: Props){
+function OrderDetails({children, orderItems, isFormEnabled, retail, customer}: Props){
     const productsOnOrder = orderItems.map((item, i) => {
-        return <OrderItem form={isFormEnabled} key={i} item={item} retail={retail} index={i}/>
+        return <OrderItem form={isFormEnabled} key={i} item={item} retail={retail} customer={customer} index={i}/>
     })
     const total = orderItems.reduce(retail ? getTotalRetail : getTotalWholeSale, 0);
     return(
-        <Card sx={{width: 0.99, height: 0.99, display: 'flex', flexDirection: 'column'}}>
+        <Card sx={{width: 1, height: 1, display: 'flex', flexDirection: 'column'}}>
             {children?.length && children.length > 1 && children[1]}
             {children?.length && children.length > 2 && children[2]}
-            <CardContent>
-                <Grid container>
+            <CardContent >
+                <Grid  container>
                     {productsOnOrder}
                 </Grid>
             </CardContent>
             <Container sx={{flexGrow: 1}}/>
-            <Divider/>
+            < Divider sx={dividerStyles}/>
             <CardActions sx={{display: "flex", justifyContent: "space-between", flexDirection:"row-reverse"}}>
                 <Typography >Total:€ {total.toFixed(2)}</Typography>
                 {children?.length  && children[0]}

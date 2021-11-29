@@ -1,5 +1,5 @@
 import React from 'react'
-import {receiveOrder, selectCurrentOrder, selectOrderToSave} from "../../../../slicer/orderSlice";
+import {receiveOrder,  selectCurrentOrder, selectOrderToSave} from "../../../../slicer/orderSlice";
 import {useAppDispatch, useAppSelector} from "../../../../app/hooks";
 
 //component imports
@@ -17,6 +17,7 @@ import {OrderStatus} from "../../../../interfaces/OrderStatus";
 import {IOrder} from "../../../../interfaces/IOrder";
 import {parseName} from "../../../main-view/thumbnail/helper";
 import OrderDetails from "../../../main-view/details/order-details/OrderDetails";
+import {dividerStyles} from "../../../main-view/details/styles";
 
 type Props = {
     isFormEnabled?: boolean,
@@ -46,11 +47,11 @@ function OrderPreview({isFormEnabled}: Props) {
     </ThemeProvider>)
 
     return (
-        <OrderDetails {...isFormEnabled} orderItems={orderItems}>
+        <OrderDetails isFormEnabled={isFormEnabled} orderItems={orderItems} >
             {order.status === OrderStatus.PENDING ?
                <ReceiveButton />: <></>}
             <CardHeader title={`order to ${supplier && parseName(supplier)}`}/>
-            <Divider/>
+            <Divider sx={dividerStyles}/>
         </OrderDetails>
     )
 }

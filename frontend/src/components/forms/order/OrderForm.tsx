@@ -43,7 +43,7 @@ function OrderForm(props: Props) {
         setSelectedProductId(e.target.value);
     }
     const selectSupplier = (e: ChangeEvent<HTMLInputElement>) => {
-        const supplier = suppliers.find(supplier => supplier.id === e.target.value);
+        const supplier = suppliers.find(s => s.id === e.target.value);
         supplier && dispatch(chooseSupplier(supplier));
         supplier && setSelectedSupplierId(supplier.id);
     }
@@ -57,6 +57,7 @@ function OrderForm(props: Props) {
         setProductToAdd({});
         setQuantity(0);
     }
+    const showPreview = selectedSupplierId && orderToSave.orderItems?.length
     return (
         <Grid container>
             <Grid item xs={12}>
@@ -77,7 +78,7 @@ function OrderForm(props: Props) {
             <Grid item xs={2}>
                 <Button disabled={!validateProduct} onClick={addProduct}>Add</Button>
             </Grid>
-            {selectedSupplierId && <OrderPreview isFormEnabled={true}/>}
+            {showPreview ? <OrderPreview isFormEnabled={true}/> : <></>}
         </Grid>
     )
 }

@@ -1,12 +1,8 @@
 package capstone.backend.model.db.order;
 
-
-
-import capstone.backend.model.enums.OrderToSupplierStatus;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -24,11 +20,11 @@ public abstract class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany( cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch=FetchType.EAGER)
     @ToString.Exclude
     private List<OrderItem> orderItems;
 
-    public Order(List<OrderItem> orderItems){
+    protected Order(List<OrderItem> orderItems){
         this.orderItems = orderItems;
     }
 
@@ -42,8 +38,6 @@ public abstract class Order {
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(id, orderItems);
     }
-
-
 }

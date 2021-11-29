@@ -2,11 +2,8 @@ package capstone.backend.model.db.order;
 
 import capstone.backend.model.db.Product;
 import lombok.*;
-import org.hibernate.Hibernate;
-
 import javax.persistence.*;
 import java.util.Objects;
-
 
 @Getter
 @Setter

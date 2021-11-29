@@ -9,8 +9,9 @@ import CustomNumber from "../_elements/custom-number/CustomNumber";
 //interface imports
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {getAllSuppliers, selectSuppliers} from "../../../slicer/supplierSlice";
-import {mapSupplierToSelectData} from "../helper";
+import {mapCategoryToSelectData, mapSupplierToSelectData} from "../helper";
 import {handleProductFormInput, selectProductToSave} from "../../../slicer/productSlice";
+import {selectCategories} from "../../../slicer/categorySlice";
 
 
 function ProductForm() {
@@ -23,6 +24,7 @@ function ProductForm() {
     const supplierId = productToSave.suppliers?.length ? productToSave.suppliers[0].id : undefined;
     const categoryId = category?.id?.toString();
     const suppliers = useAppSelector(selectSuppliers);
+    const categories = useAppSelector(selectCategories);
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         dispatch(handleProductFormInput({...productToSave, [e.target.name]: value}));
@@ -33,6 +35,7 @@ function ProductForm() {
     }
     const props = {onChange: handleChange, model: "product"};
     const supplierOptions = mapSupplierToSelectData(suppliers);
+    const categoryOptions = mapCategoryToSelectData(categories)
     return (
         !suppliers.length ? <div>"Please create a supplier first</div> :
             <div>
@@ -46,7 +49,7 @@ function ProductForm() {
                     </Grid>
                     <Grid item xs={6}>
                         <CustomSelect name="category" label={"category"} value={categoryId}
-                                      options={[{id: '1', name: `vegetables`}]} {...props}  />
+                                      options={categoryOptions} {...props}  />
                     </Grid>
                     <Grid item xs={6}>
                         <CustomNumber currency name="purchasePrice" label={"purchase price"} value={purchasePrice} {...props} required/>

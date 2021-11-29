@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 import static capstone.backend.mapper.OrderToCustomerMapper.mapOrder;
@@ -27,6 +26,7 @@ public class OrderToCustomerService {
     private final OrderToCustomerRepo repo;
     private final ProductService productService;
     private final OrderItemService orderItemService;
+    private static final String BEEN_CASHED_OUT = "This order has already been cashed out!";
 
     public List<OrderToCustomerDTO> getAllOrders() {
         return repo.findAll()
@@ -42,65 +42,39 @@ public class OrderToCustomerService {
                 .toList();
     }
 
+    public OrderToCustomerDTO getSpecificOrder(Long id) {
+        return repo.findById(id)
+                .map(OrderToCustomerMapper::mapOrder)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Order with id %d not found", id)));
+    }
+
+
     public OrderToCustomerDTO createEmptyOrder() {
         return mapOrder(repo.save(new OrderToCustomer(OPEN)));
     }
 
-    public OrderToCustomerDTO addItemsToOrder(Long orderId, OrderItemDTO orderItem, OrderToCustomerDTO orderToCustomer) throws IllegalArgumentException {
+    public OrderToCustomerDTO addItemsToOrder(Long orderId, OrderItemDTO orderItem) throws IllegalArgumentException {
         OrderToCustomer openOrder = validateOrderWhenAddItems(orderId, orderItem);
-        OrderItemDTO orderItemWithUpdatedAmount = orderItemService.addItemToOrderOrUpdateQuantity(orderItem, orderToCustomer);
         productService.substractStockWhenAddingItemToBill(mapOrderItem(orderItem));
-        updateAmountOnBill(openOrder, mapOrderItem(orderItemWithUpdatedAmount));
+        updateAmountOnBill(openOrder, mapOrderItem(orderItem));
         return mapOrder(repo.save(openOrder));
     }
 
     private void updateAmountOnBill(OrderToCustomer order, OrderItem orderItem) {
-        if (!order.getOrderItems().contains(orderItem)) {
-            List<OrderItem> itemsOnBill = new ArrayList<>(order.getOrderItems());
+        List<OrderItem> itemsOnBill = new ArrayList<>(order.getOrderItems());
+        int i = itemsOnBill.indexOf(orderItem);
+        if (i < 0) {
             itemsOnBill.add(orderItem);
-            order.setOrderItems(itemsOnBill);
+        } else {
+            itemsOnBill.get(i).setQuantity(itemsOnBill.get(i).getQuantity() + orderItem.getQuantity());
         }
-    }
-
-    public OrderToCustomerDTO removeItemsFromOrder(Long orderId, OrderItemDTO orderItem, OrderToCustomerDTO order) throws IllegalArgumentException, EntityNotFoundException {
-        OrderToCustomer openOrder = validateOrderWhenRemoveItems(orderItem, order);
-        orderItemService.reduceQuantityOfOrderItem(orderItem, order);
-        productService.resetAmountInStockWhenRemovingFromBill(mapOrderItem(orderItem));
-//        reduceAmountOnBillOrDeleteIfNull(openOrder, orderItemWithItemsRemoved);
-        return mapOrder(repo.save(openOrder));
-    }
-
-    private void reduceAmountOnBillOrDeleteIfNull(OrderToCustomer order, OrderItemDTO orderItem) {
-        order.setOrderItems(
-                order
-                        .getOrderItems()
-                        .stream()
-                        .map(oldOrderItem -> {
-                            if (Objects.equals(oldOrderItem.getId(), orderItem.getId())) {
-                                return orderItem.getQuantity() > 0 ? mapOrderItem(orderItem) : null;
-                            }
-                            return oldOrderItem;
-                        })
-                        .filter(Objects::nonNull)
-                        .toList());
-    }
-
-    public OrderToCustomerDTO cashoutOrder(OrderToCustomerDTO orderToCustomer) {
-        OrderToCustomer openOrder = repo.findById(orderToCustomer.getId()).orElseThrow(EntityNotFoundException::new);
-        if (orderAlreadyPaid(openOrder)) {
-            throw new IllegalArgumentException("This order has already been cashed out!");
-        }
-        openOrder.setStatus(PAID);
-        return mapOrder(repo.save(openOrder));
+        order.setOrderItems(itemsOnBill);
     }
 
     private OrderToCustomer validateOrderWhenAddItems(Long orderId, OrderItemDTO orderItem) {
-
-        if (!orderExists(orderId)) {
-            throw new EntityNotFoundException("You're trying to add to an order that doesn't exist");
-        }
+        orderExists(orderId, "add to");
         if (orderAlreadyPaid(orderId)) {
-            throw new IllegalArgumentException("This order has already been cashed out!");
+            throw new IllegalArgumentException(BEEN_CASHED_OUT);
         }
         if (!productService.productExists(orderItem.getProduct())) {
             throw new IllegalArgumentException("You're trying to add a product that doesn't exist");
@@ -111,34 +85,60 @@ public class OrderToCustomerService {
         return repo.findById(orderId).orElseThrow(EntityNotFoundException::new);
     }
 
-    private OrderToCustomer validateOrderWhenRemoveItems(OrderItemDTO orderItem, OrderToCustomerDTO order) {
-        if (!orderExists(order)) {
-            throw new EntityNotFoundException("You're trying to remove from an order that doesn't exist");
+    public OrderToCustomerDTO removeItemsFromOrder(Long orderId, OrderItemDTO orderItem) throws IllegalArgumentException, EntityNotFoundException {
+        OrderToCustomer openOrder = validateOrderWhenRemoveItems(orderId, orderItem);
+        reduceAmountOrTakeOffBillIfZero(openOrder, mapOrderItem(orderItem));
+        productService.resetAmountInStockWhenRemovingFromBill(mapOrderItem(orderItem));
+        return mapOrder(repo.save(openOrder));
+    }
+
+    private OrderToCustomer validateOrderWhenRemoveItems(Long orderId, OrderItemDTO orderItem) {
+        orderExists(orderId, "remove from");
+        if (orderAlreadyPaid(orderId)) {
+            throw new IllegalArgumentException(BEEN_CASHED_OUT);
         }
-        if (orderAlreadyPaid(order)) {
-            throw new IllegalArgumentException("This order has already been cashed out!");
-        }
-        if (orderItemService.itemAlreadyOnOrder(orderItem, order).isEmpty()) {
+        if (itemNotOnOrder(orderId, orderItem)) {
             throw new IllegalArgumentException("The item you're trying to remove is not on the order");
         }
-        if (!productService.productExists(orderItem.getProduct())) {
-            throw new IllegalArgumentException("You're trying to remove a product that doesn't exist");
+             orderHasLessItemsThanTryingToReduce(orderItem, orderId);
+        return repo.findById(orderId).orElseThrow(EntityNotFoundException::new);
+    }
+
+    private boolean itemNotOnOrder(Long orderId, OrderItemDTO orderItem) {
+        return orderItemService.itemAlreadyOnOrder(orderItem, getSpecificOrder(orderId)).isEmpty();
+    }
+
+    private void reduceAmountOrTakeOffBillIfZero(OrderToCustomer order, OrderItem orderItem) {
+        List<OrderItem> itemsOnBill = new ArrayList<>(order.getOrderItems());
+        int i = itemsOnBill.indexOf(orderItem);
+        boolean delete = false;
+        Long orderItemId = itemsOnBill.get(i).getId();
+        int newQty = itemsOnBill.get(i).getQuantity() - orderItem.getQuantity();
+        if (newQty > 0) {
+            itemsOnBill.get(i).setQuantity(newQty);
+        } else {
+            delete = true;
+            itemsOnBill.remove(i);
         }
-        orderHasLessItemsThanTryingToReduce(orderItem, order);
-        return repo.findById(order.getId()).orElseThrow(EntityNotFoundException::new);
+        order.setOrderItems(itemsOnBill);
+        if (delete) {
+            orderItemService.deleteOrderItem(orderItemId);
+        }
     }
 
-    private boolean orderExists(OrderToCustomerDTO order) {
-        return (order.getId() != null && repo.existsById(order.getId()));
+    public OrderToCustomerDTO cashoutOrder(OrderToCustomerDTO orderToCustomer) {
+        OrderToCustomer openOrder = repo.findById(orderToCustomer.getId()).orElseThrow(EntityNotFoundException::new);
+        if (orderAlreadyPaid(openOrder)) {
+            throw new IllegalArgumentException(BEEN_CASHED_OUT);
+        }
+        openOrder.setStatus(PAID);
+        return mapOrder(repo.save(openOrder));
     }
 
-    private boolean orderExists(Long orderId) {
-        return (orderId != null && repo.existsById(orderId));
-    }
-
-    private boolean orderAlreadyPaid(OrderToCustomerDTO order) {
-        OrderToCustomer existingOrder = repo.findById(order.getId()).orElseThrow(EntityNotFoundException::new);
-        return existingOrder.getStatus() == PAID;
+    private void orderExists(Long orderId, String method) throws EntityNotFoundException {
+        if (orderId == null || !repo.existsById(orderId)) {
+            throw new EntityNotFoundException(String.format("You're trying to %s an order that doesn't exist", method));
+        }
     }
 
     private boolean orderAlreadyPaid(OrderToCustomer order) {
@@ -151,8 +151,8 @@ public class OrderToCustomerService {
         return existingOrder.getStatus() == PAID;
     }
 
-    private void orderHasLessItemsThanTryingToReduce(OrderItemDTO orderItem, OrderToCustomerDTO order) {
-        order.getOrderItems().forEach(itemOnOrder -> {
+    private void orderHasLessItemsThanTryingToReduce(OrderItemDTO orderItem, Long orderId) {
+        getSpecificOrder(orderId).getOrderItems().forEach(itemOnOrder -> {
             if (itemOnOrder.equals(orderItem) && itemOnOrder.getQuantity() < orderItem.getQuantity()) {
                 throw new IllegalArgumentException("It's not possible to remove more items than are on the order");
             }

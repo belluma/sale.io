@@ -5,6 +5,7 @@ import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 import {views} from "../../main-view/helpers";
 import {logout, selectLoggedIn} from "../../../slicer/authSlice";
 import {hideDetails} from "../../../slicer/detailsSlice";
+import {buttonStyles, useIconButtonStyles} from "./styles";
 //component imports
 import {Button, IconButton, Toolbar, useMediaQuery, useTheme} from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -13,7 +14,6 @@ import Drawer from "../../drawer/Drawer";
 import ChangeView from "./change-view/ChangeView";
 //interface imports
 import {Views} from "../../../interfaces/IThumbnail";
-import {useButtonStyles} from "./styles";
 
 type Props = {
     appBarHeight: number,
@@ -35,19 +35,20 @@ function HeaderButtons({appBarHeight}: Props) {
         setDrawerOpen(false);
     }
     const buttons = views.map((view) => {
-        return <Button fullWidth sx={{height: 45, mx: 2, bgcolor: "transparent", boxShadow: "none"}}
+        return <Button fullWidth sx={buttonStyles} disabled={!loggedIn}
                        variant={'contained'} size={'small'} key={view} name={view} onClick={reroute}>{view}S</Button>
     });
     const burgerMenu = <IconButton onClick={toggleDrawer}><MenuIcon/></IconButton>
-    const classes = useButtonStyles();
+    const iconClasses = useIconButtonStyles();
+
     return (
         <div>
             <Drawer open={drawerOpen} toggle={toggleDrawer} buttons={buttons}
                     marginTop={appBarHeight}/>
-            <Toolbar sx={{mb: 1, alignItems: "stretch", justifyContent: "space-between"}}>
+            <Toolbar sx={{mb: 1, alignItems: "center", justifyContent: "space-between"}}>
                 {smallScreen ? burgerMenu : buttons}
                 {!smallScreen && <ChangeView key={"changeView"}/>}
-                {loggedIn && <IconButton classes={{root: classes.goldFont}} onClick={handleLogout} edge="end">
+                {loggedIn && <IconButton classes={{root: iconClasses.goldFont}} onClick={handleLogout} edge="end">
                     <LogoutIcon/>
                 </IconButton>}
             </Toolbar>

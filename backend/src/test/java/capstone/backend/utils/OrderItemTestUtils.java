@@ -25,4 +25,20 @@ public class OrderItemTestUtils {
                 .quantity(1)
                 .build();
     }
+
+    public static OrderItem sampleOrderItemNoId(){
+        return OrderItem
+                .builder()
+                .product(sampleProductWithId())
+                .quantity(1)
+                .build();
+    }
+
+    public static OrderItemDTO sampleOrderItemDTONoId() {
+        return OrderItemDTO
+                .builder()
+                .product(sampleProductDTOWithDetailsWithId())
+                .quantity(1)
+                .build();
+    }
 }

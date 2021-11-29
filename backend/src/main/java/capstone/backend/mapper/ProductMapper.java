@@ -5,8 +5,6 @@ import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.model.dto.contact.SupplierDTO;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 

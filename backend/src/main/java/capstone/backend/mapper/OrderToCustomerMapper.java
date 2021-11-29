@@ -4,8 +4,6 @@ import capstone.backend.model.db.order.OrderToCustomer;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
 
 import static capstone.backend.model.enums.OrderToCustomerStatus.OPEN;
-import static capstone.backend.model.enums.OrderToSupplierStatus.PENDING;
-
 public class OrderToCustomerMapper {
 
     private OrderToCustomerMapper(){
