@@ -68,25 +68,23 @@ export const createCustomer = createAsyncThunk<IResponseGetOneCustomer, void, { 
     }
 )
 
-export const addItemsToOrder = createAsyncThunk<IResponseGetOneCustomer,IOrderItem, { state: RootState, dispatch: Dispatch }>(
+export const addItemsToOrder = createAsyncThunk<IResponseGetOneCustomer, IOrderItem, { state: RootState, dispatch: Dispatch }>(
     'customers/add',
     async (orderItem, {getState, dispatch}) => {
         const customer = getState().customer.current;
-        const order = {order: customer, itemToAddOrRemove: orderItem}
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiAddItemsToOrder( token, order);
+        const {data, status, statusText} = await apiAddItemsToOrder(token, customer.id || -1, orderItem);
         handleError(status, statusText, dispatch);
         if (status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}
     }
 )
-export const takeItemsOffOrder = createAsyncThunk<IResponseGetOneCustomer,IOrderItem, { state: RootState, dispatch: Dispatch }>(
+export const takeItemsOffOrder = createAsyncThunk<IResponseGetOneCustomer, IOrderItem, { state: RootState, dispatch: Dispatch }>(
     'customers/remove',
     async (orderItem, {getState, dispatch}) => {
         const customer = getState().customer.current;
-        const order = {order: customer, itemToAddOrRemove: orderItem}
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiTakeItemsOffOrder( token, order);
+        const {data, status, statusText} = await apiTakeItemsOffOrder(token, customer.id || -1, orderItem);
         handleError(status, statusText, dispatch);
         if (status === 200) hideDetailsAndReloadList(dispatch)
         return {data, status, statusText}

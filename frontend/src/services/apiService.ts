@@ -1,8 +1,8 @@
 import axios from "axios";
 import {parseError} from './errorService';
 import {authHeaders, jsonHeaders} from "./serviceUtils";
-import {IBody, IOrderToCustomer} from "../interfaces/IApi";
-import {IOrder} from "../interfaces/IOrder";
+import {IBody} from "../interfaces/IApi";
+import {IOrder, IOrderItem} from "../interfaces/IOrder";
 
 
 export const getAll = (model: string, token: string) => {
@@ -77,10 +77,10 @@ export const receiveOrder = (token: string, data: IOrder) => {
         .catch(err => parseError(err))
 }
 
-export const addItemsToOrder = (token: string, data: IOrderToCustomer) => {
+export const addItemsToOrder = (token: string, orderId: number, data: IOrderItem) => {
     return axios({
         method: 'put',
-        url: `/api/orders_customers/add/?id=${data.order.id}`,
+        url: `/api/orders_customers/add/?id=${orderId}`,
         headers: {...jsonHeaders(), ...authHeaders(token)},
         data
     }).then(response => {
@@ -88,10 +88,11 @@ export const addItemsToOrder = (token: string, data: IOrderToCustomer) => {
     })
         .catch(err => parseError(err))
 }
-export const takeItemsOffOrder = (token: string, data: IOrderToCustomer) => {
+
+export const takeItemsOffOrder = (token: string, orderId: number, data: IOrderItem) => {
     return axios({
         method: 'put',
-        url: `/api/orders_customers/remove/?id=${data.order.id}`,
+        url: `/api/orders_customers/remove/?id=${orderId}`,
         headers: {...jsonHeaders(), ...authHeaders(token)},
         data
     }).then(response => {
