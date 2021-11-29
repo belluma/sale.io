@@ -1,12 +1,12 @@
 import React from 'react'
 import {useAppDispatch, useAppSelector} from "../../../../../app/hooks";
-//component imports
-import {Button, Grid, Paper, Popper, Typography} from "@mui/material";
-
-//interface imports
-import {VirtualElement} from '@popperjs/core';
 import {removeOrderItem} from "../../../../../slicer/orderSlice";
 import {selectCurrentCustomer, takeItemsOffOrder} from "../../../../../slicer/customerSlice";
+//component imports
+
+import {Button, Grid, Paper, Popper, Typography} from "@mui/material";
+//interface imports
+import {VirtualElement} from '@popperjs/core';
 
 type Props = {
     id?: string,
@@ -22,8 +22,6 @@ function ConfirmDelete({id, open, anchorEl, cancel, customer, itemIndex, name}: 
     const dispatch = useAppDispatch();
     const currentCustomer = useAppSelector(selectCurrentCustomer)
     const removeItem = () => {
-        console.log(customer)
-        console.log(123)
         dispatch(customer ? takeItemsOffOrder(currentCustomer.orderItems[itemIndex]) : removeOrderItem(itemIndex));
     }
     return (

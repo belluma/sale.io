@@ -10,12 +10,8 @@ export const getAll = (model: string, token: string) => {
         method: 'get',
         url: `/api/${model}`,
         headers: {...jsonHeaders(), ...authHeaders(token)}
-    }).then(response => {
-        return response
-    })
-        .catch(err => {
-            return parseError(err)
-        })
+    }).then(response => response)
+        .catch(parseError)
 }
 
 export const getOne = (model: string, token: string, id: string) => {
@@ -23,10 +19,8 @@ export const getOne = (model: string, token: string, id: string) => {
         method: 'get',
         url: `/api/${model}/${id}`,
         headers: {...jsonHeaders(), ...authHeaders(token)}
-    }).then(response => {
-        return response
-    })
-        .catch(err => parseError(err))
+    }).then(response => response)
+        .catch(parseError)
 }
 
 export const create = (model: string, token: string, data: IBody) => {
@@ -35,11 +29,8 @@ export const create = (model: string, token: string, data: IBody) => {
         url: `/api/${model}`,
         headers: {...jsonHeaders(), ...authHeaders(token)},
         data,
-    }).then(response => {
-
-        return response
-    })
-        .catch(err => parseError(err))
+    }).then(response => response)
+        .catch(parseError)
 }
 
 export const edit = (model: string, token: string, data: IBody) => {
@@ -48,10 +39,8 @@ export const edit = (model: string, token: string, data: IBody) => {
         url: `/api/${model}/${data.id}`,
         headers: {...jsonHeaders(), ...authHeaders(token)},
         data
-    }).then(response => {
-        return response
-    })
-        .catch(err => parseError(err))
+    }).then(response => response)
+        .catch(parseError)
 }
 
 export const del = (model: string, token: string, id: string) => {
@@ -59,10 +48,8 @@ export const del = (model: string, token: string, id: string) => {
         method: 'delete',
         url: `/api/${model}/${id}`,
         headers: {...jsonHeaders(), ...authHeaders(token)},
-    }).then(response => {
-        return response
-    })
-        .catch(err => parseError(err))
+    }).then(response => response)
+        .catch(parseError)
 }
 
 export const receiveOrder = (token: string, data: IOrder) => {
@@ -71,10 +58,8 @@ export const receiveOrder = (token: string, data: IOrder) => {
         url: `/api/orders_suppliers/?id=${data.id}&status=RECEIVED`,
         headers: {...jsonHeaders(), ...authHeaders(token)},
         data
-    }).then(response => {
-        return response
-    })
-        .catch(err => parseError(err))
+    }).then(response => response)
+        .catch(parseError)
 }
 
 export const addItemsToOrder = (token: string, orderId: number, data: IOrderItem) => {
@@ -83,10 +68,8 @@ export const addItemsToOrder = (token: string, orderId: number, data: IOrderItem
         url: `/api/orders_customers/add/?id=${orderId}`,
         headers: {...jsonHeaders(), ...authHeaders(token)},
         data
-    }).then(response => {
-        return response
-    })
-        .catch(err => parseError(err))
+    }).then(response => response)
+        .catch(parseError)
 }
 
 export const takeItemsOffOrder = (token: string, orderId: number, data: IOrderItem) => {
@@ -95,10 +78,8 @@ export const takeItemsOffOrder = (token: string, orderId: number, data: IOrderIt
         url: `/api/orders_customers/remove/?id=${orderId}`,
         headers: {...jsonHeaders(), ...authHeaders(token)},
         data
-    }).then(response => {
-        return response
-    })
-        .catch(err => parseError(err))
+    }).then(response => response)
+        .catch(parseError)
 }
 
 

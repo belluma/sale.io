@@ -129,25 +129,13 @@ class OrderItemServiceTest {
         verify(repo).save(mapOrderItem(expected));
     }
 
-//    @Test
-//    void reduceQuantityOfOrderItemDeletesEntryInRepoWhenNewQuantityZero() {
-//        //GIVEN
-//        OrderItemDTO orderItemToReduce = sampleOrderItemDTO();
-//        OrderToCustomerDTO order = orderDTOWithOrderItem();
-//        //WHEN
-//        service.reduceQuantityOfOrderItem(orderItemToReduce, order);
-//        //THEN
-//        verify(repo).deleteById(orderItemToReduce.getId());
-//    }
-//     @Test
-//    void reduceQuantityOfOrderItemSavesNewQuantityWhenMoreThanZero() {
-//        //GIVEN
-//        OrderItemDTO orderItemToReduce = sampleOrderItemDTO();
-//        OrderToCustomerDTO order = orderDTOWithOrderItem();
-//        order.getOrderItems().get(0).setQuantity(23);
-//        //WHEN
-//        service.reduceQuantityOfOrderItem(orderItemToReduce, order);
-//        //THEN
-//        verify(repo).save(mapOrderItem(orderItemToReduce));
-//    }
+    @Test
+    void deleteOrderItem() {
+        //GIVEN
+        Long orderId = 1L;
+        //WHEN
+        service.deleteOrderItem(orderId);
+        //THEN
+        verify(repo).deleteById(orderId);
+    }
 }
