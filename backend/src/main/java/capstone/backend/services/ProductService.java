@@ -19,6 +19,7 @@ import java.util.List;
 public class ProductService {
 
     private final ProductRepo repo;
+    private final SupplierService supplierService;
 
     public List<ProductDTO> getAllProductsWithDetails() {
         return repo

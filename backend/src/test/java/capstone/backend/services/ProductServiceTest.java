@@ -31,7 +31,8 @@ import static org.hamcrest.Matchers.*;
 class ProductServiceTest {
 
     private final ProductRepo repo = mock(ProductRepo.class);
-    private final ProductService service = new ProductService(repo);
+    private final SupplierService supplierService = mock(SupplierService.class);
+    private final ProductService service = new ProductService(repo, supplierService);
 
     @Test
     void getAllProductsWithDetails() {
