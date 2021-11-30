@@ -6,6 +6,7 @@ import capstone.backend.mapper.ProductMapper;
 import capstone.backend.model.db.Product;
 import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.dto.ProductDTO;
+import capstone.backend.model.dto.contact.SupplierDTO;
 import capstone.backend.repo.ProductRepo;
 import capstone.backend.repo.SupplierRepo;
 import capstone.backend.utils.ControllerTestUtils;
@@ -18,15 +19,18 @@ import org.springframework.http.*;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+
 import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
 import static capstone.backend.mapper.SupplierMapper.mapSupplier;
 import static capstone.backend.utils.ProductTestUtils.*;
 import static capstone.backend.utils.SupplierTestUtils.sampleSupplier;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -118,6 +122,21 @@ class ProductControllerTest {
     }
 
     @Test
+    void createProductAddsProductToSuppliersProductList() {
+        //GIVEN
+        Supplier supplier = supplierRepo.save(sampleSupplier());
+        ProductDTO product = sampleProductDTOWithDetailsWithId();
+        product.setSuppliers(Set.of(mapSupplier(supplier)));
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        //WHEN
+        ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(product, headers), ProductDTO.class);
+        ResponseEntity<SupplierDTO> updatedSupplier = restTemplate.exchange("api/suppliers/" + supplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(Objects.requireNonNull(updatedSupplier.getBody()).getProducts(), containsInAnyOrder(product));
+    }
+
+    @Test
     void createProductFailsWhenProductIdAlreadyTaken() {
         //GIVEN
         Supplier supplier = supplierRepo.save(sampleSupplier());
@@ -159,4 +178,87 @@ class ProductControllerTest {
         assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is(String.format("Couldn't find a product with the id %d", productToEdit.getId())));
     }
 
+    @Test
+    void editProductAddsProductToSuppliersProductList() {
+        //GIVEN
+        Supplier supplier = supplierRepo.save(sampleSupplier());
+        Supplier supplier2 = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(supplier)));
+        ProductDTO productToEdit = mapProductWithDetails(product.withSuppliers(Set.of(supplier, supplier2)));
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        //WHEN
+        ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/" + product.getId(), HttpMethod.PUT, new HttpEntity<>(productToEdit, headers), ProductDTO.class);
+        ResponseEntity<SupplierDTO> oldSupplier = restTemplate.exchange("api/suppliers/" + supplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
+        ResponseEntity<SupplierDTO> updatedSupplier = restTemplate.exchange("api/suppliers/" + supplier2.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(Objects.requireNonNull(oldSupplier.getBody()).getProducts(), containsInAnyOrder(productToEdit));
+        assertThat(Objects.requireNonNull(updatedSupplier.getBody()).getProducts(), containsInAnyOrder(productToEdit));
+    }
+
+    @Test
+    void editProductReplacesOneSupplier() {
+        //GIVEN
+        Supplier supplier = supplierRepo.save(sampleSupplier());
+        Supplier supplier2 = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(supplier)));
+        ProductDTO productToEdit = mapProductWithDetails(product.withSuppliers(Set.of(supplier2)));
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        //WHEN
+        ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/" + product.getId(), HttpMethod.PUT, new HttpEntity<>(productToEdit, headers), ProductDTO.class);
+        ResponseEntity<SupplierDTO> oldSupplier = restTemplate.exchange("api/suppliers/" + supplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
+        ResponseEntity<SupplierDTO> updatedSupplier = restTemplate.exchange("api/suppliers/" + supplier2.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertFalse(Objects.requireNonNull(oldSupplier.getBody()).getProducts().contains(productToEdit));
+        assertThat(Objects.requireNonNull(updatedSupplier.getBody()).getProducts(), containsInAnyOrder(productToEdit));
+    }
+
+    @Test
+    void productGetsDiscontinued() {
+        //GIVEN
+        Supplier supplier = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(supplier)));
+        ProductDTO productToEdit = mapProductWithDetails(product.withSuppliers(Set.of()));
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        //WHEN
+        ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/" + product.getId(), HttpMethod.PUT, new HttpEntity<>(productToEdit, headers), ProductDTO.class);
+        ResponseEntity<SupplierDTO> oldSupplier = restTemplate.exchange("api/suppliers/" + supplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertFalse(Objects.requireNonNull(oldSupplier.getBody()).getProducts().contains(productToEdit));
+    }
+
+    @Test
+    void editProductRemovesProductFromOneSuppliersProductList() {
+        //GIVEN
+        Supplier supplier = supplierRepo.save(sampleSupplier());
+        Supplier supplier2 = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(supplier, supplier2)));
+        ProductDTO productToEdit = mapProductWithDetails(product.withSuppliers(Set.of(supplier)));
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        //WHEN
+        ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/" + product.getId(), HttpMethod.PUT, new HttpEntity<>(productToEdit, headers), ProductDTO.class);
+        ResponseEntity<SupplierDTO> supplierThatKeepsProduct = restTemplate.exchange("api/suppliers/" + supplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
+        ResponseEntity<SupplierDTO> supplierThatTakesProductOutOfSTock = restTemplate.exchange("api/suppliers/" + supplier2.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(Objects.requireNonNull(supplierThatKeepsProduct.getBody()).getProducts(), containsInAnyOrder(productToEdit));
+        assertFalse(Objects.requireNonNull(supplierThatTakesProductOutOfSTock.getBody()).getProducts().contains(productToEdit));
+    }
+
+    @Test
+    void editProductFailsWhenTryingToAddNonExistentSupplier() {
+        //GIVEN
+        Supplier supplier = supplierRepo.save(sampleSupplier());
+        Supplier supplier2 = sampleSupplier();
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(supplier)));
+        ProductDTO productToEdit = mapProductWithDetails(product.withSuppliers(Set.of(supplier, supplier2)));
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        //WHEN
+        ResponseEntity<CustomError> response = restTemplate.exchange(BASEURL + "/" + product.getId(), HttpMethod.PUT, new HttpEntity<>(productToEdit, headers), CustomError.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is("You tried to add a supplier that does not exist!"));
+    }
 }

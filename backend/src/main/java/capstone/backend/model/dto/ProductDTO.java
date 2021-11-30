@@ -32,11 +32,11 @@ public class ProductDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProductDTO that = (ProductDTO) o;
-        return minAmount == that.minAmount && maxAmount == that.maxAmount && unitSize == that.unitSize && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(suppliers, that.suppliers) && Objects.equals(stockCodeSupplier, that.stockCodeSupplier) && Objects.equals(category, that.category) && Objects.equals(purchasePrice, that.purchasePrice) && Objects.equals(retailPrice, that.retailPrice);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, suppliers, stockCodeSupplier, category, purchasePrice, retailPrice, minAmount, maxAmount, unitSize);
+        return Objects.hash(id, name);
     }
 }
