@@ -1,6 +1,7 @@
 package capstone.backend.controller;
 
 import capstone.backend.CombinedTestContainer;
+import capstone.backend.exception.CustomError;
 import capstone.backend.mapper.ProductMapper;
 import capstone.backend.model.db.Product;
 import capstone.backend.model.db.contact.Supplier;
@@ -17,12 +18,10 @@ import org.springframework.http.*;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-
 import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
 import static capstone.backend.mapper.SupplierMapper.mapSupplier;
 import static capstone.backend.utils.ProductTestUtils.*;
@@ -99,8 +98,9 @@ class ProductControllerTest {
         //GIVEN
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
-        ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/12", HttpMethod.GET, new HttpEntity<>(headers), ProductDTO.class);
+        ResponseEntity<CustomError> response = restTemplate.exchange(BASEURL + "/12", HttpMethod.GET, new HttpEntity<>(headers), CustomError.class);
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is(String.format("Couldn't find a product with the id %d", 12)));
     }
 
     @Test
@@ -115,6 +115,21 @@ class ProductControllerTest {
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(productRepo.findAll().size(), is(1));
+    }
+
+    @Test
+    void createProductFailsWhenProductIdAlreadyTaken() {
+        //GIVEN
+        Supplier supplier = supplierRepo.save(sampleSupplier());
+        ProductDTO product = mapProductWithDetails(productRepo.save(sampleProduct().withSuppliers(Set.of(supplier))));
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        //WHEN
+        ResponseEntity<CustomError> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(product, headers), CustomError.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
+        assertThat(productRepo.findAll().size(), is(1));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is(String.format("Product %s already has the id %d", product.getName(), product.getId())));
+
     }
 
     @Test
@@ -138,9 +153,10 @@ class ProductControllerTest {
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         ProductDTO productToEdit = sampleProductDTOWithDetailsWithId();
         //WHEN
-        ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/1", HttpMethod.PUT, new HttpEntity<>(productToEdit, headers), ProductDTO.class);
+        ResponseEntity<CustomError> response = restTemplate.exchange(BASEURL + "/1", HttpMethod.PUT, new HttpEntity<>(productToEdit, headers), CustomError.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is(String.format("Couldn't find a product with the id %d", productToEdit.getId())));
     }
 
 }
