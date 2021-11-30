@@ -1,4 +1,9 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {
+    Action,
+    createAsyncThunk,
+    createSlice,
+    PayloadAction, ThunkDispatch
+} from "@reduxjs/toolkit";
 import {IUserCredentials} from "../interfaces/IEmployee";
 import {RootState} from "../app/store";
 import {registerAdmin as registerAsAdmin, sendLoginData} from "../services/authService";
@@ -8,12 +13,24 @@ import {IAuthState} from "../interfaces/IStates";
 import history from "../services/history"
 import {hideDetails} from "./detailsSlice";
 import {handleError} from "./errorHelper";
+import {getAllProducts} from "./productSlice";
+import {getAllSuppliers} from "./supplierSlice";
+import {getAllCategories} from "./categorySlice";
+import {getAllOpenCustomers} from "./customerSlice";
+import {getAllOrders} from "./orderSlice";
 
 const initialState: IAuthState = {
     loggedIn: false,
     token: ""
 }
 
+const fetchApiData = (dispatch: ThunkDispatch<RootState, void, Action>) => {
+    dispatch(getAllProducts())
+    dispatch(getAllSuppliers())
+    dispatch(getAllOrders())
+    dispatch(getAllOpenCustomers())
+    dispatch(getAllCategories())
+}
 export const login = createAsyncThunk(
     'login',
     async (credentials: IUserCredentials, {dispatch}) => {
@@ -21,7 +38,7 @@ export const login = createAsyncThunk(
         dispatch(hideDetails());
         if (status !== 200) {
             handleError(status, statusText, dispatch);
-        }
+        }else fetchApiData(dispatch)
         return {data, status, statusText};
     }
 )
