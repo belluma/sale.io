@@ -46,24 +46,6 @@ public class OrderToSupplierService {
         return mapOrder(repo.save(mapOrder(order)));
     }
 
-    public OrderToSupplierDTO receiveOrder(OrderToSupplierDTO order, OrderToSupplierStatus status) throws EntityNotFoundException, IllegalArgumentException {
-        validateOrderToReceive(order, status);
-        productService.receiveGoods(order.getOrderItems());
-        OrderToSupplier orderToReceive = repo.getById(order.getId());
-        orderToReceive.setStatus(RECEIVED);
-        return mapOrder(repo.save(orderToReceive));
-    }
-
-    private boolean orderExists(OrderToSupplierDTO order) {
-        return (order.getId() != null && repo.existsById(order.getId()));
-    }
-
-    private void productsExist(OrderToSupplierDTO order, String message) {
-        if (!productsExist(order)) {
-            throw new IllegalArgumentException(message);
-        }
-    }
-
     private void validateNewOrder(OrderToSupplierDTO order) throws IllegalArgumentException {
         productsExist(order, "You tried to order a product that doesn't exist!");
         if (!supplierService.supplierExists(order.getSupplier().getId())) {
@@ -73,6 +55,15 @@ public class OrderToSupplierService {
             throw new IllegalArgumentException("The supplier doesn't carry one or several of the items you tried to order!");
         }
     }
+
+    public OrderToSupplierDTO receiveOrder(OrderToSupplierDTO order, OrderToSupplierStatus status) throws EntityNotFoundException, IllegalArgumentException {
+        validateOrderToReceive(order, status);
+        productService.receiveGoods(order.getOrderItems());
+        OrderToSupplier orderToReceive = repo.getById(order.getId());
+        orderToReceive.setStatus(RECEIVED);
+        return mapOrder(repo.save(orderToReceive));
+    }
+
     private void validateOrderToReceive(OrderToSupplierDTO order, OrderToSupplierStatus status){
         if (status != RECEIVED) {
             throw new IllegalArgumentException("Your request couldn't be processed!");
@@ -84,6 +75,15 @@ public class OrderToSupplierService {
             throw new IllegalArgumentException("The order you're trying to receive has already been received");
         }
         productsExist(order, "Your order contains products that don't exist in your database");
+    }
+
+    private boolean orderExists(OrderToSupplierDTO order) {
+        return (order.getId() != null && repo.existsById(order.getId()));
+    }
+    private void productsExist(OrderToSupplierDTO order, String message) {
+        if (!productsExist(order)) {
+            throw new IllegalArgumentException(message);
+        }
     }
 
     private boolean productsExist(OrderToSupplierDTO order) {
