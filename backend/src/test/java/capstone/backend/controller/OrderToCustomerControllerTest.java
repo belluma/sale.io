@@ -213,7 +213,6 @@ class OrderToCustomerControllerTest {
         OrderItem orderItemOnOrder = sampleOrderItemNoId().withProduct(product);
         OrderToCustomer order1 = orderRepo.save(new OrderToCustomer(List.of(orderItemOnOrder), OPEN));
         OrderToCustomerDTO expected = new OrderToCustomerDTO(order1.getId(), List.of(mapOrderItem(orderItemOnOrder)));
-//        OrderContainerDTO requestBody = new OrderContainerDTO(mapOrder(order1), mapOrderItem(orderItemToAdd));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/add/?id=" + order1.getId();
         //WHEN
@@ -237,9 +236,10 @@ class OrderToCustomerControllerTest {
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/add/?id=" + 12345;
         //WHEN
-        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItem), headers), OrderToCustomerDTO.class);
+        ResponseEntity<CustomError> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItem), headers), CustomError.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is("You're trying to add to an order that doesn't exist"));
     }
 
     @Test
@@ -253,9 +253,10 @@ class OrderToCustomerControllerTest {
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/add/?id=" + order1.getId();
         //WHEN
-        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItemToAdd), headers), OrderToCustomerDTO.class);
+        ResponseEntity<CustomError> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItemToAdd), headers), CustomError.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is("This order has already been cashed out!"));
     }
 
     @Test
@@ -269,9 +270,10 @@ class OrderToCustomerControllerTest {
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/add/?id=" + order1.getId();
         //WHEN
-        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItemToAdd), headers), OrderToCustomerDTO.class);
+        ResponseEntity<CustomError> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItemToAdd), headers), CustomError.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is("You're trying to add a product that doesn't exist"));
     }
 
     @Test
@@ -284,9 +286,10 @@ class OrderToCustomerControllerTest {
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + "/add/?id=" + order1.getId();
         //WHEN
-        ResponseEntity<OrderToCustomerDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItem), headers), OrderToCustomerDTO.class);
+        ResponseEntity<CustomError> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(mapOrderItem(orderItem), headers), CustomError.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is("Not enough items in stock!"));
     }
 
     @Test
