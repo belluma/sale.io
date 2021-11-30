@@ -219,7 +219,7 @@ class OrderToSupplierControllerTest {
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + String.format("/?id=%d&status=RECEIVED", receivedOrder.getId());
         //WHEN
-        ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(receivedOrder, headers), OrderToSupplierDTO.class);
+        ResponseEntity<CustomError> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(receivedOrder, headers), CustomError.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
         assertThat(productRepo.findById(product.getId()).get().getAmountInStock(), is(product.getAmountInStock()));

@@ -1,5 +1,6 @@
 package capstone.backend.model.db.contact;
 
+import capstone.backend.model.db.Product;
 import capstone.backend.model.db.order.OrderToSupplier;
 import capstone.backend.model.enums.Weekday;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,6 +26,10 @@ public class Supplier extends Contact {
     @ToString.Exclude
     @JsonIgnore
     private Set<OrderToSupplier> orders;
+    @ManyToMany
+    @JsonIgnore
+    private Set<Product> products;
+
 
     public Supplier() {
         super();
