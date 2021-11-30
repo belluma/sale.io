@@ -1,24 +1,21 @@
-import React, {ChangeEvent, useEffect} from 'react'
+import React, {ChangeEvent} from 'react'
+import { selectSuppliers} from "../../../slicer/supplierSlice";
+import {mapCategoryToSelectData, mapSupplierToSelectData} from "../helper";
+import {handleProductFormInput, selectProductToSave} from "../../../slicer/productSlice";
+import {selectCategories} from "../../../slicer/categorySlice";
 
 //component imports
 import {Grid} from "@mui/material";
 import CustomSelect from "../_elements/custom-select/CustomSelect";
 import CustomText from "../_elements/custom-text/CustomText";
-import CustomNumber from "../_elements/custom-number/CustomNumber";
 
+import CustomNumber from "../_elements/custom-number/CustomNumber";
 //interface imports
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {getAllSuppliers, selectSuppliers} from "../../../slicer/supplierSlice";
-import {mapCategoryToSelectData, mapSupplierToSelectData} from "../helper";
-import {handleProductFormInput, selectProductToSave} from "../../../slicer/productSlice";
-import {selectCategories} from "../../../slicer/categorySlice";
 
 
 function ProductForm() {
     const dispatch = useAppDispatch();
-    useEffect(() => {
-        dispatch(getAllSuppliers())
-    }, [dispatch]);
     const productToSave = useAppSelector(selectProductToSave);
     const {name, purchasePrice, retailPrice, minAmount, maxAmount, unitSize, category} = productToSave;
     const supplierId = productToSave.suppliers?.length ? productToSave.suppliers[0].id : undefined;

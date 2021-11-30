@@ -1,9 +1,9 @@
-import React, {ChangeEvent, useEffect} from 'react'
+import React, {ChangeEvent} from 'react'
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {addProductToOrder, chooseSupplier, getAllOrders, selectOrderToSave} from "../../../slicer/orderSlice";
-import {getAllProducts, selectProducts} from "../../../slicer/productSlice";
+import {addProductToOrder, chooseSupplier, selectOrderToSave} from "../../../slicer/orderSlice";
+import { selectProducts} from "../../../slicer/productSlice";
 import {mapProductsToSelectData, mapSupplierToSelectData} from "../helper";
-import {getAllSuppliers, selectSuppliers} from "../../../slicer/supplierSlice";
+import {selectSuppliers} from "../../../slicer/supplierSlice";
 import {productsBySupplier} from "./helper";
 import {useOrders} from "./useOrder";
 //component imports
@@ -19,11 +19,6 @@ type Props = {};
 
 function OrderForm(props: Props) {
     const dispatch = useAppDispatch();
-    useEffect(() => {
-        dispatch(getAllProducts());
-        dispatch(getAllSuppliers());
-        dispatch(getAllOrders());
-    }, [dispatch]);
     const orderToSave = useAppSelector(selectOrderToSave);
     const products = useAppSelector(selectProducts);
     const suppliers = useAppSelector(selectSuppliers);
