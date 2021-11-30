@@ -44,7 +44,7 @@ public class Product {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return minAmount == product.minAmount && maxAmount == product.maxAmount && unitSize == product.unitSize && amountInStock == product.amountInStock && Objects.equals(id, product.id) && Objects.equals(name, product.name) && Objects.equals(suppliers, product.suppliers) && Objects.equals(stockCodeSupplier, product.stockCodeSupplier) && Objects.equals(category, product.category) && Objects.equals(purchasePrice, product.purchasePrice) && Objects.equals(retailPrice, product.retailPrice) && Objects.equals(picture, product.picture);
+        return Objects.equals(id, product.id) && Objects.equals(name, product.name) ;
     }
 
     @Override
