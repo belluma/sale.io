@@ -15,6 +15,7 @@ import java.util.List;
 public class SupplierService {
 
     private final SupplierRepo repo;
+    private static final String NO_SUPPLIER = "Couldn't find a supplier with the id %d";
 
        public List<SupplierDTO> getAllSuppliersWithDetails() {
         return repo.findAll()
@@ -27,7 +28,7 @@ public class SupplierService {
         return repo
                 .findById(id)
                 .map(SupplierMapper::mapSupplier)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Couldn't find a supplier with the id %d", id)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format(NO_SUPPLIER, id)));
     }
 
     public SupplierDTO createSupplier(SupplierDTO supplier) {
@@ -46,7 +47,7 @@ public class SupplierService {
         if (repo
                 .findById(supplier.getId())
                 .isEmpty()) {
-            throw new EntityNotFoundException(String.format("Couldn't find a supplier with the id %d", supplier.getId()));
+            throw new EntityNotFoundException(String.format(NO_SUPPLIER, supplier.getId()));
         }
         return SupplierMapper.mapSupplier(repo
                 .save(SupplierMapper.mapSupplier(supplier)));
