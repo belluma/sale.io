@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
+import {Action, createAsyncThunk, createSlice, Dispatch, PayloadAction, ThunkDispatch} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import {IOrdersState} from '../interfaces/IStates';
 import {IResponseGetAllOrders, IResponseGetOneOrder} from "../interfaces/IApiResponse";
@@ -41,9 +41,8 @@ const validateBeforeSendingToBackend = ({order}: RootState): boolean => {
     return validateOrder(order.toSave);
 }
 
-const hideDetailsAndReloadList = (dispatch: Dispatch) => {
+const hideDetailsAndReloadList = (dispatch: ThunkDispatch<RootState, void, Action>) => {
     dispatch(hideDetails());
-    //@ts-ignore
     dispatch(getAllOrders());
 }
 

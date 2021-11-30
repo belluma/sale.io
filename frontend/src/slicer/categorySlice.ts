@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
+import {Action, createAsyncThunk, createSlice, Dispatch, PayloadAction, ThunkDispatch} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import {ICategoriesState} from '../interfaces/IStates';
 import {IResponseGetAllCategories, IResponseGetOneCategory} from "../interfaces/IApiResponse";
@@ -43,10 +43,9 @@ const validateBeforeSendingToBackend = ({category}: RootState) => {
     return validateCategory(category.toSave);
 }
 
-const hideDetailsAndReloadList = (dispatch: Dispatch) => {
+const hideDetailsAndReloadList = (dispatch: ThunkDispatch<RootState, void, Action>) => {
     dispatch(hideDetails());
-    //@ts-ignore
-    dispatch(getAllOpenCategories());
+    dispatch(getAllCategories());
 }
 
 export const getAllCategories = createAsyncThunk<IResponseGetAllCategories, void, { state: RootState, dispatch: Dispatch }>(

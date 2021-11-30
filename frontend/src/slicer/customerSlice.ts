@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
+import {Action, createAsyncThunk, createSlice, Dispatch, PayloadAction, ThunkDispatch} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import {ICustomersState} from '../interfaces/IStates';
 import {IResponseGetAllCustomers, IResponseGetOneCustomer} from "../interfaces/IApiResponse";
@@ -31,9 +31,8 @@ const initialState: ICustomersState = {
 const route = "orders_customers";
 
 
-const hideDetailsAndReloadList = (dispatch: Dispatch) => {
+const hideDetailsAndReloadList = (dispatch: ThunkDispatch<RootState, void, Action>) => {
     dispatch(hideDetails());
-    //@ts-ignore
     dispatch(getAllOpenCustomers());
 }
 

@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
+import {Action, createAsyncThunk, createSlice, Dispatch, PayloadAction, ThunkDispatch} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import {ISuppliersState} from '../interfaces/IStates';
 import {IResponseGetAllSuppliers, IResponseGetOneSupplier} from "../interfaces/IApiResponse";
@@ -30,9 +30,8 @@ export const validateSupplier = (supplier: ISupplier): boolean => {
 const validateBeforeSendingToBackend = ({supplier}: RootState): boolean => {
     return validateSupplier(supplier.toSave);
 }
-const hideDetailsAndReloadList = (dispatch: Dispatch) => {
+const hideDetailsAndReloadList = (dispatch: ThunkDispatch<RootState, void, Action>) => {
     dispatch(hideDetails());
-    //@ts-ignore
     dispatch(getAllSuppliers());
 }
 
