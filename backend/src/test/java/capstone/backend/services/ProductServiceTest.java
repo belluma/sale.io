@@ -2,25 +2,19 @@ package capstone.backend.services;
 
 import capstone.backend.model.db.Product;
 import capstone.backend.model.db.order.OrderItem;
-import capstone.backend.model.db.order.OrderToCustomer;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.model.dto.order.OrderItemDTO;
-import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.repo.ProductRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
-
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
-
 import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItemDTO;
-import static capstone.backend.utils.OrderToCustomerTestUtils.emptyOrderDTOWithStatusOpen;
-import static capstone.backend.utils.OrderToCustomerTestUtils.emptyOrderOpen;
 import static capstone.backend.utils.ProductTestUtils.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;

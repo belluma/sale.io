@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
+import static capstone.backend.mapper.ProductMapper.mapProduct;
+import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
+
 @RequiredArgsConstructor
 @Service
 public class ProductService {
@@ -40,16 +43,17 @@ public class ProductService {
         if (productExists(product)) {
             throw new EntityWithThisIdAlreadyExistException(String.format("Product %s already has the id %d", product.getName(), product.getId()));
         }
-        return ProductMapper.mapProductWithDetails(repo.
-                save(ProductMapper.mapProduct(product)));
+        Product savedProduct = repo.save(mapProduct(product));
+        supplierService.updateProductList(savedProduct);
+        return mapProductWithDetails(savedProduct);
     }
 
     public ProductDTO editProduct(ProductDTO product) {
         if (!productExists(product)) {
             throw new EntityNotFoundException(String.format("Couldn't find a product with the id %d", product.getId()));
         }
-        return ProductMapper.mapProductWithDetails(repo
-                .save(ProductMapper.mapProduct(product)));
+        return mapProductWithDetails(repo
+                .save(mapProduct(product)));
     }
 
     public void receiveGoods(List<OrderItemDTO> receivedOrder) throws IllegalArgumentException {

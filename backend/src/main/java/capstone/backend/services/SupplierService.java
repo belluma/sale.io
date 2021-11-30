@@ -2,13 +2,17 @@ package capstone.backend.services;
 
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.mapper.SupplierMapper;
+import capstone.backend.model.db.Product;
+import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.dto.contact.SupplierDTO;
 import capstone.backend.repo.SupplierRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
@@ -17,7 +21,7 @@ public class SupplierService {
     private final SupplierRepo repo;
     private static final String NO_SUPPLIER = "Couldn't find a supplier with the id %d";
 
-       public List<SupplierDTO> getAllSuppliersWithDetails() {
+    public List<SupplierDTO> getAllSuppliersWithDetails() {
         return repo.findAll()
                 .stream()
                 .map(SupplierMapper::mapSupplier)
@@ -55,6 +59,16 @@ public class SupplierService {
 
     public boolean supplierExists(Long id) {
         return repo.existsById(id);
+    }
+
+    @Transactional
+    public void updateProductList(Product product) throws IllegalArgumentException {
+        Set<Supplier> suppliers = product.getSuppliers();
+        suppliers.forEach(supplier -> {
+            if (!repo.existsById(supplier.getId()))
+                throw (new IllegalArgumentException("You're trying to associate a product to a supplier that does not exist!"));
+        });
+        suppliers.forEach(supplier -> repo.getById(supplier.getId()).updateProductList(product));
     }
 }
 

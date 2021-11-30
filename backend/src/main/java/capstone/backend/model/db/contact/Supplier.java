@@ -44,4 +44,8 @@ public class Supplier extends Contact {
     public int hashCode() {
         return super.hashCode();
     }
+
+    public void updateProductList(Product product) {
+        this.products.add(product);
+    }
 }
