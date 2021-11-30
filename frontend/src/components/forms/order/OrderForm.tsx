@@ -19,11 +19,11 @@ type Props = {};
 
 function OrderForm(props: Props) {
     const dispatch = useAppDispatch();
-    useEffect(() => {
-        dispatch(getAllProducts());
-        dispatch(getAllSuppliers());
-        dispatch(getAllOrders());
-    }, [dispatch]);
+    // useEffect(() => {
+    //     dispatch(getAllProducts());
+    //     dispatch(getAllSuppliers());
+    //     dispatch(getAllOrders());
+    // }, [dispatch]);
     const orderToSave = useAppSelector(selectOrderToSave);
     const products = useAppSelector(selectProducts);
     const suppliers = useAppSelector(selectSuppliers);

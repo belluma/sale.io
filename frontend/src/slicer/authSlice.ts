@@ -42,6 +42,22 @@ export const login = createAsyncThunk(
         return {data, status, statusText};
     }
 )
+export const loginFromStorage = createAsyncThunk(
+    'loginFromStorage',
+    (_, { dispatch}) => {
+        const token = localStorage.getItem("SaleioToken");
+        const data = token || "";
+        let status = 403;
+        const statusText = ""
+        if (token && validateToken(token)) {
+            status = 200;
+            fetchApiData(dispatch)
+        }
+        return {data, status, statusText}
+    }
+)
+
+
 export const registerAdmin = createAsyncThunk(
     'signup',
     async (credentials: IUserCredentials, {dispatch}) => {
@@ -63,15 +79,6 @@ export const Authentication = createSlice({
             state.loggedIn = false;
             history.push('/start')
         },
-        loginFromStorage: (state) => {
-            const token = localStorage.getItem("SaleioToken");
-            if (token && validateToken(token)) {
-                state.loggedIn = true;
-                state.token = token;
-            }
-
-        }
-
     },
     extraReducers: builder => {
         const handleLogin = (state:IAuthState, action: PayloadAction<IResponseData>) => {
@@ -89,10 +96,14 @@ export const Authentication = createSlice({
             .addCase(registerAdmin.fulfilled, (state, action: PayloadAction<IResponseData>) => {
                 handleLogin(state, action)
             })
+            .addCase(loginFromStorage.fulfilled, (state, action: PayloadAction<IResponseData>) => {
+                handleLogin(state, action)
+            })
+
     }
 })
 
-export const {logout, loginFromStorage} = Authentication.actions;
+export const {logout} = Authentication.actions;
 
 export const selectLoggedIn = (state: RootState) => state.authentication.loggedIn;
 export default Authentication.reducer;
