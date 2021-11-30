@@ -4,8 +4,8 @@ import {Weekday} from "../../interfaces/Weekday";
 import {IProduct} from "../../interfaces/IProduct";
 import {ICategory} from "../../interfaces/ICategory";
 
-export const mapSupplierToSelectData = (supplier: ISupplier[]): Option[] => {
-    return supplier.map(supplier => {
+export const mapSupplierToSelectData = (suppliers: ISupplier[]): Option[] => {
+    return suppliers.map(supplier => {
         const id = supplier.id ? supplier.id : '';
         const firstName = supplier.firstName ? supplier.firstName : '';
         const lastName = supplier.lastName ? supplier.lastName : '';

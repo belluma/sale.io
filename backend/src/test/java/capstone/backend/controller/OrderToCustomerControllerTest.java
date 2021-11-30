@@ -9,7 +9,6 @@ import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.db.order.OrderToCustomer;
 import capstone.backend.model.dto.ProductDTO;
-import capstone.backend.model.dto.order.OrderContainerDTO;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.repo.*;
@@ -28,7 +27,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.util.*;
 
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
-import static capstone.backend.mapper.OrderToCustomerMapper.mapOrder;
 import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
 import static capstone.backend.model.enums.OrderToCustomerStatus.OPEN;
 import static capstone.backend.model.enums.OrderToCustomerStatus.PAID;
