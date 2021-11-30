@@ -13,6 +13,7 @@ import java.util.Objects;
 @Builder
 @AllArgsConstructor
 @Entity
+@With
 @Table(name = "categories")
 public class Category {
 

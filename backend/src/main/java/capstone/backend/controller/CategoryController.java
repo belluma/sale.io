@@ -3,10 +3,7 @@ package capstone.backend.controller;
 import capstone.backend.model.dto.CategoryDTO;
 import capstone.backend.services.CategoryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,7 +20,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public CategoryDTO createCategory(CategoryDTO category) {
+    public CategoryDTO createCategory(@RequestBody CategoryDTO category) {
         return service.createCategory(category);
     }
 
