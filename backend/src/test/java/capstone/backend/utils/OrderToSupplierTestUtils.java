@@ -24,16 +24,6 @@ public class OrderToSupplierTestUtils {
                 .build();
     }
 
-    public static OrderToSupplier sampleOrderReceived() {
-        return OrderToSupplier
-                .builder()
-                .id(123L)
-                .orderItems(List.of(sampleOrderItem()))
-                .supplier(sampleSupplier())
-                .status(RECEIVED)
-                .build();
-    }
-
     public static OrderToSupplierDTO sampleOrderDTO() {
         return OrderToSupplierDTO
                 .builder()

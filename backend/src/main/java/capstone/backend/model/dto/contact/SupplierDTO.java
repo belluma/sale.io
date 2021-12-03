@@ -1,7 +1,5 @@
 package capstone.backend.model.dto.contact;
 
-import capstone.backend.model.db.order.OrderToSupplier;
-import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.model.dto.ProductInfo;
 import capstone.backend.model.dto.order.OrderToSupplierInfo;
 import capstone.backend.model.enums.Weekday;

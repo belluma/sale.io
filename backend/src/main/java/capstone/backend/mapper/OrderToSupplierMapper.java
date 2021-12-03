@@ -1,6 +1,5 @@
 package capstone.backend.mapper;
 
-import capstone.backend.model.db.Product;
 import capstone.backend.model.db.order.OrderToSupplier;
 import capstone.backend.model.dto.order.OrderToSupplierDTO;
 import capstone.backend.model.dto.order.OrderToSupplierInfo;

@@ -37,6 +37,6 @@ public abstract class Contact {
 
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(id, firstName, lastName, email, phone, picture);
     }
 }

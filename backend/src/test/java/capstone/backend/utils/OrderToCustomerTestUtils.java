@@ -22,22 +22,6 @@ public class OrderToCustomerTestUtils {
                 .build();
     }
 
-    public static OrderToCustomer emptyOrderPaid() {
-        return OrderToCustomer
-                .builder()
-                .id(123L)
-                .orderItems(List.of())
-                .status(PAID)
-                .build();
-    }
-
-    public static OrderToCustomerDTO emptyOrderDTO() {
-        return OrderToCustomerDTO
-                .builder()
-                .id(123L)
-                .orderItems(List.of())
-                .build();
-    }
 
     public static OrderToCustomerDTO emptyOrderDTOWithStatusOpen() {
         return OrderToCustomerDTO
@@ -48,14 +32,6 @@ public class OrderToCustomerTestUtils {
                 .build();
     }
 
-    public static OrderToCustomerDTO emptyOrderDTOWithStatusPaid() {
-        return OrderToCustomerDTO
-                .builder()
-                .id(123L)
-                .orderItems(List.of())
-                .status(PAID)
-                .build();
-    }
  public static OrderToCustomer orderOpenWithOrderItem() {
         return OrderToCustomer
                 .builder()
@@ -71,14 +47,6 @@ public class OrderToCustomerTestUtils {
                 .id(123L)
                 .orderItems(List.of(sampleOrderItem()))
                 .status(PAID)
-                .build();
-    }
-
-    public static OrderToCustomerDTO orderDTOWithOrderItem() {
-        return OrderToCustomerDTO
-                .builder()
-                .id(123L)
-                .orderItems(List.of(sampleOrderItemDTO()))
                 .build();
     }
 
