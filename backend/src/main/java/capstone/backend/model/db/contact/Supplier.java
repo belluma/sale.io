@@ -47,7 +47,11 @@ public class Supplier extends Contact {
     }
 
     public void updateProductList(Product product) {
-        this.products.add(product);
+        if(this.products == null){
+            this.products = Set.of(product);
+        }else {
+            this.products.add(product);
+        }
     }
 
 
