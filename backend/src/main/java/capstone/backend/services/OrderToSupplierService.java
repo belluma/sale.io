@@ -43,9 +43,9 @@ public class OrderToSupplierService {
                 .stream()
                 .map(orderItemService::addOrderItem)
                 .toList());
-        OrderToSupplierDTO savedOrder = mapOrder(repo.save(mapOrder(order)));
-
-        return savedOrder;
+        OrderToSupplier savedOrder = repo.save(mapOrder(order));
+//        supplierService.updateOrderList(savedOrder);
+        return mapOrder(savedOrder);
     }
 
     private void validateNewOrder(OrderToSupplierDTO order) throws IllegalArgumentException {
