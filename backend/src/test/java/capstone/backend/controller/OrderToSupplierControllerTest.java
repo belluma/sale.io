@@ -6,6 +6,7 @@ import capstone.backend.model.db.Product;
 import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.db.order.OrderItem;
 import capstone.backend.model.db.order.OrderToSupplier;
+import capstone.backend.model.dto.contact.SupplierDTO;
 import capstone.backend.model.dto.order.OrderToSupplierDTO;
 import capstone.backend.repo.OrderItemRepo;
 import capstone.backend.repo.OrderToSupplierRepo;
@@ -29,6 +30,7 @@ import java.util.Set;
 
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 import static capstone.backend.mapper.OrderToSupplierMapper.mapOrder;
+import static capstone.backend.mapper.OrderToSupplierMapper.mapToOrderInfo;
 import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
 import static capstone.backend.mapper.SupplierMapper.mapSupplier;
 import static capstone.backend.model.enums.OrderToSupplierStatus.PENDING;
@@ -136,6 +138,25 @@ class OrderToSupplierControllerTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(orderItemRepo.findAll().size(), is(1));
         assertThat(orderItemRepo.findById(orderItemId).get(), is(orderItem));
+    }
+
+    @Test
+    void createOrderUpdatesSuppliersOrderList() {
+        //GIVEN
+        Supplier sampleSupplier = supplierRepo.save(sampleSupplier());
+        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(sampleSupplier)));
+        OrderItem orderItem = new OrderItem(product, 1);
+        OrderToSupplierDTO order = new OrderToSupplierDTO(1L, List.of(mapOrderItem(orderItem)), mapSupplier(sampleSupplier));
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        //WHEN
+        ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(order, headers), OrderToSupplierDTO.class);
+        ResponseEntity<SupplierDTO> updatedSupplier = restTemplate.exchange("/api/suppliers/" + sampleSupplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(updatedSupplier.getStatusCode(), is(HttpStatus.OK));
+        assertTrue(Objects.requireNonNull(updatedSupplier.getBody()).getOrders().contains(mapToOrderInfo(mapOrder(order))));
+
+
     }
 
     @Test
