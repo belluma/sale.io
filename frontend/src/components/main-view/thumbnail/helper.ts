@@ -9,10 +9,12 @@ import {ICustomer} from "../../../interfaces/ICustomer";
 import {ICategory} from "../../../interfaces/ICategory";
 
 export const parseName = ({firstName="", lastName=""}:IContact):string => {
-    let name = '';
-    if(firstName) name = `${firstName} `;
-    if(lastName) name = name + lastName;
-    return name;
+    console.log(firstName, lastName)
+   return 'aba'
+    // let name = '';
+    // if(firstName) name = `${firstName} `;
+    // if(lastName) name = name + lastName;
+    // return name;
 }
 
 export const parseEmployeeToThumbnail = ({firstName, lastName, username, picture}: IEmployee): IDetailsData => {
