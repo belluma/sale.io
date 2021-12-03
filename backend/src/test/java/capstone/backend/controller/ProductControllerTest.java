@@ -221,8 +221,8 @@ class ProductControllerTest {
         ResponseEntity<SupplierDTO> updatedSupplier = restTemplate.exchange("/api/suppliers/" + supplier2.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(Objects.requireNonNull(oldSupplier.getBody()).getProducts(), containsInAnyOrder(productToEdit));
-        assertThat(Objects.requireNonNull(updatedSupplier.getBody()).getProducts(), containsInAnyOrder(productToEdit));
+        assertThat(Objects.requireNonNull(oldSupplier.getBody()).getProducts(), containsInAnyOrder(mapToProductInfo(productToEdit)));
+        assertThat(Objects.requireNonNull(updatedSupplier.getBody()).getProducts(), containsInAnyOrder(mapToProductInfo(productToEdit)));
     }
 
     @Test
@@ -239,23 +239,8 @@ class ProductControllerTest {
         ResponseEntity<SupplierDTO> updatedSupplier = restTemplate.exchange("/api/suppliers/" + supplier2.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertFalse(Objects.requireNonNull(oldSupplier.getBody()).getProducts().contains(productToEdit));
-        assertThat(Objects.requireNonNull(updatedSupplier.getBody()).getProducts(), containsInAnyOrder(productToEdit));
-    }
-
-    @Test
-    void productGetsDiscontinued() {
-        //GIVEN
-        Supplier supplier = supplierRepo.save(sampleSupplier());
-        Product product = productRepo.save(sampleProduct().withSuppliers(Set.of(supplier)));
-        ProductDTO productToEdit = mapProductWithDetails(product.withSuppliers(Set.of()));
-        HttpHeaders headers = utils.createHeadersWithJwtAuth();
-        //WHEN
-        ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/" + product.getId(), HttpMethod.PUT, new HttpEntity<>(productToEdit, headers), ProductDTO.class);
-        ResponseEntity<SupplierDTO> oldSupplier = restTemplate.exchange("/api/suppliers/" + supplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
-        //THEN
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertFalse(Objects.requireNonNull(oldSupplier.getBody()).getProducts().contains(productToEdit));
+        assertFalse(Objects.requireNonNull(oldSupplier.getBody()).getProducts().contains(mapToProductInfo(productToEdit)));
+        assertThat(Objects.requireNonNull(updatedSupplier.getBody()).getProducts(), containsInAnyOrder(mapToProductInfo(productToEdit)));
     }
 
     @Test
@@ -272,8 +257,8 @@ class ProductControllerTest {
         ResponseEntity<SupplierDTO> supplierThatTakesProductOutOfSTock = restTemplate.exchange("/api/suppliers/" + supplier2.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(Objects.requireNonNull(supplierThatKeepsProduct.getBody()).getProducts(), containsInAnyOrder(productToEdit));
-        assertFalse(Objects.requireNonNull(supplierThatTakesProductOutOfSTock.getBody()).getProducts().contains(productToEdit));
+        assertThat(Objects.requireNonNull(supplierThatKeepsProduct.getBody()).getProducts(), containsInAnyOrder(mapToProductInfo(productToEdit)));
+        assertFalse(Objects.requireNonNull(supplierThatTakesProductOutOfSTock.getBody()).getProducts().contains(mapToProductInfo(productToEdit)));
     }
 
     @Test
