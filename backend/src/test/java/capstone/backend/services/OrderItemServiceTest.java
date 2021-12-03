@@ -1,17 +1,14 @@
 package capstone.backend.services;
 
-import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.model.dto.order.OrderItemDTO;
 import capstone.backend.model.dto.order.OrderToCustomerDTO;
 import capstone.backend.repo.OrderItemRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
-
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
-
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItem;
 import static capstone.backend.utils.OrderItemTestUtils.sampleOrderItemDTO;

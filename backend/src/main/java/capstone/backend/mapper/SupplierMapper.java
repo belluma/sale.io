@@ -3,9 +3,9 @@ package capstone.backend.mapper;
 import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.dto.contact.SupplierDTO;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.Set;
+
 
 @Component
 public class SupplierMapper {
@@ -25,7 +25,6 @@ public class SupplierMapper {
                 .orders(Set.of())
                 .orderDay(supplier.getOrderDay())
                 .picture(supplier.getPicture())
-//                .products(supplier.getProducts().stream().map(ProductMapper::mapProduct).collect(Collectors.toSet()))
                 .build();
     }
 
@@ -37,7 +36,7 @@ public class SupplierMapper {
                 .lastName(supplier.getLastName())
                 .phone(supplier.getPhone())
                 .email(supplier.getEmail())
-                .orders(List.of())
+                .orders(supplier.getOrders() == null ? List.of(): supplier.getOrders().stream().map(OrderToSupplierMapper::mapToOrderInfo).toList())
                 .orderDay(supplier.getOrderDay())
                 .picture(supplier.getPicture())
                 .products(supplier.getProducts() == null ? List.of() : supplier.getProducts().stream().map(ProductMapper::mapToProductInfo).toList())

@@ -2,6 +2,7 @@ package capstone.backend.mapper;
 
 import capstone.backend.model.db.order.OrderToSupplier;
 import capstone.backend.model.dto.order.OrderToSupplierDTO;
+import capstone.backend.model.dto.order.OrderToSupplierInfo;
 
 import static capstone.backend.mapper.SupplierMapper.mapSupplier;
 import static capstone.backend.model.enums.OrderToSupplierStatus.PENDING;
@@ -13,30 +14,24 @@ public class OrderToSupplierMapper {
     }
 
     public static OrderToSupplier mapOrder(OrderToSupplierDTO order) {
-        OrderToSupplier mappedOrder = OrderToSupplier
+        return OrderToSupplier
                 .builder()
+                .id(order.getId() != null ? order.getId() : null)
                 .supplier(mapSupplier(order.getSupplier()))
                 .orderItems(order
                         .getOrderItems()
                         .stream()
                         .map(OrderItemMapper::mapOrderItem)
                         .toList())
+                .status(order.getStatus() == null ? PENDING : order.getStatus())
                 .build();
-        if (order.getId() != null) {
-            mappedOrder.setId(order.getId());
-        }
-        if (order.getStatus() == null){
-            mappedOrder.setStatus(PENDING);
-        }else {
-            mappedOrder.setStatus(order.getStatus());
-        }
-        return mappedOrder;
     }
 
 
     public static OrderToSupplierDTO mapOrder(OrderToSupplier order) {
-        OrderToSupplierDTO mappedOrder = OrderToSupplierDTO
+        return OrderToSupplierDTO
                 .builder()
+                .id(order.getId() != null ? order.getId() : null)
                 .supplier(mapSupplier(order.getSupplier()))
                 .orderItems(order
                         .getOrderItems()
@@ -45,9 +40,18 @@ public class OrderToSupplierMapper {
                         .toList())
                 .status(order.getStatus())
                 .build();
-        if (order.getId() != null) {
-            mappedOrder.setId(order.getId());
-        }
-        return mappedOrder;
+    }
+
+    public static OrderToSupplierInfo mapToOrderInfo(OrderToSupplier order) {
+        return OrderToSupplierInfo
+                .builder()
+                .id(order.getId() != null ? order.getId() : null)
+                .orderItems(order
+                        .getOrderItems()
+                        .stream()
+                        .map(OrderItemMapper::mapToOrderItemInfo)
+                        .toList())
+                .status(order.getStatus() == null ? PENDING : order.getStatus())
+                .build();
     }
 }

@@ -24,8 +24,4 @@ public class OrderToCustomerDTO extends OrderDTO {
         this.status = OrderToCustomerStatus.OPEN;
     }
 
-    public OrderToCustomerDTO(Long id, List<OrderItemDTO> orderItems, OrderToCustomerStatus status) {
-        super(id, orderItems);
-        this.status = status;
-    }
 }

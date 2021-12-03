@@ -34,6 +34,22 @@ public class ProductMapper {
                 .picture(product.getPicture())
                 .build();
     }
+public static Product mapProduct(ProductInfo product) {
+        return Product
+                .builder()
+                .id(product.getId())
+                .name(product.getName())
+                .stockCodeSupplier(product.getStockCodeSupplier())
+                .category(product.getCategory())
+                .purchasePrice(product.getPurchasePrice())
+                .retailPrice(product.getRetailPrice())
+                .minAmount(product.getMinAmount())
+                .maxAmount(product.getMaxAmount())
+                .unitSize(product.getUnitSize())
+                .amountInStock(product.getAmountInStock())
+                .picture(product.getPicture())
+                .build();
+    }
 
     public static ProductDTO mapProductWithDetails(Product product) {
         return ProductDTO

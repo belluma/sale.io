@@ -4,6 +4,7 @@ import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.mapper.SupplierMapper;
 import capstone.backend.model.db.Product;
 import capstone.backend.model.db.contact.Supplier;
+import capstone.backend.model.db.order.OrderToSupplier;
 import capstone.backend.model.dto.contact.SupplierDTO;
 import capstone.backend.repo.SupplierRepo;
 import lombok.RequiredArgsConstructor;
@@ -70,6 +71,14 @@ public class SupplierService {
             supplier.updateProductList(product);
             repo.save(supplier);
         });
+    }
+
+    public void updateOrderList(OrderToSupplier order) throws IllegalArgumentException {
+        Supplier supplier = order.getSupplier();
+        if (!repo.existsById(supplier.getId()))
+            throw (new IllegalArgumentException("You're trying to associate a order to a supplier that does not exist!"));
+        supplier.updateOrderList(order);
+        repo.save(supplier);
     }
 }
 

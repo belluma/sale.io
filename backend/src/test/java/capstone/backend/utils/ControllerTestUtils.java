@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 public class ControllerTestUtils {
 
@@ -29,7 +31,7 @@ public class ControllerTestUtils {
         EmployeeDTO loginData = new EmployeeDTO("user", "1234");
         ResponseEntity<String> response = restTemplate.postForEntity("/auth/login", loginData, String.class);
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(response.getBody());
+        headers.setBearerAuth(Objects.requireNonNull(response.getBody()));
         return headers;
     }
 }

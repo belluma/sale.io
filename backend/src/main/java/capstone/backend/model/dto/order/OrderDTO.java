@@ -12,13 +12,13 @@ import java.util.List;
 @NoArgsConstructor
 public abstract class OrderDTO {
 
-    protected OrderDTO (Long id, List<OrderItemDTO> orderItems){
+    private Long id;
+    private List<OrderItemDTO> orderItems;
+
+    protected OrderDTO(Long id, List<OrderItemDTO> orderItems) {
         this.id = id;
         this.orderItems = orderItems;
     }
-
-    private Long id;
-    private List<OrderItemDTO> orderItems;
 
 
 }

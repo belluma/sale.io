@@ -9,11 +9,9 @@ import capstone.backend.repo.OrderToCustomerRepo;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
-
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
-
 import static capstone.backend.mapper.OrderItemMapper.mapOrderItem;
 import static capstone.backend.mapper.OrderToCustomerMapper.mapOrder;
 import static capstone.backend.model.enums.OrderToCustomerStatus.OPEN;

@@ -26,20 +26,6 @@ public class EmployeeTestUtils {
                 .build();
     }
 
-    public EmployeeDTO sampleUserDTOWithEncryptedPassword() {
-        return EmployeeDTO
-                .builder()
-                .id(123L)
-                .firstName("John")
-                .lastName("Doe")
-                .email("a@b.c")
-                .phone("01234")
-                .picture("img")
-                .username("username")
-                .password("password")
-                .build();
-    }
-
     public static Employee sampleUser() {
         return Employee
                 .builder()
