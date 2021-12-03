@@ -3,6 +3,7 @@ package capstone.backend.mapper;
 import capstone.backend.model.db.Product;
 import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.dto.ProductDTO;
+import capstone.backend.model.dto.ProductInfo;
 import capstone.backend.model.dto.contact.SupplierDTO;
 import org.springframework.stereotype.Component;
 import java.util.Set;
@@ -40,6 +41,23 @@ public class ProductMapper {
                 .id(product.getId())
                 .name(product.getName())
                 .suppliers(mapSupplierList(product))
+                .stockCodeSupplier(product.getStockCodeSupplier())
+                .category(product.getCategory())
+                .purchasePrice(product.getPurchasePrice())
+                .retailPrice(product.getRetailPrice())
+                .minAmount(product.getMinAmount())
+                .maxAmount(product.getMaxAmount())
+                .unitSize(product.getUnitSize())
+                .amountInStock(product.getAmountInStock())
+                .picture(product.getPicture())
+                .build();
+    }
+
+    public static ProductInfo mapToProductinfo(Product product){
+        return ProductInfo
+                .builder()
+                .id(product.getId())
+                .name(product.getName())
                 .stockCodeSupplier(product.getStockCodeSupplier())
                 .category(product.getCategory())
                 .purchasePrice(product.getPurchasePrice())

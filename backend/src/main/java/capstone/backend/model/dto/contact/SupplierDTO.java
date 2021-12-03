@@ -2,6 +2,7 @@ package capstone.backend.model.dto.contact;
 
 import capstone.backend.model.db.order.OrderToSupplier;
 import capstone.backend.model.dto.ProductDTO;
+import capstone.backend.model.dto.ProductInfo;
 import capstone.backend.model.enums.Weekday;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,6 @@ public class SupplierDTO extends ContactDTO {
     private Long id;
     private List<OrderToSupplier> orders;
     private Weekday orderDay;
-    private List<ProductDTO> products;
+    private List<ProductInfo> products;
 
 }

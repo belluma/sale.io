@@ -41,7 +41,7 @@ public class SupplierMapper {
                 .orders(List.of())
                 .orderDay(supplier.getOrderDay())
                 .picture(supplier.getPicture())
-//                .products(supplier.getProducts() == null ? List.of() : supplier.getProducts().stream().map(ProductMapper::mapProductWithDetails).toList())
+                .products(supplier.getProducts() == null ? List.of() : supplier.getProducts().stream().map(ProductMapper::mapToProductinfo).toList())
                 .build();
     }
 
