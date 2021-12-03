@@ -4,16 +4,16 @@ import capstone.backend.model.db.order.OrderToSupplier;
 import capstone.backend.model.dto.ProductDTO;
 import capstone.backend.model.dto.ProductInfo;
 import capstone.backend.model.enums.Weekday;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @SuperBuilder
 public class SupplierDTO extends ContactDTO {
 
@@ -22,4 +22,17 @@ public class SupplierDTO extends ContactDTO {
     private Weekday orderDay;
     private List<ProductInfo> products;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        SupplierDTO that = (SupplierDTO) o;
+        return Objects.equals(id, that.id) && orderDay == that.orderDay;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), id, orderDay);
+    }
 }
