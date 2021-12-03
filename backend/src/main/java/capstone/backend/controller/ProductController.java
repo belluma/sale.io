@@ -28,8 +28,9 @@ public class ProductController {
     public ProductDTO createProduct(@RequestBody ProductDTO product) {
         return service.createProduct(product);
     }
+
     @PutMapping("/{id}")
-    public ProductDTO editProduct( @RequestBody ProductDTO product) {
+    public ProductDTO editProduct(@RequestBody ProductDTO product) {
         return service.editProduct(product);
     }
 

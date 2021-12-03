@@ -2,6 +2,8 @@ package capstone.backend.services;
 
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.mapper.SupplierMapper;
+import capstone.backend.model.db.Product;
+import capstone.backend.model.db.contact.Supplier;
 import capstone.backend.model.dto.contact.SupplierDTO;
 import capstone.backend.repo.SupplierRepo;
 import lombok.RequiredArgsConstructor;
@@ -9,14 +11,16 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Service
 public class SupplierService {
 
     private final SupplierRepo repo;
+    private static final String NO_SUPPLIER = "Couldn't find a supplier with the id %d";
 
-       public List<SupplierDTO> getAllSuppliersWithDetails() {
+    public List<SupplierDTO> getAllSuppliersWithDetails() {
         return repo.findAll()
                 .stream()
                 .map(SupplierMapper::mapSupplier)
@@ -27,7 +31,7 @@ public class SupplierService {
         return repo
                 .findById(id)
                 .map(SupplierMapper::mapSupplier)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Couldn't find a supplier with the id %d", id)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format(NO_SUPPLIER, id)));
     }
 
     public SupplierDTO createSupplier(SupplierDTO supplier) {
@@ -46,7 +50,7 @@ public class SupplierService {
         if (repo
                 .findById(supplier.getId())
                 .isEmpty()) {
-            throw new EntityNotFoundException(String.format("Couldn't find a supplier with the id %d", supplier.getId()));
+            throw new EntityNotFoundException(String.format(NO_SUPPLIER, supplier.getId()));
         }
         return SupplierMapper.mapSupplier(repo
                 .save(SupplierMapper.mapSupplier(supplier)));
@@ -54,6 +58,18 @@ public class SupplierService {
 
     public boolean supplierExists(Long id) {
         return repo.existsById(id);
+    }
+
+    public void updateProductList(Product product) throws IllegalArgumentException {
+        Set<Supplier> suppliers = product.getSuppliers();
+        suppliers.forEach(supplier -> {
+            if (!repo.existsById(supplier.getId()))
+                throw (new IllegalArgumentException("You're trying to associate a product to a supplier that does not exist!"));
+        });
+        suppliers.forEach(supplier -> {
+            supplier.updateProductList(product);
+            repo.save(supplier);
+        });
     }
 }
 

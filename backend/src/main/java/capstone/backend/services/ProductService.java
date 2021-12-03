@@ -14,11 +14,15 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
+import static capstone.backend.mapper.ProductMapper.mapProduct;
+import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
+
 @RequiredArgsConstructor
 @Service
 public class ProductService {
 
     private final ProductRepo repo;
+    private final SupplierService supplierService;
 
     public List<ProductDTO> getAllProductsWithDetails() {
         return repo
@@ -39,16 +43,27 @@ public class ProductService {
         if (productExists(product)) {
             throw new EntityWithThisIdAlreadyExistException(String.format("Product %s already has the id %d", product.getName(), product.getId()));
         }
-        return ProductMapper.mapProductWithDetails(repo.
-                save(ProductMapper.mapProduct(product)));
+        validateSuppliers(product);
+        Product savedProduct = repo.save(mapProduct(product));
+        supplierService.updateProductList(savedProduct);
+        return mapProductWithDetails(savedProduct);
     }
 
     public ProductDTO editProduct(ProductDTO product) {
         if (!productExists(product)) {
             throw new EntityNotFoundException(String.format("Couldn't find a product with the id %d", product.getId()));
         }
-        return ProductMapper.mapProductWithDetails(repo
-                .save(ProductMapper.mapProduct(product)));
+        validateSuppliers(product);
+        supplierService.updateProductList(mapProduct(product));
+        return mapProductWithDetails(repo
+                .save(mapProduct(product)));
+    }
+
+    private void validateSuppliers(ProductDTO product) {
+        if (product.getSuppliers().isEmpty()){
+            throw new IllegalArgumentException("You forgot to add a supplier to your product");
+        }
+        product.getSuppliers().forEach(supplier -> supplierService.getSupplierDetails(supplier.getId()));
     }
 
     public void receiveGoods(List<OrderItemDTO> receivedOrder) throws IllegalArgumentException {

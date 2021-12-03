@@ -1,6 +1,7 @@
 package capstone.backend.controller;
 
 import capstone.backend.CombinedTestContainer;
+import capstone.backend.exception.CustomError;
 import capstone.backend.exception.GlobalExceptionHandler;
 import capstone.backend.mapper.SupplierMapper;
 import capstone.backend.model.db.contact.Supplier;
@@ -92,8 +93,9 @@ class SupplierControllerTest {
         //GIVEN
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
-        ResponseEntity<SupplierDTO> response = restTemplate.exchange(BASEURL + "/12", HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
+        ResponseEntity<CustomError> response = restTemplate.exchange(BASEURL + "/12", HttpMethod.GET, new HttpEntity<>(headers), CustomError.class);
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is(String.format("Couldn't find a supplier with the id %d", 12)));
     }
 
     @Test
@@ -107,13 +109,23 @@ class SupplierControllerTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(supplierRepo.findAll().size(), is(1));
     }
+    @Test
+    void createSupplierFailsWhenSupplierAlreadyExistent() {
+        //GIVEN
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        SupplierDTO supplier = mapSupplier(supplierRepo.save(sampleSupplier()));
+        //WHEN
+        ResponseEntity<CustomError> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(supplier, headers), CustomError.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is((String.format("Supplier %s already has the id %d", supplier.getFirstName(), supplier.getId()))));
+    }
 
     @Test
     void editSupplier() {
         //GIVEN
         Supplier supplier = supplierRepo.save(sampleSupplier());
         SupplierDTO supplierToEdit = mapSupplier(supplier);
-//        supplierToEdit.setOrderDay(Weekdays.FRIDAY);
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<SupplierDTO> response = restTemplate.exchange(BASEURL + "/" + supplier.getId(), HttpMethod.PUT, new HttpEntity<>(supplierToEdit, headers), SupplierDTO.class);
@@ -128,9 +140,10 @@ class SupplierControllerTest {
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         SupplierDTO supplierToEdit = sampleSupplierDTO();
         //WHEN
-        ResponseEntity<SupplierDTO> response = restTemplate.exchange(BASEURL + "/1", HttpMethod.PUT, new HttpEntity<>(supplierToEdit, headers), SupplierDTO.class);
+        ResponseEntity<CustomError> response = restTemplate.exchange(BASEURL + "/1", HttpMethod.PUT, new HttpEntity<>(supplierToEdit, headers), CustomError.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is(String.format("Couldn't find a supplier with the id %d", supplierToEdit.getId())));
     }
 
 }

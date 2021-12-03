@@ -147,9 +147,10 @@ class OrderToSupplierControllerTest {
         OrderToSupplierDTO order = new OrderToSupplierDTO(1L, List.of(mapOrderItem(orderItem)), mapSupplier(sampleSupplier));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
-        ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(order, headers), OrderToSupplierDTO.class);
+        ResponseEntity<CustomError> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(order, headers), CustomError.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is("You tried to order a product that doesn't exist!"));
     }
 
     @Test
@@ -163,9 +164,10 @@ class OrderToSupplierControllerTest {
         OrderToSupplierDTO order = new OrderToSupplierDTO(firstOrder.getId(), List.of(mapOrderItem(orderItem)), mapSupplier(sampleSupplier));
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
-        ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(order, headers), OrderToSupplierDTO.class);
+        ResponseEntity<CustomError> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(order, headers), CustomError.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is(String.format("An order with id %d already exists!", firstOrder.getId())));
     }
 
     @Test
@@ -182,7 +184,6 @@ class OrderToSupplierControllerTest {
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
         assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is("The supplier doesn't carry one or several of the items you tried to order!"));
-        int x = 3;
     }
 
     @Test
@@ -219,10 +220,11 @@ class OrderToSupplierControllerTest {
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + String.format("/?id=%d&status=RECEIVED", receivedOrder.getId());
         //WHEN
-        ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(receivedOrder, headers), OrderToSupplierDTO.class);
+        ResponseEntity<CustomError> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(receivedOrder, headers), CustomError.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
         assertThat(productRepo.findById(product.getId()).get().getAmountInStock(), is(product.getAmountInStock()));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is("The order you're trying to receive has already been received"));
     }
 
     @Test
@@ -235,10 +237,11 @@ class OrderToSupplierControllerTest {
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + String.format("/?id=%d&status=RECEIVED", nonExistentOrder.getId() + 1);
         //WHEN
-        ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(nonExistentOrder, headers), OrderToSupplierDTO.class);
+        ResponseEntity<CustomError> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(nonExistentOrder, headers), CustomError.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
         assertThat(productRepo.findById(product.getId()).get().getAmountInStock(), is(product.getAmountInStock()));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is("The order you're trying to receive doesn't exist"));
     }
 
     @Test
@@ -251,10 +254,11 @@ class OrderToSupplierControllerTest {
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         String URL = BASEURL + String.format("/?id=%d&status=PENDING", receivedOrder.getId());
         //WHEN
-        ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(receivedOrder, headers), OrderToSupplierDTO.class);
+        ResponseEntity<CustomError> response = restTemplate.exchange(URL, HttpMethod.PUT, new HttpEntity<>(receivedOrder, headers), CustomError.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
         assertThat(productRepo.findById(product.getId()).get().getAmountInStock(), is(product.getAmountInStock()));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is("Your request couldn't be processed!"));
     }
 
 }
