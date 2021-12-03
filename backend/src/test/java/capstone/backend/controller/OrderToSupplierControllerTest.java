@@ -155,8 +155,6 @@ class OrderToSupplierControllerTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(updatedSupplier.getStatusCode(), is(HttpStatus.OK));
         assertTrue(Objects.requireNonNull(updatedSupplier.getBody()).getOrders().contains(mapToOrderInfo(mapOrder(order))));
-
-
     }
 
     @Test
