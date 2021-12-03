@@ -44,13 +44,13 @@ public class OrderToSupplierMapper {
     }
 
     public static OrderToSupplierInfo mapToOrderInfo(OrderToSupplier order) {
-       return  OrderToSupplierInfo
+        return OrderToSupplierInfo
                 .builder()
                 .id(order.getId() != null ? order.getId() : null)
                 .orderItems(order
                         .getOrderItems()
                         .stream()
-                        .map(OrderItemMapper::mapOrderItem)
+                        .map(OrderItemMapper::mapToOrderItemInfo)
                         .toList())
                 .status(order.getStatus() == null ? PENDING : order.getStatus())
                 .build();
