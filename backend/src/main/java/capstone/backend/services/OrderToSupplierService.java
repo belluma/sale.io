@@ -44,7 +44,7 @@ public class OrderToSupplierService {
                 .map(orderItemService::addOrderItem)
                 .toList());
         OrderToSupplier savedOrder = repo.save(mapOrder(order));
-//        supplierService.updateOrderList(savedOrder);
+        supplierService.updateOrderList(savedOrder);
         return mapOrder(savedOrder);
     }
 

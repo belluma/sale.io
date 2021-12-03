@@ -1,6 +1,6 @@
-package capstone.backend.model.db.order;
+package capstone.backend.model.dto.order;
 
-import capstone.backend.model.dto.ProductDTO;
+import capstone.backend.model.dto.ProductInfo;
 import lombok.*;
 
 import java.util.Objects;
@@ -14,7 +14,7 @@ import java.util.Objects;
 @With
 public class OrderItemInfo {
     private Long id;
-    private ProductDTO product;
+    private ProductInfo product;
     private int quantity;
 
     @Override

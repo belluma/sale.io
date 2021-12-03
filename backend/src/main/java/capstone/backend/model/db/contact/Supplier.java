@@ -23,7 +23,7 @@ import java.util.Set;
 public class Supplier extends Contact {
 
     private Weekday orderDay;
-    @OneToMany()
+    @OneToMany(mappedBy = "supplier")
     @ToString.Exclude
     @JsonIgnore
     private Set<OrderToSupplier> orders;

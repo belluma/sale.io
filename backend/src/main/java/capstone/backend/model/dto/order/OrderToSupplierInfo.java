@@ -1,6 +1,5 @@
 package capstone.backend.model.dto.order;
 
-import capstone.backend.model.db.order.OrderItemInfo;
 import capstone.backend.model.enums.OrderToSupplierStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;

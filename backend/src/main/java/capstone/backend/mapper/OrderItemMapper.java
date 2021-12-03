@@ -2,11 +2,10 @@ package capstone.backend.mapper;
 
 
 import capstone.backend.model.db.order.OrderItem;
-import capstone.backend.model.db.order.OrderItemInfo;
+import capstone.backend.model.dto.order.OrderItemInfo;
 import capstone.backend.model.dto.order.OrderItemDTO;
 
-import static capstone.backend.mapper.ProductMapper.mapProduct;
-import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
+import static capstone.backend.mapper.ProductMapper.*;
 
 public class OrderItemMapper {
 
@@ -37,7 +36,7 @@ public class OrderItemMapper {
         return OrderItemInfo
                 .builder()
                 .id(orderItem.getId())
-                .product(mapProductWithDetails(orderItem.getProduct()))
+                .product(mapToProductInfo(orderItem.getProduct()))
                 .quantity(orderItem.getQuantity())
                 .build();
     }

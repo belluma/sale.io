@@ -70,6 +70,8 @@ class OrderToSupplierControllerTest {
 
     @AfterEach
     public void clearDB() {
+        supplierRepo.findAll().forEach(supplier -> supplier.setOrders(Set.of()));
+        orderRepo.findAll().forEach(order -> order.setSupplier(null));
         orderRepo.deleteAll();
         orderItemRepo.deleteAll();
         productRepo.deleteAll();
@@ -152,6 +154,7 @@ class OrderToSupplierControllerTest {
         ResponseEntity<OrderToSupplierDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(order, headers), OrderToSupplierDTO.class);
         ResponseEntity<SupplierDTO> updatedSupplier = restTemplate.exchange("/api/suppliers/" + sampleSupplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
         //THEN
+        order.setId(Objects.requireNonNull(response.getBody()).getId());
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(updatedSupplier.getStatusCode(), is(HttpStatus.OK));
         assertTrue(Objects.requireNonNull(updatedSupplier.getBody()).getOrders().contains(mapToOrderInfo(mapOrder(order))));
