@@ -25,7 +25,6 @@ public class SupplierMapper {
                 .orders(Set.of())
                 .orderDay(supplier.getOrderDay())
                 .picture(supplier.getPicture())
-//                .products(supplier.getProducts().stream().map(ProductMapper::mapProduct).collect(Collectors.toSet()))
                 .build();
     }
 

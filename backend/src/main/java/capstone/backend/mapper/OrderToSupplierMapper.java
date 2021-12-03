@@ -13,31 +13,25 @@ public class OrderToSupplierMapper {
     }
 
     public static OrderToSupplier mapOrder(OrderToSupplierDTO order) {
-        OrderToSupplier mappedOrder = OrderToSupplier
+       return  OrderToSupplier
                 .builder()
+                .id(order.getId() != null ? order.getId() : null)
                 .supplier(mapSupplier(order.getSupplier()))
                 .orderItems(order
                         .getOrderItems()
                         .stream()
                         .map(OrderItemMapper::mapOrderItem)
                         .toList())
+                .status(order.getStatus() == null ? PENDING : order.getStatus())
                 .build();
-        if (order.getId() != null) {
-            mappedOrder.setId(order.getId());
-        }
-        if (order.getStatus() == null){
-            mappedOrder.setStatus(PENDING);
-        }else {
-            mappedOrder.setStatus(order.getStatus());
-        }
-        return mappedOrder;
     }
 
 
     public static OrderToSupplierDTO mapOrder(OrderToSupplier order) {
-        OrderToSupplierDTO mappedOrder = OrderToSupplierDTO
+       return  OrderToSupplierDTO
                 .builder()
-                .supplier(mapSupplier(order.getSupplier()))
+               .id(order.getId() != null ? order.getId() : null)
+               .supplier(mapSupplier(order.getSupplier()))
                 .orderItems(order
                         .getOrderItems()
                         .stream()
@@ -45,9 +39,5 @@ public class OrderToSupplierMapper {
                         .toList())
                 .status(order.getStatus())
                 .build();
-        if (order.getId() != null) {
-            mappedOrder.setId(order.getId());
-        }
-        return mappedOrder;
     }
 }
