@@ -47,10 +47,18 @@ public class Supplier extends Contact {
     }
 
     public void updateProductList(Product product) {
-        if(this.products == null){
+        if (this.products == null) {
             this.products = Set.of(product);
-        }else {
+        } else {
             this.products.add(product);
+        }
+    }
+
+    public void updateOrderList(OrderToSupplier order) {
+        if (this.orders == null) {
+            this.orders = Set.of(order);
+        } else {
+            this.orders.add(order);
         }
     }
 
