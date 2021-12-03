@@ -110,7 +110,7 @@ class SupplierControllerTest {
         assertThat(supplierRepo.findAll().size(), is(1));
     }
     @Test
-    void createSupplierFailsWhenSupplierAlreadyExistant() {
+    void createSupplierFailsWhenSupplierAlreadyExistent() {
         //GIVEN
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         SupplierDTO supplier = mapSupplier(supplierRepo.save(sampleSupplier()));
@@ -126,7 +126,6 @@ class SupplierControllerTest {
         //GIVEN
         Supplier supplier = supplierRepo.save(sampleSupplier());
         SupplierDTO supplierToEdit = mapSupplier(supplier);
-//        supplierToEdit.setOrderDay(Weekdays.FRIDAY);
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<SupplierDTO> response = restTemplate.exchange(BASEURL + "/" + supplier.getId(), HttpMethod.PUT, new HttpEntity<>(supplierToEdit, headers), SupplierDTO.class);

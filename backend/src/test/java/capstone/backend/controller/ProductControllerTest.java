@@ -60,6 +60,8 @@ class ProductControllerTest {
 
     @AfterEach
     void clearDB() {
+        supplierRepo.findAll().forEach(supplier -> supplier.setProducts(Set.of()));
+        productRepo.findAll().forEach(product -> product.setSuppliers(Set.of()));
         productRepo.deleteAll();
         supplierRepo.deleteAll();
     }
@@ -130,7 +132,7 @@ class ProductControllerTest {
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(product, headers), ProductDTO.class);
-        ResponseEntity<SupplierDTO> updatedSupplier = restTemplate.exchange("api/suppliers/" + supplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
+        ResponseEntity<SupplierDTO> updatedSupplier = restTemplate.exchange("/api/suppliers/" + supplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(Objects.requireNonNull(updatedSupplier.getBody()).getProducts(), containsInAnyOrder(product));
@@ -152,6 +154,31 @@ class ProductControllerTest {
     }
 
     @Test
+    void createProductFailsWhenNoSupplier() {
+        //GIVEN
+        ProductDTO product = sampleProductDTOWithDetailsWithId().withSuppliers(Set.of());
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        //WHEN
+        ResponseEntity<CustomError> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(product, headers), CustomError.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is("You forgot to add a supplier to your product"));
+    }
+    
+    @Test
+    void createProductFailsWhenSupplierNonExistent() {
+        //GIVEN
+        ProductDTO product = sampleProductDTOWithDetailsWithId();
+        Supplier supplier = sampleSupplier();
+        HttpHeaders headers = utils.createHeadersWithJwtAuth();
+        //WHEN
+        ResponseEntity<CustomError> response = restTemplate.exchange(BASEURL, HttpMethod.POST, new HttpEntity<>(product, headers), CustomError.class);
+        //THEN
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is(String.format("Couldn't find a supplier with the id %d", supplier.getId())));
+    }
+
+    @Test
     void editProduct() {
         //GIVEN
         Supplier supplier = supplierRepo.save(sampleSupplier());
@@ -167,7 +194,7 @@ class ProductControllerTest {
     }
 
     @Test
-    void editProductFailsWhenProductNonExistant() {
+    void editProductFailsWhenProductNonExistent() {
         //GIVEN
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         ProductDTO productToEdit = sampleProductDTOWithDetailsWithId();
@@ -188,8 +215,8 @@ class ProductControllerTest {
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/" + product.getId(), HttpMethod.PUT, new HttpEntity<>(productToEdit, headers), ProductDTO.class);
-        ResponseEntity<SupplierDTO> oldSupplier = restTemplate.exchange("api/suppliers/" + supplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
-        ResponseEntity<SupplierDTO> updatedSupplier = restTemplate.exchange("api/suppliers/" + supplier2.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
+        ResponseEntity<SupplierDTO> oldSupplier = restTemplate.exchange("/api/suppliers/" + supplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
+        ResponseEntity<SupplierDTO> updatedSupplier = restTemplate.exchange("/api/suppliers/" + supplier2.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(Objects.requireNonNull(oldSupplier.getBody()).getProducts(), containsInAnyOrder(productToEdit));
@@ -206,8 +233,8 @@ class ProductControllerTest {
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/" + product.getId(), HttpMethod.PUT, new HttpEntity<>(productToEdit, headers), ProductDTO.class);
-        ResponseEntity<SupplierDTO> oldSupplier = restTemplate.exchange("api/suppliers/" + supplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
-        ResponseEntity<SupplierDTO> updatedSupplier = restTemplate.exchange("api/suppliers/" + supplier2.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
+        ResponseEntity<SupplierDTO> oldSupplier = restTemplate.exchange("/api/suppliers/" + supplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
+        ResponseEntity<SupplierDTO> updatedSupplier = restTemplate.exchange("/api/suppliers/" + supplier2.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertFalse(Objects.requireNonNull(oldSupplier.getBody()).getProducts().contains(productToEdit));
@@ -223,7 +250,7 @@ class ProductControllerTest {
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/" + product.getId(), HttpMethod.PUT, new HttpEntity<>(productToEdit, headers), ProductDTO.class);
-        ResponseEntity<SupplierDTO> oldSupplier = restTemplate.exchange("api/suppliers/" + supplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
+        ResponseEntity<SupplierDTO> oldSupplier = restTemplate.exchange("/api/suppliers/" + supplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertFalse(Objects.requireNonNull(oldSupplier.getBody()).getProducts().contains(productToEdit));
@@ -239,8 +266,8 @@ class ProductControllerTest {
         HttpHeaders headers = utils.createHeadersWithJwtAuth();
         //WHEN
         ResponseEntity<ProductDTO> response = restTemplate.exchange(BASEURL + "/" + product.getId(), HttpMethod.PUT, new HttpEntity<>(productToEdit, headers), ProductDTO.class);
-        ResponseEntity<SupplierDTO> supplierThatKeepsProduct = restTemplate.exchange("api/suppliers/" + supplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
-        ResponseEntity<SupplierDTO> supplierThatTakesProductOutOfSTock = restTemplate.exchange("api/suppliers/" + supplier2.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
+        ResponseEntity<SupplierDTO> supplierThatKeepsProduct = restTemplate.exchange("/api/suppliers/" + supplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
+        ResponseEntity<SupplierDTO> supplierThatTakesProductOutOfSTock = restTemplate.exchange("/api/suppliers/" + supplier2.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(Objects.requireNonNull(supplierThatKeepsProduct.getBody()).getProducts(), containsInAnyOrder(productToEdit));
@@ -258,7 +285,6 @@ class ProductControllerTest {
         //WHEN
         ResponseEntity<CustomError> response = restTemplate.exchange(BASEURL + "/" + product.getId(), HttpMethod.PUT, new HttpEntity<>(productToEdit, headers), CustomError.class);
         //THEN
-        assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
-        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is("You tried to add a supplier that does not exist!"));
-    }
-}
+        assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
+        assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is(String.format("Couldn't find a supplier with the id %d", supplier2.getId())));
+    }}

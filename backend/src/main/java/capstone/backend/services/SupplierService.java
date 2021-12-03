@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 
@@ -61,14 +60,16 @@ public class SupplierService {
         return repo.existsById(id);
     }
 
-    @Transactional
     public void updateProductList(Product product) throws IllegalArgumentException {
         Set<Supplier> suppliers = product.getSuppliers();
         suppliers.forEach(supplier -> {
             if (!repo.existsById(supplier.getId()))
                 throw (new IllegalArgumentException("You're trying to associate a product to a supplier that does not exist!"));
         });
-        suppliers.forEach(supplier -> repo.getById(supplier.getId()).updateProductList(product));
+        suppliers.forEach(supplier -> {
+            supplier.updateProductList(product);
+            repo.save(supplier);
+        });
     }
 }
 

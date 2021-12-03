@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -26,7 +27,7 @@ public class Supplier extends Contact {
     @ToString.Exclude
     @JsonIgnore
     private Set<OrderToSupplier> orders;
-    @ManyToMany
+    @ManyToMany()
     @JsonIgnore
     private Set<Product> products;
 
@@ -48,4 +49,6 @@ public class Supplier extends Contact {
     public void updateProductList(Product product) {
         this.products.add(product);
     }
+
+
 }
