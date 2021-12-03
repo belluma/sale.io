@@ -53,7 +53,23 @@ public class ProductMapper {
                 .build();
     }
 
-    public static ProductInfo mapToProductinfo(Product product){
+    public static ProductInfo mapToProductInfo(Product product){
+        return ProductInfo
+                .builder()
+                .id(product.getId())
+                .name(product.getName())
+                .stockCodeSupplier(product.getStockCodeSupplier())
+                .category(product.getCategory())
+                .purchasePrice(product.getPurchasePrice())
+                .retailPrice(product.getRetailPrice())
+                .minAmount(product.getMinAmount())
+                .maxAmount(product.getMaxAmount())
+                .unitSize(product.getUnitSize())
+                .amountInStock(product.getAmountInStock())
+                .picture(product.getPicture())
+                .build();
+    }
+ public static ProductInfo mapToProductInfo(ProductDTO product){
         return ProductInfo
                 .builder()
                 .id(product.getId())

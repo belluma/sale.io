@@ -27,7 +27,7 @@ public class Supplier extends Contact {
     @ToString.Exclude
     @JsonIgnore
     private Set<OrderToSupplier> orders;
-    @ManyToMany()
+    @ManyToMany(mappedBy = "suppliers")
     @JsonIgnore
     private Set<Product> products;
 

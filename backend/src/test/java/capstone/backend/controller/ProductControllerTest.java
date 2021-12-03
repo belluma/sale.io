@@ -26,6 +26,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static capstone.backend.mapper.ProductMapper.mapProductWithDetails;
+import static capstone.backend.mapper.ProductMapper.mapToProductInfo;
 import static capstone.backend.mapper.SupplierMapper.mapSupplier;
 import static capstone.backend.utils.ProductTestUtils.*;
 import static capstone.backend.utils.SupplierTestUtils.sampleSupplier;
@@ -135,7 +136,8 @@ class ProductControllerTest {
         ResponseEntity<SupplierDTO> updatedSupplier = restTemplate.exchange("/api/suppliers/" + supplier.getId(), HttpMethod.GET, new HttpEntity<>(headers), SupplierDTO.class);
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(Objects.requireNonNull(updatedSupplier.getBody()).getProducts(), containsInAnyOrder(product));
+        assertThat(Objects.requireNonNull(updatedSupplier.getBody()).getProducts(),
+                containsInAnyOrder(mapToProductInfo(product.withId(Objects.requireNonNull(response.getBody()).getId()))));
     }
 
     @Test
@@ -164,7 +166,7 @@ class ProductControllerTest {
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_ACCEPTABLE));
         assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is("You forgot to add a supplier to your product"));
     }
-    
+
     @Test
     void createProductFailsWhenSupplierNonExistent() {
         //GIVEN
@@ -287,4 +289,5 @@ class ProductControllerTest {
         //THEN
         assertThat(response.getStatusCode(), is(HttpStatus.NOT_FOUND));
         assertThat(Objects.requireNonNull(response.getBody()).getMessage(), is(String.format("Couldn't find a supplier with the id %d", supplier2.getId())));
-    }}
+    }
+}
