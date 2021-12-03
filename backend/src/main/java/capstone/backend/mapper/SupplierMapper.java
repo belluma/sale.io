@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Set;
 
+import static java.util.stream.Collectors.toList;
+
 @Component
 public class SupplierMapper {
 
@@ -36,7 +38,7 @@ public class SupplierMapper {
                 .lastName(supplier.getLastName())
                 .phone(supplier.getPhone())
                 .email(supplier.getEmail())
-                .orders(List.of())
+                .orders(supplier.getOrders() == null ? List.of(): supplier.getOrders().stream().map(OrderToSupplierMapper::mapToOrderInfo).toList())
                 .orderDay(supplier.getOrderDay())
                 .picture(supplier.getPicture())
                 .products(supplier.getProducts() == null ? List.of() : supplier.getProducts().stream().map(ProductMapper::mapToProductInfo).toList())
