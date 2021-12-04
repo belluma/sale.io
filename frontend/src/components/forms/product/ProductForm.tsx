@@ -12,6 +12,7 @@ import CustomText from "../_elements/custom-text/CustomText";
 import CustomNumber from "../_elements/custom-number/CustomNumber";
 //interface imports
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import NewCategory from "./new-category/NewCategory";
 
 
 function ProductForm() {
@@ -34,6 +35,9 @@ function ProductForm() {
         const category = categories.find(c => c.id === +e.target.value)
         dispatch(handleProductFormInput({...productToSave, category}))
     }
+    const [popperAnchor, setPopperAnchor] = React.useState<null | HTMLElement>(null);
+    const popperOpen = Boolean(popperAnchor);
+    const popperId = popperOpen ? 'new-category-popper' : undefined;
     const props = {onChange: handleChange, model: "product"};
     const supplierOptions = mapSupplierToSelectData(suppliers);
     const categoryOptions = mapCategoryToSelectData(categories)
@@ -52,6 +56,7 @@ function ProductForm() {
                         <CustomSelect name="category" label={"category"} value={categoryId}
                                       options={categoryOptions} onChange={handleCategoryChange} model={"category"} />
                     </Grid>
+                    <NewCategory id={popperId} open={popperOpen} anchorEl={popperAnchor}/>
                     <Grid item xs={6}>
                         <CustomNumber currency name="purchasePrice" label={"purchase price"} value={purchasePrice} {...props} required/>
                     </Grid>
