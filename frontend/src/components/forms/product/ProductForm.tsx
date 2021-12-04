@@ -36,17 +36,17 @@ function ProductForm() {
     return (
         !suppliers.length ? <div>"Please create a supplier first</div> :
             <div>
-                <Grid container>
+                <Grid container rowSpacing={2}>
                     <Grid item xs={12}>
                         <CustomText name="name" label={"name"} required value={name} {...props} />
                     </Grid>
                     <Grid item xs={6}>
                         <CustomSelect name="supplier" label={"supplier"} value={supplierId} options={supplierOptions}
-                                      onChange={handleSupplierChange} model={"product"} required/>
+                                      onChange={handleSupplierChange} model={"supplier"} required/>
                     </Grid>
                     <Grid item xs={6}>
                         <CustomSelect name="category" label={"category"} value={categoryId}
-                                      options={categoryOptions} {...props}  />
+                                      options={categoryOptions} onChange={handleChange} model={"category"} />
                     </Grid>
                     <Grid item xs={6}>
                         <CustomNumber currency name="purchasePrice" label={"purchase price"} value={purchasePrice} {...props} required/>
