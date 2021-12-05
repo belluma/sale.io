@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useRef} from 'react'
-import { selectSuppliers} from "../../../slicer/supplierSlice";
+import {selectSuppliers} from "../../../slicer/supplierSlice";
 import {mapCategoryToSelectData, mapSupplierToSelectData} from "../helper";
 import {handleProductFormInput, selectProductToSave} from "../../../slicer/productSlice";
 import {selectCategories} from "../../../slicer/categorySlice";
@@ -31,16 +31,12 @@ function ProductForm() {
         const selectedSupplier = suppliers.filter(s => s.id === e.target.value);
         dispatch(handleProductFormInput({...productToSave, suppliers: selectedSupplier}))
     }
-    const [popperOpen, setPopperOpen] = React.useState(false);
 
-    // const popperOpen = Boolean(popperAnchor);
+    const [popperOpen, setPopperOpen] = React.useState(false);
     const popperId = popperOpen ? 'new-category-popper' : undefined;
     const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedCategory = categories.find(c => c.id === +e.target.value)
-       console.log(e.target.value === '-1')
-        if(e.target.value === "-1"){
-            console.log(e.currentTarget)
-         setPopperOpen(true)}
+        setPopperOpen(e.target.value === "-1")
         dispatch(handleProductFormInput({...productToSave, category: selectedCategory}))
     }
     let el = useRef(null);
@@ -60,14 +56,16 @@ function ProductForm() {
                     </Grid>
                     <Grid item xs={6} ref={el}>
                         <CustomSelect name="category" label={"category"} value={categoryId}
-                                      options={categoryOptions} onChange={handleCategoryChange} model={"category"} />
+                                      options={categoryOptions} onChange={handleCategoryChange} model={"category"}/>
                     </Grid>
                     <NewCategory id={popperId} open={popperOpen} anchorEl={el.current}/>
                     <Grid item xs={6}>
-                        <CustomNumber currency name="purchasePrice" label={"purchase price"} value={purchasePrice} {...props} required/>
+                        <CustomNumber currency name="purchasePrice" label={"purchase price"}
+                                      value={purchasePrice} {...props} required/>
                     </Grid>
                     <Grid item xs={6}>
-                        <CustomNumber currency name="retailPrice" label={"retail price"} value={retailPrice} {...props} />
+                        <CustomNumber currency name="retailPrice" label={"retail price"}
+                                      value={retailPrice} {...props} />
                     </Grid>
                     <Grid item xs={6}>
                         <CustomNumber name="minAmount" label={"min amount"} value={minAmount} {...props} />
