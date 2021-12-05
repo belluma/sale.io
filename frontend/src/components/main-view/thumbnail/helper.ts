@@ -69,8 +69,7 @@ export const parseCustomerToThumbnail = ({ id, orderItems, status, name}:ICustom
         picture: `/images/${status}.png`,
         id: id?.toString() || "",
         model: Views.CUSTOMER,
-        contentText:`total: €${orderItems.reduce(getTotalRetail, 0).toFixed(2)}`,
-        footerText: `Total: €${orderItems.reduce(getTotalRetail, 0).toFixed(2)}`
+        footerText:`total: €${orderItems.reduce(getTotalRetail, 0).toFixed(2)}`,
     }
 }
 

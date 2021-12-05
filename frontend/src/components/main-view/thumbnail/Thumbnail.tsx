@@ -7,12 +7,12 @@ import {chooseCurrentEmployee} from "../../../slicer/employeeSlice";
 import {chooseCurrentProduct} from "../../../slicer/productSlice";
 import {chooseCurrentSupplier} from "../../../slicer/supplierSlice";
 import {chooseCurrentOrder} from "../../../slicer/orderSlice";
+import {chooseCurrentCustomer, createCustomer} from "../../../slicer/customerSlice";
+import {chooseCurrentCategory} from "../../../slicer/categorySlice";
 //component imports
 import {Card, CardActions, CardContent, CardHeader, CardMedia, Divider} from "@mui/material";
 //interface imports
 import {IThumbnail, Views} from '../../../interfaces/IThumbnail';
-import {chooseCurrentCustomer, createCustomer} from "../../../slicer/customerSlice";
-import {chooseCurrentCategory} from "../../../slicer/categorySlice";
 
 type Props = {
     data: IThumbnail
@@ -33,7 +33,7 @@ function Thumbnail({data}: Props) {
         order: chooseCurrentOrder,
     }
     const onClick = () => {
-        if(model !== Views.NEWCUSTOMER && model !== Views.NONE) {
+        if (model !== Views.NEWCUSTOMER && model !== Views.NONE) {
             dispatch(setDetailData(data));
             dispatch(showDetails());
         }
@@ -43,7 +43,7 @@ function Thumbnail({data}: Props) {
     }
     return (
         <Card onClick={onClick} sx={thumbnailStyles}>
-            <CardHeader title={title} subtitle={subtitle}/>
+            <CardHeader title={title} subtitle={subtitle} titleTypographyProps={{variant: "body2"}}/>
             <CardMedia
                 sx={{flexGrow: 1, maxHeight: 220}}
                 component="img"
@@ -53,9 +53,9 @@ function Thumbnail({data}: Props) {
             />
 
             {contentText && <Divider/>}
-            {contentText && <CardContent>{contentText}</CardContent>}
+            {contentText && <CardContent sx={{py: 0.5}}>{contentText}</CardContent>}
             {footerText && <Divider/>}
-            {footerText && <CardActions className="is-pulled-right">{footerText}</CardActions>}
+            {footerText && <CardActions sx={{alignSelf: 'flex-end', pr: 2}}>{footerText}</CardActions>}
         </Card>
     )
 }
