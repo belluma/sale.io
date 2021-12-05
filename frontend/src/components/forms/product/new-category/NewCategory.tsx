@@ -6,6 +6,8 @@ import {Button, Grid, Paper, Popper, Typography} from "@mui/material";
 //interface imports
 import {VirtualElement} from '@popperjs/core';
 import CustomText from "../../_elements/custom-text/CustomText";
+import {useAppDispatch} from "../../../../app/hooks";
+import {createCategory} from "../../../../slicer/categorySlice";
 
 type Props = {
     id?: string,
@@ -15,9 +17,14 @@ type Props = {
 }
 
 function NewCategory({id, open, anchorEl, close}: Props) {
+    const dispatch = useAppDispatch();
     const [category, setCategory] = useState("")
     const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
         setCategory(e.target.value)
+    }
+    const saveCategory = () => {
+        dispatch(createCategory(category));
+        close();
     }
     return (
         <Popper id={id} open={open} anchorEl={anchorEl} style={{zIndex: 1400}}>
@@ -35,7 +42,7 @@ function NewCategory({id, open, anchorEl, close}: Props) {
                             <Button size={'small'} variant={'contained'} onClick={close}>Cancel</Button>
                         </Grid>
                         <Grid item>
-                            <Button size={'small'} variant={'contained'} onClick={close}>Ok</Button>
+                            <Button size={'small'} variant={'contained'} onClick={saveCategory}>Ok</Button>
                         </Grid>
                     </Grid>
                 </Grid>
