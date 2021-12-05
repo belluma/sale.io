@@ -9,10 +9,11 @@ import {VirtualElement} from '@popperjs/core';
 type Props = {
     id?: string,
     open: boolean,
-    anchorEl?: null | VirtualElement | (() => VirtualElement);
+    anchorEl?: any | null | VirtualElement | (() => VirtualElement);
 };
 
 function NewCategory({id, open, anchorEl}: Props){
+    console.log(anchorEl)
     return(
         <Popper id={id} open={open} anchorEl={anchorEl} style={{zIndex: 1400}}>
             <Paper sx={{width: {xs: 0.5, sm: 280}, padding: 3}} elevation={24}>
