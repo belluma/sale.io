@@ -39,6 +39,7 @@ function ProductForm() {
         setPopperOpen(e.target.value === "-1")
         dispatch(handleProductFormInput({...productToSave, category: selectedCategory}))
     }
+    const closePopper = () => setPopperOpen(false)
     let el = useRef(null);
     const props = {onChange: handleChange, model: "product"};
     const supplierOptions = mapSupplierToSelectData(suppliers);
@@ -58,7 +59,7 @@ function ProductForm() {
                         <CustomSelect name="category" label={"category"} value={categoryId}
                                       options={categoryOptions} onChange={handleCategoryChange} model={"category"}/>
                     </Grid>
-                    <NewCategory id={popperId} open={popperOpen} anchorEl={el.current}/>
+                    <NewCategory id={popperId} open={popperOpen} anchorEl={el.current} close={closePopper}/>
                     <Grid item xs={6}>
                         <CustomNumber currency name="purchasePrice" label={"purchase price"}
                                       value={purchasePrice} {...props} required/>

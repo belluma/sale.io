@@ -10,10 +10,11 @@ import CustomText from "../../_elements/custom-text/CustomText";
 type Props = {
     id?: string,
     open: boolean,
-    anchorEl?: null | VirtualElement | (() => VirtualElement);
-};
+    anchorEl?: null | VirtualElement | (() => VirtualElement),
+    close: () => void
+}
 
-function NewCategory({id, open, anchorEl}: Props) {
+function NewCategory({id, open, anchorEl, close}: Props) {
     const [category, setCategory] = useState("")
     const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
         setCategory(e.target.value)
@@ -31,10 +32,10 @@ function NewCategory({id, open, anchorEl}: Props) {
                     </Grid>
                     <Grid item container justifyContent='space-between' xs={12}>
                         <Grid item>
-                            <Button size={'small'} variant={'contained'}>Cancel</Button>
+                            <Button size={'small'} variant={'contained'} onClick={close}>Cancel</Button>
                         </Grid>
                         <Grid item>
-                            <Button size={'small'} variant={'contained'}>Ok</Button>
+                            <Button size={'small'} variant={'contained'} onClick={close}>Ok</Button>
                         </Grid>
                     </Grid>
                 </Grid>
