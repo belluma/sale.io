@@ -58,7 +58,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void createEmployeeWhenNoNameGiven() {
+    void createEmployeeFailsWhenNoNameGiven() {
         //GIVEN
         EmployeeDTO userToSave = sampleUserDTO();
         userToSave.setFirstName(null);
@@ -69,7 +69,7 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void createEmployeeWhenNoPasswordGiven() {
+    void createEmployeeFailsWhenNoPasswordGiven() {
         //GIVEN
         EmployeeDTO userToSave = sampleUserDTO().withPassword(null);
         //WHEN - //THEN
