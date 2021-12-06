@@ -14,7 +14,6 @@ import {
     setPending,
     stopPendingAndHandleError,
     handleError,
-    invalidDataError,
     handleApiResponse,
 } from "./errorHelper";
 import {emptyCategory, ICategory} from "../interfaces/ICategory";
@@ -28,20 +27,6 @@ const initialState: ICategoriesState = {
     toSave: emptyCategory
 }
 const route = "categories";
-
-export const validateCategory = (category: ICategory): boolean => {
-    const necessaryValues = ['name', 'suppliers', 'purchasePrice', 'unitSize']
-    //@ts-ignore values defined in line above must be keys of ICategory
-    if (necessaryValues.every(v => !!category[v])) {
-        //@ts-ignore line above checks that values are not undefined
-        return category.name.length > 0 && category.suppliers.length > 0 && category.purchasePrice > 0 && category.unitSize > 0
-    }
-    return false
-}
-
-const validateBeforeSendingToBackend = ({category}: RootState) => {
-    return validateCategory(category.toSave);
-}
 
 const hideDetailsAndReloadList = (dispatch: ThunkDispatch<RootState, void, Action>) => {
     dispatch(hideDetails());
@@ -68,12 +53,11 @@ export const getOneCategory = createAsyncThunk<IResponseGetOneCategory, string, 
     }
 )
 
-export const createCategory = createAsyncThunk<IResponseGetOneCategory, void, { state: RootState, dispatch: Dispatch }>(
+export const createCategory = createAsyncThunk<IResponseGetOneCategory, string, { state: RootState, dispatch: Dispatch }>(
     'categories/create',
-    async (_, {getState, dispatch}) => {
-        console.log(123)
+    async (name, {getState, dispatch}) => {
         const token = getState().authentication.token
-        const {data, status, statusText} = await apiCreate(route, token, getState().category.toSave);
+        const {data, status, statusText} = await apiCreate(route, token, {name});
         handleError(status, statusText, dispatch);
         if (status === 200) hideDetailsAndReloadList(dispatch);
         return {data, status, statusText}
@@ -83,9 +67,6 @@ export const createCategory = createAsyncThunk<IResponseGetOneCategory, void, { 
 export const editCategory = createAsyncThunk<IResponseGetOneCategory, ICategory, { state: RootState, dispatch: Dispatch }>(
     'categories/edit',
     async (category, {getState, dispatch}) => {
-        if (!validateBeforeSendingToBackend(getState())) {
-            return invalidDataError;
-        }
         const token = getState().authentication.token
         const {data, status, statusText} = await apiEdit(route, token, category);
         handleError(status, statusText, dispatch);

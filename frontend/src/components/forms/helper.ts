@@ -14,11 +14,12 @@ export const mapSupplierToSelectData = (suppliers: ISupplier[]): Option[] => {
 }
 
 export const mapCategoryToSelectData = (categories: ICategory[]): Option[] => {
-    return categories.map(category => {
+    const newCategory = {id: '-1', name: '...new'}
+    return [newCategory, ...categories.map(category => {
         const id = category.id ? category.id.toString() : '';
         const name = category.name ? category.name : '';
         return {id, name}
-    })
+    })]
 }
 export const mapWeekdaysToSelectData = (): Option[] => {
     return Object.keys(Weekday).map((day) => {

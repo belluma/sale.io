@@ -9,16 +9,16 @@ import {inputStyles} from "../styles";
 
 type Props = ISelectProps
 
-function CustomSelect({label, options, model, onChange,value, ...props}: Props){
-    const [selected, setSelected] = useState( "");
+function CustomSelect({label, options, model, onChange, value, ...props}: Props) {
+    const [selected, setSelected] = useState("");
     useEffect(() => {
-        if(value)setSelected(value)
+        if (value) setSelected(value)
     }, [value])
     const select = (e: React.ChangeEvent<HTMLInputElement>) => {
         onChange(e);
         setSelected(e.target.value);
     };
-    return(
+    return (
         <TextField
             sx={inputStyles}
             id={`Select ${label}`}
@@ -29,7 +29,7 @@ function CustomSelect({label, options, model, onChange,value, ...props}: Props){
             helperText={`Please select the ${model}`}
             {...props}
         >
-            {options.map(({id, name: option}:Option) => (
+            {options.map(({id, name: option}: Option) => (
                 <MenuItem key={id} value={id}>
                     {option}
                 </MenuItem>

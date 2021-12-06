@@ -22,7 +22,7 @@ export interface INumberFieldProps extends IFormFieldProps {
     value?: number,
 }
 
-export type Option = { id: string , name: string }
+export type Option = { id: string, name: string }
 
 export interface ISelectProps extends ITextFieldProps {
     options: Option[]

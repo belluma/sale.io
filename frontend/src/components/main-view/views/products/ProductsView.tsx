@@ -18,6 +18,8 @@ import {Views} from "../../../../interfaces/IThumbnail";
 type Props = {};
 
 function ProductsView(props: Props) {
+
+
     const products = useAppSelector(selectProducts)
     const thumbnails = products.map(parseProductToThumbnail);
     const productRows = products.map(parseProduct)
