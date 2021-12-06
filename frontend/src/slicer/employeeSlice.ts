@@ -1,12 +1,11 @@
 import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import {extractCredentials, getAllEmployees} from "../services/employeeService";
-import {IResponseGetAllEmployees} from "../interfaces/IApiResponse";
+import {IResponseGetAllEmployees, IResponseGetOneEmployee} from "../interfaces/IApiResponse";
 import {IEmployeeState} from '../interfaces/IStates';
 import {handleError, setPending, stopPendingAndHandleError} from "./errorHelper";
 import {emptyEmployee, IEmployee} from "../interfaces/IEmployee";
-import {IProduct} from "../interfaces/IProduct";
-
+import {create as apiCreate} from '../services/apiService'
 
 const initialState: IEmployeeState = {
     employees: [],
@@ -16,6 +15,8 @@ const initialState: IEmployeeState = {
     success: false,
     toSave: emptyEmployee,
 }
+
+const route = 'employees';
 
 export const validateEmployee = (employee: IEmployee):boolean => {
     const name = !!employee.firstName?.length || !!employee.lastName?.length;
@@ -29,6 +30,16 @@ export const getEmployees = createAsyncThunk<IResponseGetAllEmployees, void, { d
     'employees/getAll',
     async (_, {dispatch}) => {
         const {data, status, statusText} = await getAllEmployees();
+        handleError(status, statusText, dispatch);
+        return {data, status, statusText}
+    }
+)
+
+export const saveEmployee = createAsyncThunk<IResponseGetOneEmployee, void, {state: RootState, dispatch:Dispatch}>(
+    'employees/create',
+    async(_, {getState, dispatch}) => {
+        const token = getState().authentication.token;
+        const {data, status, statusText} = await apiCreate(route, token, getState().employee.toSave);
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
