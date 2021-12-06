@@ -34,13 +34,12 @@ public class Employee extends Contact {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         Employee employee = (Employee) o;
-        return Objects.equals(username, employee.username) && Objects.equals(password, employee.password) && Objects.equals(roles, employee.roles);
+        return Objects.equals(username, employee.username) && Objects.equals(roles, employee.roles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), username, password, roles);
+        return Objects.hash(super.hashCode(), username,  roles);
     }
 }

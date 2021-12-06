@@ -13,10 +13,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.persistence.EntityNotFoundException;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Supplier;
 
 import static capstone.backend.mapper.EmployeeMapper.mapEmployee;
+import static capstone.backend.model.enums.UserRole.ADMIN;
 import static capstone.backend.utils.EmployeeTestUtils.sampleUser;
 import static capstone.backend.utils.EmployeeTestUtils.sampleUserDTO;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -55,13 +57,14 @@ class EmployeeServiceTest {
         uuidSupplierField.set(service, uuidSupplier);
         String uuid = "5211e915-c3e2-4dcb-0776-c7b900f38ab7";
         when(uuidSupplier.get()).thenReturn(UUID.fromString(uuid));
-        EmployeeDTO userToSave = sampleUserDTO().withUsername(uuid);
-        Employee employeeWithEncryptedPassword = sampleUser()
-                .withPassword(passwordEncoder.encode(userToSave.getPassword()))
-                .withUsername(uuid);
+        EmployeeDTO userToSave = sampleUserDTO();
+        userToSave.setUsername(uuid);
+        Employee employeeWithEncryptedPassword = mapEmployee(userToSave);
+        employeeWithEncryptedPassword.setPassword(passwordEncoder.encode(userToSave.getPassword()));
         EmployeeDTO expected = mapper.mapEmployeeAndConcealData(employeeWithEncryptedPassword);
         when(repo.existsById(userToSave.getId())).thenReturn(false);
         when(repo.save(employeeWithEncryptedPassword)).thenReturn(employeeWithEncryptedPassword);
+        assertThat(employeeWithEncryptedPassword, is(mapEmployee(userToSave)));
         //WHEN
         EmployeeDTO actual = service.createEmployee(userToSave);
         //THEN
@@ -112,4 +115,4 @@ class EmployeeServiceTest {
         verify(repo).existsByUsername(username);
     }
 
-  }
+}
