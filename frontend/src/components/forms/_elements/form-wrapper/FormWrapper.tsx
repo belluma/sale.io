@@ -5,7 +5,7 @@ import {
     selectSupplierToSave,
     validateSupplier
 } from "../../../../slicer/supplierSlice";
-import {toBeReplaced} from "../../../../slicer/employeeSlice";
+import {saveEmployee, selectEmployeeToSave, toBeReplaced, validateEmployee} from "../../../../slicer/employeeSlice";
 import {createProduct, selectProductToSave, validateProduct} from "../../../../slicer/productSlice";
 import {createOrder, selectOrderToSave, validateOrder} from "../../../../slicer/orderSlice";
 //component imports
@@ -31,11 +31,12 @@ function FormWrapper({model, handleClose}: Props) {
     const product = useAppSelector(selectProductToSave)
     const supplier = useAppSelector(selectSupplierToSave)
     const order = useAppSelector(selectOrderToSave)
+    const employee = useAppSelector(selectEmployeeToSave)
 
     const disableButton = () => {
         switch (model) {
             case Model.EMPLOYEE:
-                break;
+                return !validateEmployee(employee);
             case Model.CUSTOMER:
                 break;
             case Model.PRODUCT:
@@ -58,15 +59,14 @@ function FormWrapper({model, handleClose}: Props) {
     };
 
     const submitSelector = {
-        employee: toBeReplaced,
-        product: createProduct,
         customer: toBeReplaced,
+        product: createProduct,
+        employee: saveEmployee,
         supplier: createSupplier,
         order: createOrder,
     };
     const handleSubmit = () => {
         console.log(model)
-
         if (Object.keys(submitSelector).includes(model)) dispatch(submitSelector[model]());
         handleClose();
     }

@@ -6,8 +6,8 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -16,13 +16,14 @@ import java.util.Objects;
 @NoArgsConstructor
 @SuperBuilder
 @Entity
+@With
 public class Employee extends Contact {
 
     @Column(unique=true)
     private String username;
     private String password;
     @ElementCollection
-    private List<UserRole> roles;
+    private Set<UserRole> roles;
 
     public Employee(String username, String password) {
         this.username = username;
@@ -33,13 +34,12 @@ public class Employee extends Contact {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         Employee employee = (Employee) o;
-        return Objects.equals(username, employee.username) && Objects.equals(password, employee.password) && Objects.equals(roles, employee.roles);
+        return Objects.equals(username, employee.username) && Objects.equals(roles, employee.roles);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), username, password, roles);
+        return Objects.hash(super.hashCode(), username,  roles);
     }
 }
