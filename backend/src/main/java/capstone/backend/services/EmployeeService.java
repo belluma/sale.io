@@ -21,4 +21,11 @@ public class EmployeeService {
                 .map(mapper::mapEmployeeAndConcealData)
                 .toList();
     }
+
+    public EmployeeDTO createEmployee() {
+        return new EmployeeDTO();
+    }
+
+    public void deleteEmployee(String id) {
+    }
 }

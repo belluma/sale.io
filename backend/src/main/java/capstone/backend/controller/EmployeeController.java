@@ -26,6 +26,8 @@ public class EmployeeController {
     }
 
     @DeleteMapping("{id}")
-    public void deleteEmployee(){return service.deleteEmployee(id)}
+    public void deleteEmployee(@RequestParam String id) {
+        service.deleteEmployee(id);
+    }
 
 }

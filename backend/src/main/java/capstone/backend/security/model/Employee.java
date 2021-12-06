@@ -6,8 +6,8 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -16,13 +16,14 @@ import java.util.Objects;
 @NoArgsConstructor
 @SuperBuilder
 @Entity
+@With
 public class Employee extends Contact {
 
     @Column(unique=true)
     private String username;
     private String password;
     @ElementCollection
-    private List<UserRole> roles;
+    private Set<UserRole> roles;
 
     public Employee(String username, String password) {
         this.username = username;

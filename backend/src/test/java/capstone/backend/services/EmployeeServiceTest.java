@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.Mockito.*;
@@ -29,10 +30,23 @@ class EmployeeServiceTest {
         //WHEN
         List<EmployeeDTO> actual = service.getAllEmployees();
         //THEN
-        assertIterableEquals( expected, actual);
+        assertIterableEquals(expected, actual);
         verify(repo).findAll();
     }
 
+    @Test
+    void createEmployee() {
+        //GIVEN
+//        EmployeeDTO expected = sample
+//        when(repo.save)
+
+        //WHEN
+        EmployeeDTO actual = service.createEmployee();
+
+        //THEN
+
+
+    }
 
 
 }
