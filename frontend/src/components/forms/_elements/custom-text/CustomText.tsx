@@ -15,7 +15,7 @@ function CustomText({label, model, type, ...props}: Props){
             sx={inputStyles}
             id={`${model}-${label}`}
             label={`${model} ${label}`}
-            type={type ? type : 'text'}
+            type={type || 'text'}
             {...props}
             helperText={`type the ${label} of the ${model}`}
             variant="standard"

@@ -1,13 +1,12 @@
 import {Action, createAsyncThunk, createSlice, Dispatch, PayloadAction, ThunkDispatch} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import {extractCredentials, getAllEmployees} from "../services/employeeService";
-import {IResponseGetAllEmployees, IResponseGetOneEmployee, IResponseGetOneProduct} from "../interfaces/IApiResponse";
+import {IResponseGetAllEmployees, IResponseGetOneEmployee} from "../interfaces/IApiResponse";
 import {IEmployeeState} from '../interfaces/IStates';
 import {handleApiResponse, handleError, invalidDataError, setPending, stopPendingAndHandleError} from "./errorHelper";
 import {emptyEmployee, IEmployee} from "../interfaces/IEmployee";
 import {create as apiCreate} from '../services/apiService'
 import {hideDetails} from "./detailsSlice";
-import {getAllProducts, validateProduct} from "./productSlice";
 
 const initialState: IEmployeeState = {
     employees: [],
