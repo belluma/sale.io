@@ -11,7 +11,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.EntityNotFoundException;
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.UUID;
+import java.util.function.Supplier;
 
 import static capstone.backend.mapper.EmployeeMapper.mapEmployee;
 import static capstone.backend.utils.EmployeeTestUtils.sampleUser;
@@ -26,6 +29,7 @@ import static org.mockito.Mockito.*;
 class EmployeeServiceTest {
 
     private final EmployeeRepo repo = mock(EmployeeRepo.class);
+    Supplier<UUID> uuidSupplier = mock(Supplier.class);
     private final EmployeeMapper mapper = new EmployeeMapper();
     private final EmployeeService service = new EmployeeService(repo, mapper);
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -44,16 +48,25 @@ class EmployeeServiceTest {
     }
 
     @Test
-    void createEmployee() {
+    void createEmployee() throws NoSuchFieldException, IllegalAccessException {
         //GIVEN
-        EmployeeDTO userToSave = sampleUserDTO();
-        Employee employeeWithEncryptedPassword = sampleUser().withPassword(passwordEncoder.encode(userToSave.getPassword()));
+        Field uuidSupplierField = EmployeeService.class.getDeclaredField("uuidSupplier");
+        uuidSupplierField.setAccessible(true);
+        uuidSupplierField.set(service, uuidSupplier);
+        String uuid = "5211e915-c3e2-4dcb-0776-c7b900f38ab7";
+        when(uuidSupplier.get()).thenReturn(UUID.fromString(uuid));
+        EmployeeDTO userToSave = sampleUserDTO().withUsername(uuid);
+        Employee employeeWithEncryptedPassword = sampleUser()
+                .withPassword(passwordEncoder.encode(userToSave.getPassword()))
+                .withUsername(uuid);
         EmployeeDTO expected = mapper.mapEmployeeAndConcealData(employeeWithEncryptedPassword);
+        when(repo.existsById(userToSave.getId())).thenReturn(false);
         when(repo.save(employeeWithEncryptedPassword)).thenReturn(employeeWithEncryptedPassword);
         //WHEN
         EmployeeDTO actual = service.createEmployee(userToSave);
         //THEN
         assertThat(actual, is(expected));
+        verify(repo).existsById(userToSave.getId());
         verify(repo).save(mapEmployee(userToSave));
     }
 
@@ -98,4 +111,5 @@ class EmployeeServiceTest {
         assertThat(ex.getMessage(), is(String.format("User with username %s not found", username)));
         verify(repo).existsByUsername(username);
     }
-}
+
+  }
