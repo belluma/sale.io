@@ -84,7 +84,8 @@ class EmployeeServiceTest {
         when(repo.existsByUsername(username)).thenReturn(true);
         //WHEN - //THEN
         service.deleteEmployee(username);
-        verify(repo).deleteById(123L);
+        verify(repo).deleteByUsername(username);
+        verify(repo).existsByUsername(username);
     }
 
     @Test
@@ -95,5 +96,6 @@ class EmployeeServiceTest {
         //WHEN - //THEN
         Exception ex = assertThrows(EntityNotFoundException.class, () -> service.deleteEmployee(username));
         assertThat(ex.getMessage(), is(String.format("User with username %s not found", username)));
+        verify(repo).existsByUsername(username);
     }
 }

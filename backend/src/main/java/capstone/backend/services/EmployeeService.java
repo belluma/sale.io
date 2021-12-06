@@ -6,6 +6,7 @@ import capstone.backend.security.model.EmployeeDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -26,6 +27,10 @@ public class EmployeeService {
         return new EmployeeDTO();
     }
 
-    public void deleteEmployee(String username) {
+    public void deleteEmployee(String username) throws EntityNotFoundException{
+        if(!repo.existsByUsername(username)){
+            throw new EntityNotFoundException(String.format("User with username %s not found", username));
+        }
+        repo.deleteByUsername(username);
     }
 }
