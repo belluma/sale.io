@@ -5,7 +5,7 @@ import {
     selectSupplierToSave,
     validateSupplier
 } from "../../../../slicer/supplierSlice";
-import {selectEmployeeToSave, toBeReplaced, validateEmployee} from "../../../../slicer/employeeSlice";
+import {saveEmployee, selectEmployeeToSave, toBeReplaced, validateEmployee} from "../../../../slicer/employeeSlice";
 import {createProduct, selectProductToSave, validateProduct} from "../../../../slicer/productSlice";
 import {createOrder, selectOrderToSave, validateOrder} from "../../../../slicer/orderSlice";
 //component imports
@@ -59,7 +59,7 @@ function FormWrapper({model, handleClose}: Props) {
     };
 
     const submitSelector = {
-        employee: toBeReplaced,
+        employee: saveEmployee,
         product: createProduct,
         customer: toBeReplaced,
         supplier: createSupplier,

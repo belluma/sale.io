@@ -18,7 +18,7 @@ const initialState: IEmployeeState = {
 
 const route = 'employees';
 
-export const validateEmployee = (employee: IEmployee):boolean => {
+export const validateEmployee = (employee: IEmployee): boolean => {
     const name = !!employee.firstName?.length || !!employee.lastName?.length;
     const contact = !!employee.email?.length || !!employee.phone?.length;
     const passwordStrength = employee.password?.length > 3;
@@ -26,7 +26,7 @@ export const validateEmployee = (employee: IEmployee):boolean => {
 }
 
 
-export const getEmployees = createAsyncThunk<IResponseGetAllEmployees, void, { dispatch:Dispatch }>(
+export const getEmployees = createAsyncThunk<IResponseGetAllEmployees, void, { dispatch: Dispatch }>(
     'employees/getAll',
     async (_, {dispatch}) => {
         const {data, status, statusText} = await getAllEmployees();
@@ -35,9 +35,9 @@ export const getEmployees = createAsyncThunk<IResponseGetAllEmployees, void, { d
     }
 )
 
-export const saveEmployee = createAsyncThunk<IResponseGetOneEmployee, void, {state: RootState, dispatch:Dispatch}>(
+export const saveEmployee = createAsyncThunk<IResponseGetOneEmployee, void, { state: RootState, dispatch: Dispatch }>(
     'employees/create',
-    async(_, {getState, dispatch}) => {
+    async (_, {getState, dispatch}) => {
         const token = getState().authentication.token;
         const {data, status, statusText} = await apiCreate(route, token, getState().employee.toSave);
         handleError(status, statusText, dispatch);
@@ -57,14 +57,22 @@ export const employeeSlice = createSlice({
         handleEmployeeFormInput: (state, {payload}: PayloadAction<IEmployee>) => {
             state.toSave = payload;
         },
-        toBeReplaced: (state) => {console.log("I have to stay here until all view are implemented")},
-        closeSuccess: (state:IEmployeeState) => {state.success = false}
+        toBeReplaced: (state) => {
+            console.log("I have to stay here until all view are implemented")
+        },
+        closeSuccess: (state: IEmployeeState) => {
+            state.success = false
+        }
     },
     extraReducers: (builder => {
-        builder.addCase(getEmployees.pending,setPending)
+        builder.addCase(getEmployees.pending, setPending)
+        builder.addCase(saveEmployee.pending, setPending)
         builder.addCase(getEmployees.fulfilled, (state, action: PayloadAction<IResponseGetAllEmployees>) => {
             stopPendingAndHandleError(state, action, emptyEmployee);
             state.employees = action.payload.data;
+        })
+        builder.addCase(saveEmployee.fulfilled, (state, action: PayloadAction<IResponseGetOneEmployee>) => {
+            stopPendingAndHandleError(state, action, emptyEmployee);
         })
     })
 })
@@ -75,7 +83,7 @@ export const {chooseCurrentEmployee, toBeReplaced, closeSuccess, handleEmployeeF
 export const selectEmployees = (state: RootState) => state.employee.employees;
 export const selectCurrentEmployee = (state: RootState) => state.employee.current;
 export const selectCurrentEmployeeCredentials = (state: RootState) => state.employee.currentEmployeeCredentials;
-export const selectEmployeeToSave = (state:RootState) => state.employee.toSave;
+export const selectEmployeeToSave = (state: RootState) => state.employee.toSave;
 export const selectEmployeePending = (state: RootState) => state.employee.pending;
 export const selectEmployeeSuccess = (state: RootState) => state.employee.success;
 
