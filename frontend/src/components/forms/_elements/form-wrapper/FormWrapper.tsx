@@ -59,15 +59,14 @@ function FormWrapper({model, handleClose}: Props) {
     };
 
     const submitSelector = {
-        employee: saveEmployee,
-        product: createProduct,
         customer: toBeReplaced,
+        product: createProduct,
+        employee: saveEmployee,
         supplier: createSupplier,
         order: createOrder,
     };
     const handleSubmit = () => {
         console.log(model)
-
         if (Object.keys(submitSelector).includes(model)) dispatch(submitSelector[model]());
         handleClose();
     }

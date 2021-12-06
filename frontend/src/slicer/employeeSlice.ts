@@ -1,11 +1,13 @@
-import {createAsyncThunk, createSlice, Dispatch, PayloadAction} from '@reduxjs/toolkit';
+import {Action, createAsyncThunk, createSlice, Dispatch, PayloadAction, ThunkDispatch} from '@reduxjs/toolkit';
 import {RootState} from '../app/store';
 import {extractCredentials, getAllEmployees} from "../services/employeeService";
-import {IResponseGetAllEmployees, IResponseGetOneEmployee} from "../interfaces/IApiResponse";
+import {IResponseGetAllEmployees, IResponseGetOneEmployee, IResponseGetOneProduct} from "../interfaces/IApiResponse";
 import {IEmployeeState} from '../interfaces/IStates';
-import {handleError, setPending, stopPendingAndHandleError} from "./errorHelper";
+import {handleApiResponse, handleError, invalidDataError, setPending, stopPendingAndHandleError} from "./errorHelper";
 import {emptyEmployee, IEmployee} from "../interfaces/IEmployee";
 import {create as apiCreate} from '../services/apiService'
+import {hideDetails} from "./detailsSlice";
+import {getAllProducts, validateProduct} from "./productSlice";
 
 const initialState: IEmployeeState = {
     employees: [],
@@ -24,12 +26,19 @@ export const validateEmployee = (employee: IEmployee): boolean => {
     const passwordStrength = employee.password?.length > 3;
     return name && contact && passwordStrength;
 }
+const validateBeforeSendingToBackend = ({employee}: RootState) => {
+    return validateEmployee(employee.toSave);
+}
+const hideDetailsAndReloadList = (dispatch: ThunkDispatch<RootState, void, Action>) => {
+    dispatch(hideDetails());
+    dispatch(getEmployees());
+}
 
 
-export const getEmployees = createAsyncThunk<IResponseGetAllEmployees, void, { dispatch: Dispatch }>(
+export const getEmployees = createAsyncThunk<IResponseGetAllEmployees, void, {state:RootState, dispatch: Dispatch }>(
     'employees/getAll',
-    async (_, {dispatch}) => {
-        const {data, status, statusText} = await getAllEmployees();
+    async (_, {getState, dispatch}) => {
+       const {data, status, statusText} = await getAllEmployees();
         handleError(status, statusText, dispatch);
         return {data, status, statusText}
     }
@@ -38,9 +47,13 @@ export const getEmployees = createAsyncThunk<IResponseGetAllEmployees, void, { d
 export const saveEmployee = createAsyncThunk<IResponseGetOneEmployee, void, { state: RootState, dispatch: Dispatch }>(
     'employees/create',
     async (_, {getState, dispatch}) => {
+        if (!validateBeforeSendingToBackend(getState())) {
+            return invalidDataError;
+        }
         const token = getState().authentication.token;
         const {data, status, statusText} = await apiCreate(route, token, getState().employee.toSave);
         handleError(status, statusText, dispatch);
+        if(status === 200) hideDetailsAndReloadList(dispatch);
         return {data, status, statusText}
     }
 )
@@ -72,7 +85,7 @@ export const employeeSlice = createSlice({
             state.employees = action.payload.data;
         })
         builder.addCase(saveEmployee.fulfilled, (state, action: PayloadAction<IResponseGetOneEmployee>) => {
-            stopPendingAndHandleError(state, action, emptyEmployee);
+            handleApiResponse(state, action, emptyEmployee);
         })
     })
 })
