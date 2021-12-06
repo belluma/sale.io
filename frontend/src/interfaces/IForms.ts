@@ -14,6 +14,7 @@ interface IFormFieldProps extends IFormProps {
 
 export interface ITextFieldProps extends IFormFieldProps {
     value?: string,
+    type?: string
 }
 
 export interface INumberFieldProps extends IFormFieldProps {
