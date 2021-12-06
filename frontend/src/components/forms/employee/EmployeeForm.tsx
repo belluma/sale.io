@@ -1,6 +1,8 @@
 import Grid from '@material-ui/core/Grid';
 import React, {ChangeEvent, useState} from 'react'
 import CustomText from "../_elements/custom-text/CustomText";
+import {handleEmployeeFormInput, selectEmployeeToSave} from "../../../slicer/employeeSlice";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
 
 //component imports
 
@@ -9,28 +11,27 @@ import CustomText from "../_elements/custom-text/CustomText";
 type Props = {};
 
 function EmployeeForm(props: Props){
-    const [credentials, setCredentials] = useState(
-        {    firstName:'', lastName: '',password:'', email: '',phone:''}
-    )
+    const dispatch = useAppDispatch();
+    const employee = useAppSelector(selectEmployeeToSave);
     const onChange = (e:ChangeEvent<HTMLInputElement>) => {
-        setCredentials({...credentials, [e.target.name]: e.target.value})
+        dispatch(handleEmployeeFormInput({...employee, [e.target.name]: e.target.value}));
     }
     return(
         <Grid container>
             <Grid item>
-                <CustomText name={"firstName"} label={"first name"} value={credentials.firstName} model={"employee"} onChange={onChange}/>
+                <CustomText name={"firstName"} label={"first name"} value={employee.firstName} model={"employee"} onChange={onChange}/>
             </Grid>
           <Grid item>
-                <CustomText name={"lastName"} label={"last name"} value={credentials.lastName} model={"employee"} onChange={onChange}/>
+                <CustomText name={"lastName"} label={"last name"} value={employee.lastName} model={"employee"} onChange={onChange}/>
             </Grid>
           <Grid item>
-                <CustomText name={"password"} type="password" label={"password"} value={credentials.password} model={"employee"} onChange={onChange}/>
+                <CustomText name={"password"} type="password" label={"password"} value={employee.password} model={"employee"} onChange={onChange}/>
             </Grid>
           <Grid item>
-                <CustomText name={"email"} type='email' label={"email"} value={credentials.email} model={"employee"} onChange={onChange}/>
+                <CustomText name={"email"} type='email' label={"email"} value={employee.email} model={"employee"} onChange={onChange}/>
             </Grid>
         <Grid item>
-                <CustomText name={"phone"} label={"phone"} value={credentials.phone} model={"employee"} onChange={onChange}/>
+                <CustomText name={"phone"} label={"phone"} value={employee.phone} model={"employee"} onChange={onChange}/>
             </Grid>
         </Grid>
     )

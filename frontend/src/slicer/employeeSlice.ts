@@ -4,7 +4,8 @@ import {extractCredentials, getAllEmployees} from "../services/employeeService";
 import {IResponseGetAllEmployees} from "../interfaces/IApiResponse";
 import {IEmployeeState} from '../interfaces/IStates';
 import {handleError, setPending, stopPendingAndHandleError} from "./errorHelper";
-import {emptyEmployee} from "../interfaces/IEmployee";
+import {emptyEmployee, IEmployee} from "../interfaces/IEmployee";
+import {IProduct} from "../interfaces/IProduct";
 
 
 const initialState: IEmployeeState = {
@@ -15,6 +16,14 @@ const initialState: IEmployeeState = {
     success: false,
     toSave: emptyEmployee,
 }
+
+export const validateEmployee = (employee: IEmployee):boolean => {
+    const name = !!employee.firstName?.length || !!employee.lastName?.length;
+    const contact = !!employee.email?.length || !!employee.phone?.length;
+    const passwordStrength = employee.password?.length > 3;
+    return name && contact && passwordStrength;
+}
+
 
 export const getEmployees = createAsyncThunk<IResponseGetAllEmployees, void, { dispatch:Dispatch }>(
     'employees/getAll',
@@ -34,6 +43,9 @@ export const employeeSlice = createSlice({
             state.current = employee
             state.currentEmployeeCredentials = extractCredentials(employee);
         },
+        handleEmployeeFormInput: (state, {payload}: PayloadAction<IEmployee>) => {
+            state.toSave = payload;
+        },
         toBeReplaced: (state) => {console.log("I have to stay here until all view are implemented")},
         closeSuccess: (state:IEmployeeState) => {state.success = false}
     },
@@ -47,11 +59,12 @@ export const employeeSlice = createSlice({
 })
 
 
-export const {chooseCurrentEmployee, toBeReplaced, closeSuccess} = employeeSlice.actions;
+export const {chooseCurrentEmployee, toBeReplaced, closeSuccess, handleEmployeeFormInput} = employeeSlice.actions;
 
 export const selectEmployees = (state: RootState) => state.employee.employees;
 export const selectCurrentEmployee = (state: RootState) => state.employee.current;
 export const selectCurrentEmployeeCredentials = (state: RootState) => state.employee.currentEmployeeCredentials;
+export const selectEmployeeToSave = (state:RootState) => state.employee.toSave;
 export const selectEmployeePending = (state: RootState) => state.employee.pending;
 export const selectEmployeeSuccess = (state: RootState) => state.employee.success;
 
