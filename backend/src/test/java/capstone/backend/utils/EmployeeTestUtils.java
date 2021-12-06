@@ -5,7 +5,10 @@ import capstone.backend.security.model.EmployeeDTO;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Set;
+
 import static capstone.backend.mapper.EmployeeMapper.mapEmployee;
+import static capstone.backend.model.enums.UserRole.ADMIN;
 
 public class EmployeeTestUtils {
 
@@ -23,6 +26,7 @@ public class EmployeeTestUtils {
                 .picture("img")
                 .username("username")
                 .password("password")
+                .roles(Set.of(ADMIN))
                 .build();
     }
 
@@ -37,6 +41,7 @@ public class EmployeeTestUtils {
                 .picture("img")
                 .username("username")
                 .password("password")
+                .roles(Set.of(ADMIN))
                 .build();
     }
 

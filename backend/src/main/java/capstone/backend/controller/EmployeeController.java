@@ -21,8 +21,8 @@ public class EmployeeController {
     }
 
     @PostMapping()
-    public EmployeeDTO createEmployee() {
-        return service.createEmployee();
+    public EmployeeDTO createEmployee(@RequestBody EmployeeDTO employee) {
+        return service.createEmployee(employee);
     }
 
     @DeleteMapping("{id}")

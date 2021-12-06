@@ -22,10 +22,10 @@ public class EmployeeService {
                 .toList();
     }
 
-    public EmployeeDTO createEmployee() {
+    public EmployeeDTO createEmployee(EmployeeDTO employee) {
         return new EmployeeDTO();
     }
 
-    public void deleteEmployee(String id) {
+    public void deleteEmployee(String username) {
     }
 }
