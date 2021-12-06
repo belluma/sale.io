@@ -3,9 +3,7 @@ package capstone.backend.controller;
 import capstone.backend.security.model.EmployeeDTO;
 import capstone.backend.services.EmployeeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,9 +16,16 @@ public class EmployeeController {
 
 
     @GetMapping()
-    public List<EmployeeDTO> getAllEmployees(){
-    return service.getAllEmployees();
-}
+    public List<EmployeeDTO> getAllEmployees() {
+        return service.getAllEmployees();
+    }
 
+    @PostMapping()
+    public EmployeeDTO createEmployee() {
+        return service.createEmployee();
+    }
+
+    @DeleteMapping("{id}")
+    public void deleteEmployee(){return service.deleteEmployee(id)}
 
 }
