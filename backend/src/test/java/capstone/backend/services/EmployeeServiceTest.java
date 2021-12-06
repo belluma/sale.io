@@ -74,6 +74,56 @@ class EmployeeServiceTest {
     }
 
     @Test
+    void createEmployeeWithOnlyLastNameGiven() throws NoSuchFieldException, IllegalAccessException {
+        //GIVEN
+        Field uuidSupplierField = EmployeeService.class.getDeclaredField("uuidSupplier");
+        uuidSupplierField.setAccessible(true);
+        uuidSupplierField.set(service, uuidSupplier);
+        String uuid = "5211e915-c3e2-4dcb-0776-c7b900f38ab7";
+        when(uuidSupplier.get()).thenReturn(UUID.fromString(uuid));
+        EmployeeDTO userToSave = sampleUserDTO();
+        userToSave.setUsername(uuid);
+        userToSave.setFirstName(null);
+        Employee employeeWithEncryptedPassword = mapEmployee(userToSave);
+        employeeWithEncryptedPassword.setPassword(passwordEncoder.encode(userToSave.getPassword()));
+        EmployeeDTO expected = mapper.mapEmployeeAndConcealData(employeeWithEncryptedPassword);
+        when(repo.existsById(userToSave.getId())).thenReturn(false);
+        when(repo.save(employeeWithEncryptedPassword)).thenReturn(employeeWithEncryptedPassword);
+        assertThat(employeeWithEncryptedPassword, is(mapEmployee(userToSave)));
+        //WHEN
+        EmployeeDTO actual = service.createEmployee(userToSave);
+        //THEN
+        assertThat(actual, is(expected));
+        verify(repo).existsById(userToSave.getId());
+        verify(repo).save(mapEmployee(userToSave));
+    }
+
+    @Test
+    void createEmployeeWithOnlyFirstNameGiven() throws NoSuchFieldException, IllegalAccessException {
+        //GIVEN
+        Field uuidSupplierField = EmployeeService.class.getDeclaredField("uuidSupplier");
+        uuidSupplierField.setAccessible(true);
+        uuidSupplierField.set(service, uuidSupplier);
+        String uuid = "5211e915-c3e2-4dcb-0776-c7b900f38ab7";
+        when(uuidSupplier.get()).thenReturn(UUID.fromString(uuid));
+        EmployeeDTO userToSave = sampleUserDTO();
+        userToSave.setUsername(uuid);
+        userToSave.setLastName(null);
+        Employee employeeWithEncryptedPassword = mapEmployee(userToSave);
+        employeeWithEncryptedPassword.setPassword(passwordEncoder.encode(userToSave.getPassword()));
+        EmployeeDTO expected = mapper.mapEmployeeAndConcealData(employeeWithEncryptedPassword);
+        when(repo.existsById(userToSave.getId())).thenReturn(false);
+        when(repo.save(employeeWithEncryptedPassword)).thenReturn(employeeWithEncryptedPassword);
+        assertThat(employeeWithEncryptedPassword, is(mapEmployee(userToSave)));
+        //WHEN
+        EmployeeDTO actual = service.createEmployee(userToSave);
+        //THEN
+        assertThat(actual, is(expected));
+        verify(repo).existsById(userToSave.getId());
+        verify(repo).save(mapEmployee(userToSave));
+    }
+
+    @Test
     void createEmployeeFailsWhenNoNameGiven() {
         //GIVEN
         EmployeeDTO userToSave = sampleUserDTO();
@@ -87,7 +137,8 @@ class EmployeeServiceTest {
     @Test
     void createEmployeeFailsWhenNoPasswordGiven() {
         //GIVEN
-        EmployeeDTO userToSave = sampleUserDTO().withPassword(null);
+        EmployeeDTO userToSave = sampleUserDTO();
+        userToSave.setPassword(null);
         //WHEN - //THEN
         Exception ex = assertThrows(IllegalArgumentException.class, () -> service.createEmployee(userToSave));
         assertThat(ex.getMessage(), is("Cannot save employee without password"));

@@ -45,6 +45,9 @@ public class EmployeeService {
         if (employee.getFirstName() == null && employee.getLastName() == null) {
             throw new IllegalArgumentException("At least one name attribute needs to be set!");
         }
+        if(employee.getPassword() == null){
+            throw new IllegalArgumentException("Cannot save employee without password");
+        }
         if (repo.existsById(employee.getId())) {
             throw new EntityWithThisIdAlreadyExistException(String.format("A user with id %d already exists", employee.getId()));
         }
