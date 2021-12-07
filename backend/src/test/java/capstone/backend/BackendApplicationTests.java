@@ -1,6 +1,5 @@
 package capstone.backend;
-
-import capstone.backend.security.repository.EmployeeRepository;
+import capstone.backend.repo.EmployeeRepo;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -10,7 +9,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 @EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
-@SpringBootTest(classes = EmployeeRepository.class)
+@SpringBootTest(classes = EmployeeRepo.class)
 class BackendApplicationTests {
 
     @Test

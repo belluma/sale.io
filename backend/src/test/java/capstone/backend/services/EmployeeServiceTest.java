@@ -151,7 +151,7 @@ class EmployeeServiceTest {
         when(repo.existsByUsername(username)).thenReturn(true);
         //WHEN - //THEN
         service.deleteEmployee(username);
-        verify(repo).deleteByUsername(username);
+        verify(repo).removeByUsername(username);
         verify(repo).existsByUsername(username);
     }
 

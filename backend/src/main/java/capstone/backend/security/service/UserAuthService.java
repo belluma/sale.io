@@ -1,9 +1,9 @@
 package capstone.backend.security.service;
 
+import capstone.backend.repo.EmployeeRepo;
 import capstone.backend.security.exceptions.InvalidCredentialsException;
 import capstone.backend.security.exceptions.UserAlreadyExistsException;
 import capstone.backend.security.model.EmployeeDTO;
-import capstone.backend.security.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,14 +22,14 @@ import static capstone.backend.mapper.EmployeeMapper.mapEmployee;
 @Service
 public class UserAuthService implements UserDetailsService {
 
-    private final EmployeeRepository repository;
+    private final EmployeeRepo repository;
     private final JWTUtilService jwtService;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private final UserAuthUtils utils;
 
 
     @Autowired
-    public UserAuthService(EmployeeRepository repository, JWTUtilService jwtService, UserAuthUtils utils) {
+    public UserAuthService(EmployeeRepo repository, JWTUtilService jwtService, UserAuthUtils utils) {
         this.repository = repository;
         this.jwtService = jwtService;
         this.utils = utils;

@@ -1,8 +1,8 @@
 package capstone.backend.utils;
 
+import capstone.backend.repo.EmployeeRepo;
 import capstone.backend.security.model.Employee;
 import capstone.backend.security.model.EmployeeDTO;
-import capstone.backend.security.repository.EmployeeRepository;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +16,10 @@ import java.util.Objects;
 public class ControllerTestUtils {
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    private final EmployeeRepository repo;
+    private final EmployeeRepo repo;
     private final TestRestTemplate restTemplate;
 
-    public ControllerTestUtils(EmployeeRepository repo, TestRestTemplate restTemplate) {
+    public ControllerTestUtils(EmployeeRepo repo, TestRestTemplate restTemplate) {
         this.repo = repo;
         this.restTemplate = restTemplate;
     }

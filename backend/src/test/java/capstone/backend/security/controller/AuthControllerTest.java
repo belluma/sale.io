@@ -1,8 +1,8 @@
 package capstone.backend.security.controller;
 
 import capstone.backend.mapper.EmployeeMapper;
+import capstone.backend.repo.EmployeeRepo;
 import capstone.backend.security.model.EmployeeDTO;
-import capstone.backend.security.repository.EmployeeRepository;
 import capstone.backend.utils.EmployeeTestUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -32,7 +32,7 @@ class AuthControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
     @Autowired
-    private EmployeeRepository repo;
+    private EmployeeRepo repo;
     private final EmployeeTestUtils utils = new EmployeeTestUtils();
 
     @Value("${jwt.secret}")
