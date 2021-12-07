@@ -25,9 +25,9 @@ public class EmployeeController {
         return service.createEmployee(employee);
     }
 
-    @DeleteMapping("{id}")
-    public void deleteEmployee(@RequestParam String id) {
-        service.deleteEmployee(id);
+    @DeleteMapping("{username}")
+    public void deleteEmployee(@PathVariable String username) {
+        service.deleteEmployee(username);
     }
 
 }

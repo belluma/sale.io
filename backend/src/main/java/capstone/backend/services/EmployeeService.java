@@ -3,7 +3,6 @@ package capstone.backend.services;
 import capstone.backend.exception.model.EntityWithThisIdAlreadyExistException;
 import capstone.backend.mapper.EmployeeMapper;
 import capstone.backend.repo.EmployeeRepo;
-import capstone.backend.security.model.Employee;
 import capstone.backend.security.model.EmployeeDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -57,10 +57,11 @@ public class EmployeeService {
         return uuidSupplier.get().toString();
     }
 
+    @Transactional
     public void deleteEmployee(String username) throws EntityNotFoundException {
         if (!repo.existsByUsername(username)) {
             throw new EntityNotFoundException(String.format("User with username %s not found", username));
         }
-        repo.deleteByUsername(username);
+        repo.removeByUsername(username);
     }
 }

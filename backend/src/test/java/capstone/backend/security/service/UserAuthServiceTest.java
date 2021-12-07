@@ -1,18 +1,15 @@
 package capstone.backend.security.service;
 
+import capstone.backend.repo.EmployeeRepo;
 import capstone.backend.security.exceptions.InvalidCredentialsException;
 import capstone.backend.security.exceptions.UserAlreadyExistsException;
 import capstone.backend.security.model.Employee;
 import capstone.backend.security.model.EmployeeDTO;
-import capstone.backend.security.repository.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import java.util.HashMap;
 import java.util.Optional;
-
 import static capstone.backend.mapper.EmployeeMapper.mapEmployee;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -21,7 +18,7 @@ import static org.mockito.Mockito.*;
 
 class UserAuthServiceTest {
 
-    EmployeeRepository repository = mock(EmployeeRepository.class);
+    EmployeeRepo repository = mock(EmployeeRepo.class);
     private final JWTUtilService jwtService = mock(JWTUtilService.class);
     private final UserAuthUtils utils = mock(UserAuthUtils.class);
 
